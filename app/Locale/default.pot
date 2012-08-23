@@ -1,0 +1,516 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-01-12 10:49-0300\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/ClinicasController.php:54;85;111
+msgid "Invalid clinica"
+msgstr ""
+
+#: Controller/ClinicasController.php:68;89
+msgid "The clinica has been saved"
+msgstr ""
+
+#: Controller/ClinicasController.php:71;92
+msgid "The clinica could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ClinicasController.php:114
+msgid "Clinica deleted"
+msgstr ""
+
+#: Controller/ClinicasController.php:117
+msgid "Clinica was not deleted"
+msgstr ""
+
+#: Controller/ConsultoriosController.php:30;55;88;116
+msgid "Invalid consultorio"
+msgstr ""
+
+#: Controller/ConsultoriosController.php:69;92
+msgid "The consultorio has been saved"
+msgstr ""
+
+#: Controller/ConsultoriosController.php:72;95
+msgid "The consultorio could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ConsultoriosController.php:119
+msgid "Consultorio deleted"
+msgstr ""
+
+#: Controller/ConsultoriosController.php:122
+msgid "Consultorio was not deleted"
+msgstr ""
+
+#: Controller/EspecialidadesController.php:30;55;86;112
+msgid "Invalid especialidade"
+msgstr ""
+
+#: Controller/EspecialidadesController.php:69;90
+msgid "The especialidade has been saved"
+msgstr ""
+
+#: Controller/EspecialidadesController.php:72;93
+msgid "The especialidade could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/EspecialidadesController.php:115
+msgid "Especialidade deleted"
+msgstr ""
+
+#: Controller/EspecialidadesController.php:118
+msgid "Especialidade was not deleted"
+msgstr ""
+
+#: Controller/ObrasSocialesController.php:30;54;85;111
+msgid "Invalid obras sociale"
+msgstr ""
+
+#: Controller/ObrasSocialesController.php:68;89
+msgid "The obras sociale has been saved"
+msgstr ""
+
+#: Controller/ObrasSocialesController.php:71;92
+msgid "The obras sociale could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ObrasSocialesController.php:114
+msgid "Obras sociale deleted"
+msgstr ""
+
+#: Controller/ObrasSocialesController.php:117
+msgid "Obras sociale was not deleted"
+msgstr ""
+
+#: View/Clinicas/administracion_add.ctp:4
+msgid "Administracion Add Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_add.ctp:10
+#: View/Clinicas/administracion_edit.ctp:11
+#: View/Consultorios/add.ctp:10
+#: View/Consultorios/administracion_add.ctp:10
+#: View/Consultorios/administracion_edit.ctp:11
+#: View/Especialidades/administracion_add.ctp:9
+#: View/Especialidades/administracion_edit.ctp:10
+#: View/ObrasSociales/administracion_add.ctp:11
+#: View/ObrasSociales/administracion_edit.ctp:12
+msgid "Submit"
+msgstr ""
+
+#: View/Clinicas/administracion_add.ctp:13
+#: View/Clinicas/administracion_edit.ctp:14
+#: View/Clinicas/administracion_index.ctp:8;41
+#: View/Clinicas/administracion_view.ctp:22
+#: View/Consultorios/add.ctp:13
+#: View/Consultorios/administracion_add.ctp:13
+#: View/Consultorios/administracion_edit.ctp:14
+#: View/Consultorios/administracion_index.ctp:8;43
+#: View/Consultorios/administracion_view.ctp:22
+#: View/Especialidades/administracion_add.ctp:12
+#: View/Especialidades/administracion_edit.ctp:13
+#: View/Especialidades/administracion_index.ctp:37
+#: View/Especialidades/administracion_view.ctp:17
+#: View/Especialidades/view.ctp:17
+#: View/ObrasSociales/administracion_add.ctp:14
+#: View/ObrasSociales/administracion_edit.ctp:15
+#: View/ObrasSociales/administracion_index.ctp:9;43
+#: View/ObrasSociales/administracion_view.ctp:27
+msgid "Actions"
+msgstr ""
+
+#: View/Clinicas/administracion_add.ctp:16
+#: View/Clinicas/administracion_edit.ctp:18
+#: View/Clinicas/administracion_view.ctp:26
+#: View/Consultorios/add.ctp:17
+#: View/Consultorios/administracion_add.ctp:17
+#: View/Consultorios/administracion_edit.ctp:19
+#: View/Consultorios/administracion_index.ctp:46
+#: View/Consultorios/administracion_view.ctp:28
+msgid "List Clinicas"
+msgstr ""
+
+#: View/Clinicas/administracion_edit.ctp:4
+msgid "Administracion Edit Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_edit.ctp:17
+#: View/Clinicas/administracion_index.ctp:20
+#: View/Consultorios/administracion_edit.ctp:17
+#: View/Consultorios/administracion_index.ctp:22
+#: View/Especialidades/administracion_edit.ctp:16
+#: View/Especialidades/administracion_index.ctp:16
+#: View/ObrasSociales/administracion_edit.ctp:18
+#: View/ObrasSociales/administracion_index.ctp:22
+#: View/Scaffolds/view.ctp:129
+msgid "Delete"
+msgstr ""
+
+#: View/Clinicas/administracion_edit.ctp:17
+#: View/Clinicas/administracion_index.ctp:20
+#: View/Clinicas/administracion_view.ctp:25
+#: View/Clinicas/index.ctp:18
+#: View/Consultorios/administracion_edit.ctp:17
+#: View/Consultorios/administracion_index.ctp:22
+#: View/Consultorios/administracion_view.ctp:25
+#: View/Consultorios/view.ctp:20
+#: View/Especialidades/administracion_edit.ctp:16
+#: View/Especialidades/administracion_index.ctp:16
+#: View/Especialidades/administracion_view.ctp:20
+#: View/Especialidades/view.ctp:20
+#: View/ObrasSociales/administracion_edit.ctp:18
+#: View/ObrasSociales/administracion_index.ctp:22
+#: View/ObrasSociales/administracion_view.ctp:30
+msgid "Are you sure you want to delete # %s?"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:2
+msgid "Clinicas"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:18
+#: View/Consultorios/administracion_index.ctp:20
+#: View/Especialidades/administracion_index.ctp:14
+#: View/ObrasSociales/administracion_index.ctp:20
+#: View/Scaffolds/view.ctp:127
+msgid "View"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:19
+#: View/Consultorios/administracion_index.ctp:21
+#: View/Especialidades/administracion_index.ctp:15
+#: View/ObrasSociales/administracion_index.ctp:21
+#: View/Scaffolds/view.ctp:128
+msgid "Edit"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:28
+#: View/Clinicas/index.ctp:26
+#: View/Consultorios/administracion_index.ctp:30
+#: View/Consultorios/index.ctp:26
+#: View/Especialidades/administracion_index.ctp:24
+#: View/Especialidades/index.ctp:22
+#: View/ObrasSociales/administracion_index.ctp:30
+#: View/ObrasSociales/index.ctp:22
+#: View/Scaffolds/index.ctp:66
+msgid "Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:34
+#: View/Clinicas/index.ctp:32
+#: View/Consultorios/administracion_index.ctp:36
+#: View/Consultorios/index.ctp:32
+#: View/Especialidades/administracion_index.ctp:30
+#: View/ObrasSociales/administracion_index.ctp:36
+#: View/ObrasSociales/index.ctp:28
+msgid "previous"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:36
+#: View/Clinicas/index.ctp:34
+#: View/Consultorios/administracion_index.ctp:38
+#: View/Consultorios/index.ctp:34
+#: View/Especialidades/administracion_index.ctp:32
+#: View/ObrasSociales/administracion_index.ctp:38
+#: View/ObrasSociales/index.ctp:30
+msgid "next"
+msgstr ""
+
+#: View/Clinicas/administracion_index.ctp:43
+#: View/Clinicas/administracion_view.ctp:27
+#: View/Consultorios/add.ctp:18
+#: View/Consultorios/administracion_add.ctp:18
+#: View/Consultorios/administracion_edit.ctp:20
+#: View/Consultorios/administracion_index.ctp:47
+#: View/Consultorios/administracion_view.ctp:29
+msgid "New Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:2
+#: View/Consultorios/administracion_view.ctp:9
+msgid "Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:4
+msgid "Id Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:9
+#: View/Consultorios/administracion_view.ctp:14
+#: View/Especialidades/administracion_view.ctp:9
+#: View/Especialidades/view.ctp:9
+#: View/ObrasSociales/administracion_view.ctp:9
+msgid "Nombre"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:14
+#: View/ObrasSociales/administracion_view.ctp:14
+msgid "Direccion"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:24
+msgid "Edit Clinica"
+msgstr ""
+
+#: View/Clinicas/administracion_view.ctp:25
+msgid "Delete Clinica"
+msgstr ""
+
+#: View/Consultorios/add.ctp:4
+msgid "Add Consultorio"
+msgstr ""
+
+#: View/Consultorios/add.ctp:16
+#: View/Consultorios/administracion_add.ctp:16
+#: View/Consultorios/administracion_edit.ctp:18
+#: View/Consultorios/administracion_view.ctp:26
+msgid "List Consultorios"
+msgstr ""
+
+#: View/Consultorios/administracion_add.ctp:4
+msgid "Administracion Add Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_edit.ctp:4
+msgid "Administracion Edit Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_index.ctp:2
+msgid "Consultorios"
+msgstr ""
+
+#: View/Consultorios/administracion_index.ctp:45
+#: View/Consultorios/administracion_view.ctp:27
+msgid "New Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_view.ctp:2
+msgid "Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_view.ctp:4
+msgid "Id Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_view.ctp:24
+msgid "Edit Consultorio"
+msgstr ""
+
+#: View/Consultorios/administracion_view.ctp:25
+msgid "Delete Consultorio"
+msgstr ""
+
+#: View/Especialidades/administracion_add.ctp:4
+msgid "Administracion Add Especialidade"
+msgstr ""
+
+#: View/Especialidades/administracion_add.ctp:15
+#: View/Especialidades/administracion_edit.ctp:17
+#: View/Especialidades/administracion_view.ctp:21
+#: View/Especialidades/view.ctp:21
+msgid "List Especialidades"
+msgstr ""
+
+#: View/Especialidades/administracion_edit.ctp:4
+msgid "Administracion Edit Especialidade"
+msgstr ""
+
+#: View/Especialidades/administracion_index.ctp:39
+#: View/Especialidades/administracion_view.ctp:22
+#: View/Especialidades/view.ctp:22
+msgid "New Especialidade"
+msgstr ""
+
+#: View/Especialidades/administracion_view.ctp:2
+#: View/Especialidades/view.ctp:2
+msgid "Especialidade"
+msgstr ""
+
+#: View/Especialidades/administracion_view.ctp:4
+#: View/Especialidades/view.ctp:4
+msgid "Id Especialidad"
+msgstr ""
+
+#: View/Especialidades/administracion_view.ctp:19
+#: View/Especialidades/view.ctp:19
+msgid "Edit Especialidade"
+msgstr ""
+
+#: View/Especialidades/administracion_view.ctp:20
+#: View/Especialidades/view.ctp:20
+msgid "Delete Especialidade"
+msgstr ""
+
+#: View/ObrasSociales/administracion_add.ctp:4
+msgid "Administracion Add Obras Sociale"
+msgstr ""
+
+#: View/ObrasSociales/administracion_add.ctp:17
+#: View/ObrasSociales/administracion_edit.ctp:19
+#: View/ObrasSociales/administracion_view.ctp:31
+msgid "List Obras Sociales"
+msgstr ""
+
+#: View/ObrasSociales/administracion_edit.ctp:4
+msgid "Administracion Edit Obras Sociale"
+msgstr ""
+
+#: View/ObrasSociales/administracion_index.ctp:2
+msgid "Obras Sociales"
+msgstr ""
+
+#: View/ObrasSociales/administracion_index.ctp:45
+#: View/ObrasSociales/administracion_view.ctp:32
+msgid "New Obras Sociale"
+msgstr ""
+
+#: View/ObrasSociales/administracion_view.ctp:2
+msgid "Obras Sociale"
+msgstr ""
+
+#: View/ObrasSociales/administracion_view.ctp:4
+msgid "Id Obra Social"
+msgstr ""
+
+#: View/ObrasSociales/administracion_view.ctp:19
+msgid "Telefono"
+msgstr ""
+
+#: View/ObrasSociales/administracion_view.ctp:29
+msgid "Edit Obras Sociale"
+msgstr ""
+
+#: View/ObrasSociales/administracion_view.ctp:30
+msgid "Delete Obras Sociale"
+msgstr ""
+
+#: Model/Clinica.php:validation for field nombre
+msgid "Por favor, ingrese un nombre para la clinica."
+msgstr ""
+
+#: Model/Clinica.php:validation for field telefono
+msgid "El numero de telefono solo debe contener digitos"
+msgstr ""
+
+#: Model/Consultorio.php:validation for field clinica_id
+msgid "Seleccione una clinica valida"
+msgstr ""
+
+#: Model/Consultorio.php:validation for field nombre
+msgid "Por favor, ingrese un nombre para el consultorio."
+msgstr ""
+
+#: Model/Especialidad.php:validation for field nombre
+msgid "Por favor, ingrese un nombre para la especialidad"
+msgstr ""
+
+#: Model/ObraSocial.php:validation for field nombre
+msgid "Por favor, ingrese un nombre para la obra social"
+msgstr ""
+
+#: Model/ObraSocial.php:validation for field telefono
+msgid "El numero de telefono debe ser solo numeros"
+msgstr ""
+
+#: View/Pages/home.ctp:34
+msgid "URL rewriting is not properly configured on your server."
+msgstr ""
+
+#: View/Pages/home.ctp:42
+msgid "Your version of PHP is 5.2.6 or higher."
+msgstr ""
+
+#: View/Pages/home.ctp:46
+msgid "Your version of PHP is too low. You need PHP 5.2.6 or higher to use CakePHP."
+msgstr ""
+
+#: View/Pages/home.ctp:55
+msgid "Your tmp directory is writable."
+msgstr ""
+
+#: View/Pages/home.ctp:59
+msgid "Your tmp directory is NOT writable."
+msgstr ""
+
+#: View/Pages/home.ctp:69
+msgid "The %s is being used for caching. To change the config edit APP/Config/core.php "
+msgstr ""
+
+#: View/Pages/home.ctp:73
+msgid "Your cache is NOT working. Please check the settings in APP/Config/core.php"
+msgstr ""
+
+#: View/Pages/home.ctp:83
+msgid "Your database configuration file is present."
+msgstr ""
+
+#: View/Pages/home.ctp:88
+msgid "Your database configuration file is NOT present."
+msgstr ""
+
+#: View/Pages/home.ctp:90
+msgid "Rename APP/Config/database.php.default to APP/Config/database.php"
+msgstr ""
+
+#: View/Pages/home.ctp:108
+msgid "Cake is able to connect to the database."
+msgstr ""
+
+#: View/Pages/home.ctp:112
+msgid "Cake is NOT able to connect to the database."
+msgstr ""
+
+#: View/Pages/home.ctp:122
+msgid "PCRE has not been compiled with Unicode support."
+msgstr ""
+
+#: View/Pages/home.ctp:124
+msgid "Recompile PCRE with Unicode support by adding <code>--enable-unicode-properties</code> when configuring"
+msgstr ""
+
+#: webroot/test.php:87
+msgid "Debug setting does not allow access to this url."
+msgstr ""
+
+#: View/Scaffolds/form.ctp:43
+#: View/Scaffolds/view.ctp:48;54
+msgid "Listar %s"
+msgstr ""
+
+#: View/Scaffolds/form.ctp:44
+msgid "Nueva %s"
+msgstr ""
+
+#: View/Scaffolds/index.ctp:86
+msgid "List %s"
+msgstr ""
+
+#: View/Scaffolds/index.ctp:87
+#: View/Scaffolds/view.ctp:138
+msgid "New %s"
+msgstr ""
+
+#: View/Scaffolds/view.ctp:66;101
+msgid "Related %s"
+msgstr ""
+
+#: View/Scaffolds/view.ctp:81
+msgid "Edit %s"
+msgstr ""
+
+#: View/Scaffolds/view.ctp:129
+msgid "Are you sure you want to delete"
+msgstr ""
+

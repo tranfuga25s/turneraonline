@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>turneraonline</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>com.aptana.projects.webnature</nature>
+		<nature>com.aptana.editor.php.phpNature</nature>
+	</natures>
+	<filteredResources>
+		<filter>
+			<id>1342206990714</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-*~</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
+</projectDescription>
