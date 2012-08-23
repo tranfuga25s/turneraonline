@@ -1,2 +1,0 @@
-1344309543
-a:2:{s:8:"id_grupo";a:7:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";N;s:6:"length";i:11;s:3:"key";s:7:"primary";s:7:"collate";N;s:7:"comment";s:0:"";}s:6:"nombre";a:7:{s:4:"type";s:4:"text";s:4:"null";b:0;s:7:"default";N;s:6:"length";N;s:7:"collate";s:16:"utf8_spanish2_ci";s:7:"comment";s:0:"";s:7:"charset";s:4:"utf8";}}
