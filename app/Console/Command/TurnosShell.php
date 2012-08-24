@@ -192,34 +192,39 @@ class TurnosShell extends AppShell {
 			echo "-- Enviando resumenes de turnos para el día -\n";
 			echo "---------------------------------------------\n";
 			echo "Encontradas ".count( $ids )." secretarias... \n";
+			echo "---------------------------------------------\n";
 			foreach( $ids as $id ) {
 				// Busco el correo electronico y los datos
 				$secretaria = $this->Secretaria->read( null, $id );
-				$clinica = $this->Clinica->read( null, $secretaria['Secretaria']['clinica_id'] );
-				// Busco los turnos del día
-				$inicio = new DateTime('now');
-				$fin = clone $inicio;
-				$inicio->setTime( 0, 0, 0 );
-				$fin->setTime( 23, 59, 59 );
-				$this->Turno->Paciente->virtualFields = array( 'razonsocial' => 'CONCAT( `Paciente`.`apellido`, \', \', `Paciente`.`nombre` )'  );
-				$turnos = $this->Turno->find( 'all', 
-								array( 'conditions' => 
-									array( '`Turno`.`fecha_inicio` >= \''.$inicio->format( 'Y-m-d H:i:s' ).'\'',
-										   'fecha_fin <= \''.$fin->format( 'Y-m-d H:i:s' ).'\'' ) ) );
-				$de = Configure::read( 'Turnera.email_notificaciones' );
-				if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }										   
-				$email = new CakeEmail();
-				$email->to( $secretaria['Usuario']['email'] );
-				$email->subject( 'Turnos del día '.$inicio->format( 'Y-m-d H:i:s' ) );
-				$email->emailFormat( 'both' );
-				$email->from( $de );
-				$email->viewVars( array( 'nombre_clinica' => $clinica['Clinica']['nombre'],
-										 'secretaria' => $secretaria,
-										 'turnos' => $turnos,
-										 'fecha' => $inicio->format( 'd/m/Y' ) ) );
-				$email->template( 'resumen_diario', 'secretaria' );										 						 
-				$email->send();
-				echo " - - - > Email enviado a ".$secretaria['Usuario']['email']."... \n";
+				if( $secretaria['Secretaria']['resumen'] == true ) {
+					$clinica = $this->Clinica->read( null, $secretaria['Secretaria']['clinica_id'] );
+					// Busco los turnos del día
+					$inicio = new DateTime('now');
+					$fin = clone $inicio;
+					$inicio->setTime( 0, 0, 0 );
+					$fin->setTime( 23, 59, 59 );
+					$this->Turno->Paciente->virtualFields = array( 'razonsocial' => 'CONCAT( `Paciente`.`apellido`, \', \', `Paciente`.`nombre` )'  );
+					$turnos = $this->Turno->find( 'all', 
+									array( 'conditions' => 
+										array( '`Turno`.`fecha_inicio` >= \''.$inicio->format( 'Y-m-d H:i:s' ).'\'',
+											   'fecha_fin <= \''.$fin->format( 'Y-m-d H:i:s' ).'\'' ) ) );
+					$de = Configure::read( 'Turnera.email_notificaciones' );
+					if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }										   
+					$email = new CakeEmail();
+					$email->to( $secretaria['Usuario']['email'] );
+					$email->subject( 'Turnos del día '.$inicio->format( 'Y-m-d H:i:s' ) );
+					$email->emailFormat( 'both' );
+					$email->from( $de );
+					$email->viewVars( array( 'nombre_clinica' => $clinica['Clinica']['nombre'],
+											 'secretaria' => $secretaria,
+											 'turnos' => $turnos,
+											 'fecha' => $inicio->format( 'd/m/Y' ) ) );
+					$email->template( 'resumen_diario', 'secretaria' );										 						 
+					$email->send();
+					echo " - - - > Email enviado a ".$secretaria['Usuario']['email']."... \n";
+				} else {
+					echo " - - > La secretaria ". $secretaria['Usuario']['razonsocial']." no quiere resumen \n";
+				}
 			}
 			echo "- Fin generación de emails - \n";			
 		} else {

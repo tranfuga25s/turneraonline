@@ -1,24 +1,25 @@
-<div class="secretarias form">
-<?php echo $this->Form->create('Secretaria');?>
+<?php $this->set( 'title_for_layout', "Editar secretaria" ); ?>
+<script>
+	$( function() {
+		$( "a", "#acciones" ).button();
+	});
+</script>
+<div id="acciones">
+	<?php echo $this->Form->postLink( 'Eliminar la secretaria', array( 'action' => 'delete', $this->Form->value( 'Secretaria.id_secretaria' ) ), null, 'Esta seguro que desea eliminar esta secretaria?' ); ?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de Secretarias', array( 'action' => 'index' ) );?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de Usuarios', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'controller' => 'clinicas', 'action' => 'index' ) ); ?>
+</div>
+<br />
+<div class="decorado1">
+	<div class="titulo1">Editar una secretaria</div>
+	<?php echo $this->Form->create('Secretaria');?>
 	<fieldset>
-		<legend><?php echo __('Administracion Edit Secretaria'); ?></legend>
 	<?php
 		echo $this->Form->input('id_secretaria');
-		echo $this->Form->input('usuario_id');
-		echo $this->Form->input('clinica_id');
+		echo $this->Form->input( 'clinica_id', array( 'between' => '<b>Clinica donde atiende:</b>&nbsp;', 'label' => false ) );
+		echo $this->Form->input('resumen', array( 'between' => '<b>Recibir resumen diario</b>&nbsp;', 'label' => false ) );
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Secretaria.id_secretaria')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Secretaria.id_secretaria'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Secretarias'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Usuarios'), array('controller' => 'usuarios', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Usuario'), array('controller' => 'usuarios', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Clinicas'), array('controller' => 'clinicas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Clinica'), array('controller' => 'clinicas', 'action' => 'add')); ?> </li>
-	</ul>
+	<?php echo $this->Form->end( 'Guardar' );?>
 </div>

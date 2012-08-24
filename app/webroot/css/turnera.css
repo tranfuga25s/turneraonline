@@ -541,3 +541,29 @@ a .disponible {
 .actions a {
 	cursor: pointer;
 }
+
+fieldset {
+	border: none;
+	margin-bottom: 1em;
+	padding: 16px 10px;
+	text-align: left;
+}
+
+dl {
+	line-height: 2em;
+	margin: 0em 0em;
+	text-align: left;
+}
+
+dd {
+	margin-left: 15em;
+	margin-top: -2em;
+	vertical-align: top;
+}
+
+dt {
+	font-weight: bold;
+	padding-left: 4px;
+	vertical-align: top;
+	width: 15em;
+}
