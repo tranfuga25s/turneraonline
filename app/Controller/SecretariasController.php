@@ -27,6 +27,7 @@ class SecretariasController extends AppController {
 					case 'cancelar':
 					case 'reservar':
 					case 'atendido':
+					case 'resumen':
 					{
 						$this->verificarDia();
 						$this->loadModel('Turno');
@@ -391,6 +392,31 @@ class SecretariasController extends AppController {
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}
 
+	/**
+	 * 
+	 */
+	 public function resumen() {
+	 	// muestro la opción para el resumen
+	 	if( $this->request->isPost() ) {
+	 		$this->Secretaria->id = $this->data['Secretaria']['id_secretaria'];
+			if( $this->data['Secretaria']['resumen'] ) {
+				$accion = " habilitado  ";
+				$estado = true;
+			} else {
+				$accion = " deshabilitado  ";
+				$estado = false;
+			}
+			if( $this->Secretaria->saveField( 'resumen', $estado ) ) {
+				$this->Session->setFlash( "Resumen diario ".$accion." correctamente." );
+				$this->redirect( '/' );		
+			} else {
+				$this->Session->setFlash( "No se pudo guardar el cambio" );
+			}
+	 	} 
+	 	$this->set( 'resumen', $this->Secretaria->field( 'resumen' ) );
+		$this->set( 'id_secretaria', $this->Secretaria->field( 'id_secretaria' ) );
+	 	
+	 }
 	/**
 	 * administracion_index method
 	 *

@@ -58,6 +58,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" );
 	<?php  if( $usuarioactual['grupo_id'] == 3 ) { // SECRETARIAS ?>
 				<li><?php echo $this->Html->link( 'Turnos del día', array( 'controller' => 'secretarias', 'action' => 'turnos' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
+				<li><?php echo $this->Html->link( 'Resumen Diario', array( 'controller' => 'secretarias', 'action' => 'resumen' ) ); ?></li>
 				<li><?php //echo $this->Html->link( 'Mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ) ); ?></li>
 	<?php 	} else if( $usuarioactual['grupo_id'] == 2 ) { // MEDICOS ?>
 				<li><?php echo $this->Html->link( 'Turnos del día', array( 'controller' => 'medicos', 'action' => 'turnos' ) ); ?></li>
