@@ -23,17 +23,17 @@ class TurnosShell extends AppShell {
 		// Genero un bucle con cada medico en cada clinica
 		$clinicas = $this->Clinica->find( 'all', array( 'fields' => array( 'id_clinica', 'nombre' ), 'recursive' => -1 ) );
 		foreach( $clinicas as $clinica ) {
-			echo "Generando turnos para la clinica ".$clinica['Clinica']['nombre']."\n";
-			echo "================================================================\n";
+			$this->out("Generando turnos para la clinica ".$clinica['Clinica']['nombre'] );
+			$this->out("================================================================");
 			$medicos = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $clinica['Clinica']['id_clinica'] ), 'fields' => array( 'id_medico' ) ) );
 			foreach( $medicos as $medico ) {
-				echo "Generando turnos para el medico " . $medico. "\n";
-				echo "----------------------------------------------\n";
+				$this->out("Generando turnos para el medico " . $medico );
+				$this->out("----------------------------------------------" );
 				$this->Medico->Disponibilidad->unbindModel( array( 'belongsTo' => array( 'Medico' ) ) );
 				$disponibilidad = $this->Medico->Disponibilidad->find( 'first', array( 'conditions' => array( 'medico_id' => $medico ), 'recursive' => 1 ) );
 				if( $disponibilidad == null ) { echo "Error -> disponibilidad de medico no encontrada.\n ---> No se generan turnos.\n"; continue; }
 				if( count( $disponibilidad['DiaDisponibilidad'] ) <= 0 ) {
-					echo "--> No tiene ningun día definido.\n";
+					$this->out("--> No tiene ningun día definido ");
 					continue;
 				} else {
 					// Actualizo los indices del array para que me queden segun el numero del día
@@ -45,11 +45,11 @@ class TurnosShell extends AppShell {
 				}
 
 				$cant_dias = Configure::read( 'Turnera.dias_turnos' );
-				echo "----------------------------------------------\n";
-				echo "- Cantidad de dias:".$cant_dias."\n";
-				echo "----------------------------------------------\n";
-				echo "-- Inicio de generación de turnos\n";
-				echo "-- Buscando ultimo turno generado\n";
+				$this->out( "----------------------------------------------" );
+				$this->out( "- Cantidad de dias:".$cant_dias );
+				$this->out( "----------------------------------------------" );
+				$this->out( "-- Inicio de generación de turnos" );
+				$this->out( "-- Buscando ultimo turno generado" );
 				$ultimo = $this->Turno->find( 'first',
 						array( 'conditions' => 
 							array(  'medico_id' => $disponibilidad['Disponibilidad']['medico_id'],
@@ -67,28 +67,32 @@ class TurnosShell extends AppShell {
 					$f1->add( new DateInterval( "P".$cant_dias."D" ) );
 					$f2 = new DateTime( 'now' );
 					$f2->setDate( date( 'Y', strtotime( $ultimo['Turno']['fecha_fin'] ) ), date( 'm', strtotime( $ultimo['Turno']['fecha_fin'] ) ), date( 'd', strtotime( $ultimo['Turno']['fecha_fin'] ) ) );
+					$this->out( "Fecha limite: ".$f1->format('Y-m-d H:i:s') );
+				    $this->out( "Fecha ultimo turno: ".$f2->format('Y-m-d H:i:s') );
 					// Calculo la dif de dias y se lo resto a cant de dias para obtener la cantida de dias a generar
 					$cant_dif = $f1->diff( $f2 )->days;
-					echo "---- Cant dias dif=".$cant_dif."\n";
+					$this->out( "---- Cant dias dif=".$cant_dif  );
 					if( $cant_dias > $cant_dif ) {
 						$iniciar_desde = $cant_dias - $cant_dif;
-						echo "---- Realizando solo ".$cant_dias. " iteraciones de fechas\n";
+						$this->out( "---- Realizando solo ".$cant_dif. " iteraciones de fechas" );
 					}
 				} else {
-					echo "No hay turnos anteriores.\n";
+					$this->out( "No hay turnos anteriores." );
 				}
-				for( $d = $iniciar_desde; $d < $cant_dias; $d++ ) {
+				// Empiezo dsde el dia siguiente porque la diferencia de días anterior incluye el dia y lo generaría de nuevo
+				for( $d = $iniciar_desde+1; $d <= $cant_dias; $d++ ) {
 					$fecha_inicio_dia = new DateTime( 'now' );
 					$fecha_inicio_dia->add( new DateInterval( "P".$d."D" ) );
 					// Verifico que ese día atienda
 					// Teoricamente la relación está ordenada 0 -> domingo, 1 -> martes, etc...
 					$dia_sem = $fecha_inicio_dia->format( 'w' );
 					if( ! isset( $disponibilidad['DiaDisponibilidad'][$dia_sem] ) ) {
-						echo "-> Dia no declarado como disponible - $dia_sem - $dias[$dia_sem]\n";
+						$this->out("-> Dia no declarado como disponible - $dia_sem - $dias[$dia_sem]" );
 						continue;
 					} else if( ! $disponibilidad['DiaDisponibilidad'][ $dia_sem]['habilitado'] ) {
 						continue;
 					}
+					// Genero los turnos que se encuentren en el horario de mañana
 					if( $disponibilidad['DiaDisponibilidad'][$dia_sem]['hora_inicio'] != null ) {
 						$t = split( ":", $disponibilidad['DiaDisponibilidad'][$dia_sem]['hora_inicio'] );
 						$fecha_inicio_dia->setTime( $t[0], $t[1], $t[2] );
@@ -122,13 +126,14 @@ class TurnosShell extends AppShell {
 									)
 								);
 							if( !$this->Turno->save( $data ) ) {
-								echo "Error al guardar el turno";
+								$this->out( "Error al guardar el turno" );
 							} else {
-								echo "Generado turno ". $data['Turno']['fecha_inicio']. "\n";
+								$this->out( "Generado turno ". $data['Turno']['fecha_inicio'] );
 							}
 							$finicio->add( new DateInterval( "PT".$disponibilidad['Disponibilidad']['duracion']."M" ) );
 						}
 					}
+					// Genero los turnos que se encuentren en el horario de tarde
 					if( $disponibilidad['DiaDisponibilidad'][$dia_sem]['hora_inicio_tarde'] != null || $disponibilidad['DiaDisponibilidad'][$dia_sem]['hora_inico_tarde'] != "00:00:00" ) {
 						$t = split( ":", $disponibilidad['DiaDisponibilidad'][$dia_sem]['hora_inicio_tarde'] );
 						$fecha_inicio_dia->setTime( $t[0], $t[1] );
@@ -162,7 +167,7 @@ class TurnosShell extends AppShell {
 									)
 								);
 							if( !$this->Turno->save( $data ) ) {
-								echo "Error al guardar el turno";
+								$this->out( "Error al guardar el turno" );
 							} else {
 								echo "Generado turno ". $data['Turno']['fecha_inicio']. "\n";
 							}
