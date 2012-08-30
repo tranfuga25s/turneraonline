@@ -16,13 +16,38 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 }
 ?>
 <script>
-	$( function() { $( "a", ".accion" ).button(); } );
+	$( function() { 
+		$( "a", ".accion" ).button();
+		$( "#boton" ).button(); 
+	} );
+
+	function confirmacion() {
+		$("#confirmacion").dialog( {
+			width: 450,
+			height: 150,
+			modal: true,
+			buttons: {
+				"Guardar": function() {
+					$("#MedicoDisponibilidadForm").submit();
+					$(this).dialog("close");
+				},
+				"Cancelar": function() {
+					$(this).dialog( "close" );
+				}
+			}
+		} );
+	}
 </script>
+<div id="confirmacion" style="display: none;" title="¿Esta seguro?">
+	&iquest; Est&aacute; seguro que desea modificar la disponibilidad del m&eacute;dico?<br />
+	Esto regenerar&aacute; todos sus turnos desde ahora en adelante.
+</div>
 <div class="accion">
  	<?php echo $this->Html->link( 'Inicio', '/' ); ?></li>&nbsp;
  	<?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view' ) ); ?>&nbsp;
  	<?php echo $this->Html->link( 'Turnos del dia', array( 'controller' => 'turnos', 'action' => 'medico' ) ); ?>
 </div>
+<br />
 <!-- Vista de disponibilidad de un medico -->
 <div class="decorado1">
 	<?php echo $this->Form->create( 'Medico', array( 'method' => 'post', 'action' => 'disponibilidad' ) );
@@ -73,10 +98,9 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 			echo $this->Form->input( $dia.'.mfintarde'   , array( 'options' => $minutos, 'label' => false, 'div' => false, 'default' => $datosdia['minuto_fin_tarde'] ) );
 			echo $this->Form->input( $dia.'.numero'      , array( 'type' => 'hidden', 'value' => array_search( $dia, $dias ) ) );
 		echo "</div>";
-		} ?>
-	<!--<div class="titulo2">Aplicar cambio desde</div>
-	<?php echo $this->Form->input( 'desde', array( 'label' => '', 'type' => 'date', 'format' => 'DMY', 'minYear' => date( 'Y', time() ) ) ); ?>-->
-	<?php echo $this->Form->end( 'Guardar' ); ?>
+		}
+     echo $this->Html->tag( 'a', 'Guardar', array( 'onclick' => 'confirmacion()', 'id' => "boton" ) );
+	 echo $this->Form->end(); ?>
 
 <script type="text/javascript" language="JavaScript">
 function habilitarDeshabilitarDia( dia ) {
