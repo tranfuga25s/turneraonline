@@ -398,7 +398,9 @@ class SecretariasController extends AppController {
 	 public function resumen() {
 	 	// muestro la opción para el resumen
 	 	if( $this->request->isPost() ) {
-	 		$this->Secretaria->id = $this->data['Secretaria']['id_secretaria'];
+	 		$id_usuario = $this->Auth->user( 'id_usuario' );
+			$t = $this->Secretaria->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_secretaria' ) ) );
+	 		$this->Secretaria->id = $t['Secretaria']['id_secretaria'];
 			if( $this->data['Secretaria']['resumen'] ) {
 				$accion = " habilitado  ";
 				$estado = true;
