@@ -15,6 +15,10 @@ class MedicosController extends AppController {
 	private $dia;
 	private $mes;
 	private $ano;
+	
+	public function beforeFilter() {
+		$this->Auth->allow( array( 'view' ) );
+	}
 
 	public function isAuthorized( $usuario = null ) {
 		switch( $usuario['grupo_id'] ) {
@@ -449,7 +453,12 @@ class MedicosController extends AppController {
 		$this->set( 'medicos', $this->paginate() );
 	}
 
-	public function view($id = null) {
+	public function view( $id = null ) {
+		if( $id == null ) {
+			// Quieren ver los horarios de atención - Muestro el del primer médico
+			$d = $this->Medico->find( 'first', array( 'recursive' => -1 ) );
+			$id = $d['Medico']['id_medico'];
+		}
 		$this->Medico->id = $id;
 		if (!$this->Medico->exists()) {
 			throw new NotFoundException( 'El medico no existe' );

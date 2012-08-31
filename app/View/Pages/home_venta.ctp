@@ -19,26 +19,6 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 		simpleSlide();
 	});
 </script>
-<style>
-.flotatipo {
-	float: left;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	width: 350px;
-	min-height: 150px;
-	margin: 2px;
-	-ms-border-radius: 4px;
-	border-radius: 4px;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	text-align: center;b
-	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
-	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
-}
-</style>
 <div>
  <h1>Bienvenido <?php if( $loggeado ) { echo ", ". $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; } ?> !</h1>
 </div>
@@ -50,6 +30,9 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
    <td width="50%">	
 	<div class="titulo1">¿Que es este sitio?</div>
 	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.
+	<div class="titulo2">Horarios de atención</div>
+	<br />
+	<?php echo $this->Html->link( 'Ver horarios de atención de nuestro médico', array( 'controller' => 'medicos', 'action' => 'view' ) ); ?>
    </td>
    <td width="30%"><center>
 	<div class="titulo2">¿Para quienes es util?</div>
