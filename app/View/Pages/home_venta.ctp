@@ -14,6 +14,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 ?>
 <script type="text/javascript">
 	$( function() {
+		$("#horarios").button();
 		$("#referencia").accordion();
 		simpleSlide();
 		simpleSlide();
@@ -32,7 +33,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.
 	<div class="titulo2">Horarios de atención</div>
 	<br />
-	<?php echo $this->Html->link( 'Ver horarios de atención de nuestro médico', array( 'controller' => 'medicos', 'action' => 'view' ) ); ?>
+	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
    </td>
    <td width="30%"><center>
 	<div class="titulo2">¿Para quienes es util?</div>
@@ -74,9 +75,9 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<center>
 	<?php
 		echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
-		echo $this->Form->text( 'email', array( 'label' => 'E-mail:' ) );
+		echo "Email:".$this->Form->text( 'email', array( 'label' => 'E-mail:' ) );
 		echo "<br />";
-		echo $this->Form->password( 'contra', array( 'label' => 'Contraseña:' ) );
+		echo "Contraseña:".$this->Form->password( 'contra', array( 'label' => 'Contraseña:' ) );
 		echo $this->Form->end( 'Ingresar' );
 	?>
 	
