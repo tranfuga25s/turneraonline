@@ -89,8 +89,8 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	       </tr>
 	       <tr><td colspan="2" style="text-align: center;"><?php echo $this->Form->end( 'Ingresar' ); ?></td></tr>
 	       <tr id="botones">
-	           <td style="text-align: center;"><?php echo $this->Html->link( 'Olvide mi contraseña', array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' )  ); ?></td>
 	           <td style="text-align: center;"><?php echo $this->Html->link( 'Registrarme', array( 'controller' => 'Usuarios', 'action' => 'registrarse' )  ); ?></td>
+	           <td style="text-align: center;"><?php echo $this->Html->link( 'Olvide mi contraseña', array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' )  ); ?></td>
 	       </tr>
 	    </tbody>
 	</table>

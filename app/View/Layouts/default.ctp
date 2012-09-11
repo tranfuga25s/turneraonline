@@ -12,7 +12,7 @@
 		echo $this->Html->script( 'jquery-ui-1.8.20.custom.min' );
 		echo $scripts_for_layout;
 	?>
-	<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, ginecologia, medico, paciente, pedir turno, argentina, alejandro, alejandro talin, oncologia, tracto genital, Docente Faculta de Medicina" />
+	<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, medico, paciente, pedir turno, argentina" />
 </head>
 <body>
 		<div id="header">
@@ -49,6 +49,10 @@
 					'http://www.bscomputacion.org/',
 					array( 'target' => '_blank', 'escape' => false )
 				);	?>
+		</div>
+		
+		<div id="feedback">
+		    <?php echo $this->element( 'devolucion' ); ?>
 		</div>
 </body>
 </html>
