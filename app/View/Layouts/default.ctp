@@ -50,9 +50,10 @@
 					array( 'target' => '_blank', 'escape' => false )
 				);	?>
 		</div>
-		
+		<?php if( $loggeado ) { ?>
 		<div id="feedback">
 		    <?php echo $this->element( 'devolucion' ); ?>
 		</div>
+		<?php } ?>
 </body>
 </html>
