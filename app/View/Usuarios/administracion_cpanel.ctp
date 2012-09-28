@@ -6,7 +6,7 @@
 <h2>Datos</h2>
 <ul class="dash">
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/clinic_icon.gif' ) 
                 .'<span>Clinicas</span>',
                 array( 'controller' => 'clinicas', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Clinicas' ) ); ?></li>
@@ -16,17 +16,17 @@
                 array( 'controller' => 'especialidades', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Especialidades' ) ); ?></li>                    
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/icono-consultorio.png' ) 
                 .'<span>Consultorios</span>',
                 array( 'controller' => 'consultorios', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Consultorios' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/medic-icon.png' ) 
                 .'<span>Medicos</span>',
                 array( 'controller' => 'medicos', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Medicos' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/secretary-icon.gif' ) 
                 .'<span>Secretarias</span>',
                 array( 'controller' => 'Secretarias', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Secretarias' ) ); ?></li>
@@ -36,10 +36,10 @@
                 array( 'controller' => 'obras_sociales', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Obras Sociales' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/icon_calendar2.gif' ) 
                 .'<span>Turnos</span>',
                 array( 'controller' => 'turnos', 'action' => 'index' ),
-                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Obras Sociales' ) ); ?></li>
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Listado de turnos' ) ); ?></li>
 </ul>
 <!-- End of Big buttons -->
 <h2>Sistema</h2>
@@ -50,7 +50,7 @@
                 array( 'controller' => 'usuarios', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Usuarios' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/user_group-icon.gif' ) 
                 .'<span>Grupos</span>',
                 array( 'controller' => 'grupos', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Grupos' ) ); ?></li>
