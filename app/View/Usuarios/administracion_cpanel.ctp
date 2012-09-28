@@ -11,7 +11,7 @@
                 array( 'controller' => 'clinicas', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Clinicas' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'cabecera.png' ) 
                 .'<span>Especialidades</span>',
                 array( 'controller' => 'especialidades', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Especialidades' ) ); ?></li>                    
@@ -31,7 +31,7 @@
                 array( 'controller' => 'Secretarias', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Secretarias' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'cabecera.png' ) 
                 .'<span>Obras Sociales</span>',
                 array( 'controller' => 'obras_sociales', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Obras Sociales' ) ); ?></li>
@@ -67,17 +67,17 @@
 <h2>Configuraci&oacute;n</h2>
 <ul class="dash">
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/notification-icon.png' ) 
                 .'<span>Notificaciones</span>',
                 '#',
-                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Notificaciones' ) ); ?></li>
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Todavía no implementado' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/configuration-icon.png' ) 
                 .'<span>Configuracion</span>',
                 array( 'controller' => 'configuracion', 'action' => 'ver' ),
-                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Configuracion' ) ); ?></li>
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Configuración' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/8_48x48.png' ) 
+                $this->Html->image( 'assets/icons/25_48x48.png' ) 
                 .'<span>Ver sitio</span>',
                 '/', array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Volver al sitio', 'target' => '_blank' ) ); ?></li>
 </ul>
