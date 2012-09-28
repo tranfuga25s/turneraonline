@@ -11,7 +11,7 @@
 </div>
 <br />
 	<h2>Secretarias</h2>
-	<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0" class="fullwidth">
 	<tr>
 			<th><?php echo $this->Paginator->sort('Usuario.razonsocial');?></th>
 			<th><?php echo $this->Paginator->sort('clinica_id');?></th>
