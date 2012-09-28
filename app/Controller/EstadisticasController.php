@@ -24,7 +24,8 @@ class ContactoController extends AppController {
 	 */ 
 	public function usuariosDeclarados() {
 		// Busco la cantidad de usuarios por tipo
-		$this->set( 'datos', $this->Usuarios->find( 'count', array( 'groupBy' => 'group_id' ) ) );
+		$this->set( 'total_usuarios', $this->Usuarios->find( 'count' ) );
+		$this->set( 'datos', $this->Usuarios->find( 'count', array( 'group' => 'group_id' ) ) );
 		$this->set( 'etiquetas', $this->Grupos->find( 'list' ) );
 	}
 	
