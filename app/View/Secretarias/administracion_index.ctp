@@ -10,8 +10,7 @@
 	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'controller' => 'clinicas', 'action' => 'index' ) ); ?>
 </div>
 <br />
-<div class="decorado1">
-	<div class="titulo1">Secretarias</div>
+	<h2>Secretarias</h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('Usuario.razonsocial');?></th>
@@ -54,4 +53,3 @@
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
-</div>
