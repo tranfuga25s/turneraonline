@@ -20,6 +20,12 @@
 	?>
 </head>
 <body>
+    <script>
+    $( function() {
+        $("a","#acciones").button();
+        $("a",".actions").button();
+    });
+    </script>
 	<div id="container">
 		<div id="header">
 		        <!-- Top -->

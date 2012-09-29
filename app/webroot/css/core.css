@@ -463,12 +463,12 @@ ul.dash li a span {
 }
 
 /* Tables */
-table.fullwidth {
-	width:100%;
-	clear:both;
-	font-size:13px;
-	padding:1px;
-	margin-bottom:10px;
+table {
+	width: 100%;
+	clear: both;
+	font-size: 13px;
+	padding: 1px;
+	margin-bottom: 10px;
 }
 
 table.normal {
@@ -477,15 +477,49 @@ table.normal {
 	margin-bottom:10px;
 }
 
-table.fullwidth thead, table.normal thead {
+thead, table.normal thead {
 	height:28px;
 	text-transform:uppercase;
 	font-size:10px;
 }
 
-table.fullwidth td, table.normal td {
+th {
+	color: white;
+	background-color: black;
+	padding: 2px;
+	text-align: left;
+}
+
+th a {
+	color: white;
+	text-decoration: none;
+}
+
+tr {
+	color: black;
+	border: 2px solid gray;
+}
+
+tr:nth-child(2n+1) {
+	background-color: gray;
+	color: white;
+}
+
+td, table.normal td {
 	padding:7px 9px;
 	margin:1px 0;
+}
+
+td a,
+table.normal td a {
+	font-size: 12px;
+	text-decoration: none;
+	color: black;
+}
+
+td a:hover,
+table.normal td a:hover {
+	font-weight: bolder;
 }
 /* End of Tables */
 

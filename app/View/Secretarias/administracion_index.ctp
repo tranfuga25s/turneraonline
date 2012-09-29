@@ -2,6 +2,7 @@
 <script>
 	$( function() {
 		$("a","#acciones").button();
+		$("a",".actions").button();
 	});
 </script>
 <div id="acciones">
@@ -21,9 +22,9 @@
 	<?php
 	foreach ($secretarias as $secretaria): ?>
 	<tr>
-		<td><?php echo $this->Html->link($secretaria['Usuario']['razonsocial'], array('controller' => 'usuarios', 'action' => 'view', $secretaria['Usuario']['id_usuario'])); ?></td>
+		<td><?php echo $this->Html->link($secretaria['Usuario']['razonsocial'], array('controller' => 'usuarios', 'action' => 'view', $secretaria['Usuario']['id_usuario'])); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($secretaria['Clinica']['nombre'], array('controller' => 'clinicas', 'action' => 'view', $secretaria['Clinica']['id_clinica'])); ?>
+			<?php echo $this->Html->link($secretaria['Clinica']['nombre'], array('controller' => 'clinicas', 'action' => 'view', $secretaria['Clinica']['id_clinica'])); ?>&nbsp;
 		</td>
 		<td>
 		 <?php if( $secretaria['Secretaria']['resumen'] ) {
