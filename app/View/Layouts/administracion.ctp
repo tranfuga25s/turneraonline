@@ -6,9 +6,8 @@
 	<?php
 		echo $this->Html->meta('icon');
 		//echo $this->Html->css('cake.generic');
-		echo $this->Html->css( 'admin' );
         echo $this->Html->css( 'layout' );
-		echo $this->Html->css( 'start/jquery-ui');
+		echo $this->Html->css( 'smoothness/jquery-ui');
 		echo $this->Html->script( 'jquery-1.7.2.min' );
 		echo $this->Html->script( 'jquery-ui-1.8.20.custom.min' );
         echo $this->Html->script( 'easyTooltip' );
@@ -16,6 +15,7 @@
         echo $this->Html->script( 'hoverIntent' );
         echo $this->Html->script( 'superfish' );
         echo $this->Html->script( 'custom' );
+		echo $this->Html->css( 'admin' );
 		echo $scripts_for_layout;
 	?>
 </head>

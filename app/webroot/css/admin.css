@@ -210,3 +210,14 @@ pre {
 .code-coverage-results span.result-good {
 	color: #0a0;
 }
+
+/* Modificaciones a los formularios */
+fieldset {
+	border: 1px solid #808080;
+	background: #EEEEEE;
+}
+
+input, textarea, select {
+	border: 1px solid #909090;
+	margin-bottom: 5px;
+}
