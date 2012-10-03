@@ -16,7 +16,7 @@ $this->set( 'title_for_layout', "Estadisticas" );
 		
 	function pedirGrafico( accion ) {
 		$.ajax({
-			url: '<?php echo Router::url( array( 'controller' => 'estadisticas', 'action' => accion ) ); ?>',
+			url: '<?php echo Router::url( array( 'controller' => 'estadisticas', 'action' => '' ) ); ?>'+accion,
 			cache: true,
 			DataType: 'html',
 			success: function( datos ) {
