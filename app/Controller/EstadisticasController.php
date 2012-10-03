@@ -6,7 +6,7 @@ class EstadisticasController extends AppController {
 	/* Tamaño de los graficos generados */
 	public $tamano = array( 'ancho' => 300, 'alto' => 300 );
 	
-	public function index() {
+	public function administracion_index() {
 		// Simplemente renderiza la vista
 		$this->set( 'acciones',
 			array( 'usuariosDeclarados' => "Cantidad de usuarios según tipo",
