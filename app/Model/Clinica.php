@@ -8,7 +8,7 @@ class Clinica extends AppModel {
 
 	public $primaryKey = 'id_clinica';
 	public $displayField = 'nombre';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(

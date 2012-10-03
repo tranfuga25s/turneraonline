@@ -12,6 +12,7 @@ App::uses('AppModel', 'Model');
 class Medico extends AppModel {
 
 	public $primaryKey = 'id_medico';
+	public $actAs = array( 'AuditLog.Auditable' );
 	
 	public $validate = array(
 			'usuario_id' => array(

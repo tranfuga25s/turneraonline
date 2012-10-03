@@ -10,7 +10,7 @@ App::uses('AppModel', 'Model');
 class Turno extends AppModel {
 
 	public $primaryKey = 'id_turno';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'fecha_inicio' => array(
 			'datetime' => array( 'rule' => array('datetime') )

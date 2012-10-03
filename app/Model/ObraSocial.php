@@ -9,7 +9,7 @@ class ObraSocial extends AppModel {
 	public $useTable = 'obras_sociales';
 	public $primaryKey = 'id_obra_social';
 	public $displayField = 'nombre';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(

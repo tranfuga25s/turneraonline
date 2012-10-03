@@ -8,7 +8,7 @@ App::uses('AppModel', 'Model');
 class Consultorio extends AppModel {
 	public $primaryKey = 'id_consultorio';
 	public $displayField = 'nombre';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'clinica_id' => array(
 			'numeric' => array(
