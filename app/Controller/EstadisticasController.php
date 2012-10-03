@@ -1,6 +1,5 @@
 <?php
-
-class ContactoController extends AppController {
+class EstadisticasController extends AppController {
 	
 	var $uses = array( 'Usuario', 'Turnos' );
 	var $components = array( 'RequestHandler' );
