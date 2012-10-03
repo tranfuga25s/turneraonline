@@ -8,7 +8,7 @@ $this->set( 'title_for_layout', "Estadisticas" );
 		// Genero las llamadas en ajax para cada grafico
 		var acciones = <?php echo json_encode( $acciones ); ?>;
 		$("#contenedor-graficos").empty();
-		acciones.each( function ( indice, titulo ) {
+		$(acciones).each( function ( indice, titulo ) {
 			$("div").addClass("contenedor-grafico").append( $("h3").html( titulo ) ).append( $("div").attr( 'id', indice ) ).appendTo( $("#contenedor-graficos" ) ); 
 			pedirGrafico( indice );
 		});
