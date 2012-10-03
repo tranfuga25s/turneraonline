@@ -2,14 +2,14 @@
 
 class AuditLogController extends AuditLogAppController {
     
-    var $uses = array( 'AuditLog.Audits', 'Users' );
+    var $uses = array( 'AuditLog.Audits', 'Usuarios' );
   
-  public function admin_index() {
+  public function administracion_index() {
       // Muestra la paginación de los logs del sistema
       $this->set( 'auditorias', $this->paginate() );
   }
   
-  public function admin_view( $id = null ) {
+  public function administracion_view( $id = null ) {
         $this->Audits->id = $id;
         if (!$this->Audits->exists()) {
             throw new NotFoundException( __('Invalid audit' ) );
