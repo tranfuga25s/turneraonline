@@ -10,7 +10,7 @@ $this->set( 'title_for_layout', "Estadisticas" );
 		$("#contenedor-graficos").empty();
 		acciones.each( function ( indice, titulo ) {
 			$("div").addClass("contenedor-grafico").append( $("h3").html( titulo ) ).append( $("div").attr( 'id', indice ) ).appendTo( $("#contenedor-graficos" ) ); 
-			pedirGrafico( accion );
+			pedirGrafico( indice );
 		});
 	});
 		
