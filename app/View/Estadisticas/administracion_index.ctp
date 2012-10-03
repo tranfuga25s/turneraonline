@@ -34,4 +34,4 @@ $this->set( 'title_for_layout', "Estadisticas" );
 <h2>Estadisticas del sistema</h2>
 <p>A continuaci&oacute;n verá los graficos de uso y estado del sistema.</p>
 <div class="contenedor-graficos"></div>
-<?php echo $this->Html->tag( 'a', 'Actualizar graficos', array( 'onclick' => 'actualizarGraficos' ) ); ?>
+<?php echo $this->Html->tag( 'a', 'Actualizar graficos', array( 'onclick' => 'actualizarGraficos()' ) ); ?>

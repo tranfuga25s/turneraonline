@@ -1,4 +1,7 @@
 <?php
+
+App::import( 'Vendor', 'JGraph' );
+
 class EstadisticasController extends AppController {
 	
 	var $uses = array( 'Usuario', 'Turnos' );
