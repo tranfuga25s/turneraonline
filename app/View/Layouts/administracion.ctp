@@ -60,32 +60,23 @@
                         <li><?php echo $this->Html->link( 'Medicos', array( 'controller' => 'medicos', 'action' => 'index' ) ); ?></li>
                         <li><?php echo $this->Html->link( 'Secretarias', array( 'controller' => 'secretarias', 'action' => 'index' ) ); ?></li>
                         <li><?php echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'index' ) ); ?></li>
-                        <!--<li>
-                            <a href="#">Multi Level Menu</a>
+                        <li><a href="#">Mas</a>
                             <ul>
-                                <li><a href="#">Menu Link 1</a></li>
-                                <li><a href="#">Menu Link 2</a></li>
-                                <li><a href="#">Menu Link 3</a>
+                            	<li><?php echo $this->Html->link( 'Clinicas', array( 'controller' => 'clinicas', 'action' => 'index'  ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Especialidades', array( 'controller' => 'especialidades', 'action' => 'index'  ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Consultorios', array( 'controller' => 'consultorios', 'action' => 'index' ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Obras Sociales', array( 'controller' => 'obras_sociales', 'action' => 'index' ) ); ?></li>
+                                <li><a href="#">Sistema</a>
                                     <ul>
-                                        <li><a href="#">Menu Link 1</a></li>
-                                        <li><a href="#">Menu Link 2</a>
-                                            <ul>
-                                                <li><a href="#">Menu Link 1</a></li>
-                                                <li><a href="#">Menu Link 2</a></li>
-                                                <li><a href="#">Menu Link 3</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Menu Link 3</a></li>
-                                        <li><a href="#">Menu Link 4</a></li>
-                                        <li><a href="#">Menu Link 5</a></li>
-                                        <li><a href="#">Menu Link 6</a></li>
+                                        <li><?php echo $this->Html->link( 'Grupos', array( 'controller' => 'grupos', 'action' => 'index' ) ); ?></li>
+                                        <li><a href="#">Permisos</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Menu Link 4</a></li>
-                                <li><a href="#">Menu Link 5</a></li>
-                                <li><a href="#">Menu Link 6</a></li>
+                                <li><a href="#">Notificaciones</a></li>
+                                <li><?php echo $this->Html->link( 'Configuracion', array( 'controller' => 'configuracion', 'action' => 'ver' ) ); ?></li>
                             </ul>
-                        </li> -->
+                        </li>
+                        <li><?php echo $this->Html->link( 'Ver sitio', '/', array( 'target' => '_blank' ) ); ?></li>
                     </ul>
                 </div>
                 <!-- End of navigation bar" -->

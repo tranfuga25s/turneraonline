@@ -10,7 +10,7 @@
 <table cellpadding="0" cellspacing="0">
   <tbody>
 	<tr>
-			<th>Logo</th>
+			<!-- <th>Logo</th> -->
 			<th><?php echo $this->Paginator->sort('nombre');?></th>
 			<th><?php echo $this->Paginator->sort('direccion');?></th>
 			<th class="actions">Acciones</th>
@@ -19,10 +19,10 @@
 	$i = 0;
 	foreach ($clinicas as $clinica): ?>
 	<tr>
-		<td><?php if( !empty( $clinica['Clinica']['logo'] ) ) {
+		<!-- <td><?php if( !empty( $clinica['Clinica']['logo'] ) ) {
 			 echo $this->Html->image( $clinica['Clinica']['logo'], array( 'alt' => $clinica['Clinica']['nombre'], 'height' => 150 ) );
 			} ?>
-		&nbsp;</td>
+		&nbsp;</td> -->
 		<td><?php echo h($clinica['Clinica']['nombre']); ?>&nbsp;</td>
 		<td><?php echo h($clinica['Clinica']['direccion']); ?>&nbsp;</td>
 		<td class="actions">

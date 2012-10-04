@@ -69,7 +69,7 @@ class EspecialidadesController extends AppController {
 	public function view($id = null) {
 		$this->Especialidade->id = $id;
 		if (!$this->Especialidad->exists()) {
-			throw new NotFoundException(__('Invalid especialidade'));
+			throw new NotFoundException( 'Especialidad invalida' );
 		}
 		$this->set('especialidade', $this->Especialidade->read(null, $id));
 	}
@@ -94,7 +94,7 @@ class EspecialidadesController extends AppController {
 	public function administracion_view($id = null) {
 		$this->Especialidad->id = $id;
 		if (!$this->Especialidad->exists()) {
-			throw new NotFoundException(__('Invalid especialidade'));
+			throw new NotFoundException( 'Especialidad invalida' );
 		}
 		$this->set('especialidade', $this->Especialidad->read(null, $id));
 	}
@@ -108,10 +108,10 @@ class EspecialidadesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Especialidad->create();
 			if ($this->Especialidad->save($this->request->data)) {
-				$this->Session->setFlash(__('The especialidade has been saved'));
+				$this->Session->setFlash( 'La especialidad ha sido guardada correctamente', 'default', array( 'class' => 'success') );;
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The especialidade could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'La especialidad no pudo ser guardada. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		}
 	}
@@ -123,16 +123,16 @@ class EspecialidadesController extends AppController {
  * @return void
  */
 	public function administracion_edit($id = null) {
-		$this->Especialidade->id = $id;
+		$this->Especialidad->id = $id;
 		if (!$this->Especialidad->exists()) {
-			throw new NotFoundException(__('Invalid especialidade'));
+			throw new NotFoundException( 'Especialidad invalida' );
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Especialidad->save($this->request->data)) {
 				$this->Session->setFlash(__('The especialidade has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The especialidade could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'La especialidad no se pudo guardar. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		} else {
 			$this->request->data = $this->Especialidad->read(null, $id);
@@ -151,20 +151,20 @@ class EspecialidadesController extends AppController {
 		}
 		$this->Especialidad->id = $id;
 		if (!$this->Especialidad->exists()) {
-			throw new NotFoundException(__('Invalid especialidade'));
+			throw new NotFoundException( 'Escpecialidad invalida' );
 		}
 		// Busco la cantidad de medicos que quedan en esta especialidad
 		$this->loadModel( 'Medico' );
 		$cant = $this->Medico->find( 'count', array( 'conditions' => array( 'especialidad_id' => $id ) ) );
 		if( $cant > 0 ) {
-			$this->Session->setFlash( 'No se pudo eliminar la especialidad ya que hay '.$cant.' medicos que todavía estan suscriptos a ella. <br /> Cambie los medicos de especialidad e intenteló de nuevo.' );
+			$this->Session->setFlash( 'No se pudo eliminar la especialidad ya que hay '.$cant.' medicos que todavía estan suscriptos a ella. <br /> Cambie los medicos de especialidad e intenteló de nuevo.' , 'default', array( 'class' => 'error') );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Especialidad->delete()) {
-			$this->Session->setFlash(__('Especialidade deleted'));
+			$this->Session->setFlash( 'La especialidad fue eliminada correctamente' , 'default', array( 'class' => 'success') );
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Especialidade was not deleted'));
+		$this->Session->setFlash( "La especialidad no pudo ser eliminada", 'default', array( 'class' => 'error') );
 		$this->redirect(array('action' => 'index'));
 	}
 }

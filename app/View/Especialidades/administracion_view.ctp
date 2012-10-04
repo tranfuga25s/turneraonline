@@ -1,24 +1,21 @@
-<div class="especialidades view">
-<h2><?php  echo __('Especialidad');?></h2>
-	<dl>
-		<dt><?php echo __('Id Especialidad'); ?></dt>
-		<dd>
-			<?php echo h($especialidade['Especialidad']['id_especialidad']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Nombre'); ?></dt>
-		<dd>
-			<?php echo h($especialidade['Especialidad']['nombre']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
+<h2>Especialidad</h2>
+<dl>
+	<dt><?php echo __('Id Especialidad'); ?></dt>
+	<dd>
+		<?php echo h($especialidade['Especialidad']['id_especialidad']); ?>
+		&nbsp;
+	</dd>
+	<dt><?php echo __('Nombre'); ?></dt>
+	<dd>
+		<?php echo h($especialidade['Especialidad']['nombre']); ?>
+		&nbsp;
+	</dd>
+</dl>
+<br />
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Especialidade'), array('action' => 'edit', $especialidade['Especialidad']['id_especialidad'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Especialidade'), array('action' => 'delete', $especialidade['Especialidad']['id_especialidad']), null, __('Are you sure you want to delete # %s?', $especialidade['Especialidad']['id_especialidad'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Especialidades'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Especialidade'), array('action' => 'add')); ?> </li>
-	</ul>
+	<h2>Acciones</h2>
+	<?php echo $this->Html->link( 'Editar esta especialidad', array( 'action' => 'edit', $especialidade['Especialidad']['id_especialidad'] ) ); ?>
+	<?php echo $this->Form->postLink( 'Eliminar esta Especialidad', array( 'action' => 'delete', $especialidade['Especialidad']['id_especialidad']), null, 'Esta seguro que desea eliminar esta especialidad?' ); ?>
+	<?php echo $this->Html->link( 'Lista de Especialidades', array( 'action' => 'index' ) ); ?>
+	<?php echo $this->Html->link( 'Nueva Especialidaded', array( 'action' => 'add' ) ); ?>
 </div>

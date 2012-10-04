@@ -1,19 +1,14 @@
-<div class="especialidades form">
 <?php echo $this->Form->create('Especialidad');?>
-	<fieldset>
-		<legend><?php echo __('Administracion Edit Especialidade'); ?></legend>
+<fieldset>
+	<legend><h2>Editar especialidad</h2></legend>
 	<?php
 		echo $this->Form->input('id_especialidad');
 		echo $this->Form->input('nombre');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
+<?php echo $this->Form->end( 'Guardar' ); ?>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Especialidade.id_especialidad')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Especialidade.id_especialidad'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Especialidades'), array('action' => 'index'));?></li>
-	</ul>
+	<h2>Acciones</h3>
+	<?php echo $this->Form->postLink( 'Eliminar esta especialidad', array( 'action' => 'delete', $this->Form->value('Especialidade.id_especialidad') ), null, 'Esta seguro que desea eliminar esta especialidad?' ); ?>
+	<?php echo $this->Html->link( 'Lista de Especialidades', array( 'action' => 'index' ) );?>
 </div>

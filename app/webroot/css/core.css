@@ -587,16 +587,34 @@ table.normal td a:hover {
 .error {
 	background:#fdcea4 url('../img/assets/icons/stop_48.png') 20px 50% no-repeat;
 	border:1px solid #c44509;
+	padding-left: 71px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-radius: 10px;
+	margin-bottom: 5px;
+	font-size: 15px;
 }
 
 .success {
 	background:#d4f684 url('../img/assets/icons/tick_48.png') 20px 50% no-repeat;
 	border:1px solid #739f1d;
+	padding-left: 71px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-radius: 10px;
+	margin-bottom: 5px;
+	font-size: 15px;
 }
 
 .information {
 	background:#c3e4fd url('../img/assets/icons/info_48.png') 20px 50% no-repeat;
 	border:1px solid #688fdc;
+	padding-left: 71px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-radius: 10px;
+	margin-bottom: 5px;
+	font-size: 15px;
 }
 
 .message:hover {

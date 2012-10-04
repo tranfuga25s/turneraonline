@@ -15,7 +15,7 @@ class ContactoController extends AppController {
 		if( $this->request->isPost() ) {
 			// Verifico la dirección de email
 			if( !Validation::email( $this->data['contacto']['email'], true ) ) {
-				$this->Session->setFlash( "La dirección de email ingresado no es válida." );
+				$this->Session->setFlash( "La dirección de email ingresado no es válida." , 'default', array( 'class' => 'error') );
 				$this->redirect( array( 'action' => 'formulario' ) );
 			} else {
 				$email = new CakeEmail();
@@ -23,7 +23,7 @@ class ContactoController extends AppController {
 				$email->to('esteban.zeller@gmail.com');
 				$email->subject( 'Contacto de turnosonline' );
 				$email->send('Ha tenido un nuevo contacto a través del sitio de turnosonline: \n'.$this->data['contacto']['texto'] );
-				$this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" );
+				$this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!", 'default', array( 'class' => 'success') );
 				$this->redirect( '/' );
 			}
 		} else {
@@ -35,7 +35,7 @@ class ContactoController extends AppController {
         if( $this->request->isPost() ) {
             // Verifico la dirección de email
             if( !empty( $this->data['contacto']['email'] ) && !Validation::email( $this->data['contacto']['email'], true ) ) {
-                $this->Session->setFlash( "La dirección de email ingresado no es válida." );
+                $this->Session->setFlash( "La dirección de email ingresado no es válida." , 'default', array( 'class' => 'error') );
                 $this->redirect( array( 'action' => 'formulario' ) );
             } else {
                 $email = new CakeEmail();
@@ -57,7 +57,7 @@ class ContactoController extends AppController {
                     $texto .= " No.";
                 }                             
                 $email->send($texto);
-                $this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" );
+                $this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" , 'default', array( 'class' => 'success') );
                 $this->redirect( '/' );
             }
         }
@@ -67,7 +67,7 @@ class ContactoController extends AppController {
         if( $this->request->isPost() ) {
             // Verifico la dirección de email
             if( !empty( $this->data['contacto']['email'] ) && !Validation::email( $this->data['contacto']['email'], true ) ) {
-                $this->Session->setFlash( "La dirección de email ingresado no es válida." );
+                $this->Session->setFlash( "La dirección de email ingresado no es válida." , 'default', array( 'class' => 'error') );
                 $this->redirect( array( 'action' => 'formulario' ) );
             } else {
                 $email = new CakeEmail();
@@ -89,7 +89,7 @@ class ContactoController extends AppController {
                     $texto .= " No.";
                 }   
                 $email->send( $texto );
-                $this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" );
+                $this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" , 'default', array( 'class' => 'success') );
                 $this->redirect( '/' );
             }
         }
