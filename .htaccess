@@ -1,4 +1,3 @@
-AddHandler x-httpd-php5-3 .php
 <IfModule mod_rewrite.c>
    RewriteEngine on
    RewriteRule    ^$ app/webroot/    [L]

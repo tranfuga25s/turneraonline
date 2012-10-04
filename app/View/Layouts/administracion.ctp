@@ -80,7 +80,7 @@
 		</script>
 		<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script> 
 	</div>
-	<?php echo $this->Html->link( 'Auditoria', array( 'plugin' => 'AuditLog', 'controller' => 'audit_log', 'action' => 'index' ) ); ?>
+	<?php echo $this->Html->link( 'Auditoria', array( 'plugin' => 'audit_log', 'controller' => 'audit_log', 'action' => 'index' ) ); ?>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
 </body>
