@@ -221,3 +221,30 @@ input, textarea, select {
 	border: 1px solid #909090;
 	margin-bottom: 5px;
 }
+
+.actions .ui-button-text-only .ui-button-text {
+	padding: 0.1em 0.8em;
+}
+
+dl {
+	line-height: 2em;
+	margin: 0em 0em;
+}
+dl dd:nth-child(4n+2),
+dl dt:nth-child(4n+1) {
+	background: #f4f4f4;
+}
+
+dt {
+	font-weight: bold;
+	padding-left: 4px;
+	vertical-align: top;
+	width: 15em;
+	text-align: right;
+}
+dd {
+    margin-left: 15em;
+    margin-top: -2em;
+    padding-left: 12px;
+    vertical-align: top;
+}

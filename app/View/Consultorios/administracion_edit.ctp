@@ -1,22 +1,20 @@
-<div class="consultorios form">
+<?php $this->set( 'title_for_layout', "Editar consultorio" ); ?>
+<div id="acciones">
+	<?php echo $this->Form->postLink( 'Eliminar', array('action' => 'delete', $this->Form->value('Consultorio.id_consultorio')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Consultorio.id_consultorio'))); ?> &nbsp;
+	<?php echo $this->Html->link( 'Lista de Consultorios', array('action' => 'index'));?> &nbsp;
+	<?php echo $this->Html->link( 'Lista de Clinicas', array('controller' => 'clinicas', 'action' => 'index')); ?> &nbsp;
+</div>
+<br />
+	
 <?php echo $this->Form->create('Consultorio');?>
-	<fieldset>
-		<legend><?php echo __('Administracion Edit Consultorio'); ?></legend>
+<fieldset>
+		<legend><h2>Editar un consultorio</h2></legend>
 	<?php
 		echo $this->Form->input('id_consultorio');
-		echo $this->Form->input('clinica_id');
-		echo $this->Form->input('nombre');
+		echo $this->Form->input('clinica_id', array( 'label' => 'Clinica perteneciente:' ) );
+		echo $this->Form->input('nombre', array( 'type' => 'text', 'label' => 'Nombre descriptivo:'));
 	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+	<?php echo $this->Form->end( 'Guardar cambios' );?>
+</fieldset>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Consultorio.id_consultorio')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Consultorio.id_consultorio'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Consultorios'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Clinicas'), array('controller' => 'clinicas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Clinica'), array('controller' => 'clinicas', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+

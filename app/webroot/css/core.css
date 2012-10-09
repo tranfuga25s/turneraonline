@@ -7,7 +7,7 @@
 /* Global declarations */
 body {
 	font-family: Tahoma, Verdana, Arial, sans-serif;
-	font-size:62.5%;
+	font-size:67.5%;
 	position:relative;
 }
 
@@ -501,8 +501,7 @@ tr {
 }
 
 tr:nth-child(2n+1) {
-	background-color: gray;
-	color: white;
+	background-color: lightgray;
 }
 
 td, table.normal td {
