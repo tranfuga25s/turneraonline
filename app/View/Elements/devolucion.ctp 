@@ -1,0 +1,7 @@
+<?php
+ // Muestra el formulario para generar devoluciónes desde el usuario
+ 
+ ?>
+ <div id="devolucion">
+ Devolucion
+ </div>

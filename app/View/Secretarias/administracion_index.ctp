@@ -2,6 +2,7 @@
 <script>
 	$( function() {
 		$("a","#acciones").button();
+		$("a",".actions").button();
 	});
 </script>
 <div id="acciones">
@@ -10,9 +11,8 @@
 	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'controller' => 'clinicas', 'action' => 'index' ) ); ?>
 </div>
 <br />
-<div class="decorado1">
-	<div class="titulo1">Secretarias</div>
-	<table cellpadding="0" cellspacing="0">
+	<h2>Secretarias</h2>
+	<table cellpadding="0" cellspacing="0" class="fullwidth">
 	<tr>
 			<th><?php echo $this->Paginator->sort('Usuario.razonsocial');?></th>
 			<th><?php echo $this->Paginator->sort('clinica_id');?></th>
@@ -22,9 +22,9 @@
 	<?php
 	foreach ($secretarias as $secretaria): ?>
 	<tr>
-		<td><?php echo $this->Html->link($secretaria['Usuario']['razonsocial'], array('controller' => 'usuarios', 'action' => 'view', $secretaria['Usuario']['id_usuario'])); ?></td>
+		<td><?php echo $this->Html->link($secretaria['Usuario']['razonsocial'], array('controller' => 'usuarios', 'action' => 'view', $secretaria['Usuario']['id_usuario'])); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($secretaria['Clinica']['nombre'], array('controller' => 'clinicas', 'action' => 'view', $secretaria['Clinica']['id_clinica'])); ?>
+			<?php echo $this->Html->link($secretaria['Clinica']['nombre'], array('controller' => 'clinicas', 'action' => 'view', $secretaria['Clinica']['id_clinica'])); ?>&nbsp;
 		</td>
 		<td>
 		 <?php if( $secretaria['Secretaria']['resumen'] ) {
@@ -54,4 +54,3 @@
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
-</div>

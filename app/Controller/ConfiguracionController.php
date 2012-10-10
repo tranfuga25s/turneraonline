@@ -22,11 +22,11 @@ class ConfiguracionController extends AppController {
 			$horas = $this->request->data['horas'];
 			$email = $this->request->data['email'];
 			if( !Validation::email( $email ) ) {
-				$this->Session->setFlash( "La cuenta de correo indicada no es una dirección de correo valida" );
+				$this->Session->setFlash( "La cuenta de correo indicada no es una dirección de correo valida", 'default', array( 'class' => 'error') );
 			} else if( $horas < 1 ) {
-				$this->Session->setFlash( "La cantidad de horas previas deberá ser mayor a 1 hora." );
+				$this->Session->setFlash( "La cantidad de horas previas deberá ser mayor a 1 hora.", 'default', array( 'class' => 'error') );
 			} else if( $dias <= 1 ) {
-				$this->Session->setFlash( "La cantidad de días deberá ser mayor a 1." );
+				$this->Session->setFlash( "La cantidad de días deberá ser mayor a 1.", 'default', array( 'class' => 'error') );
 			} else {
 				/// @TODO Mejorar esto!
 				Configure::write( 'Turnera.dias_turnos', $dias );
@@ -42,13 +42,13 @@ class ConfiguracionController extends AppController {
 				$dir = new Folder( ROOT.DS.APP_DIR.DS.'Config' );
 				$arch = new File( $dir->pwd(). DS . 'turnos.ini' );
 				if( ! $arch->writable() ) {
-					$this->Session->setFlash( "El archivo de configuración no se puede escribir" );
+					$this->Session->setFlash( "El archivo de configuración no se puede escribir", 'default', array( 'class' => 'error') );
 				} else {
 					$arch->prepare($cadena);
 					if( !$arch->write( $cadena ) ) {
-						$this->Session->setFlash( "No se pudo escribir el archivo correctamente" );
+						$this->Session->setFlash( "No se pudo escribir el archivo correctamente", 'default', array( 'class' => 'error') );
 					} else {
-						$this->Session->setFlash( "Configuración cambiada correctamente." );
+						$this->Session->setFlash( "Configuración cambiada correctamente.", 'default', array( 'class' => 'success') );
 					}
 				}
 			}

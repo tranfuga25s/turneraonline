@@ -1,20 +1,15 @@
-<div class="consultorios form">
+<div id="acciones">
+	<?php echo $this->Html->link( 'Lista de Consultorios', array('action' => 'index'));?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de Clinicas', array('controller' => 'clinicas', 'action' => 'index')); ?>
+</div>
+<br />
 <?php echo $this->Form->create('Consultorio');?>
 	<fieldset>
-		<legend><?php echo __('Administracion Add Consultorio'); ?></legend>
+		<legend><h2>Agregar nuevo consultorio</h2></legend>		
 	<?php
-		echo $this->Form->input('clinica_id');
-		echo $this->Form->input('nombre');
+		echo $this->Form->input('clinica_id', array( 'label' => 'Clinica de pertenencia:' ) );
+		echo $this->Form->input('nombre', array( 'type' => 'text', 'label' => 'Nombre identificatorio:' ) );
 	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+	<?php echo $this->Form->end( 'Agregar');?>
+</fieldset>
 
-		<li><?php echo $this->Html->link(__('List Consultorios'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Clinicas'), array('controller' => 'clinicas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Clinica'), array('controller' => 'clinicas', 'action' => 'add')); ?> </li>
-	</ul>
-</div>

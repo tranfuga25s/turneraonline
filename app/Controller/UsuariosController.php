@@ -170,6 +170,7 @@ class UsuariosController extends AppController {
 	 * @return void
 	 */
 	public function administracion_ingresar() {
+		$this->layout='adminlogin';
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );

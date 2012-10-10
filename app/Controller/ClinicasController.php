@@ -114,10 +114,10 @@ class ClinicasController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Clinica->create();
 			if ($this->Clinica->save($this->request->data)) {
-				$this->Session->setFlash(__('The clinica has been saved'));
+				$this->Session->setFlash( 'La clinica ha sido agregada correctamente', 'default', array( 'class' => 'success' ) );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The clinica could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'No se pudo guardar la clinica. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		}
 	}
@@ -135,10 +135,10 @@ class ClinicasController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Clinica->save($this->request->data)) {
-				$this->Session->setFlash(__('The clinica has been saved'));
+				$this->Session->setFlash( 'Clinica guardada correctamente', 'default', array( 'class' => 'success' ) );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The clinica could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'No se puede guardar los datos editados. Por favor, intente nuevamente', 'default', array( 'class' => 'error') );
 			}
 		} else {
 			$this->request->data = $this->Clinica->read(null, $id);
@@ -168,14 +168,14 @@ class ClinicasController extends AppController {
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $cant_con > 0 ) {
-			$this->Session->setFlash( "Existen consultorios asociados a esta clinica. No se podrá eliminar." );
+			$this->Session->setFlash( "Existen consultorios asociados a esta clinica. No se podrá eliminar.", 'default', array( 'class' => 'error') );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Clinica->delete()) {
-			$this->Session->setFlash( 'Clinica eliminada' );
+			$this->Session->setFlash( 'Clinica eliminada', 'default', array( 'class' => 'success' ) );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash(__('Clinica was not deleted'));
+		$this->Session->setFlash( 'No se pudo eliminar la clinica.', 'default', array( 'class' => 'error') );
 		$this->redirect( array( 'action' => 'index' ) );
 	}
 }

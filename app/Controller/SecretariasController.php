@@ -425,7 +425,7 @@ class SecretariasController extends AppController {
 	 * @return void
 	 */
 	public function administracion_index() {
-		$this->Secretaria->recursive = 1;
+		//$this->Secretaria->recursive = 1;
 		$this->set( 'secretarias', $this->paginate() );
 	}
 

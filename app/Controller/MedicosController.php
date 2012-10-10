@@ -18,6 +18,7 @@ class MedicosController extends AppController {
 	
 	public function beforeFilter() {
 		$this->Auth->allow( array( 'view' ) );
+        parent::beforeFilter();
 	}
 
 	public function isAuthorized( $usuario = null ) {
@@ -473,6 +474,7 @@ class MedicosController extends AppController {
 	* @return void
 	*/
 	public function administracion_index() {
+	    $this->layout = 'administracion';
 		$this->Medico->recursive = 0;
 		$this->set('medicos', $this->paginate());
 	}
