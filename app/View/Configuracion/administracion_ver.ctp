@@ -5,15 +5,15 @@
 	<fieldset>
 		<legend><h3>Turnos</h3></legend>
 		<b>Cantidad maxima de dias con la que se puede reservar un turno</b>:
-		<?php echo $this->Form->input( 'dias', array( 'value' => $datos['dias_turnos'], 'label' => false, 'div' => false ) ); ?> dias.
+		<?php echo $this->Form->input( 'dias', array( 'value' => $datos['dias_turnos'], 'label' => false, 'div' => false, 'size' => 2 ) ); ?> dias.
 	</fieldset>
 	<fieldset>
 		<legend><h3>Notificaciones</h3></legend>
 		<b>Cantidad de horas antes del turno que se avisará al paciente:</b>
-		<?php echo $this->Form->input( 'horas', array( 'label' => false, 'after' => 'hora(s).', 'value' => $datos['notificaciones']['horas_proximo'], 'div' => false ) ); ?>
+		<?php echo $this->Form->input( 'horas', array( 'label' => false, 'after' => 'hora(s).', 'value' => $datos['notificaciones']['horas_proximo'], 'div' => false, 'size' => 2 ) ); ?>
 		<br />
 		<b>Cuenta de email con el cual se recibirá como remitente las notificaciones enviadas:</b>
-		<?php echo $this->Form->input( 'email', array( 'label' => false, 'value' => $datos['email'], 'div' => false ) ); ?>
+		<?php echo $this->Form->input( 'email', array( 'label' => false, 'value' => $datos['email'], 'div' => false, 'size' => 26 ) ); ?>
 
 	</fieldset>
 	<?php echo $this->Form->submit( 'Guardar' ); ?>

@@ -45,7 +45,7 @@
                         <ul>
                             <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-power"></span>Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'title' => "Cerrar sesion de administracion", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
                             <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-wrench"></span>Preferencias', array( 'controller' => 'configuracion', 'action' => 'ver' ), array( 'title' => "Cambia las preferencias", 'class' => "tooltip", 'escape' => false ) ); ?></li>
-                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-person"></span>Mis datos', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'title' => "Ir a los datos de mi usuario", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
+                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-person"></span>Mis datos', array( 'controller' => 'usuarios', 'action' => 'edit', $usuarioactual['id_usuario'] ), array( 'title' => "Ir a los datos de mi usuario", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
                         </ul>   
                     </div>
                     <!-- End of Meta information -->
