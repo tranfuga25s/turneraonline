@@ -8,37 +8,37 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/clinic_icon.gif' ) 
                 .'<span>Clinicas</span>',
-                array( 'controller' => 'clinicas', 'action' => 'index' ),
+                array( 'controller' => 'clinicas', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Clinicas' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'cabecera.png' ) 
                 .'<span>Especialidades</span>',
-                array( 'controller' => 'especialidades', 'action' => 'index' ),
+                array( 'controller' => 'especialidades', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Especialidades' ) ); ?></li>                    
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icono-consultorio.png' ) 
                 .'<span>Consultorios</span>',
-                array( 'controller' => 'consultorios', 'action' => 'index' ),
+                array( 'controller' => 'consultorios', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Consultorios' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/medic-icon.png' ) 
                 .'<span>Medicos</span>',
-                array( 'controller' => 'medicos', 'action' => 'index' ),
+                array( 'controller' => 'medicos', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Medicos' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/secretary-icon.gif' ) 
                 .'<span>Secretarias</span>',
-                array( 'controller' => 'Secretarias', 'action' => 'index' ),
+                array( 'controller' => 'Secretarias', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Secretarias' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'cabecera.png' ) 
                 .'<span>Obras Sociales</span>',
-                array( 'controller' => 'obras_sociales', 'action' => 'index' ),
+                array( 'controller' => 'obras_sociales', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Obras Sociales' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icon_calendar2.gif' ) 
                 .'<span>Turnos</span>',
-                array( 'controller' => 'turnos', 'action' => 'index' ),
+                array( 'controller' => 'turnos', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Listado de turnos' ) ); ?></li>
 </ul>
 <!-- End of Big buttons -->
@@ -47,12 +47,12 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/16_48x48.png' ) 
                 .'<span>Usuarios</span>',
-                array( 'controller' => 'usuarios', 'action' => 'index' ),
+                array( 'controller' => 'usuarios', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Usuarios' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/user_group-icon.gif' ) 
                 .'<span>Grupos</span>',
-                array( 'controller' => 'grupos', 'action' => 'index' ),
+                array( 'controller' => 'grupos', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Grupos' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/5_48x48.png' ) 
@@ -79,7 +79,7 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/configuration-icon.png' ) 
                 .'<span>Configuracion</span>',
-                array( 'controller' => 'configuracion', 'action' => 'ver' ),
+                array( 'controller' => 'configuracion', 'action' => 'ver', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Configuración' ) ); ?></li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/25_48x48.png' ) 

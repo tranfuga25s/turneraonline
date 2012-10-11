@@ -43,9 +43,9 @@
                     <div class="meta">
                         <p>Bienvenido, <?php echo $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; ?>!</p>
                         <ul>
-                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-power"></span>Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'title' => "Cerrar sesion de administracion", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
-                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-wrench"></span>Preferencias', array( 'controller' => 'configuracion', 'action' => 'ver' ), array( 'title' => "Cambia las preferencias", 'class' => "tooltip", 'escape' => false ) ); ?></li>
-                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-person"></span>Mis datos', array( 'controller' => 'usuarios', 'action' => 'edit', $usuarioactual['id_usuario'] ), array( 'title' => "Ir a los datos de mi usuario", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
+                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-power"></span>Salir', array( 'controller' => 'usuarios', 'action' => 'salir', 'plugin' => false ), array( 'title' => "Cerrar sesion de administracion", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
+                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-wrench"></span>Preferencias', array( 'controller' => 'configuracion', 'action' => 'ver', 'plugin' => false ), array( 'title' => "Cambia las preferencias", 'class' => "tooltip", 'escape' => false ) ); ?></li>
+                            <li><?php echo $this->Html->link( '<span class="ui-icon ui-icon-person"></span>Mis datos', array( 'controller' => 'usuarios', 'plugin' => false, 'action' => 'edit', $usuarioactual['id_usuario'] ), array( 'title' => "Ir a los datos de mi usuario", 'class' => 'tooltip', 'escape' => false ) ); ?></li>
                         </ul>   
                     </div>
                     <!-- End of Meta information -->
@@ -55,26 +55,26 @@
                 <!-- The navigation bar -->
                 <div id="navbar">
                     <ul class="nav">
-                        <li><?php echo $this->Html->link( 'Inicio', array( 'controller' => 'usuarios', 'action' => 'cpanel' ) ); ?></li>
-                        <li><?php echo $this->Html->link( 'Usuarios', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
-                        <li><?php echo $this->Html->link( 'Medicos', array( 'controller' => 'medicos', 'action' => 'index' ) ); ?></li>
-                        <li><?php echo $this->Html->link( 'Secretarias', array( 'controller' => 'secretarias', 'action' => 'index' ) ); ?></li>
-                        <li><?php echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'index' ) ); ?></li>
+                        <li><?php echo $this->Html->link( 'Inicio', array( 'controller' => 'usuarios', 'action' => 'cpanel', 'plugin' => false ) ); ?></li>
+                        <li><?php echo $this->Html->link( 'Usuarios', array( 'controller' => 'usuarios', 'action' => 'index', 'plugin' => false ) ); ?></li>
+                        <li><?php echo $this->Html->link( 'Medicos', array( 'controller' => 'medicos', 'action' => 'index', 'plugin' => false ) ); ?></li>
+                        <li><?php echo $this->Html->link( 'Secretarias', array( 'controller' => 'secretarias', 'action' => 'index', 'plugin' => false ) ); ?></li>
+                        <li><?php echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'index', 'plugin' => false ) ); ?></li>
                         <li><a href="#">Mas</a>
                             <ul>
-                            	<li><?php echo $this->Html->link( 'Clinicas', array( 'controller' => 'clinicas', 'action' => 'index'  ) ); ?></li>
-                                <li><?php echo $this->Html->link( 'Especialidades', array( 'controller' => 'especialidades', 'action' => 'index'  ) ); ?></li>
-                                <li><?php echo $this->Html->link( 'Consultorios', array( 'controller' => 'consultorios', 'action' => 'index' ) ); ?></li>
-                                <li><?php echo $this->Html->link( 'Obras Sociales', array( 'controller' => 'obras_sociales', 'action' => 'index' ) ); ?></li>
+                            	<li><?php echo $this->Html->link( 'Clinicas', array( 'controller' => 'clinicas', 'action' => 'index', 'plugin' => false  ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Especialidades', array( 'controller' => 'especialidades', 'action' => 'index', 'plugin' => false  ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Consultorios', array( 'controller' => 'consultorios', 'action' => 'index', 'plugin' => false ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Obras Sociales', array( 'controller' => 'obras_sociales', 'action' => 'index', 'plugin' => false ) ); ?></li>
                                 <li><a href="#">Sistema</a>
                                     <ul>
-                                        <li><?php echo $this->Html->link( 'Grupos', array( 'controller' => 'grupos', 'action' => 'index' ) ); ?></li>
+                                        <li><?php echo $this->Html->link( 'Grupos', array( 'controller' => 'grupos', 'action' => 'index', 'plugin' => false ) ); ?></li>
                                         <li><a href="#">Permisos</a></li>
                                         <li><?php echo $this->Html->link( 'Auditoria', array( 'plugin' => 'audit_log', 'controller' => 'audit_log', 'action' => 'index' ) ); ?></li>
                                     </ul>
                                 </li>
                                 <li><a href="#">Notificaciones</a></li>
-                                <li><?php echo $this->Html->link( 'Configuracion', array( 'controller' => 'configuracion', 'action' => 'ver' ) ); ?></li>
+                                <li><?php echo $this->Html->link( 'Configuracion', array( 'controller' => 'configuracion', 'action' => 'ver', 'plugin' => false ) ); ?></li>
                             </ul>
                         </li>
                         <li><?php echo $this->Html->link( 'Ver sitio', '/', array( 'target' => '_blank' ) ); ?></li>
