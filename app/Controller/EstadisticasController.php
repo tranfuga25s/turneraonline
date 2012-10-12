@@ -1,15 +1,16 @@
 <?php
-
-App::import( 'Vendor', 'JGraph' );
-
 class EstadisticasController extends AppController {
-	
 	var $uses = array( 'Usuario', 'Turnos' );
 	var $components = array( 'RequestHandler' );
-	/* Tamaño de los graficos generados */
-	public $tamano = array( 'ancho' => 300, 'alto' => 300 );
+	//var $helpers = array( 'JsGraph' );
+	
+	public function beforeFilter() {
+		$this->layout = 'ajax';
+		parent::beforeFilter();
+	}
 	
 	public function administracion_index() {
+		$this->layout = 'administracion';
 		// Simplemente renderiza la vista
 		$this->set( 'acciones',
 			array( 'usuariosDeclarados' => "Cantidad de usuarios según tipo",
@@ -32,17 +33,27 @@ class EstadisticasController extends AppController {
 	}
 	
 	/*
-	 * Devuelve la proporción de usuarios activos e inactivos durante los n meses anteriores
+	 * Devuelve la proporción de usuarios activos e inactivos durante los N meses anteriores
 	 */ 
 	public function usuariosActivos( $meses = 1 ) {
-		
+		// Total de pacientes declarados en el sistema
+		$this->set( 'total_pacientes', $this->Usuarios->find( 'count', array( 'conditions' => array( 'grupo_id' => 1 ) ) ) );
+		// Busco todos los pacientes que estan declarados en algún turno dentro de una cierta fecha
+		$fecha_hoy = new Date();
+		$fecha_antes = new Date();
+		$fecha_antes->sub( new DateInterval( "P".$meses."M" ) );
+		$this->set( 'cant_activos', $this->Turnos->find( 'count', array( 'conditions' => array( 'DATE(fecha_inicio) >=' => $fecha_antes->format( ),
+									   															'DATE(fecha_inicio) <=' => $fecha_hoy->format( ) ),
+											 							 'fields' => array( ),
+											 							 'group' => array( ) ) ) );
 	}
 	
 	/*
 	 * Devuelve la cantidade turnos historicos guardados y la cantidad de turnos a futuro
 	 */
 	public function turnosGuardadosFuturos() {
-		
+		$this->set( 'anteriores', $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) <=' => 'NOW()' ) ) ) );
+		$this->set( 'futuro'    , $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) >' => 'NOW()' ) ) ) );
 	}
 	
 	/*
