@@ -166,7 +166,7 @@ $(function(){
    <div class="titulo2">Elija el día que desea:</div><br />
    <?php echo $this->Form->create( 'Secretaria', array( 'action' => 'turnos' ) ); ?>
    <?php  echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
-   <table style="width: 625px; padding: 0px;"><tbody><tr>
+   <table style="width: 650px; padding: 0px;"><tbody><tr>
     	<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', '< Dia', array( 'onclick' => '$("#SecretariaIdMedico").clone().attr( "value", "ayer" ).attr( "name", "data[Secretaria][accion]" ).appendTo("#SecretariaTurnosForm"); $("#SecretariaTurnosForm").submit()' ) ); ?></td>
 		<td style="padding: 0px;"><?php  echo "<b>Fecha:</b>" . $this->Form->dateTime( 'fecha', 'DMY', null, array( 'value' => array( 'day' => $dia, 'month' => $mes, 'year' => $ano ), 'empty' => false, 'monthNames' => array( 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ) ) ); ?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Dia >', array( 'onclick' => '$("#SecretariaIdMedico").clone().attr( "value", "manana" ).attr( "name", "data[Secretaria][accion]" ).appendTo("#SecretariaTurnosForm"); $("#SecretariaTurnosForm").submit()') );?></td>
