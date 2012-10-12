@@ -130,6 +130,8 @@ class MedicosController extends AppController {
 						$t2 = $t->add( new DateInterval( "P1M" ) );
 					} else if( $this->data['accion'] == 'sem' ) {
 						$t2 = $t->add( new DateInterval( "P1W" ) );
+					} else if( $this->data['accion'] == 'hoy' ) {
+						$t2 = new DateTime('now');
 					}
 					// Actualizo la fecha
 					$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
