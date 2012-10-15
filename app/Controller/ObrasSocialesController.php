@@ -68,10 +68,10 @@ class ObrasSocialesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ObraSocial->create();
 			if ($this->ObraSocial->save($this->request->data)) {
-				$this->Session->setFlash( 'La nueva obra social ha sido guardada correctamente.' );
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash( 'La nueva obra social ha sido guardada correctamente.', 'default', array( 'class' => 'success' ) );
+				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash(__('The obras sociale could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'La obra social no pudo ser guardada. Verifique los datos ingresados e intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		}
 	}
@@ -90,10 +90,10 @@ class ObrasSocialesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ObraSocial->save($this->request->data)) {
-				$this->Session->setFlash( 'La obra social ha sido modificada correctamente.' );
+				$this->Session->setFlash( 'La obra social ha sido modificada correctamente.', 'default', array( 'class' => 'success' ) );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The obras sociale could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'Los datos no pudieron ser modificados. Intente nuevamente', 'default', array( 'class' => 'error') );
 			}
 		} else {
 			$this->request->data = $this->ObraSocial->read(null, $id);
@@ -117,14 +117,14 @@ class ObrasSocialesController extends AppController {
 		}
 		$this->loadModel( 'Usuario' );
 		if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "Existe algún paciente con esta obra social. No se eliminará" );
+			$this->Session->setFlash( "Existe algún paciente con esta obra social. No se eliminará", 'default', array( 'class' => 'error') );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->ObraSocial->delete()) {
-			$this->Session->setFlash(__('Obras sociale deleted'));
+			$this->Session->setFlash( 'Se eliminó correctamente la obra social', 'default', array( 'class' => 'success' ));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Obras sociale was not deleted'));
+		$this->Session->setFlash( 'La obra social no se pudo eliminar', 'default', array( 'class' => 'error') );
 		$this->redirect(array('action' => 'index'));
 	}
 }
