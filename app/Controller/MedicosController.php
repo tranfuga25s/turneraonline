@@ -564,7 +564,7 @@ class MedicosController extends AppController {
 		if( !$this->Medico->exists() ) {
 			throw new NotFoundException( 'El medico elegido no existe!' ); 
 		}
-		if( $this->Medico->saveField( 'visible', true ) ) {
+		if( $this->Medico->saveField( 'visible', false ) ) {
 			$this->Session->setFlash( 'Medico pasado a invisible correctamente', 'default', array( 'class' => 'success' ) );
 		} else {
 			$this->Session->setFlash( 'El médico no se pudo poner como invisible', 'default', array( 'class' => 'error' ) );
