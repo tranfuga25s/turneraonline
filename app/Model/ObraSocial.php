@@ -15,6 +15,10 @@ class ObraSocial extends AppModel {
 			'notempty' => array(
 				'rule' => array('notempty'),
 				'message' => 'Por favor, ingrese un nombre para la obra social'
+			),
+			'repetido' => array(
+				'rule' => array( 'buscaRepetido' ),
+				'message' => 'La obra social elegida ya existe.'
 			)
 		),
 		'telefono' => array(
@@ -25,4 +29,13 @@ class ObraSocial extends AppModel {
 			)
 		)
 	);
+	
+	public function buscarRepetido( $valor ) {
+		$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'] ) ) );
+		if( $count <= 0 ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
