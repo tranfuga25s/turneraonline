@@ -42,7 +42,7 @@ foreach ( $medicos as $medico): ?>
 		<?php if( $medico['Medico']['visible'] ) { 
 				echo $this->Html->link( 'Visible', array( 'action' => 'sacarDeVisible', $medico['Medico']['id_medico'] ) );
 			  } else {
-			  	echo $this->Html->link( 'No visible', array( 'action' => 'ponerEnVisible', $Medico['Medico']['id_medico'] ) );
+			  	echo $this->Html->link( 'No visible', array( 'action' => 'ponerEnVisible', $medico['Medico']['id_medico'] ) );
 			  } ?>
 		<?php echo $this->Html->tag( 'a', 'Eliminar', array( 'onclick' => 'eliminarMedico('.$medico['Medico']['id_medico'].')' ) ); ?>
 	</td>

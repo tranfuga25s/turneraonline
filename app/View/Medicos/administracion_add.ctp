@@ -12,6 +12,7 @@
 	echo $this->Form->input( 'usuario_id', array( 'label' => 'Usuario a convertir a médico', 'empty' => 'Elija un usuario' ) );
 	echo $this->Form->input( 'clinica_id', array( 'empty' => 'Elija una clinica' ) );
 	echo $this->Form->input( 'especialidad_id', array( 'empty' => 'Elija una especialidad' ) );
+	echo $this->Form->input( 'visible', array( 'label' => 'Visible para los pacientes' ) );
 	echo $this->Form->end( 'Dar de alta' );
 ?>
 </fieldset>

@@ -13,6 +13,7 @@
 	echo $this->Form->input( 'id_medico' );
 	echo $this->Form->input( 'clinica_id' );
 	echo $this->Form->input( 'especialidad_id', array( 'options' => $especialidades ) );
+	echo $this->Form->input( 'visible', array( 'label' => 'Visible para los pacientes' )  );
 ?>
 <?php echo $this->Form->end( 'Guardar cambios' );?>
 </fieldset>
