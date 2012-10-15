@@ -1,4 +1,19 @@
 <?php $this->set( 'title_for_layout', "Listado de medicos" ); ?>
+<script>
+	function eliminarMedico( id_medico ) {
+		$("#dialogo").dialog({
+			modal: true,
+			buttons: {
+				"Eliminar": function() {
+					location.href = '<?php echo Router::url( array( 'controller' => 'Medicos', 'action' => 'delete' ) ); ?>/'+id_medico;
+				},
+				"Cancelar": function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+	}
+</script>
 <div id="acciones">
 	<?php echo $this->Html->link( 'Nuevo Medico', array( 'action' => 'add' ) ); ?>
 </div>
@@ -24,7 +39,12 @@ foreach ( $medicos as $medico): ?>
 		<?php echo $this->Html->link( 'Disp', array( 'action' => 'disponibilidad', $medico['Medico']['id_medico'] ) ); ?>
 		<!-- <?php echo $this->Html->link( 'Excepciones', array( 'action' => 'excepciones', $medico['Medico']['id_medico'] ) ); ?> -->
 		<?php echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'verPorMedico', $medico['Medico']['id_medico'] ) ); ?>
-		<?php echo $this->Form->postLink( 'Eliminar', array('action' => 'delete', $medico['Usuario']['id_usuario']), null, __('Are you sure you want to delete # %s?', $medico['Usuario']['id_usuario'])); ?>
+		<?php if( $medico['Medico']['visible'] ) { 
+				echo $this->Html->link( 'Visible', array( 'action' => 'sacarDeVisible', $medico['Medico']['id_medico'] ) );
+			  } else {
+			  	echo $this->Html->link( 'No visible', array( 'action' => 'ponerEnVisible', $Medico['Medico']['id_medico'] ) );
+			  } ?>
+		<?php echo $this->Html->tag( 'a', 'Eliminar', array( 'onclick' => 'eliminarMedico('.$medico['Medico']['id_medico'].')' ) ); ?>
 	</td>
 </tr>
 <?php endforeach; ?>
@@ -43,4 +63,15 @@ echo $this->Paginator->counter(array(
 	echo $this->Paginator->numbers(array('separator' => ''));
 	echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 ?>
+</div>
+<div style="display: none;" title="Eliminar medico" id="dialogo">
+	¿Est&aacute; seguro que desea eliminar este m&eacute;dico?<br />
+	Si acepta se eliminarán ademas: <br />
+	<ul>
+		<li>Sus turnos pasados y a futuro.</li>
+		<li>Su disponibilidad</li>
+	</ul>
+	<b>ATENCION:</b> El proceso de eliminación es irreversible!<br />
+	<br />
+	Si desea que un m&eacute;dico no aparezca mas en la p&aacute;gina pero no desea eliminar sus datos historicos, utilice la opci&oacute;n <b>Visible</b>.
 </div>

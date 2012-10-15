@@ -105,8 +105,6 @@ class Medico extends AppModel {
 		
 		// Finalmente elimino el medico
 		return $this->delete( $id_medico );
-		
-	
 	}
 
 }

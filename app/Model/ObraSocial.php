@@ -17,7 +17,7 @@ class ObraSocial extends AppModel {
 				'message' => 'Por favor, ingrese un nombre para la obra social'
 			),
 			'repetido' => array(
-				'rule' => array( 'buscaRepetido' ),
+				'rule' => array( 'buscarRepetido' ),
 				'message' => 'La obra social elegida ya existe.'
 			)
 		),
