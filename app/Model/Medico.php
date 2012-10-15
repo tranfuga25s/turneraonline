@@ -73,7 +73,12 @@ class Medico extends AppModel {
 			$cond = array( 'id_usuario' => $id_filtro );
 		} else { $cond = array(); }
 		$ids = $this->find( 'list', array( 'conditions' => array( 'visible' => true ), 'fields' => array( 'usuario_id' ) ) );
-		$conds = array_merge( array( 'grupo_id' => 2, 'id_usuario' => $ids ), $cond );
+		if( count( $ids > 0 ) && $id_filtro != null ) {
+			$cond = array_merge( array( 'id_usuario' => $ids ), $cond );
+		} else {
+			return array();
+		}
+		$conds = array_merge( array( 'grupo_id' => 2 ), $cond );
 		return $this->Usuario->find( 'list',
 			array( 'conditions' => $conds, 'fields' => array( 'id_usuario', 'razonsocial' )
 		) );
