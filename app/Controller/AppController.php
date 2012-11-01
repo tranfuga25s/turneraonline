@@ -1,6 +1,7 @@
 <?php
 
 App::uses('Controller', 'Controller');
+App::uses('Folder', 'Utility');
 
 class AppController extends Controller {
 
@@ -35,7 +36,21 @@ class AppController extends Controller {
 		if( $adentro ) {
 			$this->set( 'usuarioactual', $this->Auth->user() );
 		}
+		// Cargo la configuración
 		Configure::load( '', 'Turnera' );
+		
+		// Temas disponibles
+		// Pongo la lista de temas disponibles
+		$f = new Folder(  ROOT . DS . APP_DIR . DS . 'View' . DS . 'Themed' . DS);
+		$lista = $f->read( true );
+		$this->set( 'temas', $lista[0] );
+		if( isset( $this->request->data['temas'] ) ) {
+			$this->viewClass = $lista[$this->request->data['temas']['theme']];
+			$this->Session->write( 'tema', $lista[$this->request->data['temas']['theme']] );
+		} else {
+			$this->viewClass = $this->Session->read( 'tema' );	
+		}
+		
 	}
 
 	public function isAuthorized() { return true; }
