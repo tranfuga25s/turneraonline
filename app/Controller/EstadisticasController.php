@@ -1,8 +1,10 @@
 <?php
+App::uses('GoogleChart', 'GoogleChart.Lib');
+
 class EstadisticasController extends AppController {
 	var $uses = array( 'Usuario', 'Turnos' );
 	var $components = array( 'RequestHandler' );
-	//var $helpers = array( 'JsGraph' );
+	public $helpers = array('GoogleChart.GoogleChart');
 	
 	public function beforeFilter() {
 		$this->layout = 'ajax';
@@ -27,9 +29,27 @@ class EstadisticasController extends AppController {
 	 */ 
 	public function usuariosDeclarados() {
 		// Busco la cantidad de usuarios por tipo
-		$this->set( 'total_usuarios', $this->Usuarios->find( 'count' ) );
-		$this->set( 'datos', $this->Usuarios->find( 'count', array( 'group' => 'group_id' ) ) );
-		$this->set( 'etiquetas', $this->Grupos->find( 'list' ) );
+		$total_usuarios = $this->Usuarios->find( 'count' );
+		$datos = $this->Usuarios->find( 'count', array( 'group' => 'group_id' ) );
+		$etiquetas = $this->Grupos->find( 'list' );
+		
+		$grafico = new GoogleChart();
+		$grafico->type( "pieChart" );
+		$grafico->options( array( 'title' => ' Cantidad de Usuarios según tipo' ) );
+		$grafico->columns( array( 
+			"grupo" => array(
+				'type' => 'string',
+				'label' => 'Grupo'
+			),
+			"cantidad" => array(
+				'type' => 'number',
+				'label' => 'Cantidad de Usuarios'
+			) ) );
+		foreach( $datos as $k => $d ) {
+			$chart->addRow( array( 'groupo' => $k, 'cantidad' => $d  ) );
+		}
+		
+		$this->set( compact( $grafico ) );
 	}
 	
 	/*
@@ -37,15 +57,30 @@ class EstadisticasController extends AppController {
 	 */ 
 	public function usuariosActivos( $meses = 1 ) {
 		// Total de pacientes declarados en el sistema
-		$this->set( 'total_pacientes', $this->Usuarios->find( 'count', array( 'conditions' => array( 'grupo_id' => 1 ) ) ) );
+		$total_pacientes = $this->Usuarios->find( 'count', array( 'conditions' => array( 'grupo_id' => 1 ) ) );
 		// Busco todos los pacientes que estan declarados en algún turno dentro de una cierta fecha
 		$fecha_hoy = new Date();
 		$fecha_antes = new Date();
 		$fecha_antes->sub( new DateInterval( "P".$meses."M" ) );
-		$this->set( 'cant_activos', $this->Turnos->find( 'count', array( 'conditions' => array( 'DATE(fecha_inicio) >=' => $fecha_antes->format( ),
+		$cant_activos = $this->Turnos->find( 'count', array( 'conditions' => array( 'DATE(fecha_inicio) >=' => $fecha_antes->format( ),
 									   															'DATE(fecha_inicio) <=' => $fecha_hoy->format( ) ),
 											 							 'fields' => array( ),
-											 							 'group' => array( ) ) ) );
+											 							 'group' => array( ) ) );
+		$grafico = new GoogleChart();
+		$grafico->type( "pieChart" );
+		$grafico->options( array( 'title' => ' Cantidad de Usuarios activos e inactivos' ) );
+		$grafico->columns( array( 
+			"grupo" => array(
+				'type' => 'string',
+				'label' => 'Grupo'
+			),
+			"cantidad" => array(
+				'type' => 'number',
+				'label' => 'Cantidad de Usuarios'
+			) ) );
+		$chart->addRow( array( 'groupo' => "Activos", 'cantidad' => $cant_activos ) );
+		$chart->addRow( array( 'groupo' => "Inactivos", 'cantidad' => ($total_pacientes-$cant_activos) ) );
+		$this->set( compact( $grafico ) );																		 
 	}
 	
 	/*
