@@ -87,14 +87,49 @@ class EstadisticasController extends AppController {
 	 * Devuelve la cantidade turnos historicos guardados y la cantidad de turnos a futuro
 	 */
 	public function turnosGuardadosFuturos() {
-		$this->set( 'anteriores', $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) <=' => 'NOW()' ) ) ) );
-		$this->set( 'futuro'    , $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) >' => 'NOW()' ) ) ) );
+		$anteriores = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) <=' => 'NOW()' ) ) );
+		$futuro     = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) > ' => 'NOW()' ) ) );
+		
+		$grafico = new GoogleChart();
+		$grafico->type( "pieChart" );
+		$grafico->options( array( 'title' => ' Cantidad de Usuarios activos e inactivos' ) );
+		$grafico->columns( array( 
+			"grupo" => array(
+				'type' => 'string',
+				'label' => 'Grupo'
+			),
+			"cantidad" => array(
+				'type' => 'number',
+				'label' => 'Cantidad de Usuarios'
+			) ) );
+		$chart->addRow( array( 'groupo' => "Historicos", 'cantidad' => $anteriores ) );
+		$chart->addRow( array( 'groupo' => "Futuros", 'cantidad' => $futuro ) );
+		$this->set( compact( $grafico ) );			
+		
 	}
 	
 	/*
 	 * Devuelve la proporcion de turnos a futuro reservados y no reservados
 	 */ 
 	public function turnosFuturoReserva() {
+		$reservados   = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) <=' => 'NOW()', 'paciente_id' => ' IS NOT NULL' ) ) );
+		$noReservados = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) > ' => 'NOW()', 'paciente_id' => null ) ) );
+		
+		$grafico = new GoogleChart();
+		$grafico->type( "pieChart" );
+		$grafico->options( array( 'title' => 'Cantidad de turnos reservados vs libres' ) );
+		$grafico->columns( array( 
+			"grupo" => array(
+				'type' => 'string',
+				'label' => 'Grupo'
+			),
+			"cantidad" => array(
+				'type' => 'number',
+				'label' => 'Cantidad de Turnos'
+			) ) );
+		$chart->addRow( array( 'groupo' => "Reservados", 'cantidad' => $reservados ) );
+		$chart->addRow( array( 'groupo' => "Libres", 'cantidad' => $noReservados ) );
+		$this->set( compact( $grafico ) );			
 		
 	}
 	
