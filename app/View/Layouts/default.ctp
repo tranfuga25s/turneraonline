@@ -54,6 +54,6 @@
 		<div id="feedback">
 		    <?php echo $this->element( 'devolucion' ); ?>
 		</div>
-		<?php } ?>
+		<?php } echo $this->element( 'sql_dump' ); ?>
 </body>
 </html>
