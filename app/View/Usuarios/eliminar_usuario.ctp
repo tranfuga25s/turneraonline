@@ -7,6 +7,7 @@ $this->set( 'title_for_layout', "Darse de baja" );
 	<?php
 	echo $this->Form->create( 'Usuario', array( 'action' => 'eliminarUsuario' ) );
 	echo $this->Form->input( 'email', array( 'label' => 'Correo electronico' ) );
+	echo $this->Form->input( 'razon', array( 'type' => 'text', 'label' => 'Si desea, especifique la razón de su decisión' ) );
 	echo $this->Form->end( 'Dar de baja' );
 	?>
 	<br />
