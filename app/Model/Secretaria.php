@@ -9,7 +9,7 @@ App::uses('AppModel', 'Model');
 class Secretaria extends AppModel {
 
 	public $primaryKey = 'id_secretaria';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $belongsTo = array(
 		'Usuario' => array(
 			'className' => 'Usuario',

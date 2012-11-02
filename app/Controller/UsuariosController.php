@@ -170,6 +170,7 @@ class UsuariosController extends AppController {
 	 * @return void
 	 */
 	public function administracion_ingresar() {
+		$this->layout='adminlogin';
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );
@@ -308,6 +309,7 @@ class UsuariosController extends AppController {
 					} else {
 						if( $this->Usuario->delete( $id ) ) {
 							$this->log( 'Usuario de id='.$id.' fue dado de baja' );
+							$this->log( 'Razon de baja:'.$this->data['Usuario']['razon'] );
 							$this->Session->setFlash( 'El usuario fue dado de baja correctamente.<br />Gracias por haber utilizado nuestros servicios!' );
 							$this->borrarCacheUsuarios();
 							$this->redirect( '/' );

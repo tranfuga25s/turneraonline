@@ -8,7 +8,7 @@ App::uses('AppModel', 'Model');
 class DiaDisponibilidad extends AppModel {
 
 	public $useTable = 'dia_disponibilidad';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $belongsTo = array(
 		'Disponibilidad' => array(
 			'className' => 'Disponibilidad',

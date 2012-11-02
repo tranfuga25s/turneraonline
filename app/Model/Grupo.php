@@ -8,7 +8,7 @@ class Grupo extends AppModel {
 
 	public $primaryKey = 'id_grupo';
 	public $displayField = 'nombre';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(

@@ -42,16 +42,25 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 	Esto regenerar&aacute; todos sus turnos desde ahora en adelante.
 </div>
 <!-- Vista de disponibilidad de un medico -->
-<div class="medicos index">
-	<?php echo $this->Form->create( 'Medico', array( 'method' => 'post', 'action' => 'disponibilidad' ) );
-	      echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => $medico['Medico']['id_medico'] ) );
-	      echo $this->Form->input( 'disponibilidad_id', array( 'type' => 'hidden', 'value' => $medico['Disponibilidad']['Disponibilidad']['id_disponibilidad'] ) ); ?>
-	<h2>Disponibilidad horaria de <?php echo $medico['Usuario']['razonsocial']; ?></h2>
-	<div class="titulo2">Datos generales</div>
+<div id="acciones">
+	<?php echo $this->Html->link( 'Datos del medico', array( 'action' => 'view', $medico['Medico']['id_medico'] ) ); ?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de medicos', array( 'action' => 'index' ) ); ?>
+</div>
+<br />
+<?php echo $this->Form->create( 'Medico', array( 'method' => 'post', 'action' => 'disponibilidad' ) ); ?>
+<fieldset>
+	<legend><h2>Disponibilidad horaria de <?php echo $medico['Usuario']['razonsocial']; ?></h2></legend>
+	<fieldset>
+      <?php echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => $medico['Medico']['id_medico'] ) );
+      echo $this->Form->input( 'disponibilidad_id', array( 'type' => 'hidden', 'value' => $medico['Disponibilidad']['Disponibilidad']['id_disponibilidad'] ) ); ?>
+	<legend><h3>Datos generales</h3></legend>
 		<?php echo $this->Form->input( 'duracion', array( 'before' => 'Duración del turno:', 'after' => 'minutos', 'value' => $medico['Disponibilidad']['Disponibilidad']['duracion'], 'label' => false ) ); ?>
 		<br />
 		<?php echo $this->Form->input( 'consultorio', array( 'before' => 'Atiende en:', 'options' => $consultorios, 'selected' => $medico['Disponibilidad']['Disponibilidad']['consultorio_id'], 'label' => false ) ); ?>
-	<div class="titulo2">Horarios Semanales</div>
+	</fieldset>
+	<fieldset>
+	<legend><h3>Horarios Semanales</h3></legend>
+	<p>Seleccione los d&iacute;as que desea, y se habilitar&aacute;n los horarios de atenci&oacute;n, tanto de ma&ntilde;ana como tarde.<br /> Si no desea atender en alg&uacute;n horario, dejelo en 0.</p>
 	<?php 
 		unset( $medico['Usuario'] );
 		$dias = array( 0 => 'domingo', 1 => 'lunes', 2 => 'martes', 3 => 'miercoles',  4 => 'jueves', 5 => 'viernes',  6 => 'sabado'  );
@@ -92,8 +101,11 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 			echo $this->Form->input( $dia.'.numero'      , array( 'type' => 'hidden', 'value' => array_search( $dia, $dias ) ) );
 		echo "</div>";
 		}
-     echo $this->Html->tag( 'a', 'Guardar', array( 'onclick' => 'confirmacion()', 'id' => "boton" ) );
-	 echo $this->Form->end(); ?>
+ ?></fieldset><?php
+ echo $this->Html->tag( 'a', 'Guardar disponibilidad', array( 'onclick' => 'confirmacion()', 'id' => "boton" ) );
+ echo $this->Form->end();
+?>
+</fieldset>
 
 <script type="text/javascript" language="JavaScript">
 function habilitarDeshabilitarDia( dia ) {
@@ -115,11 +127,3 @@ $(document).ready( function(){
 	$("#MedicoLunes"    ).bind( 'click', function() { habilitarDeshabilitarDia( 'Lunes'     ) } );
 });
 </script>
-</div>
-<div class="actions">
- <h3>Acciones</h3>
- <ul>
-	<li><?php echo $this->Html->link( 'Datos del medico', array( 'action' => 'view', $medico['Medico']['id_medico'] ) ); ?></li>
-	<li><?php echo $this->Html->link( 'Lista de medicos', array( 'action' => 'index' ) ); ?></li>
- </ul>
-</div>

@@ -1,34 +1,39 @@
-<div class="obrasSociales view">
-<h2><?php  echo __('Obras Sociale');?></h2>
-	<dl>
-		<dt><?php echo __('Id Obra Social'); ?></dt>
-		<dd>
-			<?php echo h($obrasSociale['ObrasSociale']['id_obra_social']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Nombre'); ?></dt>
-		<dd>
-			<?php echo h($obrasSociale['ObrasSociale']['nombre']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Direccion'); ?></dt>
-		<dd>
-			<?php echo h($obrasSociale['ObrasSociale']['direccion']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Telefono'); ?></dt>
-		<dd>
-			<?php echo h($obrasSociale['ObrasSociale']['telefono']); ?>
-			&nbsp;
-		</dd>
-	</dl>
+<?php $this->set( 'title_for_layout', "Datos de obra social" ); ?>
+<div id="acciones">
+	<?php echo $this->Html->link( 'Editar esta Obra Social', array('action' => 'edit', $obrasSociale['ObraSocial']['id_obra_social'])); ?>&nbsp;
+	<?php echo $this->Form->postLink( 'Eliminar esta Obra Social', array('action' => 'delete', $obrasSociale['ObraSocial']['id_obra_social']), null, __('Are you sure you want to delete # %s?', $obrasSociale['ObraSocial']['id_obra_social'])); ?>&nbsp;
+	<?php echo $this->Html->link( 'Lista de Obras Sociales', array('action' => 'index')); ?>&nbsp;
+	<?php echo $this->Html->link( 'Nueva Obra Social', array( 'action' => 'add' ) ); ?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Obras Sociale'), array('action' => 'edit', $obrasSociale['ObrasSociale']['id_obra_social'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Obras Sociale'), array('action' => 'delete', $obrasSociale['ObrasSociale']['id_obra_social']), null, __('Are you sure you want to delete # %s?', $obrasSociale['ObrasSociale']['id_obra_social'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Obras Sociales'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Obras Sociale'), array('action' => 'add')); ?> </li>
-	</ul>
-</div>
+<br />
+<h2>Obra Social</h2>
+<dl>
+	<dt>C&oacute;digo de obra social:</dt>
+	<dd>
+		<?php echo h($obrasSociale['ObraSocial']['id_obra_social']); ?>
+		&nbsp;
+	</dd>
+	<dt>Nombre:</dt>
+	<dd>
+		<?php echo h($obrasSociale['ObraSocial']['nombre']); ?>
+		&nbsp;
+	</dd>
+	<dt>Direcci&oacute;n</dt>
+	<dd>
+		<?php echo h($obrasSociale['ObraSocial']['direccion']); ?>
+		&nbsp;
+	</dd>
+	<dt>Tel&eacute;fono</dt>
+	<dd>
+		<?php echo h($obrasSociale['ObraSocial']['telefono']); ?>
+		&nbsp;
+	</dd>
+	<dt>Logotipo:</dt>
+	<dd>
+		<?php
+		if( isset( $obrasSociale['ObraSocial']['logo'] ) ) { 
+			echo $this->Html->image( $obrasSociale['ObraSocial']['logo'], array( 'height' => 100, 'width' => 100 ) );
+		} ?>
+		&nbsp;
+	</dd>
+</dl>

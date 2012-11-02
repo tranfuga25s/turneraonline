@@ -15,6 +15,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 <script type="text/javascript">
 	$( function() {
 		$("#horarios").button();
+		$("a", "#botones").button();
 		$("#referencia").accordion();
 		simpleSlide();
 		simpleSlide();
@@ -30,7 +31,8 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
   <tr>
    <td width="50%">	
 	<div class="titulo1">¿Que es este sitio?</div>
-	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.
+	<br />
+	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.<br /><br />
 	<div class="titulo2">Horarios de atención</div>
 	<br />
 	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
@@ -40,14 +42,14 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<div class="right-button left" rel="usuarios" style="display: none;"></div>
 	<div class="simpleSlide-window" rel="usuarios">
 	    <div class="simpleSlide-tray" rel="usuarios">
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'M&eacute;dicos</div>'           , array( 'controller' => 'pages/clientes/medicos'      ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Consultorios</div>'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Sanatorios y/o Hospitales</div>', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Dentistas</div>'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Salones de Belleza</div>'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>        
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Canchas de Tenis</div>'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'Hoteles Alojamiento</div>'      , array( 'controller' => 'pages/clientes/hotel'        ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />M&eacute;dicos</div>'           , array( 'controller' => 'pages/clientes/medicos'      ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Consultorios</div>'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Sanatorios y/o Hospitales</div>', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Dentistas</div>'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Salones de Belleza</div>'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>        
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de Tenis</div>'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Hoteles Alojamiento</div>'      , array( 'controller' => 'pages/clientes/hotel'        ), array( 'escape' => false ) ); ?></div>
 	    </div>
 	</div>
 	<div class="simpleSlide-tray" rel="usuarios"></div>
@@ -71,22 +73,27 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
    <td width="50%">
 	<?php if( !$loggeado ) { ?>
 	<div class="titulo1">Pruebe nuestro sistema!</div>
-	Ingrese por favor su email y su contraseña para ingresar al sistema.<br />
-	<center>
-	<?php
-		echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
-		echo "Email:".$this->Form->text( 'email', array( 'label' => 'E-mail:' ) );
-		echo "<br />";
-		echo "Contraseña:".$this->Form->password( 'contra', array( 'label' => 'Contraseña:' ) );
-		echo $this->Form->end( 'Ingresar' );
-	?>
-	
-	<?php echo $this->Html->link( 'Olvide mi contraseña',
-			array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' )  ); ?>
-	&nbsp;
-	<?php echo $this->Html->link( 'Registrarme',
-			array( 'controller' => 'Usuarios', 'action' => 'registrarse' )  ); ?>
-	</center>
+	<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) ); ?>
+	<table>
+	    <tbody>
+	       <tr>
+	           <td colspan="2" style="text-align: center;">Ingrese por favor su email y su contraseña para ingresar al sistema.</td>
+	       </tr>
+	       <tr>
+	           <td style="text-align: right;"><b>Email:</b></td>
+	           <td style="text-align: left;"><?php echo $this->Form->text( 'email', array( 'label' => 'E-mail:' ) ); ?></td>
+	       </tr>
+	       <tr>
+	           <td style="text-align: right;"><b>Contrase&ntilde;a:</b></td>
+	           <td style="text-align: left;"><?php echo $this->Form->password( 'contra', array( 'label' => 'Contraseña:' ) ); ?></td>
+	       </tr>
+	       <tr><td colspan="2" style="text-align: center;"><?php echo $this->Form->end( 'Ingresar' ); ?></td></tr>
+	       <tr id="botones">
+	           <td style="text-align: center;"><?php echo $this->Html->link( 'Registrarme', array( 'controller' => 'Usuarios', 'action' => 'registrarse' )  ); ?></td>
+	           <td style="text-align: center;"><?php echo $this->Html->link( 'Olvide mi contraseña', array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' )  ); ?></td>
+	       </tr>
+	    </tbody>
+	</table>
 	<?php } else { ?>
 	<div class="titulo1">Bienvenido</div>
 		<br />

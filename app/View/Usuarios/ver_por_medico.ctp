@@ -53,6 +53,16 @@
 				&nbsp;
 			</dd>
 		</dl>
+		<div id="boton">
+			<div class="titulo1">Acciones</div>
+			<center>
+			<?php
+				echo $this->Html->link( 'Cambiar Contraseña', array( '/' ) ) . "<br />"; ///@todo Implementar!
+				echo $this->Html->link( 'Cambiar email', array( '/' ) ) . "<br />"; ///@todo Implementar!
+				echo $this->Html->link( 'Eliminar Usuario', array( 'controller' => 'usuarios', 'action' => 'delete', $usuario['Usuario']['id_usuario'] ) ); 
+			?>
+			</center>
+		</div>
 	</div>
 	<div id="pest-2">
 		<div class="titulo1">Turnos a futuro</div>

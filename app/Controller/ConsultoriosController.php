@@ -60,7 +60,7 @@ class ConsultoriosController extends AppController {
 	public function view($id = null) {
 		$this->Consultorio->id = $id;
 		if (!$this->Consultorio->exists()) {
-			throw new NotFoundException(__('Invalid consultorio'));
+			throw new NotFoundException( 'Consultorio invalido' );
 		}
 		$this->set('consultorio', $this->Consultorio->read(null, $id));
 	}
@@ -85,7 +85,7 @@ class ConsultoriosController extends AppController {
 	public function administracion_view($id = null) {
 		$this->Consultorio->id = $id;
 		if (!$this->Consultorio->exists()) {
-			throw new NotFoundException(__('Invalid consultorio'));
+			throw new NotFoundException( 'Consultorio invalido');
 		}
 		$this->set('consultorio', $this->Consultorio->read(null, $id));
 	}
@@ -99,10 +99,10 @@ class ConsultoriosController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Consultorio->create();
 			if ($this->Consultorio->save($this->request->data)) {
-				$this->Session->setFlash(__('The consultorio has been saved'));
+				$this->Session->setFlash( 'El consultorio fue agregado correctamente', 'default', array( 'class' => 'success') );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The consultorio could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'El consultario no pudo ser agregado, intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		}
 		$clinicas = $this->Consultorio->Clinica->find('list');
@@ -118,14 +118,14 @@ class ConsultoriosController extends AppController {
 	public function administracion_edit($id = null) {
 		$this->Consultorio->id = $id;
 		if (!$this->Consultorio->exists()) {
-			throw new NotFoundException(__('Invalid consultorio'));
+			throw new NotFoundException( 'Consultorio invalido' );
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Consultorio->save($this->request->data)) {
-				$this->Session->setFlash(__('The consultorio has been saved'));
+				$this->Session->setFlash( 'El consultorio fue modificado correctamente', 'default', array( 'class' => 'error') );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The consultorio could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'El consultorio no ha podido ser modificado, intente nuevamente.', 'default', array( 'class' => 'error') );
 			}
 		} else {
 			$this->request->data = $this->Consultorio->read(null, $id);
@@ -146,13 +146,13 @@ class ConsultoriosController extends AppController {
 		}
 		$this->Consultorio->id = $id;
 		if (!$this->Consultorio->exists()) {
-			throw new NotFoundException(__('Invalid consultorio'));
+			throw new NotFoundException( 'Consultorio invalido' );
 		}
 		if ($this->Consultorio->delete()) {
-			$this->Session->setFlash(__('Consultorio deleted'));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash( 'Consultorio eliminado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash(__('Consultorio was not deleted'));
-		$this->redirect(array('action' => 'index'));
+		$this->Session->setFlash( 'El Consultorio no pudo ser eliminado', 'default', array( 'class' => 'error') );
+		$this->redirect( array('action' => 'index' ) );
 	}
 }
