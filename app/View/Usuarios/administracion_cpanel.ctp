@@ -62,7 +62,8 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/14_48x48.png' ) 
                 .'<span>Estadisticas</span>',
-                '#', array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Todavía no implementado' ) ); ?></li>
+                array( 'controller' => 'estadisticas', 'action' => 'index', 'plugin' => false ),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Visor de estadisticas' ) ); ?></li>
 </ul>
 <h2>Configuraci&oacute;n</h2>
 <ul class="dash">
