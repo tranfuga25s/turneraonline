@@ -57,6 +57,7 @@ echo $this->Html->script( 'https://www.google.com/jsapi', array( 'inline' => fal
 .contenedor-grafico h3 {
 	text-align: center;
 	font-weight: bolder;
+	font-style: italic;
 }
 .contenedor-graficos {
 	clear: both;
@@ -68,3 +69,4 @@ echo $this->Html->script( 'https://www.google.com/jsapi', array( 'inline' => fal
 	<?php echo $this->Html->tag( 'a', 'Actualizar graficos', array( 'onclick' => 'actualizarGraficos()', 'class' => 'acciones' ) ); ?>
 </div>
 <div class="contenedor-graficos"></div><br />
+<div><small>Basado en la api de <a href="https://developers.google.com/chart/">Google Chart</a></small></div>
