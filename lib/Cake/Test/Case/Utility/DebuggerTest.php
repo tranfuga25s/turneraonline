@@ -1,9 +1,5 @@
 <?php
 /**
- * DebuggerTest file
- *
- * PHP 5
- *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -12,7 +8,6 @@
  *
  * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP Project
- * @package       Cake.Test.Case.Utility
  * @since         CakePHP(tm) v 1.2.0.5432
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
@@ -273,7 +268,7 @@ class DebuggerTest extends CakeTestCase {
  * Test method for testing addFormat with callbacks.
  */
 	public function customFormat($error, $strings) {
-		return $error['error'] . ': I eated an error ' . $error['path'];
+		return $error['error'] . ': I eated an error ' . $error['file'];
 	}
 
 /**
@@ -282,8 +277,11 @@ class DebuggerTest extends CakeTestCase {
  * @return void
  */
 	public function testTrimPath() {
-		$this->assertEquals(Debugger::trimPath(APP), 'APP' . DS);
-		$this->assertEquals(Debugger::trimPath(CAKE_CORE_INCLUDE_PATH), 'CORE');
+		$this->assertEquals('APP' . DS, Debugger::trimPath(APP));
+		$this->assertEquals('CORE', Debugger::trimPath(CAKE_CORE_INCLUDE_PATH));
+		$this->assertEquals('ROOT', Debugger::trimPath(ROOT));
+		$this->assertEquals('CORE' . DS . 'Cake' . DS, Debugger::trimPath(CAKE));
+		$this->assertEquals('Some/Other/Path', Debugger::trimPath('Some/Other/Path'));
 	}
 
 /**
@@ -324,7 +322,7 @@ object(View) {
 	validationErrors => array()
 	hasRendered => false
 	uuids => array()
-	request => null
+	request => object(CakeRequest) {}
 	response => object(CakeResponse) {}
 	elementCache => 'default'
 	int => (int) 2
@@ -342,6 +340,21 @@ TEXT;
 array(
 	(int) 1 => 'Index one',
 	(int) 5 => 'Index five'
+)
+TEXT;
+		$this->assertTextEquals($expected, $result);
+
+		$data = array(
+			'key' => array(
+				'value'
+			)
+		);
+		$result = Debugger::exportVar($data, 1);
+		$expected = <<<TEXT
+array(
+	'key' => array(
+		[maximum depth reached]
+	)
 )
 TEXT;
 		$this->assertTextEquals($expected, $result);
@@ -398,8 +411,14 @@ TEXT;
 <pre>array(
 	'People' => array(
 		(int) 0 => array(
+			'name' => 'joeseph',
+			'coat' => 'technicolor',
+			'hair_color' => 'brown'
 		),
 		(int) 1 => array(
+			'name' => 'Shaft',
+			'coat' => 'black',
+			'hair' => 'black'
 		)
 	)
 )</pre>
@@ -459,6 +478,16 @@ TEXT;
 		$expected = Debugger::exportVar($expectedArray);
 
 		$this->assertEquals($expected, $output);
+	}
+
+/**
+ * Test that exportVar() doesn't loop through recursive structures.
+ *
+ * @return void
+ */
+	public function testExportVarRecursion() {
+		$output = Debugger::exportVar($GLOBALS);
+		$this->assertContains("'GLOBALS' => [recursion]", $output);
 	}
 
 /**

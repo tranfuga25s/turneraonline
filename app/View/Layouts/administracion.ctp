@@ -101,16 +101,18 @@
         </div>
         <!-- End of Container -->
         <div class="publicidad">
-		 <script type="text/javascript"> <!--
+			<script type="text/javascript"><!--
 			google_ad_client = "ca-pub-1880233918301202";
 			/* Desarrollo */
 			google_ad_slot = "0058508055";
 			google_ad_width = 468;
 			google_ad_height = 60;
 			//-->
-		</script>
-		<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script> 
-	</div>
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+		</div>
         <!-- Footer -->
         <div id="footer">
             <p class="mid">

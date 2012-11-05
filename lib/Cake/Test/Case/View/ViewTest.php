@@ -21,6 +21,7 @@ App::uses('View', 'View');
 App::uses('Helper', 'View');
 App::uses('Controller', 'Controller');
 App::uses('CacheHelper', 'View/Helper');
+App::uses('HtmlHelper', 'View/Helper');
 App::uses('ErrorHandler', 'Error');
 
 
@@ -51,10 +52,11 @@ class ViewPostsController extends Controller {
  * @return void
  */
 	public function index() {
-		$this->set('testData', 'Some test data');
-		$test2 = 'more data';
-		$test3 = 'even more data';
-		$this->set(compact('test2', 'test3'));
+		$this->set(array(
+			'testData' => 'Some test data',
+			'test2' => 'more data',
+			'test3' => 'even more data',
+		));
 	}
 
 /**
@@ -109,7 +111,7 @@ class TestThemeView extends View {
 /**
  * renderElement method
  *
- * @param mixed $name
+ * @param string $name
  * @param array $params
  * @return void
  */
@@ -120,7 +122,7 @@ class TestThemeView extends View {
 /**
  * getViewFileName method
  *
- * @param mixed $name
+ * @param string $name
  * @return void
  */
 	public function getViewFileName($name = null) {
@@ -130,7 +132,7 @@ class TestThemeView extends View {
 /**
  * getLayoutFileName method
  *
- * @param mixed $name
+ * @param string $name
  * @return void
  */
 	public function getLayoutFileName($name = null) {
@@ -149,7 +151,7 @@ class TestView extends View {
 /**
  * getViewFileName method
  *
- * @param mixed $name
+ * @param string $name
  * @return void
  */
 	public function getViewFileName($name = null) {
@@ -159,7 +161,7 @@ class TestView extends View {
 /**
  * getLayoutFileName method
  *
- * @param mixed $name
+ * @param string $name
  * @return void
  */
 	public function getLayoutFileName($name = null) {
@@ -639,8 +641,8 @@ class ViewTest extends CakeTestCase {
 		$this->assertEquals('this is the plugin element using params[plugin]', $result);
 
 		$result = $this->View->element('test_plugin.plugin_element');
-		$this->assertPattern('/Not Found:/', $result);
-		$this->assertPattern('/test_plugin.plugin_element/', $result);
+		$this->assertRegExp('/Not Found:/', $result);
+		$this->assertRegExp('/test_plugin.plugin_element/', $result);
 
 		$this->View->plugin = 'TestPlugin';
 		$result = $this->View->element('test_plugin_element');
@@ -793,6 +795,19 @@ class ViewTest extends CakeTestCase {
 		$View->helpers = array('Html', 'Form');
 		$View->loadHelpers();
 
+		$this->assertInstanceOf('HtmlHelper', $View->Html, 'Object type is wrong.');
+		$this->assertInstanceOf('FormHelper', $View->Form, 'Object type is wrong.');
+	}
+
+/**
+ * test lazy loading helpers
+ *
+ * @return void
+ */
+	public function testLazyLoadHelpers() {
+		$View = new View($this->PostsController);
+
+		$View->helpers = array();
 		$this->assertInstanceOf('HtmlHelper', $View->Html, 'Object type is wrong.');
 		$this->assertInstanceOf('FormHelper', $View->Form, 'Object type is wrong.');
 	}
@@ -1039,7 +1054,7 @@ class ViewTest extends CakeTestCase {
 		$this->assertRegExp('/Posts(\/|\\\)index.ctp/', $result);
 
 		$result = $View->getViewFileName('TestPlugin.index');
-		$this->assertPattern('/Posts(\/|\\\)index.ctp/', $result);
+		$this->assertRegExp('/Posts(\/|\\\)index.ctp/', $result);
 
 		$result = $View->getViewFileName('/Pages/home');
 		$this->assertRegExp('/Pages(\/|\\\)home.ctp/', $result);
@@ -1082,9 +1097,7 @@ class ViewTest extends CakeTestCase {
 		$f = fopen($path, 'w+');
 		fwrite($f, $cacheText);
 		fclose($f);
-		ob_start();
-		$View->renderCache($path, '+1 second');
-		$result = ob_get_clean();
+		$result = $View->renderCache($path, '+1 second');
 
 		$this->assertRegExp('/^some cacheText/', $result);
 
@@ -1383,6 +1396,22 @@ TEXT;
 	public function testExtendMissingElement() {
 		$this->View->layout = false;
 		$this->View->render('extend_missing_element');
+	}
+
+/**
+ * Test extend() preceeded by an element()
+ *
+ * @return void
+ */
+	public function testExtendWithElementBeforeExtend() {
+		$this->View->layout = false;
+		$result = $this->View->render('extend_with_element');
+		$expected = <<<TEXT
+Parent View.
+this is the test elementThe view
+
+TEXT;
+		$this->assertEquals($expected, $result);
 	}
 
 /**

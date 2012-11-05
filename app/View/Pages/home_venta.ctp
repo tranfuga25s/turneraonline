@@ -153,4 +153,18 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
   </tr>
  </tbody>
 </table>
+	<div class="decorado2">
+		<div class="titulo2">Publicidad</div>
+		<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-1880233918301202";
+		/* Turnera-frontpage2 */
+		google_ad_slot = "2436087288";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
 </div>
