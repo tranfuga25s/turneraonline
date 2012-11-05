@@ -68,4 +68,22 @@ CakePlugin::load('Calendar');
 CakePlugin::load('GoogleChart');
 CakePlugin::load('AuditLog');
 App::uses( 'IniReader', 'Configure' );
-Configure::config( 'Turnera', new IniReader( ROOT.DS.APP_DIR.DS.'Config'.DS.'turnos.ini' ) );
+Configure::config( 'Turnera', new IniReader( ROOT.DS.APP_DIR.DS.'Config'.DS.'turnos' ) );
+// Enable the Dispatcher filters for plugin assets, and
+// CacheHelper.
+Configure::write('Dispatcher.filters', array(
+    'AssetDispatcher',
+    'CacheDispatcher'
+));
+
+// Add logging configuration.
+CakeLog::config('debug', array(
+    'engine' => 'FileLog',
+    'types' => array('notice', 'info', 'debug'),
+    'file' => 'debug',
+));
+CakeLog::config('error', array(
+    'engine' => 'FileLog',
+    'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
+    'file' => 'error',
+));
