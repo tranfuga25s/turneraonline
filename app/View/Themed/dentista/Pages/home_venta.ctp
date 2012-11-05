@@ -30,7 +30,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
  <tbody>
   <tr>
    <td width="50%">	
-	<div class="titulo1">¿Que es este sitio?</div>
+	<div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all ui-accordion-icons">¿Que es este sitio?</div>
 	<br />
 	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.<br /><br />
 	<div class="titulo2">Horarios de atención</div>

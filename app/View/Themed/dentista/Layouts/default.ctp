@@ -5,23 +5,24 @@
 	<title> <?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
 	<?php
 		echo $this->Html->meta('icon');
-		echo $this->Html->css('cake.generic');
-		echo $this->Html->css('turnera');
-		echo $this->Html->css( 'start/jquery-ui');
+		echo $this->Html->css('dentista');
+		echo $this->Html->css('redmond/jquery-ui-1.9.1.custom.min');
 		echo $this->Html->script( 'jquery-1.7.2.min' );
 		echo $this->Html->script( 'jquery-ui-1.8.20.custom.min' );
 		echo $scripts_for_layout;
 	?>
-	<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, medico, paciente, pedir turno, argentina" />
+	<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, dentista, pedir turno, argentina" />
 </head>
 <body>
-		<div id="header">
-			<div id="header2" class="ui-corner-bottom">
-				<div id="header3">
+	<div class="contenedor">
+		&nbsp; 
+		<div class="cinta">
 				<?php echo $this->Html->link(
 						$this->Html->image( 'cabecera.png', array( 'class' => 'imagenCabecera' ) ),
 						'/',
 						array( 'escape' => false ) ); ?>
+				<h1><?php echo $this->Html->link( "Sistema de turnos online", '/', array( 'style' => 'font-weight: bolder;' ) ); ?></h1>
+				<h3>Sitio de demostraci&oacute;n</h3>
 				<?php echo $this->Html->link(
 						$this->Html->image( 'ayuda.png', array( 'class' => 'imagenAyuda' ) ),
 						'/pages/ayuda',
@@ -30,30 +31,33 @@
 								 $this->Html->image( 'contacto.png', array( 'class' => 'imagenAyuda' ) ),
 								 '/contacto/formulario',
 								 array( 'escape' => false ) ); ?>
-				<h1><?php echo $this->Html->link( "Sistema de turnos online", '/', array( 'style' => 'font-weight: bolder;' ) ); ?></h1>
-				Sitio de demostraci&oacute;n
-			    </div>
+				
+		</div>
+		<div class="contenido">
+			<div class="menu">
+				Aqui menu
+			</div>
+			<div class="contenido2">
+				<?php echo $this->Session->flash(); ?>
+				<?php echo $this->Session->flash( 'auth' ); ?>
+				<?php echo $content_for_layout; ?>
 			</div>
 		</div>
-
-		<div id="content">
-			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->Session->flash( 'auth' ); ?>
-			<?php echo $content_for_layout; ?>
-		</div>
-
-		<div id="footer">
+		<div id="pie">
 			<div style="float: left;"><?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012</div>
 			<?php echo $this->Html->link(
 					$this->Html->image( 'tr.logo.png', array( 'alt' => "TR Sistemas Informaticos Integrados", 'border' => '0' ) ),
-					'http://www.bscomputacion.org/',
+					'http://www.gestotux.com.ar/',
 					array( 'target' => '_blank', 'escape' => false )
 				);	?>
 		</div>
 		<?php if( $loggeado ) { ?>
-		<div id="feedback">
-		    <?php echo $this->element( 'devolucion' ); ?>
-		</div>
-		<?php } echo $this->element( 'sql_dump' ); ?>
+			<div id="feedback">
+			    <?php echo $this->element( 'devolucion' ); ?>
+			</div>
+		<?php } ?>
+	</div>
+ 
+	<?php echo $this->element( 'sql_dump' ); ?>
 </body>
 </html>

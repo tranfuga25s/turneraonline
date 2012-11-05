@@ -41,16 +41,22 @@ class AppController extends Controller {
 		
 		// Temas disponibles
 		// Pongo la lista de temas disponibles
-		$f = new Folder(  ROOT . DS . APP_DIR . DS . 'View' . DS . 'Themed' . DS);
+		/*$f = new Folder(  ROOT . DS . APP_DIR . DS . 'View' . DS . 'Themed' . DS);
 		$lista = $f->read( true );
 		$this->set( 'temas', $lista[0] );
 		if( isset( $this->request->data['temas'] ) ) {
 			$this->viewClass = $lista[$this->request->data['temas']['theme']];
 			$this->Session->write( 'tema', $lista[$this->request->data['temas']['theme']] );
 		} else {
-			$this->viewClass = $this->Session->read( 'tema' );	
-		}
-		
+			$tema = $this->Session->read( 'tema' );
+			if( array_key_exists( $tema, $lista ) ) {
+				$this->viewClass = $this->Session->read( 'tema' );
+			} else {
+				
+			}	
+		}*/
+		$this->viewClass = 'Theme';
+		$this->theme = 'dentista';
 	}
 
 	public function isAuthorized() { return true; }

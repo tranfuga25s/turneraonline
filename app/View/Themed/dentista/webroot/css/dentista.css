@@ -1,0 +1,84 @@
+body {
+	background-color: #688FDC;
+	background-image: url('/turneraonline/img/dentista/fondo.png' );
+	background-repeat: repeat;
+	padding-left: 150px;
+	padding-right: 40px;
+}
+
+.contenedor {
+	background-image: url('/turneraonline/img/dentista/fondo2.png');
+	background-color: white;
+}
+
+.cinta {
+	border: 1px solid;
+    float: left;
+    height: 90px;
+    left: -21px;
+    margin-top: 30px;
+    position: relative;
+    width: 104%;
+    background-color: #F1AA2D;
+    padding-top: 10px;
+}
+
+.cinta a {
+	text-decoration: none;
+	color: black;
+}
+
+.cinta h1 {
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: bolder;
+	clear: right;
+}
+
+.cinta h3 {
+	font-size: 12px;
+}
+
+.imagenCabecera {
+    border: medium none;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 8px;
+}
+
+.contenido {
+	border: 1px solid black;
+    margin-top: 140px;
+}
+
+.menu {
+	border: 1px dotted gray;
+    float: left;
+    height: 100%;
+    width: 15%;
+}
+
+.contenido2 {
+	border: 1px dotted gray;
+    float: left;
+    height: 100%;
+    width: 84%;
+}
+
+.imagenAyuda {
+    float: right;
+    position: relative;
+    top: -50px;
+    width: 50px;
+}
+
+.pie {
+	border: 1px solid;
+    float: right;
+    height: 90px;
+    left: -21px;
+    margin-top: 30px;
+    position: relative;
+    width: 104%;
+    padding-top: 5px;
+}
