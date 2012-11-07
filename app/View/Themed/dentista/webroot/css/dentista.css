@@ -1,25 +1,27 @@
 body {
 	background-color: #688FDC;
-	background-image: url('/turneraonline/img/dentista/fondo.png' );
+	background-image: url('/turneraonline/theme/dentista/img/fondo.png' );
 	background-repeat: repeat;
 	padding-left: 150px;
 	padding-right: 40px;
+	font-family: sans-serif;
 }
 
 .contenedor {
-	background-image: url('/turneraonline/img/dentista/fondo2.png');
+	background-image: url('/turneraonline/theme/dentista/img/fondo2.png');
 	background-color: white;
+	min-height: 590px;
+	max-height: 1111px;
 }
 
 .cinta {
-	border: 1px solid;
     float: left;
     height: 90px;
     left: -21px;
     margin-top: 30px;
     position: relative;
     width: 104%;
-    background-color: #F1AA2D;
+    background-color: #A3A2EE;
     padding-top: 10px;
 }
 
@@ -47,20 +49,18 @@ body {
 }
 
 .contenido {
-	border: 1px solid black;
     margin-top: 140px;
 }
 
 .menu {
-	border: 1px dotted gray;
     float: left;
     height: 100%;
     width: 15%;
+    color: lightBlue;
 }
 
 .contenido2 {
-	border: 1px dotted gray;
-    float: left;
+    float: right;
     height: 100%;
     width: 84%;
 }
@@ -81,4 +81,33 @@ body {
     position: relative;
     width: 104%;
     padding-top: 5px;
+}
+
+.alinear-superior {
+	vertical-align: text-top;
+}
+
+.alinear-centrado {
+	text-align: center;
+}
+
+.separacion-titulo {
+	padding: 2px 2px 2px 2px;
+}
+
+.flotatipo {
+	height: 148px;
+	width: 240px;
+	vertical-align: middle;
+	font-size: 16px;
+	margin-top: 2px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.flotatipo img {
+	vertical-align: middle;
+	margin-top: 25px;
 }

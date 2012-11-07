@@ -21,35 +21,33 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 		simpleSlide();
 	});
 </script>
-<div>
- <h1>Bienvenido <?php if( $loggeado ) { echo ", ". $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; } ?> !</h1>
-</div>
-
-<div class="decorado1">
+<div class="ui-widget-content ui-corner-all  alinear-superior">
 <table border="0">
  <tbody>
   <tr>
-   <td width="50%">	
-	<div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all ui-accordion-icons">¿Que es este sitio?</div>
+   <td width="50%" class="alinear-superior">	
+	<div class="ui-widget-header ui-corner-all alinear-centrado separacion-titulo">¿Que es este sitio?</div>
 	<br />
-	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.<br /><br />
-	<div class="titulo2">Horarios de atención</div>
+	En este sitio se encuentra una demostraci&oacute;n del sistema de turnos que tenemos para ofrecerle!.<br /><br />
+	<div class="ui-widget-header ui-corner-all alinear-centrado separacion-titulo">Horarios de atención</div>
 	<br />
-	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
+	<center>
+		<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
+	</center>
    </td>
-   <td width="30%"><center>
-	<div class="titulo2">¿Para quienes es util?</div>
-	<div class="right-button left" rel="usuarios" style="display: none;"></div>
-	<div class="simpleSlide-window" rel="usuarios">
+   <td width="30%" class=" alinear-superior"><center>
+	<div class="ui-widget-header ui-corner-all alinear-centrado separacion-titulo">¿Para quienes es util?</div>
+	<div class="right-button left" rel="usuarios" style="display: none; "></div>
+	<div class="simpleSlide-window alinear-centrado" rel="usuarios" style="height: 150px; width: 250px; position: relative; overflow: hidden; ">
 	    <div class="simpleSlide-tray" rel="usuarios">
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />M&eacute;dicos</div>'           , array( 'controller' => 'pages/clientes/medicos'      ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Consultorios</div>'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Sanatorios y/o Hospitales</div>', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Dentistas</div>'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Salones de Belleza</div>'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>        
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de Tenis</div>'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Hoteles Alojamiento</div>'      , array( 'controller' => 'pages/clientes/hotel'        ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />M&eacute;dicos</div>'           , array( 'controller' => 'pages/clientes/medicos'      ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Consultorios</div>'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Sanatorios y/o Hospitales</div>', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Dentistas</div>'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Salones de Belleza</div>'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>        
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de Tenis</div>'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="ui-corner-all ui-widget-content flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Hoteles Alojamiento</div>'      , array( 'controller' => 'pages/clientes/hotel'        ), array( 'escape' => false ) ); ?></div>
 	    </div>
 	</div>
 	<div class="simpleSlide-tray" rel="usuarios"></div>
@@ -65,14 +63,14 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
  </tbody>
 </table>
 </div>
-
-<div class="decorado1">
+&nbsp;
+<div>
 <table border="0">
  <tbody>
   <tr>
-   <td width="50%">
+   <td width="50%" class="ui-widget-content ui-corner-all alinear-superior">
 	<?php if( !$loggeado ) { ?>
-	<div class="titulo1">Pruebe nuestro sistema!</div>
+	<div class="ui-widget-header ui-corner-all alinear-centrado separacion-titulo">Pruebe nuestro sistema!</div>
 	<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) ); ?>
 	<table>
 	    <tbody>
@@ -95,7 +93,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	    </tbody>
 	</table>
 	<?php } else { ?>
-	<div class="titulo1">Bienvenido</div>
+	<div class="ui-widget-header ui-corner-all">Bienvenido</div>
 		<br />
 		<center>
 <div class="actions2">
@@ -126,8 +124,8 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<?php } ?>
 		</center>
    </td>
-   <td>
-	<div class="titulo1">¿Como puedo probarlo?</div>
+   <td class="ui-widget-content ui-corner-all alinear-superior">
+	<div class="ui-widget-header ui-corner-all alinear-centrado separacion-titulo">¿Como puedo probarlo?</div>
 	Para ingresar y ver las características de este sitio ingrese mediante cualquier a de las siguientes cuentas:
 	<div id="referencia">
 		<h3><a href="#">Referencia</a></h3>

@@ -21,6 +21,8 @@ class AppController extends Controller {
 		),
 		'Session'
 	);
+	
+	public $theme = 'dentista';
 
 	// Esto permite que cualquier pagina del controlador Pages sea vista por el publico.
 	public function beforeFilter() {
@@ -55,8 +57,6 @@ class AppController extends Controller {
 				
 			}	
 		}*/
-		$this->viewClass = 'Theme';
-		$this->theme = 'dentista';
 	}
 
 	public function isAuthorized() { return true; }
