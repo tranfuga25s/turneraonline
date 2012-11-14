@@ -65,7 +65,7 @@ Configure :: write('acl.user.display_name', "Ususario.razon_social");
 /*
  * Indicates whether the presence of the Acl behavior in the user and role models must be verified when the ACL plugin is accessed
  */
-Configure :: write('acl.check_act_as_requester', true);
+Configure :: write('acl.check_act_as_requester', false );
 
 /*
  * Add the ACL plugin 'locale' folder to your application locales' folders

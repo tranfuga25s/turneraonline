@@ -64,9 +64,10 @@ Cache::config( 'default', array( 'engine' => 'File' ) );
  *
  */
 
-CakePlugin::load('Calendar');
+//CakePlugin::load('calendar');
 CakePlugin::load('GoogleChart');
 CakePlugin::load('AuditLog');
+CakePlugin::load('Acl', array( 'bootstrap' => true ) );
 App::uses( 'IniReader', 'Configure' );
 Configure::config( 'Turnera', new IniReader( ROOT.DS.APP_DIR.DS.'Config'.DS.'turnos' ) );
 

@@ -12,12 +12,12 @@ class AcosController extends AclAppController {
 	var $name = 'Acos';
 	//var $components = array('Acl', 'Acl.AclManager');
 	 
-	function admin_index()
+	function administracion_index()
 	{
 	    
 	}
 	
-	function admin_empty_acos($run = null)
+	function administracion_empty_acos($run = null)
 	{
 	    if(isset($run))
 	    {
@@ -38,7 +38,7 @@ class AcosController extends AclAppController {
 	    }
 	}
 	
-	function admin_build_acl($run = null)
+	function administracion_build_acl($run = null)
 	{
 	    if(isset($run))
 	    {
@@ -57,7 +57,7 @@ class AcosController extends AclAppController {
 	    }
 	}
 
-    function admin_prune_acos($run = null)
+    function administracion_prune_acos($run = null)
     {
         if(isset($run))
         {
@@ -76,7 +76,7 @@ class AcosController extends AclAppController {
         }
     }
     
-    function admin_synchronize($run = null)
+    function administracion_synchronize($run = null)
     {
         if(isset($run))
         {

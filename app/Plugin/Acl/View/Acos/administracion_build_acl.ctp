@@ -46,7 +46,8 @@ else
         echo '</p>';
         
         echo '<p>';
-        echo $this->Html->link($this->Html->image('/acl/img/design/add.png') . ' ' . __d('acl', 'Build'), '/admin/acl/acos/build_acl/run', array('escape' => false));
+        echo $this->Html->link( $this->Html->image('/acl/img/design/add.png') . ' ' . __d('acl', 'Build'),
+    				array( 'controller' => 'acos', 'action' => 'build_acl', 'run', 'plugin' => 'acl' ), array('escape' => false));
         echo '</p>';
     }
     else
