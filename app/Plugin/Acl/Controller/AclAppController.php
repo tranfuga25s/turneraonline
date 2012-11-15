@@ -65,7 +65,7 @@ class AclAppController extends AppController
 	    		
 	    		if(!$is_requester)
 	    		{
-	    			$this->render('/Aros/admin_not_acl_requester');
+	    			$this->render('/Aros/administraicion_not_acl_requester');
 	    		}
 	    	}
 		}
@@ -104,7 +104,7 @@ class AclAppController extends AppController
         		
         		if($has_updates)
         		{
-        		    $this->render('/Acos/admin_has_updates');
+        		    $this->render('/Acos/administracion_has_updates');
         		}
         		
         		$this->AclManager->update_controllers_hash_file();

@@ -40,7 +40,7 @@ if(count($missing_aros['users']) > 0)
 if(count($missing_aros['roles']) > 0 || count($missing_aros['users']) > 0)
 {
 	echo '<p>';
-	echo $this->Html->link(__d('acl', 'Build'), '/admin/acl/aros/check/run');
+	echo $this->Html->link(__d('acl', 'Build'), array('plugin' => 'acl', 'controller' => 'aros', 'action' => 'check', 'run' ) );
 	echo '</p>';
 }
 else

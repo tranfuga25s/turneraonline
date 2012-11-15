@@ -57,7 +57,8 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/5_48x48.png' ) 
                 .'<span>Permisos</span>',
-                '#', array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Todavía no implementado' ) ); ?></li>
+                array( 'plugin' => 'acl', 'controller' => 'acos'),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Permisos del sistema' ) ); ?></li>
    <li>&nbsp;</li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/14_48x48.png' ) 

@@ -50,7 +50,7 @@ foreach($users as $user)
 	   else
 	   {
 	   	   $title = __d('acl', 'Update the user role');
-	       echo '  <td>' . $this->Html->link($this->Html->image('/acl/img/design/tick_disabled.png'), '/admin/acl/aros/update_user_role/user:' . $user[$user_model_name][$user_pk_name] . '/role:' . $role[$role_model_name][$role_pk_name], array('title' => $title, 'alt' => $title, 'escape' => false)) . '</td>';
+	       echo '  <td>' . $this->Html->link($this->Html->image('/acl/img/design/tick_disabled.png'), array( 'plugin' => 'acl', 'controller' => 'aros', 'action' => 'update_user_role', 'user' => $user[$user_model_name][$user_pk_name], 'role' => $role[$role_model_name][$role_pk_name] ), array('title' => $title, 'alt' => $title, 'escape' => false)) . '</td>';
 	   }
 	}
 	

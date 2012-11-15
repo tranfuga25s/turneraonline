@@ -42,7 +42,7 @@ Configure :: write('acl.aro.user.primary_key', 'id_usuario');
 /*
  * The name of the database field that can be used to display the role name
  */
-Configure :: write('acl.aro.role.display_field', 'razon_social');
+Configure :: write('acl.aro.role.display_field', 'nombre');
 
 /*
  * You can add here role id(s) that are always allowed to access the ACL plugin (by bypassing the ACL check)
@@ -60,7 +60,7 @@ Configure :: write('acl.role.access_plugin_user_ids', array(1));
  * The users table field used as username in the views
  * It may be a table field or a SQL expression such as "CONCAT(User.lastname, ' ', User.firstname)" for MySQL or "User.lastname||' '||User.firstname" for PostgreSQL
  */
-Configure :: write('acl.user.display_name', "Ususario.razon_social");
+Configure :: write('acl.user.display_name', "CONCAT( `Usuario`.`apellido`, ', ', `Usuario`.`nombre` )");
 
 /*
  * Indicates whether the presence of the Acl behavior in the user and role models must be verified when the ACL plugin is accessed
