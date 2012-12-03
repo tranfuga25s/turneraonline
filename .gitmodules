@@ -1,3 +1,6 @@
 [submodule "app/Plugin/GoogleChart"]
 	path = app/Plugin/GoogleChart
 	url = https://github.com/scottharwell/cakephp-googlecharts-plugin.git
+[submodule "app/Plugin/gestotux"]
+	path = app/Plugin/gestotux
+	url = https://github.com/tranfuga25s/cakephp-gestotux.git
