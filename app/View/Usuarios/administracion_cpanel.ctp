@@ -63,7 +63,7 @@
                 array( 'controller' => 'estadisticas', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Visor de estadisticas' ) ); ?></li>
    <li><?php echo $this->Html->link(
-                $this->Html->image( 'assets/icons/14_48x48.png' ) 
+                $this->Html->image( 'assets/icons/4_48x48.png' ) 
                 .'<span>Mi cuenta</span>',
                 array( 'plugin' => 'gestotux', 'controller' => 'gestotux', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Ver cuenta corriente' ) ); ?></li>
