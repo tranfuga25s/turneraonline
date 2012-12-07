@@ -36,13 +36,6 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<div class="titulo2">Horarios de atención</div>
 	<br />
 	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
-	<div class="titulo2">Temas disponibles</div>
-	<br />
-	Elija uno de los siguientes temas para cambiarlo directamente:
-	<?php echo $this->Form->create( 'temas' );
-		  echo $this->Form->input( 'theme', array( 'label' => 'Elija uno:', 'options' => $temas ) );
-		  echo $this->Form->submit( "Cambiar" );
-	?>
    </td>
    <td width="30%"><center>
 	<div class="titulo2">¿Para quienes es util?</div>
