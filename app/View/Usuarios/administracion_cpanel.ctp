@@ -2,7 +2,6 @@
 <?php $this->set( 'title_for_layout', 'Panel de control' ); ?>
 <h1>Bienvenido, <span><?php echo $usuarioactual['nombre']; ?></span>!</h1>
 <p>Que desea hacer hoy?</p>
- <!-- Big buttons -->
 <h2>Datos</h2>
 <ul class="dash">
    <li><?php echo $this->Html->link(
@@ -41,7 +40,6 @@
                 array( 'controller' => 'turnos', 'action' => 'index', 'plugin' => false ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Listado de turnos' ) ); ?></li>
 </ul>
-<!-- End of Big buttons -->
 <h2>Sistema</h2>
 <ul class="dash">
    <li><?php echo $this->Html->link(
@@ -59,11 +57,15 @@
                 .'<span>Permisos</span>',
                 array( 'plugin' => 'acl', 'controller' => 'acos'),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Permisos del sistema' ) ); ?></li>
-   <li>&nbsp;</li>
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/icons/14_48x48.png' ) 
                 .'<span>Estadisticas</span>',
                 array( 'controller' => 'estadisticas', 'action' => 'index', 'plugin' => false ),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Visor de estadisticas' ) ); ?></li>
+   <li><?php echo $this->Html->link(
+                $this->Html->image( 'assets/icons/14_48x48.png' ) 
+                .'<span>Mi cuenta</span>',
+                array( 'plugin' => 'gestotux', 'controller' => 'gestotux', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Visor de estadisticas' ) ); ?></li>
 </ul>
 <h2>Configuraci&oacute;n</h2>
