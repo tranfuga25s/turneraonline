@@ -66,7 +66,7 @@
                 $this->Html->image( 'assets/icons/14_48x48.png' ) 
                 .'<span>Mi cuenta</span>',
                 array( 'plugin' => 'gestotux', 'controller' => 'gestotux', 'action' => 'index' ),
-                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Visor de estadisticas' ) ); ?></li>
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Ver cuenta corriente' ) ); ?></li>
 </ul>
 <h2>Configuraci&oacute;n</h2>
 <ul class="dash">
