@@ -31,6 +31,7 @@ class AppController extends Controller {
 		}
 		if( $this->request->administracion == "administracion" ) {
 			$this->layout = 'administracion';
+			$this->theme = '';
 		}
 		// coloco los datos del usuario
 		$adentro = $this->Auth->loggedIn();

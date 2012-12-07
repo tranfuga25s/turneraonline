@@ -64,7 +64,7 @@ Cache::config( 'default', array( 'engine' => 'File' ) );
  *
  */
 
-CakePlugin::load('calendar');
+CakePlugin::load( 'Calendar' );
 CakePlugin::load( 'GoogleChart' );
 CakePlugin::load( 'AuditLog'    );
 CakePlugin::load( 'Acl', array( 'bootstrap' => true ) );
