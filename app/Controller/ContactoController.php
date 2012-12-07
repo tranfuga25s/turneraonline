@@ -7,6 +7,7 @@ class ContactoController extends AppController {
 	
 	public function beforeFilter() {
     	$this->Auth->allow(array('formulario'));
+		parent::beforeFilter();
     }
 	
 	public function formulario() {}
