@@ -6,7 +6,7 @@ App::uses('CakeEmail', 'Network/Email');
 class ContactoController extends AppController {
 	
 	public function beforeFilter() {
-    	$this->Auth->allow('*');
+    	$this->Auth->allow(array('formulario'));
     }
 	
 	public function formulario() {}
@@ -31,7 +31,8 @@ class ContactoController extends AppController {
 		}
 	}
     
-    public function error() {
+    public function administracion_error() {
+    	$this->layout = 'administracion';
         if( $this->request->isPost() ) {
             // Verifico la dirección de email
             if( !empty( $this->data['contacto']['email'] ) && !Validation::email( $this->data['contacto']['email'], true ) ) {
@@ -61,9 +62,12 @@ class ContactoController extends AppController {
                 $this->redirect( '/' );
             }
         }
+		// Averiguo el referer
+		$this->set( 'direccion_error', $this->referer() );
     }
     
-    public function sugerencia() {
+    public function administracion_sugerencia() {
+    	$this->layout = 'administracion';
         if( $this->request->isPost() ) {
             // Verifico la dirección de email
             if( !empty( $this->data['contacto']['email'] ) && !Validation::email( $this->data['contacto']['email'], true ) ) {
