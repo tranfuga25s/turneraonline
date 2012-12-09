@@ -2,7 +2,7 @@
 <h1>Enviar una sugerencia para el sistema</h1>
 <p><b>Muchas Gracias por tomarse el tiempo de enviarnos una sugerencia!</b></p>
 <div class="contacto form">
-	<?php $this->Form->create( 'contacto' ); ?>
+	<?php echo $this->Form->create( 'contacto' ); ?>
     <fieldset>
     	<legend>Utilice el siguiente formulario para enviarnos la sugerencia:</legend>
         <?php
