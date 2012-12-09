@@ -64,6 +64,7 @@ class ContactoController extends AppController {
     	$this->layout = 'administracion';
         if( $this->request->isPost() ) {
             $email = new CakeEmail();
+			$user = $this->Auth->user();
             $email->from( array( $user['email'] => $user['razonsocial'] ) );
             $email->to('esteban.zeller@gmail.com');
             $email->subject( 'Nueva sugerencia para turnosonline' );
