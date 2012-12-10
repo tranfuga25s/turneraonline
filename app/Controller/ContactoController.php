@@ -49,9 +49,9 @@ class ContactoController extends AppController {
                 $email->to('esteban.zeller@gmail.com');
                 $email->subject( 'Informe de error de turnosonline' );
                 $texto = 'Ha tenido un nuevo contacto a través del sitio de turnosonline: \n'
-                             .$this->data['contacto']['descripcion_corta'].'\n\n'
-                             .$this->data['contacto']['detalle'].'\n'
-                             .'Deseo mantenerme informado de este error: ';
+                             .$this->data['contacto']['descripcion_corta'].' \n'
+                             .$this->data['contacto']['detalle'].' \n';
+				$email->send($texto);							 
                 $this->Session->setFlash( "Su mensaje ha sido enviado correctamente. Gracias por contactarse con nosotros!" , 'default', array( 'class' => 'success') );
                 $this->redirect( array( 'controller' => 'usuarios', 'action' => 'cpanel' ) );
             }
