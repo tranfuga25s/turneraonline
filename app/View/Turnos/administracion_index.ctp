@@ -6,7 +6,23 @@
 	  echo $this->Html->link( 'Lista de Medicos', array('controller' => 'medicos', 'action' => 'index')); ?> </li>
 </div>
 <br />
-<h2><?php echo __('Turnos');?></h2>
+<h2>Lista de Turnos</h2>
+<?php echo $this->Form->create( 'Turno' ); ?>
+<table style="border: 1px solid gray;" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td colspan="6"><h4>Filtro</h4></td>
+		</tr>
+		<tr style="border: 1px gray solid;">
+			<td><?php echo $this->Form->input( 'atendido', array( 'type' => 'checkbox', 'label' => 'Recibidos' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'reservado', array( 'type' => 'checkbox', 'label' => 'Reservado' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'cancelado', array( 'type' => 'checkbox', 'label' => 'Cancelado' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'consultorio_id', array( 'type' => 'select', 'label' => 'Consultorio:', 'options' => $consultorios, 'empty' => 'Todos' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'medico_id', array( 'type' => 'select', 'label' => 'Medico:', 'options' => $medicos, 'empty' => 'Todos' ) ); ?></td>
+			<td><?php echo $this->Form->end( 'Filtrar' ); ?></td>
+		</tr>
+	</tbody>
+</table>
 <table cellpadding="0" cellspacing="0">
 <tr>
 		<th><?php echo $this->Paginator->sort('recibido', 'R');?></th>

@@ -345,10 +345,20 @@ class TurnosController extends AppController {
 	* @return void
 	*/
 	public function administracion_index() {
+		$conditions = array();
+		if( !empty( $this->request->data ) ) {
+			if( $this->request->data['Turno']['atendido']  ) { $conditions['atendido'] = true; 	 }
+			if( $this->request->data['Turno']['reservado'] ) { $conditions['reservado'] = true;  }
+			if( $this->request->data['Turno']['cancelado'] ) { $conditions['cancelado'] = true;  }
+			if( $this->request->data['Turno']['consultorio_id'] != 0 ) { $conditions['consultorio_id'] = $this->request->data['Turno']['consultorio_id']; }
+			if( $this->request->data['Turno']['medico_id'] != 0 ) { $conditions['medico_id'] = $this->request->data['Turno']['medico_id']; }
+		}
 		$this->Turno->recursive = 2;
 		$this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
 		$this->Turno->Paciente->virtualFields = array( 'razonsocial' => 'CONCAT( Paciente.apellido, \', \', Paciente.nombre )' );
-		$this->set('turnos', $this->paginate());
+		$this->set('turnos', $this->paginate( 'Turno', $conditions ) );
+		$this->set( 'consultorios', $this->Turno->Consultorio->find('list') );
+		$this->set( 'medicos', $this->Turno->Medico->lista2() );
 	}
 
 	/**
