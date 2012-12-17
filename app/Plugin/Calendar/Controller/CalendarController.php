@@ -1,6 +1,6 @@
 <?php
 
-class CalendarsController extends AppController{
+class CalendarController extends CalendarAppController {
 
     public $uses = array();
 
