@@ -22,7 +22,7 @@ class AppController extends Controller {
 		'Session'
 	);
 	
-	public $theme = 'dentista';
+	//public $theme = 'dentista';
 
 	// Esto permite que cualquier pagina del controlador Pages sea vista por el publico.
 	public function beforeFilter() {
