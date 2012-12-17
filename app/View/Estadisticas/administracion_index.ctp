@@ -3,7 +3,6 @@ $this->set( 'title_for_layout', "Estadisticas" );
 echo $this->Html->script( 'https://www.google.com/jsapi', array( 'inline' => false ) ); 
 ?>
 <script>
-	//$( function() { actualizarGraficos(); });
 	
 	function actualizarGraficos() {
 		// Genero las llamadas en ajax para cada grafico
@@ -68,5 +67,7 @@ echo $this->Html->script( 'https://www.google.com/jsapi', array( 'inline' => fal
 <div id="acciones">
 	<?php echo $this->Html->tag( 'a', 'Actualizar graficos', array( 'onclick' => 'actualizarGraficos()', 'class' => 'acciones' ) ); ?>
 </div>
-<div class="contenedor-graficos"></div><br />
+<div class="contenedor-graficos"></div>
+<br />
 <div><small>Basado en la api de <a href="https://developers.google.com/chart/">Google Chart</a></small></div>
+<script type="text/javascript">$( function() { actualizarGraficos(); });</script>
