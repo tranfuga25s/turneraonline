@@ -48,7 +48,7 @@ class ObrasSocialesController extends AppController {
 	 */
 	public function index() {
 		$this->ObraSocial->recursive = 0;
-		$this->set('obrasSociales', $this->paginate());
+		$this->set('obrasSociales', $this->ObraSocial->find( 'all' ) );
 	}
 
 	/**

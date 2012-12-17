@@ -15,6 +15,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 <script type="text/javascript">
 	$( function() {
 		$("#horarios").button();
+		$("#obrasociales").button();
 		$("a", "#botones").button();
 		$("#referencia").accordion();
 		simpleSlide();
@@ -36,6 +37,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<div class="titulo2">Horarios de atención</div>
 	<br />
 	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
+	<?php echo $this->Html->link( 'Obras sociales disponibles', array( 'controller' => 'obras_sociales', 'action' => 'index' ), array( 'id' => 'obrasociales' ) ); ?>
    </td>
    <td width="30%"><center>
 	<div class="titulo2">¿Para quienes es util?</div>
