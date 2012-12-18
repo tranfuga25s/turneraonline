@@ -113,7 +113,7 @@
 			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</script>
 		</div>
-		<?php echo $this->element('devolucion'); ?>
+		<?php echo $this->element('devoluciones'); ?>
         <!-- Footer -->
         <div id="footer">
             <p class="mid">
