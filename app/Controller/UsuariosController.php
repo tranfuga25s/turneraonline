@@ -50,6 +50,7 @@ class UsuariosController extends AppController {
 					case 'index':
 					case 'add':
 					case 'delete':
+					case 'historico':
 					{ return true; break; }
 				}
 				// no pongo break para que acredite las acciones de menos prioridad
@@ -541,17 +542,17 @@ public function delete($id = null) {
 		}
 		$this->loadModel( 'Turno' );
 		if( $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene turnos asociados todavía." );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
 			$this->redirect( array( 'action' => 'index'  ) );
 		}
 		$this->loadModel( 'Medico' );
 		if( $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene un medico asociado" );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		$this->loadModel( 'Secretaria' );
 		if( $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene una secretaria asociada" );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $this->Usuario->delete() ) {
@@ -636,5 +637,21 @@ public function delete($id = null) {
 			Cache::delete( substr( $clave, 5 ) );
 		}
 		Cache::gc();
+	}
+
+    /**
+	 * Muestra el listado de turnos del paciente para el médico
+	 * 
+	 * @param usuario_id integer Identificación del usuario buscado
+	 * @throws NotFoundException Si el usuario no existe
+	 */
+	public function historico( $usuario_id ) {
+		$this->Usuario->id = $usuario_id;
+		if( !$this->Usuario->exists() ) {
+			throw new NotFoundException( "El usuario no existe" );
+		}
+		$this->loadModel( 'Turnos' );
+		$this->set( 'usuario', $this->Usuario->read() );
+		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
 }

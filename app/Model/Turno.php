@@ -493,5 +493,16 @@ class Turno extends AppModel {
    	
    }
 
+  /*!
+   * Busca la lista de turnos de un usuario específico
+   * @param id_usuario Identificador del usuario
+   * @return Array con los turnos encontrados
+   */
+   public function buscarHistoricoUsuario( $id_usuario ) {
+   	return $this->find( 'all', array( 'conditions' => array( 'paciente_id' => $id_usuario ),
+   									  'recursive' => -1,
+   									  'order' => array( 'fecha_inicio' => 'desc' ) ) );
+   }
+
 }
 ?>
