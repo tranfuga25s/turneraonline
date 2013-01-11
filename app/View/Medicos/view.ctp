@@ -72,7 +72,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 		<h3><a href="#">Acci&oacute;nes</a></h3>
 		<div id="acciones" style="width: 150px; text-align: center;">
 			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) );
-			      echo $this->Html->link( 'Contactar', '/pages/contacto' ); 
+			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ) ); 
 			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ) ); ?>
 		</div>
 	</td></tr></tbody></table>
