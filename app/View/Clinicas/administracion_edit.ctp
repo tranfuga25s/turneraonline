@@ -8,6 +8,9 @@
 		echo $this->Form->input('direccion');
 		echo $this->Form->input('telefono');
 		echo $this->Form->input('email');
+		
+		echo $this->Form->input( 'lat' );
+		echo $this->Form->input( 'lng' );
 	?>
 	</fieldset>
 <?php echo $this->Form->end( 'Guardar');?>

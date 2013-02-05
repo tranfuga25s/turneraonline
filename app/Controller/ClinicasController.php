@@ -79,6 +79,8 @@ class ClinicasController extends AppController {
 		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'especialidad_id' ) );
 		$clinica['Especialidades'] = $this->Especialidad->find( 'all', array( 'conditions' => array( 'id_especialidad' => $ids ) ) );
 		$this->set( 'clinica', $clinica );
+		
+		$this->helpers[] = 'GoogleMapV3';
 	}
 
 /**
@@ -103,6 +105,7 @@ class ClinicasController extends AppController {
 			throw new NotFoundException( 'La clinica no existe' );
 		}
 		$this->set('clinica', $this->Clinica->read(null, $id));
+		$this->helpers[] = 'GoogleMapV3';
 	}
 
 /**

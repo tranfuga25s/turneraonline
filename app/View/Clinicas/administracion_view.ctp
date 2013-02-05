@@ -1,17 +1,19 @@
 <?php $this->set( 'title_for_layout', "Datos de " . $clinica['Clinica']['nombre'] ); ?>
+<div class="actions">
+	<h2>Acciones</h2>
+	<?php echo $this->Html->link( 'Editar esta Clinica', array( 'action' => 'edit', $clinica['Clinica']['id_clinica'] ) ); ?>
+	<?php echo $this->Form->postLink( 'Eliminar Clinica', array( 'action' => 'delete', $clinica['Clinica']['id_clinica'] ), null, __('Are you sure you want to delete # %s?', $clinica['Clinica']['id_clinica'] ) ); ?>
+	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'action' => 'index' ) ); ?>
+	<?php echo $this->Html->link( 'Nueva Clinica', array( 'action' => 'add' ) ); ?>
+</div>
 <h2>Clinica</h2>
 <dl>
-	<dt><?php echo __('Id Clinica'); ?></dt>
-	<dd>
-		<?php echo h($clinica['Clinica']['id_clinica']); ?>
-		&nbsp;
-	</dd>
-	<dt><?php echo __('Nombre'); ?></dt>
+	<dt>Nombre de la clinica:</dt>
 	<dd>
 		<?php echo h($clinica['Clinica']['nombre']); ?>
 		&nbsp;
 	</dd>
-	<dt><?php echo __('Direccion'); ?></dt>
+	<dt>Direcci&oacute;n:</dt>
 	<dd>
 		<?php echo h($clinica['Clinica']['direccion']); ?>
 		&nbsp;
@@ -27,16 +29,33 @@
 		if( !empty( $clinica['Clinica']['logo'] ) ) {
 			echo $this->Html->image( $clinica['Clinica']['logo'], array( 'alt' => $clinica['Clinica']['nombre'], 'height' => 150 ) );
 		} else {
-			echo "No ingreso ningun logotipo";
+			echo "No ingreso ningún logotipo";
 		} ?>
 		&nbsp;
 	</dd>
+	<dt>Ubicacion:</dt>
+	<dd>
+		<?php
+		// init map (prints container)
+		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true ) );
+		 
+		// add markers
+		$options = array(
+		    'lat' => $clinica['lat'],
+		    'lng' => $clinica['lng'],
+		    //'icon'=> 'url_to_icon', // optional
+		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
+		    'content' => $clinica['Clinica']['direccion'].'<br />'
+		    		     .$clinica['Clinica']['telefono'].'<br />'
+		    		     .'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
+		);
+		
+		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
+		 
+		// print js
+		echo $this->GoogleMapV3->script();
+	?>
+	</dd>
 </dl>
 <br />
-<div class="actions">
-	<h2>Acciones</h2>
-	<?php echo $this->Html->link( 'Editar esta Clinica', array( 'action' => 'edit', $clinica['Clinica']['id_clinica'] ) ); ?>
-	<?php echo $this->Form->postLink( 'Eliminar Clinica', array( 'action' => 'delete', $clinica['Clinica']['id_clinica'] ), null, __('Are you sure you want to delete # %s?', $clinica['Clinica']['id_clinica'] ) ); ?>
-	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'action' => 'index' ) ); ?>
-	<?php echo $this->Html->link( 'Nueva Clinica', array( 'action' => 'add' ) ); ?>
-</div>
+
