@@ -9,6 +9,22 @@ $this->set( 'title_for_layout', "Datos del médico" );
 		$('a', "#acciones" ).button();
 	});
 </script>
+<style>
+.horarios {
+	margin-left: 10px;
+	width: 95%;
+}
+
+.horarios th {
+	background-color: lightgray;
+	font-weight: bolder;
+	padding: 2px 8px 2px 15px;
+}
+
+.horarios td {
+	padding: 2px 8px 2px 15px;
+}
+</style>
 <div class="decorado1">
 	<div class="titulo1">Datos del m&eacute;dico <?php echo $medico['Usuario']['razonsocial']; ?></div>
 	<table><tbody><tr><td id="acordion1">
@@ -25,7 +41,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 		<h3><a href="#">Disponibilidad Horaria</a></h3>
 		<div>
 			El m&eacute;dico atiende durante los siguientes horarios:<br />
-			<table>
+			<table class="horarios">
 				<tbody>
 					<tr>
 						<th>D&iacute;a</th>
@@ -56,7 +72,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 		<h3><a href="#">Acci&oacute;nes</a></h3>
 		<div id="acciones" style="width: 150px; text-align: center;">
 			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) );
-			      echo $this->Html->link( 'Contactar', '/pages/contacto' ); 
+			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ) ); 
 			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ) ); ?>
 		</div>
 	</td></tr></tbody></table>
