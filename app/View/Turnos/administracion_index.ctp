@@ -21,8 +21,8 @@
 			<td><?php echo $this->Form->input( 'medico_id', array( 'type' => 'select', 'label' => 'Medico:', 'options' => $medicos, 'empty' => 'Todos' ) ); ?></td>
 		</tr>
 		<tr>
-			<td colspan="2"><?php echo $this->Form->input( 'fechaDesde', array( 'type' => 'date', 'label' => 'Desde:', 'dateFormat' => 'DMY' ) ); ?></td>
-			<td colspan="3"><?php echo $this->Form->input( 'fechaHasta', array( 'type' => 'date', 'label' => 'Hasta:', 'dateFormat' => 'DMY' ) ); ?></td>
+			<td colspan="2"><?php echo $this->Form->input( 'fechaDesdeCkB', array( 'type' => 'checkbox', 'label' => 'Desde:', 'div' => false ) ) . $this->Form->input( 'fechaDesde', array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'div' => false ) ); ?></td>
+			<td colspan="3"><?php echo $this->Form->input( 'fechaHastaCkB', array( 'type' => 'checkbox', 'label' => 'Hasta:', 'div' => false ) ) . $this->Form->input( 'fechaHasta', array( 'type' => 'date', 'label' => '', 'dateFormat' => 'DMY', 'div' => false ) ); ?></td>
 		</tr>			
 		<tr>
 			<td><?php echo $this->Form->end( 'Filtrar' ); ?></td>

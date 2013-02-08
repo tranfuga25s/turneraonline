@@ -349,18 +349,18 @@ class TurnosController extends AppController {
 		$conditions = array();
 		if( !empty( $this->request->data ) ) {
 			if( $this->request->data['Turno']['atendido']  ) { $conditions['atendido'] = true; 	 }
-			if( $this->request->data['Turno']['reservado'] ) { $conditions['reservado'] = true;  }
+			if( $this->request->data['Turno']['reservado'] ) { $conditions[] = '`Turno`.`paciente_id` IS NOT NULL';  }
 			if( $this->request->data['Turno']['cancelado'] ) { $conditions['cancelado'] = true;  }
 			if( $this->request->data['Turno']['consultorio_id'] != 0 ) { $conditions['consultorio_id'] = $this->request->data['Turno']['consultorio_id']; }
 			if( $this->request->data['Turno']['medico_id'] != 0 ) { $conditions['medico_id'] = $this->request->data['Turno']['medico_id']; }
-			if( isset( $this->request->data['Turno']['fechaHasta'] ) ) {
-				$conditions['fecha_inicio'] = '<= '.$this->request->data['Turno']['fechaHasta']['year'].'-'.
-												    $this->request->data['Turno']['fechaHasta']['month'].'-'.
-												    $this->request->data['Turno']['fechaHasta']['day'].' 23:59:59'; }
-			if( isset( $this->request->data['Turno']['fechaDesde'] ) ) {
-				$conditions['fecha_fin'] = '>= '.$this->request->data['Turno']['fechaDesde']['year'].'-'.
-												 $this->request->data['Turno']['fechaDesde']['month'].'-'.
-												 $this->request->data['Turno']['fechaDesde']['day'].' 00:00:00'; }
+			if( $this->request->data['Turno']['fechaDesdeCkB'] ) {
+				$conditions['DATE( `Turno`.`fecha_inicio` ) >= '] = $this->request->data['Turno']['fechaDesde']['year'].'-'.
+												                    $this->request->data['Turno']['fechaDesde']['month'].'-'.
+												                    $this->request->data['Turno']['fechaDesde']['day']; }
+			if( $this->request->data['Turno']['fechaHastaCkB'] ) {
+				$conditions['DATE( `Turno`.`fecha_fin` ) <= '] = $this->request->data['Turno']['fechaHasta']['year'].'-'.
+												     	         $this->request->data['Turno']['fechaHasta']['month'].'-'.
+												                 $this->request->data['Turno']['fechaHasta']['day']; }
 		}
 		$this->Turno->recursive = 2;
 		$this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
