@@ -19,6 +19,8 @@
 			<td><?php echo $this->Form->input( 'cancelado', array( 'type' => 'checkbox', 'label' => 'Cancelado' ) ); ?></td>
 			<td><?php echo $this->Form->input( 'consultorio_id', array( 'type' => 'select', 'label' => 'Consultorio:', 'options' => $consultorios, 'empty' => 'Todos' ) ); ?></td>
 			<td><?php echo $this->Form->input( 'medico_id', array( 'type' => 'select', 'label' => 'Medico:', 'options' => $medicos, 'empty' => 'Todos' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'fechaDesde', array( 'type' => 'date', 'label' => 'Desde:', 'dateFormat' => 'DMY' ) ); ?></td>
+			<td><?php echo $this->Form->input( 'fechaHasta', array( 'type' => 'date', 'label' => 'Hasta:', 'dateFormat' => 'DMY' ) ); ?></td>
 			<td><?php echo $this->Form->end( 'Filtrar' ); ?></td>
 		</tr>
 	</tbody>
