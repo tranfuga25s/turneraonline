@@ -19,7 +19,8 @@ class AppController extends Controller {
 			'loginRedirect'  => array( 'controller' => 'turnos'  , 'action' => 'index'    ),
 			'authorize'      => array( 'Controller' )
 		),
-		'Session'
+		'Session',
+		'PaginationRecall'
 	);
 	
 	//public $theme = 'dentista';

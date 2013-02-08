@@ -10,7 +10,7 @@ class TurnosController extends AppController {
 
 	var $helpers = array( 'Html', 'Form', 'Paginator', 'Js' => array( 'Jquery' ), 'Calendar.Calendar' );
 	var $uses = array( 'Turno', 'Especialidad', 'Avisos', 'Clinica' );
-	var $components = array( 'RequestHandler', 'PaginationRecall' );
+	var $components = array( 'RequestHandler' );
 
 	public function beforeFilter() {
 		$this->Auth->allow( 'calcularTurnos' );

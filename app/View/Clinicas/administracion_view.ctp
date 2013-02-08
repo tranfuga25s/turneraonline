@@ -1,4 +1,11 @@
 <?php $this->set( 'title_for_layout', "Datos de " . $clinica['Clinica']['nombre'] ); ?>
+<div id="acciones">
+	<?php echo $this->Html->link( 'Editar esta Clinica', array( 'action' => 'edit', $clinica['Clinica']['id_clinica'] ) ); ?>
+	<?php echo $this->Form->postLink( 'Eliminar Clinica', array( 'action' => 'delete', $clinica['Clinica']['id_clinica'] ), null, __('Are you sure you want to delete # %s?', $clinica['Clinica']['id_clinica'] ) ); ?>
+	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'action' => 'index' ) ); ?>
+	<?php echo $this->Html->link( 'Nueva Clinica', array( 'action' => 'add' ) ); ?>
+</div>
+<br />
 <h2>Clinica</h2>
 <dl>
 	<dt><?php echo __('Id Clinica'); ?></dt>
@@ -33,10 +40,4 @@
 	</dd>
 </dl>
 <br />
-<div class="actions">
-	<h2>Acciones</h2>
-	<?php echo $this->Html->link( 'Editar esta Clinica', array( 'action' => 'edit', $clinica['Clinica']['id_clinica'] ) ); ?>
-	<?php echo $this->Form->postLink( 'Eliminar Clinica', array( 'action' => 'delete', $clinica['Clinica']['id_clinica'] ), null, __('Are you sure you want to delete # %s?', $clinica['Clinica']['id_clinica'] ) ); ?>
-	<?php echo $this->Html->link( 'Lista de Clinicas', array( 'action' => 'index' ) ); ?>
-	<?php echo $this->Html->link( 'Nueva Clinica', array( 'action' => 'add' ) ); ?>
-</div>
+
