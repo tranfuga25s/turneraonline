@@ -94,7 +94,7 @@ class GoogleMapV3Helper extends AppHelper {
 			'navigationControl' => true,
 			'mapTypeControl' => true,
 			'scaleControl' => true,
-			'scrollwheel' => false,
+			'scrollwheel' => true,
 			'keyboardShortcuts' => true,
 			//'zoom' =>5, # deprecated as default value, uses global one if missing
 			//'type' =>'R', # deprecated as default value, uses global one if missing
@@ -103,8 +103,8 @@ class GoogleMapV3Helper extends AppHelper {
 			'typeOptions' => array(),
 			'navOptions' => array(),
 			'scaleOptions' => array(),
-			'defaultLat' => 51, # only last fallback, use Configure::write('Google.lat', ...); to define own one
-			'defaultLng' => 11, # only last fallback, use Configure::write('Google.lng', ...); to define own one
+			'defaultLat' =>  -60.68900, # only last fallback, use Configure::write('Google.lat', ...); to define own one
+			'defaultLng' =>  -31.63985, # only last fallback, use Configure::write('Google.lng', ...); to define own one
 			'defaultZoom' => 5,
 		),
 		'staticMap' => array(
@@ -140,9 +140,9 @@ class GoogleMapV3Helper extends AppHelper {
 			'shadow' => null,
 			'shape' => null,
 			'zIndex' => null,
-			'draggable' => false,
-			'cursor' => null,
-			'directions' => false # add form with directions
+			'draggable' => true,
+			'cursor' => true,
+			'directions' => true # add form with directions
 		),
 		'div'=>array(
 			'id'=>'map_canvas',
@@ -171,7 +171,7 @@ class GoogleMapV3Helper extends AppHelper {
 		'https' => null # auto detect
 	);
 
-	protected $_currentOptions =array();
+	protected $_currentOptions = array( 'draggable' => true );
 
 	protected $_apiIncluded = false;
 	protected $_gearsIncluded = false;
@@ -495,6 +495,7 @@ class GoogleMapV3Helper extends AppHelper {
 		$marker = "
 			var x".self::$MARKER_COUNT." = new google.maps.Marker({
 				position: new google.maps.LatLng(".$options['lat'].",".$options['lng']."),
+				draggable: true,
 				".$this->_toObjectParams($params, false, false)."
 			});
 			gMarkers".self::$MAP_COUNT.".push(
@@ -808,9 +809,9 @@ var iconShape = {
 	 * @return void
 	 * 2010-12-18 ms
 	 */
-	public function addCustomEvent($marker, $event) {
+	public function addCustomEvent($marker, $event, $eventType = "click" ) {
 		$this->map .= "
-			google.maps.event.addListener(gMarkers".self::$MAP_COUNT."[{$marker}], 'click', function() {
+			google.maps.event.addListener(gMarkers".self::$MAP_COUNT."[{$marker}], ".$eventType.", function() {
 				$event
 			});
 		";
