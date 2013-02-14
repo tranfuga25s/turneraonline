@@ -24,10 +24,12 @@
         		 	"autoScript" => true ) );
         //add marker
         $options = array(
-        	'lgn' => '-31.63381943104241',
-        	'lat' => '-60.69901466369629',
-        	'title' => 'Nueva Clinica' # optional
+        	'lng' => -60.69913136959076,
+        	'lat' => -31.633594220533507,
+        	'title' => 'Arrastre hasta la ubicación real',
+        	'content' => 'Mueva este marcador hasta la posición donde se encuentra su clinica y suelteló ahí'
         );
+
         //set event when drag to update lng and lat
         $this->GoogleMapV3->addMarker($options);
         $event = "var actualPosition=x0.getPosition();

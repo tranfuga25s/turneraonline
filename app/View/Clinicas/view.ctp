@@ -88,11 +88,13 @@
 		$options = array(
 		    'lat' => $clinica['Clinica']['lat'],
 		    'lng' => $clinica['Clinica']['lng'],
-		    //'icon'=> 'url_to_icon', // optional
+		    'draggable' => false,
+		    'icon' => 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-0f00e6/shapecolor-color/shadow-1/border-dark/symbolstyle-white/symbolshadowstyle-dark/gradient-no/firstaid.png',
 		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
-		    'content' => $clinica['Clinica']['direccion'].'<br />'
-		    		     .$clinica['Clinica']['telefono'].'<br />'
-		    		     .'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
+		    'content' => '<b>'.$clinica['Clinica']['nombre'].'</b><br />'
+				.$clinica['Clinica']['direccion'].'<br />'
+		    		.$clinica['Clinica']['telefono'].'<br />'
+		    		.'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
 		);
 		
 		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
