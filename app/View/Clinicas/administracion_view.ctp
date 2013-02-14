@@ -37,7 +37,13 @@
 	<dd>
 		<?php
 		// init map (prints container)
-		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true ) );
+		echo $this->GoogleMapV3->map( 
+		    array( 'div' => 
+			array( 	'height'=>'400', 
+				'width'=>'100%' ),
+			 "autoScript" => true,
+			 "zoom" => 20 ) );
+		
 		 
 		// add markers
 		$options = array(
@@ -46,6 +52,7 @@
 		    'lat' => ( $clinica['Clinica']['lat'] == null ) ? 50 : $clinica['Clinica']['lat'],
 		    'lng' => ( $clinica['Clinica']['lng'] == null ) ? 50 : $clinica['Clinica']['lng'],
 		    'color' => 'green',
+		    'center' => true,
 		    //'icon'=> 'url_to_icon', // optional
 		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
 		    'content' => $clinica['Clinica']['direccion'].'<br />'
@@ -54,7 +61,8 @@
 		);
 		
 		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
-		 
+		
+		
 		// print js
 		echo $this->GoogleMapV3->script();
 	?>

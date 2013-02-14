@@ -82,12 +82,12 @@
 	<div class="titulo2">Ubicacion</div>
 	<?php
 		// init map (prints container)
-		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true ) );
+		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true, "autoCenter" => true ) );
 		 
 		// add markers
 		$options = array(
-		    'lat' => $clinica['lat'],
-		    'lng' => $clinica['lng'],
+		    'lat' => $clinica['Clinica']['lat'],
+		    'lng' => $clinica['Clinica']['lng'],
 		    //'icon'=> 'url_to_icon', // optional
 		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
 		    'content' => $clinica['Clinica']['direccion'].'<br />'

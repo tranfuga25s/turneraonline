@@ -164,7 +164,7 @@ class GoogleMapV3Helper extends AppHelper {
 			'markermanager' => false, # http://google-maps-utility-library-v3.googlecode.com/svn/tags/markermanager/
 			'markercluster' => false, # http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerclusterer/
 		),
-		'autoCenter' => false, # try to fit all markers in (careful, all zooms values are omitted)
+		'autoCenter' => true, # try to fit all markers in (careful, all zooms values are omitted)
 		'autoScript' => false, # let the helper include the necessary js script links
 		'inline' => false, # for scripts
 		'localImages' => false,
