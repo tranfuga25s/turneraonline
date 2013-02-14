@@ -375,8 +375,8 @@ class GoogleMapV3Helper extends AppHelper {
 
 		# autoinclude js?
 		if (!empty($options['autoScript']) && !$this->_apiIncluded) {
-			$res = $this->Html->script($this->apiUrl(), array('inline'=>$options['inline']));
-			if ($options['inline']) {
+			$res = $this->Html->script($this->apiUrl(), array('inline'=>$this->_currentOptions['inline']));
+			if ($this->_currentOptions['inline']) {
 				echo $res;
 			}
 			# usually already included
@@ -384,8 +384,8 @@ class GoogleMapV3Helper extends AppHelper {
 		}
 		# still not very common: http://code.google.com/intl/de-DE/apis/maps/documentation/javascript/basics.html
 		if (false && !empty($options['autoScript']) && !$this->_gearsIncluded) {
-			$res = $this->Html->script($this->gearsUrl(), array('inline'=>$options['inline']));
-			if ($options['inline']) {
+			$res = $this->Html->script($this->gearsUrl(), array('inline'=>$this->_currentOptions['inline']));
+			if ($this->_currentOptions['inline']) {
 				echo $res;
 			}
 		}
@@ -811,7 +811,7 @@ var iconShape = {
 	 */
 	public function addCustomEvent($marker, $event, $eventType = "click" ) {
 		$this->map .= "
-			google.maps.event.addListener(gMarkers".self::$MAP_COUNT."[{$marker}], ".$eventType.", function() {
+			google.maps.event.addListener(gMarkers".self::$MAP_COUNT."[{$marker}], '".$eventType."', function() {
 				$event
 			});
 		";

@@ -41,8 +41,11 @@
 		 
 		// add markers
 		$options = array(
-		    'lat' => $clinica['lat'],
-		    'lng' => $clinica['lng'],
+			/*'lat' => 50,
+			'lng' => 50,*/
+		    'lat' => ( $clinica['Clinica']['lat'] == null ) ? 50 : $clinica['Clinica']['lat'],
+		    'lng' => ( $clinica['Clinica']['lng'] == null ) ? 50 : $clinica['Clinica']['lng'],
+		    'color' => 'green',
 		    //'icon'=> 'url_to_icon', // optional
 		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
 		    'content' => $clinica['Clinica']['direccion'].'<br />'
