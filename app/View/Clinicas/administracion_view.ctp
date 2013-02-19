@@ -8,17 +8,12 @@
 <br />
 <h2>Clinica</h2>
 <dl>
-	<dt><?php echo __('Id Clinica'); ?></dt>
-	<dd>
-		<?php echo h($clinica['Clinica']['id_clinica']); ?>
-		&nbsp;
-	</dd>
-	<dt><?php echo __('Nombre'); ?></dt>
+	<dt>Nombre de la clinica:</dt>
 	<dd>
 		<?php echo h($clinica['Clinica']['nombre']); ?>
 		&nbsp;
 	</dd>
-	<dt><?php echo __('Direccion'); ?></dt>
+	<dt>Direcci&oacute;n:</dt>
 	<dd>
 		<?php echo h($clinica['Clinica']['direccion']); ?>
 		&nbsp;
@@ -34,10 +29,43 @@
 		if( !empty( $clinica['Clinica']['logo'] ) ) {
 			echo $this->Html->image( $clinica['Clinica']['logo'], array( 'alt' => $clinica['Clinica']['nombre'], 'height' => 150 ) );
 		} else {
-			echo "No ingreso ningun logotipo";
+			echo "No ingreso ningún logotipo";
 		} ?>
 		&nbsp;
 	</dd>
+	<dt>Ubicacion:</dt>
+	<dd>
+		<?php
+		// init map (prints container)
+		echo $this->GoogleMapV3->map( 
+		    array( 'div' => 
+			array( 	'height'=>'400', 
+				'width'=>'100%' ),
+			 "autoScript" => true,
+			 "zoom" => 20 ) );
+		
+		 
+		// add markers
+		$options = array(
+			/*'lat' => 50,
+			'lng' => 50,*/
+		    'lat' => ( $clinica['Clinica']['lat'] == null ) ? 50 : $clinica['Clinica']['lat'],
+		    'lng' => ( $clinica['Clinica']['lng'] == null ) ? 50 : $clinica['Clinica']['lng'],
+		    'color' => 'green',
+		    'center' => true,
+		    //'icon'=> 'url_to_icon', // optional
+		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
+		    'content' => $clinica['Clinica']['direccion'].'<br />'
+		    		     .$clinica['Clinica']['telefono'].'<br />'
+		    		     .'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
+		);
+		
+		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
+		
+		
+		// print js
+		echo $this->GoogleMapV3->script();
+	?>
+	</dd>
 </dl>
 <br />
-

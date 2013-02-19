@@ -78,6 +78,30 @@
 	  </tr>
 	 </tbody>
 	</table>
+	<br />
+	<div class="titulo2">Ubicacion</div>
+	<?php
+		// init map (prints container)
+		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true, "autoCenter" => true ) );
+		 
+		// add markers
+		$options = array(
+		    'lat' => $clinica['Clinica']['lat'],
+		    'lng' => $clinica['Clinica']['lng'],
+		    'draggable' => false,
+		    'icon' => Router::url( '/img/firstaid.png' ),
+		    'title' => $clinica['Clinica']['nombre'], // Titulo de el globito
+		    'content' => '<b>'.$clinica['Clinica']['nombre'].'</b><br />'
+				.$clinica['Clinica']['direccion'].'<br />'
+		    		.$clinica['Clinica']['telefono'].'<br />'
+		    		.'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
+		);
+		
+		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
+		 
+		// print js
+		echo $this->GoogleMapV3->script();
+	?>
 </div>
 <div class="actions">
 	<?php
@@ -89,6 +113,7 @@
 	?>
 	<h3>Acciones</h3>
 	<ul>
+		<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
 		<li><?php echo $this->Html->link( 'Pedir turno aqui', array( 'controller' => 'turnos', 'action' => 'nuevo' ) ); ?></li>
 		<li><?php echo $this->Html->link( 'Ver todas las clinicas', array( 'controller' => 'clinicas', 'action' => 'index' ) ); ?></li>
 	</ul>

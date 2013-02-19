@@ -16,6 +16,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	$( function() {
 		$("#horarios").button();
 		$("#obrasociales").button();
+		$("#clinicas").button();
 		$("a", "#botones").button();
 		$("#referencia").accordion();
 		simpleSlide();
@@ -38,6 +39,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	<br />
 	<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'id' => 'horarios' ) ); ?>
 	<?php echo $this->Html->link( 'Obras sociales disponibles', array( 'controller' => 'obras_sociales', 'action' => 'index' ), array( 'id' => 'obrasociales' ) ); ?>
+	<?php echo $this->Html->link( '¿Donde estamos?', array( 'controller' => 'clinicas', 'action' => 'view', 1 ), array( 'id' => 'clinicas' ) ); ?>
    </td>
    <td width="30%"><center>
 	<div class="titulo2">¿Para quienes es util?</div>
