@@ -27,6 +27,7 @@ class AppController extends Controller {
 
 	// Esto permite que cualquier pagina del controlador Pages sea vista por el publico.
 	public function beforeFilter() {
+		
 		if( $this->request->params['controller'] == 'pages' ) {
 			$this->Auth->allow( 'display' );
 		}
@@ -43,26 +44,8 @@ class AppController extends Controller {
 		// Cargo la configuración
 		Configure::load( '', 'Turnera' );
 		
-		// Temas disponibles
-		// Pongo la lista de temas disponibles
-		/*$f = new Folder(  ROOT . DS . APP_DIR . DS . 'View' . DS . 'Themed' . DS);
-		$lista = $f->read( true );
-		$this->set( 'temas', $lista[0] );
-		if( isset( $this->request->data['temas'] ) ) {
-			$this->viewClass = $lista[$this->request->data['temas']['theme']];
-			$this->Session->write( 'tema', $lista[$this->request->data['temas']['theme']] );
-		} else {
-			$tema = $this->Session->read( 'tema' );
-			if( array_key_exists( $tema, $lista ) ) {
-				$this->viewClass = $this->Session->read( 'tema' );
-			} else {
-				
-			}	
-		}*/
 	}
 
 	public function isAuthorized() { return true; }
 
 }
-
-?>

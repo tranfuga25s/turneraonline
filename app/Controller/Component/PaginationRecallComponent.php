@@ -47,4 +47,3 @@ class PaginationRecallComponent extends Component {
     }
   }
 }
-?> 

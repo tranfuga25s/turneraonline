@@ -6,7 +6,7 @@
 	Sin necesidad de secretarias ni intermediarios. El m&eacute;dico administra y mantiene todas los turnos.<br /></div>
 	<br />
 	<div class="titulo2">Características</div>
-	<table>
+	<table class="caracteristicas">
 		<tbody>
 			<tr>
 				<td width="20"><div class="ui-icon ui-icon-check">&nbsp;</div></td>
