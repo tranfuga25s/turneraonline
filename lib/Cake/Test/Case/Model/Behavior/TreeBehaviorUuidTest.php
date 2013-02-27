@@ -21,6 +21,7 @@
 
 App::uses('Model', 'Model');
 App::uses('AppModel', 'Model');
+App::uses('String', 'Utility');
 require_once dirname(dirname(__FILE__)) . DS . 'models.php';
 
 /**
@@ -55,6 +56,37 @@ class TreeBehaviorUuidTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array('core.uuid_tree');
+
+/**
+ * testAddWithPreSpecifiedId method
+ *
+ * @return void
+ */
+	public function testAddWithPreSpecifiedId() {
+		extract($this->settings);
+		$this->Tree = new $modelClass();
+		$this->Tree->initialize(2, 2);
+
+		$data = $this->Tree->find('first', array(
+			'fields' => array('id'),
+			'conditions' => array($modelClass . '.name' => '1.1')
+		));
+
+		$id = String::uuid();
+		$this->Tree->create();
+		$result = $this->Tree->save(array($modelClass => array(
+			'id' => $id,
+			'name' => 'testAddMiddle',
+			$parentField => $data[$modelClass]['id'])
+		));
+		$expected = array_merge(
+			array($modelClass => array('id' => $id, 'name' => 'testAddMiddle', $parentField => '2')),
+			$result
+		);
+		$this->assertSame($expected, $result);
+
+		$this->assertTrue($this->Tree->verify());
+	}
 
 /**
  * testMovePromote method
@@ -216,7 +248,10 @@ class TreeBehaviorUuidTest extends CakeTestCase {
 		$this->Tree->bindModel(array('belongsTo' => array('Dummy' =>
 			array('className' => $modelClass, 'foreignKey' => $parentField, 'conditions' => array('Dummy.id' => null)))), false);
 
-		$data = $this->Tree->find('first', array('conditions' => array($modelClass . '.name' => '1. Root')));
+		$data = $this->Tree->find('first', array(
+			'conditions' => array($modelClass . '.name' => '1. Root'),
+			'recursive' => -1
+		));
 		$this->Tree->id = $data[$modelClass]['id'];
 
 		$direct = $this->Tree->children(null, true, array('name', $leftField, $rightField));

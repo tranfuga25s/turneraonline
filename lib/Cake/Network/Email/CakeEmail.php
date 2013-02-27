@@ -1035,7 +1035,7 @@ class CakeEmail {
 
 /**
  * Send an email using the specified content, template and layout
- * 
+ *
  * @param string|array $content String with message or array with messages
  * @return array
  * @throws SocketException
@@ -1237,7 +1237,7 @@ class CakeEmail {
  * @param string $message Message to wrap
  * @return array Wrapped message
  */
-	protected function _wrap($message) {
+	protected function _wrap($message, $wrapLength = CakeEmail::LINE_LENGTH_MUST) {
 		$message = str_replace(array("\r\n", "\r"), "\n", $message);
 		$lines = explode("\n", $message);
 		$formatted = array();
@@ -1248,7 +1248,10 @@ class CakeEmail {
 				continue;
 			}
 			if (!preg_match('/\<[a-z]/i', $line)) {
-				$formatted = array_merge($formatted, explode("\n", wordwrap($line, self::LINE_LENGTH_SHOULD, "\n")));
+				$formatted = array_merge(
+					$formatted,
+					explode("\n", wordwrap($line, $wrapLength, "\n"))
+				);
 				continue;
 			}
 
@@ -1261,7 +1264,7 @@ class CakeEmail {
 					$tag .= $char;
 					if ($char === '>') {
 						$tagLength = strlen($tag);
-						if ($tagLength + $tmpLineLength < self::LINE_LENGTH_SHOULD) {
+						if ($tagLength + $tmpLineLength < $wrapLength) {
 							$tmpLine .= $tag;
 							$tmpLineLength += $tagLength;
 						} else {
@@ -1270,7 +1273,7 @@ class CakeEmail {
 								$tmpLine = '';
 								$tmpLineLength = 0;
 							}
-							if ($tagLength > self::LINE_LENGTH_SHOULD) {
+							if ($tagLength > $wrapLength) {
 								$formatted[] = $tag;
 							} else {
 								$tmpLine = $tag;
@@ -1287,14 +1290,14 @@ class CakeEmail {
 					$tag = '<';
 					continue;
 				}
-				if ($char === ' ' && $tmpLineLength >= self::LINE_LENGTH_SHOULD) {
+				if ($char === ' ' && $tmpLineLength >= $wrapLength) {
 					$formatted[] = $tmpLine;
 					$tmpLineLength = 0;
 					continue;
 				}
 				$tmpLine .= $char;
 				$tmpLineLength++;
-				if ($tmpLineLength === self::LINE_LENGTH_SHOULD) {
+				if ($tmpLineLength === $wrapLength) {
 					$nextChar = $line[$i + 1];
 					if ($nextChar === ' ' || $nextChar === '<') {
 						$formatted[] = trim($tmpLine);
@@ -1337,7 +1340,7 @@ class CakeEmail {
 /**
  * Attach non-embedded files by adding file contents inside boundaries.
  *
- * @param string $boundary Boundary to use. If null, will default to $this->_boundary 
+ * @param string $boundary Boundary to use. If null, will default to $this->_boundary
  * @return array An array of lines to add to the message
  */
 	protected function _attachFiles($boundary = null) {
@@ -1380,7 +1383,7 @@ class CakeEmail {
 /**
  * Attach inline/embedded files to the message.
  *
- * @param string $boundary Boundary to use. If null, will default to $this->_boundary 
+ * @param string $boundary Boundary to use. If null, will default to $this->_boundary
  * @return array An array of lines to add to the message
  */
 	protected function _attachInlineFiles($boundary = null) {

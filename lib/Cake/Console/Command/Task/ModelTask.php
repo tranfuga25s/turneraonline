@@ -621,24 +621,20 @@ class ModelTask extends BakeTask {
 	public function findHasAndBelongsToMany(Model $model, $associations) {
 		$foreignKey = $this->_modelKey($model->name);
 		foreach ($this->_tables as $otherTable) {
+			$tableName = null;
 			$tempOtherModel = $this->_getModelObject($this->_modelName($otherTable), $otherTable);
 			$modelFieldsTemp = $tempOtherModel->schema(true);
 
 			$offset = strpos($otherTable, $model->table . '_');
 			$otherOffset = strpos($otherTable, '_' . $model->table);
 
-			if ($offset !== false) {
-				$offset = strlen($model->table . '_');
-				$habtmName = $this->_modelName(substr($otherTable, $offset));
-				$associations['hasAndBelongsToMany'][] = array(
-					'alias' => $habtmName,
-					'className' => $habtmName,
-					'foreignKey' => $foreignKey,
-					'associationForeignKey' => $this->_modelKey($habtmName),
-					'joinTable' => $otherTable
-				);
-			} elseif ($otherOffset !== false) {
-				$habtmName = $this->_modelName(substr($otherTable, 0, $otherOffset));
+			if ($offset === 0) {
+				$tableName = substr($otherTable, strlen($model->table . '_'));
+			} elseif ($otherOffset === 0) {
+				$tableName = substr($otherTable, 0, $otherOffset);
+			}
+			if ($tableName && in_array($tableName, $this->_tables)) {
+				$habtmName = $this->_modelName($tableName);
 				$associations['hasAndBelongsToMany'][] = array(
 					'alias' => $habtmName,
 					'className' => $habtmName,

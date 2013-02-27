@@ -65,8 +65,6 @@ class AssetDispatcher extends DispatcherFilter {
 			$path = App::themePath($themeName) . 'webroot' . DS;
 			if (file_exists($path . $fileFragment)) {
 				$assetFile = $path . $fileFragment;
-			} else {
-				die( "No existe el archivo en ".$path.$fileFragment );
 			}
 		} else {
 			$plugin = Inflector::camelize($parts[0]);

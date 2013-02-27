@@ -8,7 +8,7 @@
  *
  * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.Controller.Component
+ * @package       Cake.Controller.Component.Acl
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
@@ -18,7 +18,7 @@ App::uses('AclInterface', 'Controller/Component/Acl');
  * IniAcl implements an access control system using an INI file.  An example
  * of the ini file used can be found in /config/acl.ini.php.
  *
- * @package       Cake.Controller.Component
+ * @package       Cake.Controller.Component.Acl
  */
 class IniAcl extends Object implements AclInterface {
 
@@ -143,7 +143,7 @@ class IniAcl extends Object implements AclInterface {
 	}
 
 /**
- * Parses an INI file and returns an array that reflects the 
+ * Parses an INI file and returns an array that reflects the
  * INI file's section structure. Double-quote friendly.
  *
  * @param string $filename File

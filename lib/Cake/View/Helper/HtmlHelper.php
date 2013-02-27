@@ -557,7 +557,7 @@ class HtmlHelper extends AppHelper {
 	public function scriptBlock($script, $options = array()) {
 		$options += array('safe' => true, 'inline' => true);
 		if ($options['safe']) {
-			$script  = "\n" . '//<![CDATA[' . "\n" . $script . "\n" . '//]]>' . "\n";
+			$script = "\n" . '//<![CDATA[' . "\n" . $script . "\n" . '//]]>' . "\n";
 		}
 		if (!$options['inline'] && empty($options['block'])) {
 			$options['block'] = 'script';
@@ -616,7 +616,7 @@ class HtmlHelper extends AppHelper {
  * ### Usage:
  *
  * {{{
- * echo $html->style(array('margin' => '10px', 'padding' => '10px'), true);
+ * echo $this->Html->style(array('margin' => '10px', 'padding' => '10px'), true);
  *
  * // creates
  * 'margin:10px;padding:10px;'
@@ -728,7 +728,7 @@ class HtmlHelper extends AppHelper {
 					'text' => $startText
 				);
 			}
-			$startText += array('url' => '/', 'text' => __('Home'));
+			$startText += array('url' => '/', 'text' => __d('cake', 'Home'));
 			list($url, $text) = array($startText['url'], $startText['text']);
 			unset($startText['url'], $startText['text']);
 			array_unshift($crumbs, array($text, $url, $startText));
@@ -745,11 +745,11 @@ class HtmlHelper extends AppHelper {
  *
  * Create a regular image:
  *
- * `echo $html->image('cake_icon.png', array('alt' => 'CakePHP'));`
+ * `echo $this->Html->image('cake_icon.png', array('alt' => 'CakePHP'));`
  *
  * Create an image link:
  *
- * `echo $html->image('cake_icon.png', array('alt' => 'CakePHP', 'url' => 'http://cakephp.org'));`
+ * `echo $this->Html->image('cake_icon.png', array('alt' => 'CakePHP', 'url' => 'http://cakephp.org'));`
  *
  * ### Options:
  *
