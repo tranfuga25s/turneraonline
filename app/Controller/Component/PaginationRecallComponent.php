@@ -1,4 +1,4 @@
- <?php 
+<?php 
 /*
  * Pagination Recall CakePHP Component
  * Copyright (c) 2008 Matt Curry

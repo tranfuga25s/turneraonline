@@ -34,6 +34,6 @@
  }
  </style>
  <div id="devolucion">
-    <?php echo $this->Html->link( 'Error!', array( 'controller' => 'contacto', 'action' => 'error' ) ); ?>
-    <?php echo $this->Html->link( '¿Sugerencia?', array( 'controller' => 'contacto', 'action' => 'sugerencia' ) ); ?>
+    <?php echo $this->Html->link( 'Error!', array( 'plugin' => false, 'controller' => 'contacto', 'action' => 'error' ) ); ?>
+    <?php echo $this->Html->link( '¿Sugerencia?', array( 'plugin' => false, 'controller' => 'contacto', 'action' => 'sugerencia' ) ); ?>
  </div>

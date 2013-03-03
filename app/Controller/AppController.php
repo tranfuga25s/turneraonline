@@ -1,11 +1,17 @@
 <?php
-
 App::uses('Controller', 'Controller');
 App::uses('Folder', 'Utility');
-
+/**
+ * Application Controller
+ *
+ * Add your application-wide methods in the class below, your controllers
+ * will inherit them.
+ *
+ * @package       app.Controller
+ * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ */
 class AppController extends Controller {
-
-	public $components = array(
+		public $components = array(
 		'Auth' => array(
 			'authenticate' => array(
 				'Form' => array(
@@ -20,14 +26,15 @@ class AppController extends Controller {
 			'authorize'      => array( 'Controller' )
 		),
 		'Session',
-		'PaginationRecall'
+		'PaginationRecall',
+		'DebugKit.Toolbar'
 	);
 	
-	//public $theme = 'dentista';
+		//public $theme = 'dentista';
 
 	// Esto permite que cualquier pagina del controlador Pages sea vista por el publico.
 	public function beforeFilter() {
-		
+
 		if( $this->request->params['controller'] == 'pages' ) {
 			$this->Auth->allow( 'display' );
 		}
@@ -43,9 +50,8 @@ class AppController extends Controller {
 		}
 		// Cargo la configuración
 		Configure::load( '', 'Turnera' );
-		
+
 	}
 
 	public function isAuthorized() { return true; }
-
 }
