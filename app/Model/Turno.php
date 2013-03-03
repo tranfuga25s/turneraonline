@@ -505,4 +505,3 @@ class Turno extends AppModel {
    }
 
 }
-?>

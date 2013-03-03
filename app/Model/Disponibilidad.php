@@ -53,4 +53,3 @@ class Disponibilidad extends AppModel {
 	}
 
 }
-?>
