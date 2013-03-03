@@ -670,6 +670,9 @@ class HashTest extends CakeTestCase {
 
 		$result = Hash::extract($data, '1.Article.title');
 		$this->assertEquals(array('Second Article'), $result);
+
+		$result = Hash::extract(array(false), '{n}.Something.another_thing');
+		$this->assertEquals(array(), $result);
 	}
 
 /**
@@ -1123,6 +1126,28 @@ class HashTest extends CakeTestCase {
 			array('Item' => array('image' => 'img99.jpg')),
 		);
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test that sort() with 'natural' type will fallback to 'regular' as SORT_NATURAL is introduced in PHP 5.4
+ *
+ * @return void
+ */
+	public function testSortNaturalFallbackToRegular() {
+		if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+			$this->markTestSkipped('Skipping SORT_NATURAL fallback test on PHP >= 5.4');
+		}
+
+		$a = array(
+			0 => array('Person' => array('name' => 'Jeff')),
+			1 => array('Shirt' => array('color' => 'black'))
+		);
+		$b = array(
+			0 => array('Shirt' => array('color' => 'black')),
+			1 => array('Person' => array('name' => 'Jeff')),
+		);
+		$sorted = Hash::sort($a, '{n}.Person.name', 'asc', 'natural');
+		$this->assertEquals($sorted, $b);
 	}
 
 /**
@@ -2174,6 +2199,18 @@ class HashTest extends CakeTestCase {
 			)
 		);
 		$this->assertEquals($result, $expected);
+
+		$data = array('a.b.100.a' => null, 'a.b.200.a' => null);
+		$expected = array(
+			'a' => array(
+				'b' => array(
+					100 => array('a' => null),
+					200 => array('a' => null)
+				)
+			)
+		);
+		$result = Hash::expand($data);
+		$this->assertEquals($expected, $result);
 	}
 
 /**

@@ -1,10 +1,22 @@
-<?php $this->set( 'title_for_layout', "Recurso no encontrado" ); ?>
-<h1>Ups! No está!</h1>
+<?php
+/**
+ *
+ * PHP 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       Cake.View.Errors
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+?>
 <h2><?php echo $name; ?></h2>
-El recurso que est&aacute; intentando acceder no se encuentra disponible.<br />
-Intenteló mas tarde o contactes&eacite; con el soporte t&eacute;cnico.
-<p><a onclick="$('#tecnico').slideDown()">Informaci&oacute; t&eacute;nica</a></p>
-<div style="display: none;" id="tecnica">
 <p class="error">
 	<strong><?php echo __d('cake', 'Error'); ?>: </strong>
 	<?php printf(
@@ -17,4 +29,3 @@ if (Configure::read('debug') > 0 ):
 	echo $this->element('exception_stack_trace');
 endif;
 ?>
-</div>

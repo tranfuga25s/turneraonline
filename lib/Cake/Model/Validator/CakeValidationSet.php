@@ -41,14 +41,14 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  * List of methods available for validation
  *
  * @var array
- **/
+ */
 	protected $_methods = array();
 
 /**
  * I18n domain for validation messages.
  *
  * @var string
- **/
+ */
 	protected $_validationDomain = null;
 
 /**
@@ -94,8 +94,9 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
 /**
  * Sets the list of methods to use for validation
  *
+ * @param array $methods Methods list
  * @return void
- **/
+ */
 	public function setMethods(&$methods) {
 		$this->_methods =& $methods;
 	}
@@ -114,6 +115,8 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  * Runs all validation rules in this set and returns a list of
  * validation errors
  *
+ * @param array $data Data array
+ * @param boolean $isUpdate Is record being updated or created
  * @return array list of validation errors for this field
  */
 	public function validate($data, $isUpdate = false) {
@@ -148,7 +151,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  * Resets interal state for all validation rules in this set
  *
  * @return void
- **/
+ */
 	public function reset() {
 		foreach ($this->getRules() as $rule) {
 			$rule->reset();
@@ -307,7 +310,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  *
  * @param string $index name of the rule
  * @return boolean
- **/
+ */
 	public function offsetExists($index) {
 		return isset($this->_rules[$index]);
 	}
@@ -317,7 +320,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  *
  * @param string $index name of the rule
  * @return CakeValidationRule
- **/
+ */
 	public function offsetGet($index) {
 		return $this->_rules[$index];
 	}
@@ -327,7 +330,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  *
  * @param string $index name of the rule
  * @param CakeValidationRule|array rule to add to $index
- **/
+ */
 	public function offsetSet($index, $rule) {
 		$this->setRule($index, $rule);
 	}
@@ -337,7 +340,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  *
  * @param string $index name of the rule
  * @return void
- **/
+ */
 	public function offsetUnset($index) {
 		unset($this->_rules[$index]);
 	}
@@ -346,7 +349,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  * Returns an iterator for each of the rules to be applied
  *
  * @return ArrayIterator
- **/
+ */
 	public function getIterator() {
 		return new ArrayIterator($this->_rules);
 	}
@@ -355,7 +358,7 @@ class CakeValidationSet implements ArrayAccess, IteratorAggregate, Countable {
  * Returns the number of rules in this set
  *
  * @return int
- **/
+ */
 	public function count() {
 		return count($this->_rules);
 	}

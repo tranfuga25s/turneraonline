@@ -73,7 +73,8 @@ class RegisEngineTest extends CakeTestCase {
 			'server' => '127.0.0.1',
 			'port' => 6379,
 			'timeout' => 0,
-			'persistent' => true
+			'persistent' => true,
+			'password' => false,
 		);
 		$this->assertEquals($expecting, $settings);
 	}
@@ -315,7 +316,7 @@ class RegisEngineTest extends CakeTestCase {
  * Test clearing a cache group
  *
  * @return void
- **/
+ */
 	public function testGroupClear() {
 		Cache::config('redis_groups', array(
 			'engine' => 'Redis',

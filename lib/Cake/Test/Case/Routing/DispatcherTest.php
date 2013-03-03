@@ -617,7 +617,7 @@ class DispatcherTest extends CakeTestCase {
 		$request = new CakeRequest("/");
 		$event = new CakeEvent('DispatcherTest', $Dispatcher, array('request' => $request));
 		$Dispatcher->parseParams($event);
-		$test = $Dispatcher->parseParams($event);
+		$Dispatcher->parseParams($event);
 		$this->assertEquals("My Posted Content", $request['data']['testdata']);
 	}
 
@@ -1195,7 +1195,7 @@ class DispatcherTest extends CakeTestCase {
  *
  * @return void
  */
-	public function testDispatcherFilterSuscriber() {
+	public function testDispatcherFilterSubscriber() {
 		App::build(array(
 			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS),
 			'Plugin' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
