@@ -21,7 +21,7 @@ class AppController extends Controller {
 			),
 			'authError'      => 'Debe ingresar como usuario para poder utilizar esta funcionalidad',
 			'loginAction'    => array( 'controller' => 'usuarios', 'action' => 'ingresar' ),
-			'logoutRedirect' => array( 'controller' => 'pages'   , 'action' => 'salir'    ),
+			'logoutRedirect' => array( 'controller' => 'pages'   , 'action' => 'display', 'homeVenta', 'administracion' => false ),
 			'loginRedirect'  => array( 'controller' => 'turnos'  , 'action' => 'index'    ),
 			'authorize'      => array( 'Controller' )
 		),
