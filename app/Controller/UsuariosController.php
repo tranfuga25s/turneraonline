@@ -78,7 +78,7 @@ class UsuariosController extends AppController {
 	public function ingresar() {
 		if ($this->request->is('post')) {
 			if ( $this->Auth->login() ) {
-				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'home' ) );
+				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
 			} else {
 				$this->Session->setFlash( "El email ingresado o la contraseña son incorrectas", 'default', array(), 'auth');
 			}
