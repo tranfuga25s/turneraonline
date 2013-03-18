@@ -15,7 +15,6 @@
 $i = 0;
 foreach ($obrasSociales as $obrasSociale): ?>
 <tr>
-	<!-- <td><?php echo h($obrasSociale['ObraSocial']['id_obra_social']); ?>&nbsp;</td> -->
 	<td><?php echo h($obrasSociale['ObraSocial']['nombre']); ?>&nbsp;</td>
 	<td><?php echo h($obrasSociale['ObraSocial']['direccion']); ?>&nbsp;</td>
 	<td><?php echo h($obrasSociale['ObraSocial']['telefono']); ?>&nbsp;</td>

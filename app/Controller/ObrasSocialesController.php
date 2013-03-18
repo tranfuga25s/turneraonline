@@ -1,19 +1,35 @@
 <?php
-App::uses('AppController', 'Controller');
-/**
+App::uses( 'AppController', 'Controller' );
+App::uses( 'Folder'       , 'Utility'    );
+App::uses( 'File'         , 'Utility'    );
+/** 
  * ObrasSociales Controller
  *
- * @property ObrasSociale $ObrasSociale
+ * 
  */
 class ObrasSocialesController extends AppController {
 
+   /**
+    * Modelos usados
+    * @property ObraSocial $ObrasSocial
+    */
 	public $uses = 'ObraSocial';
 
+   /**
+    * Funcion llamada inicialmente
+    * Setea los permisos de los métodos públicos
+    * @return void
+    */
 	public function beforeFilter() {
 		$this->Auth->allow( array( 'index', 'view' ) );
 		AppController::beforeFilter();
 	}
 	
+   /**
+    * Función llamada para autorizar el uso de un método específico
+    * @param $usario Usuario actual
+    * @return bool Verdadero si tiene permisos o falso en caso contrario
+    */	
 	public function isAuthorized( $usuario = null ) {
 		switch( $usuario['grupo_id'] ) {
 			case 1: // Administradores
@@ -45,6 +61,7 @@ class ObrasSocialesController extends AppController {
 	 * index method
 	 *
 	 * @return void
+	 * @author Esteban Zeller
 	 */
 	public function index() {
 		$this->ObraSocial->recursive = 0;
@@ -53,8 +70,8 @@ class ObrasSocialesController extends AppController {
 
 	/**
 	 * view method
-	 *
-	 * @param string $id
+	 * 
+	 * @param string $id Identificador de la obra social
 	 * @return void
 	 */
 	public function view($id = null) {
@@ -79,16 +96,16 @@ class ObrasSocialesController extends AppController {
 	/**
 	 * administracion_view method
 	 *
-	 * @param string $id
+	 * @param string $id Identificador de la obra social
 	 * @return void
 	 */
 	public function administracion_view($id = null) {
 		$this->layout = 'administracion';
 		$this->ObraSocial->id = $id;
 		if (!$this->ObraSocial->exists()) {
-			throw new NotFoundException(__('Invalid obras sociale'));
+			throw new NotFoundException( 'Obra social invalida' );
 		}
-		$this->set('obrasSociale', $this->ObraSocial->read(null, $id));
+		$this->set( 'obrasSociale', $this->ObraSocial->read( null, $id ) );
 	}
 
 	/**
@@ -119,7 +136,7 @@ class ObrasSocialesController extends AppController {
 		$this->layout = 'administracion';
 		$this->ObraSocial->id = $id;
 		if (!$this->ObraSocial->exists()) {
-			throw new NotFoundException(__('Invalid obras sociale'));
+			throw new NotFoundException( 'Obra social inválida' );
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ObraSocial->save($this->request->data)) {
@@ -146,7 +163,7 @@ class ObrasSocialesController extends AppController {
 		}
 		$this->ObraSocial->id = $id;
 		if (!$this->ObraSocial->exists()) {
-			throw new NotFoundException(__('Invalid obras sociale'));
+			throw new NotFoundException( 'La obra social no existe' );
 		}
 		$this->loadModel( 'Usuario' );
 		if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $id ) ) ) > 0 ) {
