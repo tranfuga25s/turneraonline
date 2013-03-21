@@ -60,7 +60,11 @@ class AppController extends Controller {
 	public function beforeFacebookSave(){
 		$data = $this->Connect->user();
 		$this->Connect->authUser['Usuario']['email'] = $data['email'];
-		$this->Connect->authUser['Usuario']['nombre'] = $data['first_name'].' '.$data['middle_name'];
+		if( array_key_exists( 'middle_name', $data ) ) {
+			$this->Connect->authUser['Usuario']['nombre'] = $data['first_name'].' '.$data['middle_name'];
+		} else {
+			$this->Connect->authUser['Usuario']['nombre'] = $data['first_name'];
+		}
 		$this->Connect->authUser['Usuario']['apellido'] = $data['last_name'];
 		if( $data['gender'] == 'male' ){
 			$this->Connect->authUser['Usuario']['sexo'] = 'm';	
