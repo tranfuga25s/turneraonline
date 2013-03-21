@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+<?php echo $this->Facebook->html(); ?>
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title><?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
@@ -50,6 +49,6 @@
 					array( 'target' => '_blank', 'escape' => false )
 				);	?>
 		</div>
-		<?php echo $this->element('sql_dump'); ?>
 </body>
+<?php echo $this->Facebook->init(); ?>
 </html>

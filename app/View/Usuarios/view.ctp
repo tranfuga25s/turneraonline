@@ -29,7 +29,12 @@
 		</dd>
 		<dt>Obra Social</dt>
 		<dd>
-			<?php echo $this->Html->link( $usuario['ObraSocial']['nombre'], array('controller' => 'obras_sociales', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'])); ?>
+			<?php
+			if( $usuario['Usuario']['obra_social_id'] != null ) { 
+				echo $this->Html->link( $usuario['ObraSocial']['nombre'], array( 'controller' => 'obras_sociales', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) );
+			} else {
+				echo "Ninguna";
+			} ?>
 			&nbsp;
 		</dd>
 		<dt>Notificaciones</dt>

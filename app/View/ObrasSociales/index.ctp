@@ -39,7 +39,7 @@
 	<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
 	<div class="contenedor-os">
 		<?php foreach( $obrasSociales as $obraSocial ):
-			if( is_null( $obraSocial['ObraSocial']['imagen'] ) ) {
+			if( is_null( $obraSocial['ObraSocial']['logo'] ) ) {
 				echo $this->Html->link( 
 						'<div>'.
 						$this->Html->image( 'cabecera.png' ).'<br />'.
@@ -50,7 +50,7 @@
 			} else {
 				echo $this->Html->link( 
 						'<div>'.
-						$this->Html->image( $obrasSocial['ObraSocial']['imagen'] ).'<br />'.
+						$this->Html->image( $obrasSocial['ObraSocial']['logo'] ).'<br />'.
 						h($obrasSociale['ObraSocial']['nombre'])					
 						.'</div>',
 					  array( 'action' => 'view', $obrasSocial['ObraSocial']['id_obra_social'] ),
