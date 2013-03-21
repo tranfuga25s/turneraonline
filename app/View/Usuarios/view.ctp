@@ -12,6 +12,16 @@
 			<?php echo h($usuario['Usuario']['nombre']); ?>
 			&nbsp;
 		</dd>
+		<dt>Sexo</dt>
+		<dd>
+			<?php 
+			if( $usuario['Usuario']['sexo'] == 'm' ) {
+				echo "Masculino";
+			} else {
+				echo "Femenino";
+			} ?>
+			&nbsp;
+		</dd>
 		<dt>Apellido</dt>
 		<dd>
 			<?php echo h($usuario['Usuario']['apellido']); ?>
