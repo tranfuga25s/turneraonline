@@ -70,7 +70,7 @@ class ObraSocial extends AppModel {
     * @return bool Verdadero si existe algún valor similar
     */	
 	public function buscarRepetido( $valor ) {
-		$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'] ) ) );
+		$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'], $this->primaryKey => '!= '.$this->id ) ) );
 		if( $count <= 0 ) {
 			return true;
 		} else {
