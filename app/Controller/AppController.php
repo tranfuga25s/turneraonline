@@ -32,7 +32,7 @@ class AppController extends Controller {
 	);
 	
 	public $helpers = array( 'Facebook.Facebook' );
-		//public $theme = 'dentista';
+	public $theme = "Cakestrap";
 
 	// Esto permite que cualquier pagina del controlador Pages sea vista por el publico.
 	public function beforeFilter() {
