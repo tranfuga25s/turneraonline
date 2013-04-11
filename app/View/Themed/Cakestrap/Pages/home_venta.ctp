@@ -19,6 +19,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 				<p>En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.</p>
 			</div>
 		</div>
+
 		<div class="row-fluid">
 			<div class="span12">
 				<h3>Nuestros datos</h3>
@@ -26,10 +27,12 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 				<?php echo $this->Html->link( 'Obras sociales disponibles', array( 'controller' => 'obras_sociales', 'action' => 'index' ), array( 'class' => 'btn btn-info btn-block' ) ); ?>
 				<?php echo $this->Html->link( '¿Donde estamos?', array( 'controller' => 'clinicas', 'action' => 'view', 1 ), array( 'class' => 'btn btn-success btn-block' ) ); ?>
 			</div>
-			<?php echo $this->Facebook->like(); ?>
 		</div>
+		<br />
+		<?php echo $this->Facebook->like(); ?>
+
 	</div> <!-- fin infositio -->
-	
+
 	<div class="span6 well">
 		<h3>¿Para quienes es util?</h3>
 		<div id="myCarousel" class="carousel slide">
@@ -44,7 +47,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
   			</ol>
   			<!-- Carousel items -->
   			<div class="carousel-inner">
-			    <div class="active item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'M&eacute;dicos', array( 'controller' => 'pages/clientes/medicos' ), array( 'escape' => false ) ); ?></div>
+			    <div class="active item"><?php echo $this->Html->link( $this->Html->image( 'slide-medico.png' ).'<span>M&eacute;dicos<span>', array( 'controller' => 'pages/clientes/medicos' ), array( 'escape' => false ) ); ?></div>
 			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Consultorios'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
 			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Sanatorios y/o Hospitales', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
 			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Dentistas'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
@@ -57,6 +60,8 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 			 <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 		</div>
 	</div><!-- carrusel -->
+	
+
 </div>
 
 <div class="row-fluid">
@@ -73,10 +78,9 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 				<?php echo $this->Form->submit( 'Ingresar', array( 'class' => 'btn btn-primary', 'div' => false ) ); ?>
 				<?php echo $this->Html->link( 'Registrarme', array( 'controller' => 'Usuarios', 'action' => 'registrarse' ), array( 'class' => 'btn' )  ); ?>
 				<?php echo $this->Html->link( 'Olvide mi contraseña', array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' ), array( 'class' => 'btn' )  ); ?>
-				<br />
-				<?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>				
 			</div>
 		</fieldset>
+		<?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>	
 	<?php } else { ?>
 		<fieldset>
 			<legend>Bienvenido <?php if( $loggeado ) { echo ", ". $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; } ?> !</legend>
@@ -110,7 +114,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 	
 	<div class="span6 well">
 		<fieldset><legend>¿Como puedo probarlo?</legend></fieldset>
-		<p>Para ingresar y ver las características de este sitio ingrese mediante cualquier a de las siguientes cuentas:</p>
+		<p>Para ingresar y ver las características de este sitio ingrese mediante cualquiera de las siguientes cuentas:</p>
 				<small>
 				Para probar las posibilidades de las secretarias ingrese con:<br />
 				<b>Usuario:</b>&nbsp; secretaria@turnera.com<br /><b>Contraseña:</b> secretaria.<br /><br />
@@ -132,7 +136,5 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 		google_ad_height = 90;
 		//-->
 		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-</div>
+		<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div><!-- end publicity -->
