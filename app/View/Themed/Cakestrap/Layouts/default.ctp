@@ -46,15 +46,6 @@
 			
 		</div><!-- #main-container -->
 		
-		<?php if( Configure::read( 'debug' ) > 0 ) { ?> 
-		<div class="container">
-			Sql Dump
-			<div class="well">
-				<small><?php echo $this->element('sql_dump'); ?></small>				
-			</div>
-		</div><!-- .container -->
-		<?php } ?>
-		
 	</body>
 <?php echo $this->Facebook->init(); ?>
 </html>
