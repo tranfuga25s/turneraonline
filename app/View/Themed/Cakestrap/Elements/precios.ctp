@@ -3,7 +3,7 @@
 		<tr>
 			<th rowspan="2" class="text-left"><p class="text-center">Tipo de servicio</p></th>
 			<th colspan="4" class="text-center"><p class="text-center">Incluye</p></th>
-			<th rowspan="2" class="text-center"><p class="text-center">Precio final</p></th>
+			<th rowspan="2" class="text-center"><p class="text-center">Precio final por mes</p></th>
 		</tr>
 		<tr>
 			<th><p class="text-center">Servidor</th>
@@ -40,7 +40,7 @@
 		</tr>
 
 		<tr>
-			<td colspan="6">Extras opcionales</td>
+			<td colspan="6"><h5>Extras opcionales</h5></td>
 		</tr>
 		<tr class="success">
 			<td colspan="4">Integración con Facebook</td>

@@ -34,31 +34,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 	</div> <!-- fin infositio -->
 
 	<div class="span6 well">
-		<h3>¿Para quienes es util?</h3>
-		<div id="myCarousel" class="carousel slide">
-  			<ol class="carousel-indicators">
-    			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    			<li data-target="#myCarousel" data-slide-to="1"></li>
-    			<li data-target="#myCarousel" data-slide-to="2"></li>
-    			<li data-target="#myCarousel" data-slide-to="3"></li>
-    			<li data-target="#myCarousel" data-slide-to="4"></li>
-    			<li data-target="#myCarousel" data-slide-to="5"></li>
-    			<li data-target="#myCarousel" data-slide-to="6"></li>
-  			</ol>
-  			<!-- Carousel items -->
-  			<div class="carousel-inner">
-			    <div class="active item"><?php echo $this->Html->link( $this->Html->image( 'slide-medico.png' ).'<span>M&eacute;dicos<span>', array( 'controller' => 'pages/clientes/medicos' ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Consultorios'             , array( 'controller' => 'pages/clientes/consultorios' ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Sanatorios y/o Hospitales', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Dentistas'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Salones de Belleza'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Canchas de F&uacute;tbol' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>
-			    <div class="item"><?php echo $this->Html->link( $this->Html->image( 'cabecera.png' ).'Canchas de Tenis'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
-  		    </div>
-			<!-- Carousel nav -->
-			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-			 <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-		</div>
+		<?php echo $this->element( 'carrusel' ); ?>
 	</div><!-- carrusel -->
 	
 
