@@ -54,7 +54,7 @@
 	
 	<div class="span6 well">
 		<h4>Precios</h4>
-		<?php echo $this->element( 'precios', array( 'id_servicio' => 4 ) ); ?>
+		<?php echo $this->element( 'precios', array( 'id_servicio' => Configure::read( 'Gestotux.id_servicio.medico'), 'nombre' => "Médico" ) ); ?>
 	</div>
 	
 </div>

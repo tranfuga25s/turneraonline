@@ -10,7 +10,7 @@
 	border-radius: 0 0 9px 9px;
 }
 
-.carrusel-inner>.item>a:hover {
+.texto-carrusel:hover {
 	text-decoration: none;
 }
 
@@ -19,7 +19,7 @@
 }
 </style>
 
-<h3>¿Para quienes es util?</h3>
+<h3>¿Para qui&eacute;nes es &uacute;til?</h3>
 <div id="myCarousel" class="carousel slide">
 	<ol class="carousel-indicators">
 		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -28,7 +28,7 @@
 		<li data-target="#myCarousel" data-slide-to="3"></li>
 		<li data-target="#myCarousel" data-slide-to="4"></li>
 		<li data-target="#myCarousel" data-slide-to="5"></li>
-		<li data-target="#myCarousel" data-slide-to="6"></li>
+		<!-- <li data-target="#myCarousel" data-slide-to="6"></li> -->
 	</ol>
 	<!-- Carousel items -->
 	<div class="carousel-inner">
@@ -67,7 +67,7 @@
 	    			   array( 'controller' => 'pages/clientes/belleza'      ),
 	    			   array( 'escape' => false ) ); ?>
 	    </div>
-	    <div class="item">
+	    <!-- <div class="item">
 	    	<?php echo $this->Html->link( 
 	    					$this->Html->image( 'slide-futbol.png' ).
 	    					$this->Html->tag( 'div', 'Canchas de F&uacute;tbol', array( 'class' => 'texto-carrusel' ) ),
@@ -80,7 +80,7 @@
 	    					$this->Html->tag('div', 'Canchas de Tenis', array( 'class' => 'texto-carrusel' ) ),
 	    				array( 'controller' => 'pages/clientes/tenis'        ),
 	    				array( 'escape' => false ) ); ?>
-	    </div>
+	    </div> -->
     </div>
 	<!-- Carousel nav -->
 	<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>

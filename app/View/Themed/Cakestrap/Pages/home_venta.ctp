@@ -55,6 +55,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 				<?php echo $this->Html->link( 'Registrarme', array( 'controller' => 'Usuarios', 'action' => 'registrarse' ), array( 'class' => 'btn' )  ); ?>
 				<?php echo $this->Html->link( 'Olvide mi contraseña', array( 'controller' => 'Usuarios', 'action' => 'recuperarContra' ), array( 'class' => 'btn' )  ); ?>
 			</div>
+			<?php echo $this->Form->end(); ?>
 		</fieldset>
 		<?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>	
 	<?php } else { ?>
@@ -91,14 +92,30 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 	<div class="span6 well">
 		<fieldset><legend>¿Como puedo probarlo?</legend></fieldset>
 		<p>Para ingresar y ver las características de este sitio ingrese mediante cualquiera de las siguientes cuentas:</p>
-				<small>
-				Para probar las posibilidades de las secretarias ingrese con:<br />
-				<b>Usuario:</b>&nbsp; secretaria@turnera.com<br /><b>Contraseña:</b> secretaria.<br /><br />
-				Para probar las posibilidades de los medicos ingrese con:<br />
-				<b>Usuario:</b> medico@turnera.com<br /><b>Contraseña:</b> medico.<br /><br />
-				Para probar las posibilidades de los pacientes ingrese con:<br />
-				<b>Usuario:</b> paciente@turnera.com<br /><b>Contraseña:</b> paciente.<br /><br />
-				</small>
+		<!-- Secretarias -->  <br />
+		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
+		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'secretaria@turnera.com' ) );
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'secretaria' ) ); 
+			  echo $this->Form->submit(  'Secretarias', array( 'class' => 'btn btn-primary btn-block btn-large ', 'div' => false )  );
+			  echo $this->Form->end(); ?>
+		<!-- Medicos --> <br />
+		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
+		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'medico@turnera.com' ) );
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'medico' ) ); 
+			  echo $this->Form->submit(  'Medico', array( 'class' => 'btn btn-info btn-block btn-large ', 'div' => false )  ); 
+			  echo $this->Form->end(); ?>	  
+		<!-- Paciente --> <br />
+		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
+		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'paciente@turnera.com' ) );
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'paciente' ) ); 
+			  echo $this->Form->submit( 'Paciente', array( 'class' => 'btn  btn-success btn-block btn-large ', 'div' => false )  );	
+			  echo $this->Form->end(); ?>
+		<!-- Administrador --> <br />
+		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
+		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'admin@turnera.com' ) );
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'admin' ) ); 
+			  echo $this->Form->submit( 'Administrador', array( 'class' => 'btn  btn-inverse btn-block btn-large ', 'div' => false ) );
+			  echo $this->Form->end(); ?>
 	</div>
 			
 </div>

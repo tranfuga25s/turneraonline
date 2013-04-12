@@ -14,7 +14,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 				<address>
 					Vanesa Beatriz Apablaza<br />
 					<div id="teljuampi" style="display: none;">(+54) 342 5134148  </div><a id="bteljuampi" href="#" onclick="$('#teljuampi').slideDown(); $('#bteljuampi').hide();">Ver Tel&eacute;fono</a><br />
-					Santa Fe Capital - Argentina
+					Santa Fe Capital
 				</address>
 			</li>
 			<li class="span3 thumbnail">
@@ -22,7 +22,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 				<address>
 					Daniel Sequeira<br />
 					<div id="teldani"   style="display: none;">(+54) 342 5128211  </div><a id="bteldani"   href="#" onclick="$('#teldani').slideDown(); $('#bteldani').hide();">Ver Tel&eacute;fono</a><br />
-					Santa Fe Capital y alrededores - Argentina
+					Santa Fe Capital y alrededores
 				</address>
 			</li>
 			<li class="span3 thumbnail">
@@ -30,7 +30,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 				<address>
 					Juan Pablo Vidocevich<br />
 					<div id="teljuampi" style="display: none;">(+54) 342 5134148  </div><a id="bteljuampi" href="#" onclick="$('#teljuampi').slideDown(); $('#bteljuampi').hide();">Ver Tel&eacute;fono</a><br />
-					Laguna Paiva y alrededores - Argentina
+					Laguna Paiva y alrededores
 				</address>
 			</li>
 			<li class="span3 thumbnail">

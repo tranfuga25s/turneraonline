@@ -3,33 +3,20 @@ $dias = array( 0 => 'domingo', 1 => 'lunes', 2 => 'martes', 3 => 'miercoles', 4 
 $this->set( 'title_for_layout', "Datos del médico" ); 
 ?>
 <div class="row-fluid">
-	<div class="span12 well">
-		<h3>Datos del m&eacute;dico <?php echo $medico['Usuario']['razonsocial']; ?></h3>
+	<div class="span12">
+		<h4>Datos del m&eacute;dico <?php echo $medico['Usuario']['razonsocial']; ?></h4>
 	</div>
 </div>
 <div class="row-fluid">	
 	<div class="span9">
-		<h4>Datos del m&eacute;dico</h4>
-		<dl>
+		<dl class="dl-horizontal">
 			<dt>Especialidad:</dt>
 			<dd><?php echo $medico['Especialidad']['nombre']; ?></dd>
 	
 			<dt>Cl&iacute;nica:</dt>
 			<dd><?php echo $medico['Clinica']['nombre']; ?></dd>
 		</dl>
-	</div>
-	
-	<div class="span3 well">
-		<h3><a href="#">Acci&oacute;nes</a></h3>
-		<div>
-			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'class' => 'btn btn-primary btn-block' ) );
-			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ), array( 'class' => 'btn btn-info btn-block' ) ); 
-			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ), array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
-		</div>
-	</div>
-</div>
-<div class="row-fluid">
-	<div class="span12">
+
 		<h4>Disponibilidad horaria</h4>
 		<table class="table table-hover table-bordered	">
 			<tbody>
@@ -57,5 +44,21 @@ $this->set( 'title_for_layout', "Datos del médico" );
 	    	</tbody>
 	    </table>
 	</div>
+	
+	<div class="span3 well">
+		<h3><a href="#">Acci&oacute;nes</a></h3>
+		<div>
+			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'class' => 'btn btn-primary btn-block' ) );
+			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ), array( 'class' => 'btn btn-info btn-block' ) ); 
+			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ), array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
+		</div>
+	</div>
+</div>
+
+<div class="row-fluid">
+
+	<div class="span4 well"><?php echo $this->Facebook->like(); ?></div>
+	<div class="span4 well"><?php echo $this->Facebook->recommendations(); ?></div>
+	<div class="span4 well"><?php echo $this->Facebook->comments(); ?></div>
 	
 </div>

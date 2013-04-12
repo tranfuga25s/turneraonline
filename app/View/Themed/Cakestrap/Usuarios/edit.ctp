@@ -1,12 +1,12 @@
 <?php $this->set( 'title_for_layout', "Editar mis datos" ); ?>
 <div class="row-fluid">
 
-	<?php echo $this->element( 'menu/usuario', array( 'usuario' => $usuario ) ); ?>
+	<?php echo $this->element( 'menu/usuario', array( 'usuario' => $this->data ) ); ?>
 		
 	<div class="span10 well">
 		<?php echo $this->Form->create('Usuario'); ?>
 		<fieldset>
-			<legend>Registrarse</legend>
+			<legend>Editar mis datos</legend>
 			<p>Por favor, ingrese los siguientes datos para obtener su cuenta y poder solicitar turnos</p>
 			<?php echo $this->Form->input( 'id_usuario' );
 				  echo $this->Form->input( 'email' );

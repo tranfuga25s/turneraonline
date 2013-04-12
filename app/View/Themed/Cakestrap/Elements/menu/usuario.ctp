@@ -1,11 +1,11 @@
 <div id="acciones" class="span2">
 	<ul class="nav nav-tabs nav-stacked">
-		<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
-		<li><?php echo $this->Html->link( 'Editar mis datos', array('controller' => 'usuarios', 'action' => 'edit', $usuario['Usuario']['id_usuario'])); ?></li>
-		<li><?php echo $this->Html->link( 'Cambiar contraseña', array('controller' => 'usuarios', 'action' => 'cambiaContra', $usuario['Usuario']['id_usuario'])); ?></li>
-		<li><?php echo $this->Html->link( 'Ver Obras sociales', array('controller' => 'obras_sociales', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link( 'Pedir turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) ); ?></li>
-		<li><?php echo $this->Html->link( 'Ver mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuario['Usuario']['id_usuario'] ) ); ?></li>
-		<li><?php echo $this->Html->link( 'Salir', array('controller' => 'usuarios',  'action' => 'salir' ) ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-home"></i> Inicio', '/', array( 'escape' => false ) ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-pencil"></i> Editar mis datos', array('controller' => 'usuarios', 'action' => 'edit', $usuarioactual['id_usuario']), array( 'escape' => false ) ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-asterisk"></i> Cambiar contraseña', array('controller' => 'usuarios', 'action' => 'cambiaContra', $usuarioactual['id_usuario']), array( 'escape' => false ) ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-eye-open"></i> Ver Obras sociales', array('controller' => 'obras_sociales', 'action' => 'index'), array( 'escape' => false ) ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-calendar"></i> Pedir turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'escape' => false )  ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Ver mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ), array( 'escape' => false )  ); ?></li>
+		<li><?php echo $this->Html->link( '<i class="icon-off"></i> Salir', array('controller' => 'usuarios',  'action' => 'salir' ), array( 'escape' => false )  ); ?></li>
 	</ul>
 </div>
