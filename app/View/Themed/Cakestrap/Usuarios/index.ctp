@@ -103,11 +103,7 @@
 				<?php endforeach; ?>				
 			</tbody>
 		</table>
-		<p><small><?php
-		echo $this->Paginator->counter(array(
-			'format' => __d('cake', 'Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-		));
-		?></small></p>
+		<p><small><?php echo $this->Paginator->counter(array('format' => 'Pagina {:page} de {:pages}, mostrando {:current} de {:count}, desde {:start} al {:end}'))); ?></small></p>
 		<div class="pagination">
 			<ul>
 			<?php

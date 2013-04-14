@@ -57,8 +57,10 @@ $this->set( 'title_for_layout', "Datos del médico" );
 
 <div class="row-fluid">
 
-	<div class="span4 well"><?php echo $this->Facebook->like(); ?></div>
-	<div class="span4 well"><?php echo $this->Facebook->recommendations(); ?></div>
-	<div class="span4 well"><?php echo $this->Facebook->comments(); ?></div>
+	<div class="span5 well">
+		<?php echo $this->Facebook->like(); ?>
+		<?php echo $this->Facebook->recommendations(); ?>
+	</div>
+	<div class="span7 well"><?php echo $this->Facebook->comments(); ?></div>
 	
 </div>
