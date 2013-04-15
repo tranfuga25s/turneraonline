@@ -12,7 +12,8 @@ var actualizar = false;
 function cambiarDia() {
  actualizar = false;
  if( $("#seldia").css( 'display' ) == 'none' ) {
- 	$("#seldia").slideDown();
+ 	$("#seldia").css( 'display', 'block' );
+ 	$("#seldia").alert();
  } else {
  	$("#seldia").slideUp();
  }
@@ -23,57 +24,25 @@ function reservarTurno( turno, medico ) {
     // Pongo los datos en el formulario
   $('#MedicoIdMedico').clone().attr( 'value', turno ).attr( 'name', 'data[Medico][id_turno]' ).appendTo("#MedicoReservarForm");
   $("input[name=id_medico]").val( medico );
-  $("#MedicoRpaciente").autocomplete( { source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>' } );
-  
-  $("#reservar").dialog( {
-  	modal: true,
-  	width: 400,
-  	heigth: 300,
-  	buttons:
-  	{
-  		"Reservar": function() {
-  			if( $("#MedicoRpaciente").val() == "" ) {
-  				alert( "Por favor, ingrese un paciente" );
-  			} else {
-  				$("#MedicoReservarForm").submit();
-	  			$(this).dialog("close");  				
-  			}
-  		},
-  		"Cancelar": function() { $(this).dialog("close"); actualizar = true; }
-  	}
+  $("#MedicoRpaciente").typeahead({
+  		source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>',
+  		minLength: 4
   });
+  
+  $("#reservar").modal();
 }
 
 function sobreturno( medico, turno, hora, min ) {
  actualizar = false;
  // Seteo los datos necesarios
- $("#MedicoSpaciente").autocomplete( { source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>' } );
+ //$("#MedicoSpaciente").autocomplete( { source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>' } );
  $('#MedicoIdMedico').clone().attr( 'value', turno ).attr( 'name', 'data[Medico][id_turno]' ).appendTo("#MedicoSobreturnoForm");
  $('#MedicoIdMedico').attr( 'value', medico ).appendTo("#MedicoSobreturnoForm");
  
  $("#MedicoMin").val( min );
  $("#MedicoHora").val( hora );
  
- $("#sobreturno").dialog(
- 	{
- 		modal: true,
- 		width: 500,
- 		heigth: 300,
- 		buttons: 
- 			{ "Reservar": function() {
- 				if( $("#MedicoSpaciente").val() == '' ) {
- 					alert( 'Por favor, ingrese un paciente para generar el sobreturno' );
- 				} else {
- 					$("#MedicoSobreturnoForm").submit();
- 					$(this).dialog("close");
- 				}
-			},
-		  "Cancelar": function() {
-		  		$(this).dialog("close");
-		  		actualizar = true;
-		  } 				
-		} 		
- 	});
+ $("#sobreturno").modal();
 }
 
 function cancelarTurno( id_turno ) {
@@ -111,28 +80,6 @@ function mostrarCancelarTurnos() {
 }
 
 $(function(){
-	$("a","#seldia").button();
-	$("a","#cancelar").button();
-	$("a",".accion").button();
-	$("#autorefresco").click( function() {
-		actualizar = false;
-		$("#autorefresco-dialogo").dialog({
-			modal: true,
-			buttons:
-			{
-				"Habilitado": function() {
-					$("#MedicosActualizacion" ).val( true );
-					$("#MedicosTurnosForm").submit();
-					$(this).dialog('close');
-				},
-				"Deshabilitado": function() {
-					$("#MedicosActualizacion" ).val( false );
-					$("#MedicosTurnosForm").submit();
-					$(this).dialog('close');
-				}
-			}
-		});
-	} );
 	if( actualizar ) {
 		// No uso el reload porque si existen parametros los intentará enviar haciendo que aparezcan carteles
 		$.doTimeout( 2*60*1000, function() {  if( actualizar ) { location.replace( "<?php echo Router::url( array( 'action' => 'turnos' ) ); ?>" ); } 	});
@@ -157,33 +104,85 @@ $(function(){
 	</div>
 </div>
 
-<div class="decorado1">
-
-<div id="autorefresco-dialogo" style="display: none;" title="Auto refresco de pantalla" class="span12 well">
-	Seleccione la opci&oacute;n de habilitacion de autorefresco cada 2 minutos
-	<?php echo $this->Form->create( 'Medicos', array( 'action' => 'turnos' ) );
-	      echo $this->Form->input( 'actualizacion', array( 'type' => 'hidden', 'value' => $actualizacion ) );
-		  echo $this->Form->end();
-    ?>
+<div id="seldia" style="display:none;" class="alert alert-info">
+   <button type="button" class="close" data-dismiss="seldia">&times;</button>
+   <?php echo $this->Form->create( 'Medico', array( 'action' => 'turnos', 'class' => 'form-inline' ) ); ?>
+   <fieldset>
+   		Elija el día que desea:
+   		<?php echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
+   		<div class="btn-toolbar">
+   			<div class="btn-group"><?php  echo $this->Html->tag( 'a', '< Dia', array(  'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "ayer" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) ); ?></div>&nbsp;
+			<?php echo "&nbsp;<b>Fecha:</b>" . $this->Form->dateTime( 'fecha', 'DMY', null, array( 'class' => array( 'class' => 'input-small' ), 'value' => array( 'day' => $dia, 'month' => $mes, 'year' => $ano ), 'empty' => false, 'monthNames' => array( 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ) ) ); ?>
+			<?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?>
+			<?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false, 'class' => 'btn btn-success' ) ); ?>
+			&nbsp;
+   			<div class="btn-group">
+				<?php  echo $this->Html->tag( 'a', 'Dia >', array( 'class' => 'btn','onclick' => '$("#MedicoIdMedico").clone().attr( "value", "manana" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?>
+				<?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'class' => 'btn','onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?>
+				<?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?>			
+   			</div>
+   </fieldset>
 </div>
 
-<div id="seldia" style="display:none;" class="span12 well">
-   <div class="titulo2">Elija el día que desea:</div><br />
-   <?php echo $this->Form->create( 'Medico', array( 'action' => 'turnos' ) ); ?>
-   <?php  echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
-   <table style="width: 650px; padding: 0px;"><tbody><tr>
-    	<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', '< Dia', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "ayer" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) ); ?></td>
-		<td style="padding: 0px;"><?php  echo "<b>Fecha:</b>" . $this->Form->dateTime( 'fecha', 'DMY', null, array( 'value' => array( 'day' => $dia, 'month' => $mes, 'year' => $ano ), 'empty' => false, 'monthNames' => array( 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ) ) ); ?></td>
-		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Dia >', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "manana" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
-		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?></td>
-		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
-		<td rowspan="2">&nbsp;</td>
-		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?></td>
-	</tr><tr>
-		<td style="padding: 0px;"><?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false ) ); ?></td>
-    </tr></tbody></table>
+<div id="reservar" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="reservar" aria-hidden="true">
+	<?php echo $this->Form->create( 'Medico', array( 'action' => 'reservar', 'class' => 'form-inline' ) );
+		  echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
+	<div class="modal-header">
+		<?php echo $this->Form->button( 'x', array( 'class' => "close", 'data-dismiss' => "reservar", 'aria-hidden' => "true" ) ); ?>
+		<h3 id="myModalLabel">Reservar turno</h3>
+	</div>
+	<div class="modal-body">
+		<p>Ingrese el paciente al cual desea reservar el turno:</p>
+		<?php echo $this->Form->input( 'rpaciente', array( 'label' => 'Paciente', 'div' => false, 'data-provide' => "typeahead" ) ); ?>		
+	</div>
+	<div class="modal-footer">
+		<?php echo $this->Form->button( 'Cerrar', array( 'class' => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => true, 'div' => false ) ); ?>
+		<?php echo $this->Form->submit( 'Reservar', array( 'class' => "btn btn-primary", 'div' => false ) ); ?>
+  	</div>
+  	<?php echo $this->Form->end(); ?>
 </div>
 
+<div id="autorefresco" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="autorefresco" aria-hidden="true">
+	<?php echo $this->Form->create( 'Medicos', array( 'action' => 'turnos', 'class' => 'form-inline' ) ); ?>
+	<div class="modal-header">
+		<?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'autorefresco', 'aria-hidden' => "true" ) ); ?>
+		<h3>Autorefresco de pantalla</h3>
+	</div>
+	<div class="modal-body">
+		Seleccione la opci&oacute;n de habilitacion de autorefresco
+		<?php echo $this->Form->input( 'actualizacion', array( 'type' => 'hidden', 'value' => $actualizacion ) ); ?>
+	</div>
+	<div class="modal-footer">
+		<?php echo $this->Form->button( 'Habilitado', array( 'class' => 'btn btn-success', 'onclick' => "function() { $(\"#MedicosActualizacion\" ).val( true ); $(\"#MedicosTurnosForm\").submit();" ) ); ?>
+		<?php echo $this->Form->button( 'Deshabilitado', array( 'class' => 'btn btn-danger', 'onclick' => "function() { $(\"#MedicosActualizacion\" ).val( false ); $(\"#MedicosTurnosForm\").submit();" ) ); ?>
+	</div>
+	<?php echo $this->Form->end(); ?>
+</div>
+
+<div id="sobreturno" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sobreturno" aria-hidden="true">
+	<?php echo $this->Form->create( 'Medico', array( 'action' => 'sobreturno', 'class' => 'form-inline' ) );
+		  echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
+	<div class="modal-header">
+		<?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'autorefresco', 'aria-hidden' => "true" ) ); ?>
+		<h3>Agregar sobreturno</h3>
+	</div>
+	<div class="modal-body">
+		Ingrese el paciente al cual desea reservar el sobreturno:
+		<?php echo $this->Form->input( 'spaciente', array( 'label' => 'Paciente:', 'class' => 'input-xlarge' ) ); ?>
+		<?php echo $this->Form->input( 'hora', array( 'class' => 'input-mini', 'label' => 'Horario de inicio:', 'div' => false ) ); ?>
+		<?php echo $this->Form->input( 'min', array( 'class' => 'input-mini', 'label' => false, 'before' => ':', 'div' => false ) ); ?>
+		<?php echo $this->Form->input( 'duracion', array( 'label' => 'Duración', 'after' => 'minutos', 'class' => 'input-mini', 'value' => 10 ) ); ?>
+	</div>
+	<div class="modal-footer">
+		<?php echo $this->Form->button( 'Reservar', array( 'class' => 'btn btn-success', 'onclick' => "function() { if( $(\"#MedicoSpaciente\").val() == '' ) { alert( 'Por favor, ingrese un paciente para generar el sobreturno' ); } else { $(\"#MedicoSobreturnoForm\").submit();" ) ); ?>
+		<?php echo $this->Form->button( "Cancelar", array( 'class' => 'btn btn-inverse', 'data-dismiss' => 'sobreturno', 'aria-hidden' => "true" ) ); ?>
+	</div>
+	<?php echo $this->Form->end(); ?>
+</div>
+</td>
+
+
+<!--
 <?php 
 if($hoy) { ?>
 <div id="cancelar" style="display:none" class="span12 well">
@@ -199,43 +198,9 @@ if($hoy) { ?>
 </div>
 <?php } ?>
 
-<div id="reservar" style="display:none" title="Reservar Turno">
-<?php   echo $this->Form->create( 'Medico', array( 'action' => 'reservar' ) );
-		echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
-  Ingrese el paciente al cual desea reservar el turno:
-  <table align="left">
-   <tbody><tr>
-     <td><b>Paciente:</b</td>
-     <td><?php echo $this->Form->input( 'rpaciente', array( 'label' => false, 'div' => false ) ); ?></td>
-   </tr></tbody>
-  </table>
-  <?php echo $this->Form->end(); ?>
-</div>
 
-<div id="sobreturno" style="display:none" title="Agregar sobreturno">
-	<div>
-  <?php echo $this->Form->create( 'Medico', array( 'action' => 'sobreturno' ) );
-		echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
-  Ingrese el paciente al cual desea reservar el sobreturno:
-  <table align="left">
-   <tbody>
-    <tr>
-     <td>Paciente:</td>
-     <td colspan="3"><?php echo $this->Form->input( 'spaciente', array( 'label' => false, 'div' => false, 'cols' => 50, 'rows' => 1 ) ); ?></td>
-    </tr><tr>
-     <td><b>Horario de inicio:</b></td>
-     <td width="20"><?php echo $this->Form->input( 'hora', array( 'label' => false, 'div' => false, 'cols' => 4, 'rows' => 1 ) ); ?></td>
-     <td>:<?php echo $this->Form->input( 'min', array( 'label' => false, 'div' => false, 'cols' => 4, 'rows' => 1 ) ); ?></td>
-     <td>&nbsp;</td>
-    </tr><tr>
-     <td><b>Duraci&oacute;n:</b></td>	
-     <td width="20"><?php echo $this->Form->input( 'duracion', array( 'label' => false, 'div' => false, 'cols' => 4, 'rows' => 1, 'value' => 10 ) ); ?></td>
-     <td colspan="2">minutos</td>
-   </tbody>
-  </table>
-  <?php echo $this->Form->end(); ?>
-  </div>
-</div>
+
+
 
 <div id="cancelarTurno" style="display: none;" title="&iquest;Esta seguro?">
 	Por favor, selecci&oacute;ne quien cancela este turno:<br />
@@ -243,18 +208,21 @@ if($hoy) { ?>
 		  echo $this->Form->radio( 'quien', array( 'p' => 'Paciente', 'm' => 'Médico' ), array( 'legend' => false ) );
 		  echo $this->Form->end(); ?>
 </div>
-<div style="position: relative; float: left; top: 25px; left: 5px;">
-	<a class="ui-state-default ui-corner-all ui-button" id="autorefresco">
-		<span class="ui-icon ui-icon-refresh"></span>
-	</a>
-</div>
-
+--> 
 <div class="row-fluid">
 	
 	<div class="span12">
 		<table class="table table-condensed table-hover">
 			<tbody>
-				<th colspan="4">Turnos para el día <?php echo $fechas; ?></th>
+				<th colspan="4">
+					Turnos para el día <?php echo $fechas; ?>
+					<span class="pull-right btn">
+						<?php echo $this->Html->tag('a', 
+													'<i class="icon-repeat"></i>',
+													array( 'data-toggle' => "modal", 'data-target' => '#autorefresco' )
+													); ?> 
+					</span>
+				</th>
 				<?php if( count( $turnos ) == 0 ) : ?>
 				<tr>
 					<td class="success">No hay turnos para este consultorio</td>
@@ -270,10 +238,10 @@ if($hoy) { ?>
 				<tr>
 					<td>
 						<?php if( $turno['Turno']['recibido'] == true ) {
-							echo $this->Html->tag( 'a', 'R', null );
+							echo $this->Html->tag( 'a', 'R', array( 'class' => 'badge badge-info' ) );
 						}
 						if( $turno['Turno']['atendido'] == true ) {
-							echo $this->Html->tag( 'a', 'A', null );
+							echo $this->Html->tag( 'a', 'A', array( 'class' => 'badge badge-success' ) );
 						}?>
 					<?php 
 					if( $turno['Turno']['atendido'] == true || $turno['Turno']['cancelado'] == true ) {
@@ -294,23 +262,24 @@ if($hoy) { ?>
 					<?php
 						if( $turno['Turno']['paciente_id'] != null ) {
 							if( $turno['Turno']['recibido'] != true ) {
-								  echo $this->Html->link( 'Recibido', array( 'action' => 'recibido', $turno['Turno']['id_turno'] ) );
-								  echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ) );
-	 							  echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )' ) );
+								  echo $this->Html->link( 'Recibido', array( 'action' => 'recibido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini' ) );
+								  echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini' ) );
+	 							  echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
 							} else if( $turno['Turno']['recibido'] == true && $turno['Turno']['atendido'] == false ) {
-								echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ) );
-	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )' ) );
+								echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'], 'class' => 'btn btn-mini' ) );
+	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
 							} 
 						} else {
 							if( $turno['Turno']['cancelado'] == false ) {
-								echo $this->Html->tag( 'a', 'Reservar', array( 'onclick' => 'reservarTurno( '.$turno['Turno']['id_turno'].', '.$turno['Turno']['medico_id'].'  )' ) );
-	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )' ) );
+								echo $this->Html->tag( 'a', 'Reservar', array( 'onclick' => 'reservarTurno( '.$turno['Turno']['id_turno'].', '.$turno['Turno']['medico_id'].'  )', 'class' => 'btn btn-mini' ) );
+	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
 							}
 						}
 						echo $this->Html->tag( 'a', 'Sobre Turno', array( 'onclick' => 'sobreturno( '.$turno['Turno']['medico_id'].
 																									', '.$turno['Turno']['id_turno'].
 																									', '. date( "H", strtotime( $turno['Turno']['fecha_inicio'] ) ).
-																									', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )' ) );
+																									', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )',
+																		  'class' => 'btn btn-mini' ) );
 					?>
 				    </td>		
 				</tr>
