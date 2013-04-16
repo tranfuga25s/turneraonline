@@ -165,7 +165,7 @@ $( function() {
 	</div>
 	<div class="modal-footer">
 		<?php echo $this->Form->button( 'Reservar', array( 'class' => 'btn btn-success', 'onclick' => "function() { if( $(\"#MedicoSpaciente\").val() == '' ) { alert( 'Por favor, ingrese un paciente para generar el sobreturno' ); } else { $(\"#MedicoSobreturnoForm\").submit();" ) ); ?>
-		<?php echo $this->Form->button( "Cancelar", array( 'class' => 'btn btn-inverse', 'data-dismiss' => 'sobreturno', 'aria-hidden' => "true" ) ); ?>
+		<?php echo $this->Form->button( "Cancelar", array( 'class' => 'btn btn-inverse', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) ); ?>
 	</div>
 	<?php echo $this->Form->end(); ?>
 </div>
