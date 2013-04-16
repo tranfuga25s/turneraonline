@@ -8,13 +8,9 @@ App::uses('AppController', 'Controller');
 class MedicosController extends AppController {
 
 	var $helpers = array( 'Html', 'Form', 'Paginator', 'Js' => array( 'Jquery' ) );
-	var $components = array( 'RequestHandler' );
+	var $components = array( 'RequestHandler', 'AutoUpdateRecall', 'DiaTurnoRecall' => array( 'variable' => 'Medico' ) );
 	var $uses = array( 'Medico', 'Consultorio', 'Turno' );
 	
-	
-	private $dia;
-	private $mes;
-	private $ano;
 	
 	public function beforeFilter() {
 		$this->Auth->allow( array( 'view' ) );
@@ -38,12 +34,6 @@ class MedicosController extends AppController {
 					case 'reservar':
 					case 'atendido':
 					case 'autoactualizacion':
-					{
-						$this->verificarDia();
-						$this->loadModel('Turno');
-						return true; 
-						break;
-					}
 					case 'verExcepciones':
 					case 'disponibilidad':
 					{
@@ -69,37 +59,6 @@ class MedicosController extends AppController {
 	}
 
    /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * guardandolos en las variables de sesion 
-    */
-	function verificarDia() {
-		if( !$this->Session->check( "Medico.dia" ) ) {
-			$this->Session->write( "Medico.dia", date( 'j' ) );
-			$this->Session->write( "Medico.mes", date( 'n' ) );
-			$this->Session->write( "Medico.ano", date( 'Y' ) );
-		}
-		$this->dia = $this->Session->read( "Medico.dia" );
-		$this->mes = $this->Session->read( "Medico.mes" );
-		$this->ano = $this->Session->read( "Medico.ano" );
-		$this->set( 'actualizacion', $this->Session->read( 'actualizacion', true ) );
-	}
-	
-	function cambiarDia( $dia, $mes, $ano ) {
-		if( $this->Session->read( "Medico.dia" ) != $dia ) {
-			$this->Session->write( "Medico.dia", $dia );
-		}
-		if( $this->Session->read( "Medico.mes" ) != $mes ) {
-			$this->Session->write( "Medico.mes", $mes );
-		}
-		if( $this->Session->read( "Medico.ano" ) != $ano ) {
-			$this->Session->write( "Medico.ano", $ano );
-		}
-		$this->dia = $dia;
-		$this->mes = $mes;
-		$this->ano = $ano;		
-	}
-
-   /**
     * Muestra los turnos del dia elegido
     * 
     */
@@ -113,7 +72,7 @@ class MedicosController extends AppController {
 			$this->data = $this->data['Medico'];
 			// Busco la fecha e que me pasaron
 			if( isset( $this->data['accion'] ) ) {
-				$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
+				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
 				if( $this->data['accion'] == 'ayer' ) {
 					$t2 = $t->sub( new DateInterval( "P1D" ) );
@@ -127,23 +86,18 @@ class MedicosController extends AppController {
 					$t2 = new DateTime('now');
 				}
 				// Actualizo la fecha
-				$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
+				$this->DiaTurnoRecall->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
 			} else {
-				$this->cambiarDia( $this->data['fecha']['day'],
-								   $this->data['fecha']['month']+1,
-								   $this->data['fecha']['year'] );				
+				$this->DiaTurnoRecall->cambiarDia( $this->data['fecha']['day'],
+								   				   $this->data['fecha']['month']+1,
+								                   $this->data['fecha']['year'] );				
 			}
 		}
 
-		$this->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
-		$this->set( 'dia', $this->dia );
-		$this->set( 'mes', $this->mes-1 ); // Lista de meses base 0 
-		$this->set( 'ano', $this->ano ); 
-		
 		$this->Turno->Paciente->virtualFields = array( 'razonsocial' => ' CONCAT( Paciente.apellido, \', \', Paciente.nombre ) ' );
 		$this->Turno->unbindModel( array( 'belongsTo' => array( 'Consultorio' ) ) );
 		$f1 = new DateTime( 'now' );
-		$f1->setDate( $this->ano, $this->mes, $this->dia ); $f1->setTime( 0, 0, 0 );
+		$f1->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() ); $f1->setTime( 0, 0, 0 );
 		$f2 = clone $f1; $f2->add( new DateInterval( "P1D" ) );
 		$this->set( 'turnos' , $this->Turno->find( 'all', array( 'conditions' => array( 
 												'medico_id' => $id_medico,
@@ -170,14 +124,7 @@ class MedicosController extends AppController {
 	public function autoactualizacion() {
 		if( $this->request->isPost() ) {
 			if( isset( $this->data['Medicos']['actualizacion'] ) ) {
-				debug( $this->data ); die( 'Miron' );
-				$actualizacion = ( $this->data['Medicos']['actualizacion'] == 1 ) ? true: false;
-				$this->Session->write( "actualizacion", $actualizacion);
-				$this->set( 'actualizacion', $actualizacion );
-				if( $this->data['Medicos']['actualizacion'] == false ) {
-					$accion = " deshabilitada ";
-				} else { $accion = " habilitada"; }
-				$this->Session->setFlash( 'Auto actualización de la página ha sido' . $accion, 'flash/info' );
+				$this->AutoUpdateRecall->cambiarAutoActualizacion( $this->data['Medicos']['actualizacion'], true );
 			} else {
 				$this->Session->setFlash( 'Auto actualización no seteada', 'flash/error' );
 			}

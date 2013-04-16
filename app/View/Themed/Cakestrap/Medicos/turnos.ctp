@@ -219,9 +219,9 @@ $( function() {
 				<th colspan="4">
 					Turnos para el día <?php echo $fechas; ?>
 					<?php if( $actualizacion == true ) { ?>
-					<span class="pull-right btn btn-inverse">
-					<?php } else { ?>
 					<span class="pull-right btn btn-success">
+					<?php } else { ?>
+					<span class="pull-right btn btn-inverse">
 					<?php } ?>
 						<?php echo $this->Html->tag('a', 
 													'<i class="icon-repeat"></i>',
