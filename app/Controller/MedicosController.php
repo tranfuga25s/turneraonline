@@ -37,6 +37,7 @@ class MedicosController extends AppController {
 					case 'cancelar':
 					case 'reservar':
 					case 'atendido':
+					case 'autoactualizacion':
 					{
 						$this->verificarDia();
 						$this->loadModel('Turno');
@@ -80,7 +81,7 @@ class MedicosController extends AppController {
 		$this->dia = $this->Session->read( "Medico.dia" );
 		$this->mes = $this->Session->read( "Medico.mes" );
 		$this->ano = $this->Session->read( "Medico.ano" );
-		$this->set( 'actualizacion', $this->Session->read( 'actualizacion' ) );
+		$this->set( 'actualizacion', $this->Session->read( 'actualizacion', true ) );
 	}
 	
 	function cambiarDia( $dia, $mes, $ano ) {
@@ -103,43 +104,34 @@ class MedicosController extends AppController {
     * 
     */
 	public function turnos() {
-		// Datos basicos
+		// Datos básicos
 		$id_usuario = $this->Auth->user( 'id_usuario' );
 		$t = $this->Medico->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_medico' ) ) );
 		$id_medico = $t['Medico']['id_medico'];
 
 		if( $this->request->isPost() ) {
-			if( isset( $this->data['Medicos']['actualizacion'] ) ) {
-				$this->Session->write( "actualizacion", $this->data['Medicos']['actualizacion'] );
-				$this->set( 'actualizacion', $this->data['Medicos']['actualizacion'] );
-				if( $this->data['Medicos']['actualizacion'] == 'false' ) {
-					$accion = " deshabilitada ";
-				} else { $accion = " habilitada"; }
-				$this->Session->setFlash( 'Auto actualización de la página ha sido' . $accion, 'default', array( 'class' => 'success' ) );
-			} else {
-				$this->data = $this->data['Medico'];
-				// Busco la fecha e que me pasaron
-				if( isset( $this->data['accion'] ) ) {
-					$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
-					$t2 = clone $t;
-					if( $this->data['accion'] == 'ayer' ) {
-						$t2 = $t->sub( new DateInterval( "P1D" ) );
-					} else if( $this->data['accion'] == 'manana' ) {
-						$t2 = $t->add( new DateInterval( "P1D" ) );
-					} else  if( $this->data['accion'] == 'mes' ) {
-						$t2 = $t->add( new DateInterval( "P1M" ) );
-					} else if( $this->data['accion'] == 'sem' ) {
-						$t2 = $t->add( new DateInterval( "P1W" ) );
-					} else if( $this->data['accion'] == 'hoy' ) {
-						$t2 = new DateTime('now');
-					}
-					// Actualizo la fecha
-					$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
-				} else {
-					$this->cambiarDia( $this->data['fecha']['day'],
-									   $this->data['fecha']['month']+1,
-									   $this->data['fecha']['year'] );				
+			$this->data = $this->data['Medico'];
+			// Busco la fecha e que me pasaron
+			if( isset( $this->data['accion'] ) ) {
+				$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
+				$t2 = clone $t;
+				if( $this->data['accion'] == 'ayer' ) {
+					$t2 = $t->sub( new DateInterval( "P1D" ) );
+				} else if( $this->data['accion'] == 'manana' ) {
+					$t2 = $t->add( new DateInterval( "P1D" ) );
+				} else  if( $this->data['accion'] == 'mes' ) {
+					$t2 = $t->add( new DateInterval( "P1M" ) );
+				} else if( $this->data['accion'] == 'sem' ) {
+					$t2 = $t->add( new DateInterval( "P1W" ) );
+				} else if( $this->data['accion'] == 'hoy' ) {
+					$t2 = new DateTime('now');
 				}
+				// Actualizo la fecha
+				$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
+			} else {
+				$this->cambiarDia( $this->data['fecha']['day'],
+								   $this->data['fecha']['month']+1,
+								   $this->data['fecha']['year'] );				
 			}
 		}
 
@@ -170,6 +162,29 @@ class MedicosController extends AppController {
 		}
 												
 	}
+
+	/**
+	 * Cambia la opción de autoactualización de ventana
+	 * 
+	 */
+	public function autoactualizacion() {
+		if( $this->request->isPost() ) {
+			if( isset( $this->data['Medicos']['actualizacion'] ) ) {
+				debug( $this->data ); die( 'Miron' );
+				$actualizacion = ( $this->data['Medicos']['actualizacion'] == 1 ) ? true: false;
+				$this->Session->write( "actualizacion", $actualizacion);
+				$this->set( 'actualizacion', $actualizacion );
+				if( $this->data['Medicos']['actualizacion'] == false ) {
+					$accion = " deshabilitada ";
+				} else { $accion = " habilitada"; }
+				$this->Session->setFlash( 'Auto actualización de la página ha sido' . $accion, 'flash/info' );
+			} else {
+				$this->Session->setFlash( 'Auto actualización no seteada', 'flash/error' );
+			}
+		}
+		$this->redirect( array( 'action' => 'turnos' ) );
+	}
+	
 
    /**
     * Genera un sobreturno con los datos especificados
