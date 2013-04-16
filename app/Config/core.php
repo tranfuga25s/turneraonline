@@ -80,7 +80,7 @@
  * Application wide charset encoding
  */
 	Configure::write( 'App.encoding', 'UTF-8');
-	Configure::write( 'Date.timezone', 'America/Buenos_Aires' );
+	Configure::write( 'Date.timezone', 'America/Argentina/Buenos_Aires' );
 	Configure::write( 'Config.language', 'spa' );
 
 /**
@@ -232,7 +232,7 @@
  * Uncomment this line and correct your server timezone to fix 
  * any date & time related errors.
  */
-	date_default_timezone_set('America/Buenos_Aires');
+	date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 /**
  *
