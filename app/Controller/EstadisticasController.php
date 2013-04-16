@@ -124,8 +124,6 @@ class EstadisticasController extends AppController {
 	public function administracion_turnosFuturoReserva() {
 		$reservados   = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) >' => 'NOW()', 'paciente_id' => ' IS NOT NULL' ) ) );
 		$noReservados = $this->Turno->find( 'count', array( 'conditions' => array( 'DATE( fecha_inicio ) >' => 'NOW()', 'paciente_id' => null ) ) );
-		pr( $reservados );
-		pr( $noReservados );
 		$grafico = new GoogleChart();
 		$grafico->type( "PieChart" );
 		$grafico->options( array( 'title' => 'Cantidad de turnos reservados vs libres' ) );
