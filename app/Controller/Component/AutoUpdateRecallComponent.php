@@ -41,11 +41,15 @@ class AutoUpdateRecallComponent extends Component {
    */
   public function cambiarAutoActualizacion( $valor = true, $mensaje = true, $flash_elem = 'default' ) {
   	
-  		if( $valor == 0 ) 
+  		if( $valor == 'false' ) {
   			$valor = false;
-		
-		if( $valor == 1 ) 
-			$valor = true;
+		} else if ( $valor == 'true' ) {
+			$valor = true;			
+		} else if( $valor == 0 || $valor == '0' ) {
+			$valor == false;
+		} else if( $valor == 1 || $valor == '1' ) {
+			$valor == true;
+		}
 		
   		$this->Session->write( "actualizacion", $valor );
 		$this->Controller->set( 'actualizacion', $valor );

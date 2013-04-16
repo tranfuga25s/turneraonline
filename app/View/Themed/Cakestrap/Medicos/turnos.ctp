@@ -142,9 +142,8 @@ $( function() {
 		<?php echo $this->Form->input( 'actualizacion', array( 'type' => 'hidden', 'value' => $actualizacion ) ); ?>
 	</div>
 	<div class="modal-footer">
-		<?php echo $this->Form->button( 'Habilitado', array( 'class' => 'btn btn-success', 'onclick' => "function() { $(\"#MedicosActualizacion\" ).val( true ); $(\"#MedicosTurnosForm\").submit();" ) ); ?>
-		<?php echo $this->Form->button( 'Deshabilitado', array( 'class' => 'btn btn-danger', 'onclick' => "function() { $(\"#MedicosActualizacion\" ).val( false ); $(\"#MedicosTurnosForm\").submit();" ) ); ?>
-	</div>
+		<?php echo $this->Form->button( 'Habilitado', array( 'class' => 'btn btn-success', 'onclick' => "$('#MedicosActualizacion').val( true );" ) ); ?>
+		<?php echo $this->Form->button( 'Deshabilitado', array( 'class' => 'btn btn-danger', 'onclick' => "$('#MedicosActualizacion').val( false );" ) ); ?></div>
 	<?php echo $this->Form->end(); ?>
 </div>
 

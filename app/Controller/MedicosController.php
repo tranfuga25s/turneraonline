@@ -124,7 +124,7 @@ class MedicosController extends AppController {
 	public function autoactualizacion() {
 		if( $this->request->isPost() ) {
 			if( isset( $this->data['Medicos']['actualizacion'] ) ) {
-				$this->AutoUpdateRecall->cambiarAutoActualizacion( $this->data['Medicos']['actualizacion'], true );
+				$this->AutoUpdateRecall->cambiarAutoActualizacion( $this->data['Medicos']['actualizacion'], true, 'flash/info' );
 			} else {
 				$this->Session->setFlash( 'Auto actualización no seteada', 'flash/error' );
 			}
