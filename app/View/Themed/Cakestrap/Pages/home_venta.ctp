@@ -64,9 +64,9 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 		</fieldset>
 			<ul class="nav nav-list">
 				<?php   if( $usuarioactual['grupo_id'] == 4 ) { // Usuario normal ?>
-							<li><?php echo $this->Html->link( 'Pedir turno', array( 'controller' => 'turnos', 'action' => 'nuevo', $usuarioactual['id_usuario'] ) ); ?></li>
-							<li><?php echo $this->Html->link( 'Mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ) ); ?></li>
-							<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ) ); ?></li>
+							<li><?php echo $this->Html->link( '<i class="icon-calendar"></i> Pedir turno', array( 'controller' => 'turnos', 'action' => 'nuevo', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
+							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
+							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
 				<?php   } 
 			    	    if( $usuarioactual['grupo_id'] == 3 ) { // SECRETARIAS ?>
 							<li><?php echo $this->Html->link( 'Turnos del día', array( 'controller' => 'secretarias', 'action' => 'turnos' ) ); ?></li>
@@ -84,7 +84,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 			
 				<?php 	} ?>
 							<li class="divider"></li>
-							<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>				
+							<li><?php echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>				
 			</ul>
 	<?php } ?>
 	</div>

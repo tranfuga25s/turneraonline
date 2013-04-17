@@ -20,7 +20,7 @@
 			
 			echo $this->fetch('script');
 		?>
-		<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, ginecologia, medico, paciente, pedir turno, argentina, alejandro, alejandro talin, oncologia, tracto genital, Docente Faculta de Medicina" />
+		<meta lang="es" name="keywords" content="Turnos, turnos online, clinica, medico, paciente, pedir turno, argentina" />
 	</head>
 
 	<body>
