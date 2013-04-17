@@ -37,11 +37,17 @@
 			</div><!-- #header .container -->
 			
 			<div id="footer" class="container well">
-				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp; <?php echo $this->Html->link(
+				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp; 
+				<?php echo $this->Html->link(
 					$this->Html->image( 'tr.logo.png', array( 'alt' => "TR Sistemas Informaticos Integrados", 'border' => '0' ) ),
 						'http://www.bscomputacion.org/',
-						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right' )
+						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right', 'style' => 'margin-left: 3px;' )
 					);	?>
+				<div class="pull-right">
+				   <?php echo $this->Html->link( '<i class="icon-info-sign"></i>Tema basado en Bootstrap', 'http://twitter.github.io/bootstrap/', array( 'escape' => false, 'target' => '_blank', 'style' => 'font-size: 10px;' ) ); ?><br />
+				   <?php echo $this->Html->link( '<i class="icon-info-sign"></i>Iconos por Glyphicons'   , 'http://glyphicons.com/', 	   		  array( 'target' => '_blank', 'escape' => false, 'style' => 'font-size: 10px;' ) ); ?>
+				</div>
+
 			</div><!-- #footer .container -->
 			
 		</div><!-- #main-container -->

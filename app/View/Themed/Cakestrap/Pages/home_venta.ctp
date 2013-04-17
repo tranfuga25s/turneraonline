@@ -23,9 +23,9 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 		<div class="row-fluid">
 			<div class="span12">
 				<h3>Nuestros datos</h3>
-				<?php echo $this->Html->link( 'Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'class' => 'btn btn-primary btn-block' ) ); ?>
-				<?php echo $this->Html->link( 'Obras sociales disponibles', array( 'controller' => 'obras_sociales', 'action' => 'index' ), array( 'class' => 'btn btn-info btn-block' ) ); ?>
-				<?php echo $this->Html->link( '¿Donde estamos?', array( 'controller' => 'clinicas', 'action' => 'view', 1 ), array( 'class' => 'btn btn-success btn-block' ) ); ?>
+				<?php echo $this->Html->link( '<i class="icon-time"></i> Horarios de atención aqui', array( 'controller' => 'medicos', 'action' => 'view' ), array( 'class' => 'btn btn-primary btn-block', 'escape' => false ) ); ?>
+				<?php echo $this->Html->link( '<i class="icon-tasks"></i> Obras sociales disponibles', array( 'controller' => 'obras_sociales', 'action' => 'index' ), array( 'class' => 'btn btn-info btn-block', 'escape' => false ) ); ?>
+				<?php echo $this->Html->link( '<i class="icon-map-marker"></i> ¿Donde estamos?', array( 'controller' => 'clinicas', 'action' => 'view', 1 ), array( 'class' => 'btn btn-success btn-block', 'escape' => false ) ); ?>
 			</div>
 		</div>
 		<br />
