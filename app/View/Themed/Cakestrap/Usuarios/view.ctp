@@ -16,6 +16,10 @@
 					<td><?php echo h($usuario['Usuario']['nombre']); ?>&nbsp;</td>
 				</tr>
 				<tr>
+					<td>Apellido</td>
+					<td><?php echo h($usuario['Usuario']['apellido']); ?></td>
+				</tr>
+				<tr>
 					<td>Sexo</td>
 					<td><?php 
 					if( $usuario['Usuario']['sexo'] == 'm' ) {
@@ -23,10 +27,6 @@
 					} else {
 						echo "Femenino";
 					} ?>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>Apellido</td>
-					<td><?php echo h($usuario['Usuario']['apellido']); ?></td>
 				</tr>
 				<tr>
 					<td>Télefono</td>
