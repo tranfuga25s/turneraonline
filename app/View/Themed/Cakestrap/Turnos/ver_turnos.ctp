@@ -3,14 +3,14 @@ $this->set( 'title_for_layout', "Mis turnos" );
 ?>
 <div class="row-fluid">
 	
-	<?php echo $this->element( 'menu/usuario', array( 'usuario' => array( 'Usuario' => array( 'id_usuario' => $usuario['Paciente']['id_usuario'] ) ) ) ); ?>
+	<?php echo $this->element( 'menu/usuario' ); ?>
 	
 	<div class="span9">
 		<h4>Turnos reservados</h4>
 		<?php if( count( $turnos ) <= 0 ) { ?>
 			Usted no posee ningun turno pr&oacute;ximo.<br /><br />
 		<?php } else { ?>
-			<table>
+			<table class="table table-hover table-condensed table-striped">
 				<tbody>
 					<th>M&eacute;dico</th>
 					<th>Fecha y Hora</th>
@@ -33,7 +33,7 @@ $this->set( 'title_for_layout', "Mis turnos" );
 	
 		<h4>Turnos Vencidos</h4>
 		<?php if( count( $turnosanteriores ) > 0 ) { ?>
-		<table class="table table-hover">
+		<table class="table table-hover table-condensed table-striped">
 			<tbody>
 				<th>M&eacute;dico</th>
 				<th>Fecha y Hora</th>

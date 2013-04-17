@@ -213,7 +213,7 @@ $( function() {
 <div class="row-fluid">
 	
 	<div class="span12">
-		<table class="table table-condensed table-hover">
+		<table class="table table-condensed table-hover table-striped">
 			<tbody>
 				<th colspan="4">
 					Turnos para el día <?php echo $fechas; ?>
