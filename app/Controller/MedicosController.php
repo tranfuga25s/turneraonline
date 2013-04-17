@@ -160,7 +160,10 @@ class MedicosController extends AppController {
 			// Estoy en otro día
 			$this->set( 'hoy', false );
 		}
-												
+		// Verifico si se pueden colocar las acciones
+		if( $f1 >= $f2 ) {
+			$this->set( 'acciones', true );
+		} else { $this->set( 'acciones', false ); }		
 	}
 
 	/**
