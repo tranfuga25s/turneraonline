@@ -44,10 +44,22 @@
 						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right', 'style' => 'margin-left: 3px;' )
 					);	?>
 				<div class="pull-right">
-				   <?php echo $this->Html->link( '<i class="icon-info-sign"></i>Tema basado en Bootstrap', 'http://twitter.github.io/bootstrap/', array( 'escape' => false, 'target' => '_blank', 'style' => 'font-size: 10px;' ) ); ?><br />
-				   <?php echo $this->Html->link( '<i class="icon-info-sign"></i>Iconos por Glyphicons'   , 'http://glyphicons.com/', 	   		  array( 'target' => '_blank', 'escape' => false, 'style' => 'font-size: 10px;' ) ); ?>
-				</div>
-
+				   <?php echo $this->Html->tag( 'a', '<i class="icon-info-sign"></i>', 
+				   			array( 	'escape' => false, 
+				   					'data-toogle' => 'popover', 
+				   					'title' => 'Informacion del tema', 
+				   					'data-original-title' => 'Informacion del tema', 
+				   					'data-placement' => 'left',
+				   					'data-html' => 'true',
+				   					'data-trigger' => 'click',
+				   					'id' => 'test',
+				   					'data-content' =>
+				   						"Tema basado en <a href='http://twitter.github.io/bootstrap' target='_blank'>Bootstrap</a>".
+				   						"<br />".
+				   						"Iconos basados en <a href='http://glyphicons.com/' taget='_blank'>Glyphicons</a>"
+				   	 ) ); ?>
+			   </div>
+			   <script>$(function() { $("#test").popover(); });</script>
 			</div><!-- #footer .container -->
 			
 		</div><!-- #main-container -->
