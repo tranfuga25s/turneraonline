@@ -114,7 +114,7 @@ class MedicosController extends AppController {
 			// Estoy en otro día
 			$this->set( 'hoy', false );
 		}
-												
+								
 	}
 
 	/**
@@ -369,7 +369,7 @@ class MedicosController extends AppController {
 		$this->loadModel( 'Usuario' );
 		$this->Usuario->id = $id_paciente;
 		if( !$this->Usuario->exists() ) {
-			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'flash/info' );
 			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->data['rpaciente'], 'reservar' ) );
 		}
 
@@ -385,9 +385,9 @@ class MedicosController extends AppController {
 		$error = '';
 		if( $this->Turno->reservar( $id_turno, $id_paciente, $error )  ) {
 			$this->requestAction( array( 'controller' => 'avisos', 'action' => 'agregarAvisoNuevoTurno', 'id_turno' => $id_turno, 'id_paciente' => $id_paciente ) );
-			$this->Session->setFlash('El turno se reservó correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash('El turno se reservó correctamente', 'flash/info' );
 		} else {
-			$this->Session->setFlash( " Existió un error al intentar reservar el turno.\n Error:".$error , 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( " Existió un error al intentar reservar el turno.\n Error:".$error , 'flash/error' );
 		}
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}
@@ -405,9 +405,9 @@ class MedicosController extends AppController {
 		$this->Turno->set( 'recibido', true );
 		$this->Turno->set( 'atendido', true );
 		if( $this->Turno->save() ) {
-			$this->Session->setFlash( 'El turno ha sido colocado como atendido' , 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash( 'El turno ha sido colocado como atendido' , 'flash/success' );
 		} else {
-			$this->Session->setFlash( 'No se pudo colocar el turno como atendido', 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se pudo colocar el turno como atendido', 'flash/error' );
 		}
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}

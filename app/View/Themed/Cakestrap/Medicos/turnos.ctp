@@ -25,9 +25,9 @@ function reservarTurno( turno, medico ) {
   $('#MedicoIdMedico').clone().attr( 'value', turno ).attr( 'name', 'data[Medico][id_turno]' ).appendTo("#MedicoReservarForm");
   $("input[name=id_medico]").val( medico );
   $("#MedicoRpaciente").typeahead({
-  		source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>',
-  		minLength: 4
-  });
+  	source: <?php echo $this->requestAction(  array( 'controller' => 'usuarios', 'action' => 'pacientes.json' ) ); ?>,
+	items: 4 // Cantidad de elementos a mostrar en el dialogo
+  });  
   
   $("#reservar").modal();
 }
@@ -35,7 +35,10 @@ function reservarTurno( turno, medico ) {
 function sobreturno( medico, turno, hora, min ) {
  actualizar = false;
  // Seteo los datos necesarios
- //$("#MedicoSpaciente").autocomplete( { source: '<?php echo Router::url( array( 'controller' => 'usuarios', 'action' => 'pacientes' ) ); ?>' } );
+ $("#MedicoSpaciente").typeahead({
+  	source: <?php echo $this->requestAction(  array( 'controller' => 'usuarios', 'action' => 'pacientes.json' ) ); ?>,
+	items: 4 // Cantidad de elementos a mostrar en el dialogo
+  }); 
  $('#MedicoIdMedico').clone().attr( 'value', turno ).attr( 'name', 'data[Medico][id_turno]' ).appendTo("#MedicoSobreturnoForm");
  $('#MedicoIdMedico').attr( 'value', medico ).appendTo("#MedicoSobreturnoForm");
  
@@ -69,6 +72,7 @@ $( function() {
 		// No uso el reload porque si existen parametros los intentará enviar haciendo que aparezcan carteles
 		$.doTimeout( 2*60*1000, function() {  if( actualizar ) { location.replace( "<?php echo Router::url( array( 'action' => 'turnos' ) ); ?>" ); } 	});
 	}
+
 });
 </script>
 
@@ -120,14 +124,14 @@ $( function() {
 	</div>
 	<div class="modal-body">
 		<p>Ingrese el paciente al cual desea reservar el turno:</p>
-		<?php echo $this->Form->input( 'rpaciente', array( 'label' => 'Paciente', 'div' => false, 'data-provide' => "pacientes" ) ); ?>		
+		<?php echo $this->Form->input( 'rpaciente', array( 'label' => 'Paciente', 'div' => false, 'autocomplete' => 'off' ) ); ?>		
 	</div>
 	<div class="modal-footer">
 		<?php echo $this->Form->button( 'Cerrar', array( 'class' => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => true, 'div' => false ) ); ?>
 		<?php echo $this->Form->submit( 'Reservar', array( 'class' => "btn btn-primary", 'div' => false ) ); ?>
   	</div>
   	<?php echo $this->Form->end(); ?>
-</div>
+</div> 
 
 <!----------------------------------------------------------->
 <!------------------ AUTOREFRESCO --------------------------->
@@ -158,7 +162,7 @@ $( function() {
 	</div>
 	<div class="modal-body">
 		Ingrese el paciente al cual desea reservar el sobreturno:
-		<?php echo $this->Form->input( 'spaciente', array( 'label' => 'Paciente:', 'class' => 'input-xlarge', 'data-source' => 'pacientes' ) ); ?>
+		<?php echo $this->Form->input( 'spaciente', array( 'label' => 'Paciente:', 'class' => 'input-xlarge', 'autocomplete' => 'off' ) ); ?>
 		<?php echo $this->Form->input( 'hora', array( 'class' => 'input-mini', 'label' => 'Horario de inicio:', 'div' => false ) ); ?>
 		<?php echo $this->Form->input( 'min', array( 'class' => 'input-mini', 'label' => false, 'before' => ':', 'div' => false ) ); ?>
 		<?php echo $this->Form->input( 'duracion', array( 'label' => 'Duración', 'after' => 'minutos', 'class' => 'input-mini', 'value' => 10 ) ); ?>

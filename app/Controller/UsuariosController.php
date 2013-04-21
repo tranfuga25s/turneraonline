@@ -106,15 +106,12 @@ class UsuariosController extends AppController {
 			}
 
 		} else {
-			 $ret = Cache::read( 'pacientes' );
+			$ret = Cache::read( 'pacientes' );
 			if( $ret == false ) {
 				$data = $this->Usuario->find( 'all', array(  'fields' => array( 'razonsocial', 'id_usuario', 'nombre', 'apellido' ), 'order' => array( 'razonsocial' ) ) );
 				$ret = array();
 				foreach( $data as $d ) { 
-				    $ret[] = array(
-				  		'value' => $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'],
-				  		'tokens' => array( $d['Usuario']['id_usuario'], $d['Usuario']['razonsocial'], $d['Usuario']['nombre'], $d['Usuario']['apellido'] ) 
-				    );
+				    $ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
 				Cache::write( 'pacientes', $ret );
