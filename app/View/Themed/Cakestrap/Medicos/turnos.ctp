@@ -263,33 +263,35 @@ $( function() {
 						if( $turno['Turno']['paciente_id'] == null ) {
 							echo "<td>&nbsp;</td>";
 						} else {
-							 echo "<td>".$this->Html->link(  $turno['Paciente']['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'verPorSecretaria', $turno['Paciente']['id_usuario'] ) )."</td>";
+							 echo "<td>".$this->Html->link(  $turno['Paciente']['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'verPorMedico', $turno['Paciente']['id_usuario'] ) )."</td>";
 		   			    }
 					}
 					?>
 					<td class="actions" style="text-align: left;">
-					<?php
-						if( $turno['Turno']['paciente_id'] != null ) {
-							if( $turno['Turno']['recibido'] != true ) {
-								  echo $this->Html->link( 'Recibido', array( 'action' => 'recibido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini' ) );
-								  echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini' ) );
-	 							  echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
-							} else if( $turno['Turno']['recibido'] == true && $turno['Turno']['atendido'] == false ) {
-								echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'], 'class' => 'btn btn-mini' ) );
-	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
-							} 
-						} else {
-							if( $turno['Turno']['cancelado'] == false ) {
-								echo $this->Html->tag( 'a', 'Reservar', array( 'onclick' => 'reservarTurno( '.$turno['Turno']['id_turno'].', '.$turno['Turno']['medico_id'].'  )', 'class' => 'btn btn-mini' ) );
-	 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini' ) );
+						<div class="btn-group">
+						<?php
+							if( $turno['Turno']['paciente_id'] != null ) {
+								if( $turno['Turno']['recibido'] != true ) {
+									  echo $this->Html->link( 'Recibido', array( 'action' => 'recibido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini btn-info' ) );
+									  echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini btn-success' ) );
+		 							  echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini btn-danger' ) );
+								} else if( $turno['Turno']['recibido'] == true && $turno['Turno']['atendido'] == false ) {
+									echo $this->Html->link( 'Atendido', array( 'action' => 'atendido', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini btn-success' ) ); 
+		 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini btn-danger' ) );
+								} 
+							} else {
+								if( $turno['Turno']['cancelado'] == false ) {
+									echo $this->Html->tag( 'a', 'Reservar', array( 'onclick' => 'reservarTurno( '.$turno['Turno']['id_turno'].', '.$turno['Turno']['medico_id'].'  )', 'class' => 'btn btn-mini' ) );
+		 							echo $this->Html->tag( 'a', 'Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini btn-danger' ) );
+								}
 							}
-						}
-						echo $this->Html->tag( 'a', 'Sobre Turno', array( 'onclick' => 'sobreturno( '.$turno['Turno']['medico_id'].
-																									', '.$turno['Turno']['id_turno'].
-																									', '. date( "H", strtotime( $turno['Turno']['fecha_inicio'] ) ).
-																									', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )',
-																		  'class' => 'btn btn-mini' ) );
-					?>
+							echo $this->Html->tag( 'a', 'Sobre Turno', array( 'onclick' => 'sobreturno( '.$turno['Turno']['medico_id'].
+																										', '.$turno['Turno']['id_turno'].
+																										', '. date( "H", strtotime( $turno['Turno']['fecha_inicio'] ) ).
+																										', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )',
+																			  'class' => 'btn btn-mini btn-warning' ) );
+						?>
+						</div>
 				    </td>		
 				</tr>
 				<?php endforeach; ?>

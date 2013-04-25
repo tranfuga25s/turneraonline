@@ -393,8 +393,8 @@ class MedicosController extends AppController {
 	}
 
    /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * 
+    * Setea como atendido un turno.
+    * @param $id_turno integer Identificador del turno
     */
 	public function atendido( $id_turno = null ) {
 
@@ -412,12 +412,21 @@ class MedicosController extends AppController {
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}
 	
-
+   /**
+    * Muestra el indice de médicos
+    * @return void
+    */
 	public function index() {
 		$this->Medico->recursive = 0;
 		$this->set( 'medicos', $this->paginate() );
 	}
 
+   /**
+    * Función para ver los horarios y datos del medico.
+    * Si el identificador es nulo, se toma el primer médico que encuentra.
+    * @param $id integer Identificador del médico.
+    * @return void
+    */
 	public function view( $id = null ) {
 		if( $id == null ) {
 			// Quieren ver los horarios de atención - Muestro el del primer médico
@@ -433,10 +442,10 @@ class MedicosController extends AppController {
 	}
 
 	/**
-	* administracion_index method
-	*
-	* @return void
-	*/
+	 * administracion_index method
+	 *
+	 * @return void
+	 */
 	public function administracion_index() {
 	    $this->layout = 'administracion';
 		$this->Medico->recursive = 0;
