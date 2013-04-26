@@ -104,7 +104,7 @@ class GruposController extends AppController {
 			throw new NotFoundException( 'Grupo invalido' );
 		}
 		if( $this->Grupo->tieneUsuariosAsociados() ) {
-			$this->Session->setFlash( $this->Session->flash().'<br />.El grupo no se puede eliminar. Existen usuarios que pertenecen a este grupo todavía.', 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash( $this->Session->flash().'<br />. El grupo no se puede eliminar. Existen usuarios que pertenecen a este grupo todavía.', 'default', array( 'class' => 'success' ) );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Grupo->delete()) {
