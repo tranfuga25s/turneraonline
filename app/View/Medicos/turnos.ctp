@@ -253,7 +253,7 @@ if($hoy) { ?>
 			<th>Estado</th>
 			<th>Hora</th>
 			<th>Paciente</th>
-			<th>Acciones</th>
+			<?php if( $acciones ) : ?><th>Acciones</th><?php endif; ?>
 		</tr>
 	<?php foreach( $turnos as $turno ) { ?>
 		<tr>
@@ -280,6 +280,7 @@ if($hoy) { ?>
 					 echo "<td>".$this->Html->link(  $turno['Paciente']['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'verPorSecretaria', $turno['Paciente']['id_usuario'] ) )."</td>";
    			    }
 			}
+			if( $acciones ) {
 			?>
 			<td class="actions" style="text-align: left;">
 				<?php
@@ -304,6 +305,7 @@ if($hoy) { ?>
 																								', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )' ) );
 				?>
 			</td>
+			<?php } // En if acciones ?>
 		</tr>
 	<?php } // End foreach turnos ?>
 	</tbody>
