@@ -149,7 +149,7 @@ function habilitarDeshabilitarDia( dia ) {
 		$("#"+dia ).attr( "class", "success" );
 	} else {
 		$("#"+dia+" select" ).attr( "disabled", true );
-		$("#"+dia ).attr( "class", "info" );
+		$("#"+dia ).removeAttr( "class" );
 	}
 }
 
