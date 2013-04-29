@@ -15,25 +15,6 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 	$medico['Disponibilidad']['Disponibilidad']['duracion'] = 20;
 }
 ?>
-<script>
-	function confirmacion() {
-		$("#confirmacion").dialog( {
-			width: 450,
-			height: 150,
-			modal: true,
-			buttons: {
-				"Guardar": function() {
-					$("#MedicoDisponibilidadForm").submit();
-					$(this).dialog("close");
-				},
-				"Cancelar": function() {
-					$(this).dialog( "close" );
-				}
-			}
-		} );
-	}
-</script>
-
 <div class="row-fluid">
 	
 	<div class="navbar">
@@ -48,7 +29,7 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 	</div>
 
 	<div class="span12">
-		<!-- Vista de disponibilidad de un medico -->
+		<!-- Vista de disponibilidad de un médico -->
 		<?php echo $this->Form->create( 'Medico', array( 'method' => 'post', 'action' => 'disponibilidad' ) );
 		      echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => $medico['Medico']['id_medico'] ) );
 		      echo $this->Form->input( 'disponibilidad_id', array( 'type' => 'hidden', 'value' => $medico['Disponibilidad']['Disponibilidad']['id_disponibilidad'] ) ); ?>
@@ -67,19 +48,19 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 					unset( $medico['Usuario'] );
 					$dias = array( 0 => 'domingo', 1 => 'lunes', 2 => 'martes', 3 => 'miercoles',  4 => 'jueves', 5 => 'viernes',  6 => 'sabado'  );
 				?>
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered table-hover table-condensed" style="vertical-align: middle; text-align: center; width: 70%;">
 					<tbody>
 						<tr>
-							<th rowspan="2">Día de la semana</th>
-							<th rowspan="2">Habilitado</th>
-							<th colspan="2">Mañana</th>
-							<th colspan="2">Tarde</th>
+							<th rowspan="2" style="vertical-align: middle; text-align: center;">Día de la semana</th>
+							<th rowspan="2" style="vertical-align: middle; text-align: center;">Habilitado</th>
+							<th colspan="2" style="vertical-align: middle; text-align: center;">Mañana</th>
+							<th colspan="2" style="vertical-align: middle; text-align: center;">Tarde</th>
 						</tr>
 						<tr>
-							<th>Inicio</th>
-							<th>Fin</th>
-							<th>Inicio</th>
-							<th>Fin</th>
+							<th style="vertical-align: middle; text-align: center;">Inicio</th>
+							<th style="vertical-align: middle; text-align: center;">Fin</th>
+							<th style="vertical-align: middle; text-align: center;">Inicio</th>
+							<th style="vertical-align: middle; text-align: center;">Fin</th>
 						</tr>
 						<?php foreach( $dias as $dia ) : ?>
 							<?php 
@@ -94,24 +75,24 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 									);
 							} ?>
 							<tr id="<?php echo $dia; ?>">
-								<td><?php echo ucfirst( $dia ); echo $this->Form->input( $dia.'.numero'      , array( 'type' => 'hidden', 'value' => array_search( $dia, $dias ) ) ); ?></td>
-								<td><?php echo $this->Form->input( $dia, array( 'type' => 'checkbox', 'label' => false, 'default' => $datosdia['habilitado'] ) ); ?></td>
-								<td>
+								<td style="vertical-align: middle; text-align: center;"><?php echo ucfirst( $dia ); echo $this->Form->input( $dia.'.numero'      , array( 'type' => 'hidden', 'value' => array_search( $dia, $dias ) ) ); ?></td>
+								<td style="vertical-align: middle; text-align: center;"><?php echo $this->Form->input( $dia, array( 'type' => 'checkbox', 'label' => false, 'default' => $datosdia['habilitado'] ) ); ?></td>
+								<td style="vertical-align: middle; text-align: center;">
 									<?php echo $this->Form->input( $dia.'.hinicio'     , array( 'options' => $horas  , 'label' => false, 'div' => false, 'default' => $datosdia['hora_inicio']         , 'class' => 'input-mini' ) );
 										  echo "<b>:</b>";
 										  echo $this->Form->input( $dia.'.minicio'     , array( 'options' => $minutos, 'label' => false, 'div' => false, 'default' => $datosdia['minuto_inicio']       , 'class' => 'input-mini' ) ); ?>
 								</td>
-								<td>
+								<td style="vertical-align: middle; text-align: center;">
 									<?php echo $this->Form->input( $dia.'.hfin'        , array( 'options' => $horas  , 'label' => false, 'div' => false, 'default' => $datosdia['hora_fin']            , 'class' => 'input-mini' ) );
 										  echo "<b>:</b>";
 										  echo $this->Form->input( $dia.'.mfin'        , array( 'options' => $minutos, 'label' => false, 'div' => false, 'default' => $datosdia['minuto_fin']          , 'class' => 'input-mini' ) ); ?>
 								</td>
-								<td>
+								<td style="vertical-align: middle; text-align: center;">
 									<?php echo $this->Form->input( $dia.'.hiniciotarde', array( 'options' => $horast , 'label' => false, 'div' => false, 'default' => $datosdia['hora_inicio_tarde']   , 'class' => 'input-mini' ) );
 										  echo "<b>:</b>";
 										  echo $this->Form->input( $dia.'.miniciotarde', array( 'options' => $minutos, 'label' => false, 'div' => false, 'default' => $datosdia['minuto_inicio_tarde'] , 'class' => 'input-mini' ) ); ?>
 								</td>
-								<td>
+								<td style="vertical-align: middle; text-align: center;">
 									<?php echo $this->Form->input( $dia.'.hfintarde'   , array( 'options' => $horast , 'label' => false, 'div' => false, 'default' => $datosdia['hora_fin_tarde']      , 'class' => 'input-mini' ) );
 										  echo "<b>:</b>";
 										  echo $this->Form->input( $dia.'.mfintarde'   , array( 'options' => $minutos, 'label' => false, 'div' => false, 'default' => $datosdia['minuto_fin_tarde']    , 'class' => 'input-mini' ) ); ?>
@@ -121,7 +102,8 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 					</tbody>
 				</table>
 				<div class="form-actions">
-					<?php echo $this->Html->tag( 'a', 'Guardar', array( 'onclick' => 'confirmacion()', 'id' => "boton", 'class' => 'btn btn-success' ) ); ?>
+					<?php echo $this->Html->tag( 'a', 'Guardar', 
+						array( 'onclick' => "$('#confirmacion').modal()", 'id' => "boton", 'class' => 'btn btn-success' ) ); ?>
 				</div>
 			</fieldset>
 		</fieldset>
@@ -131,47 +113,51 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 
 </div>
 
+<!----------------------------------------------------------->
+<!------------------ CONFIRMACION --------------------------->
+<div id="confirmacion" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="reservar" aria-hidden="true">
+	<div class="modal-header">
+		<?php echo $this->Form->button( 'x', array( 'class' => "close", 'data-dismiss' => "reservar", 'aria-hidden' => "true" ) ); ?>
+		<h3 id="myModalLabel">¿Está seguro?</h3>
+	</div>
+	<div class="modal-body">
+		<p>Al aceptar los cambios de horarios de atención sucederá lo siguiente:</p>
+		<ul>
+			<li>Se <em>eliminarán</em> turnos a futuro no reservados.</li>
+			<li>Se generar los turnos nuevos según el nuevo horario.</li>
+			<li><b>Los turnos reservados que queden fuera del horario de atención nuevo se mostrarán en la proxima ventana.</b></li>
+		</ul>
+	</div>
+	<div class="modal-footer">
+		<?php echo $this->Form->button( 'Cerrar', array( 'class' => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => true, 'div' => false ) ); ?>
+		<?php echo $this->Form->button( 'Cambiar Horario', array( 'class' => "btn btn-primary", 'div' => false, 'onclick' => "$('#MedicoDisponibilidadForm').submit();" ) ); ?>
+  	</div>
+</div> 
 
-
-
-
-
-
-
-<div id="confirmacion" style="display: none;" title="¿Esta seguro?">
-	&iquest; Est&aacute; seguro que desea modificar la disponibilidad del m&eacute;dico?<br />
-	Esto regenerar&aacute; todos sus turnos desde ahora en adelante.
-</div>
 
 <script type="text/javascript" language="JavaScript">
 
+// Prototipo para capitalizar palabra
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 function habilitarDeshabilitarDia( dia ) {
-	// busco si está seleccionado
+	// Busco si está seleccionado
 	if( $("#Medico"+dia.capitalize() ).is( ":checked" ) ) {
 		$("#"+dia+" select" ).removeAttr( "disabled" );
+		$("#"+dia ).attr( "class", "success" );
 	} else {
 		$("#"+dia+" select" ).attr( "disabled", true );
+		$("#"+dia ).attr( "class", "info" );
 	}
 }
 
 $( function(){
-	$("#MedicoDomingo"  ).bind( 'click', function() { habilitarDeshabilitarDia( 'domingo'   ) } );
-	$("#MedicoSabado"   ).bind( 'click', function() { habilitarDeshabilitarDia( 'sabado'    ) } );
-	$("#MedicoViernes"  ).bind( 'click', function() { habilitarDeshabilitarDia( 'viernes'   ) } );
-	$("#MedicoJueves"   ).bind( 'click', function() { habilitarDeshabilitarDia( 'jueves'    ) } );
-	$("#MedicoMiercoles").bind( 'click', function() { habilitarDeshabilitarDia( 'miercoles' ) } );
-	$("#MedicoMartes"   ).bind( 'click', function() { habilitarDeshabilitarDia( 'martes'    ) } );
-	$("#MedicoLunes"    ).bind( 'click', function() { habilitarDeshabilitarDia( 'lunes'     ) } );
-	habilitarDeshabilitarDia( 'domingo'   );
-	habilitarDeshabilitarDia( 'sabado'    );
-	habilitarDeshabilitarDia( 'viernes'   );
-	habilitarDeshabilitarDia( 'jueves'    );
-	habilitarDeshabilitarDia( 'miercoles' );
-	habilitarDeshabilitarDia( 'martes'    );
-	habilitarDeshabilitarDia( 'lunes'     );
+	var dias = <?php echo json_encode( $dias ); ?>;
+	$.each( dias, function( idx, val ){
+		$("#Medico"+val.capitalize() ).bind( 'click', function() { habilitarDeshabilitarDia( val ); });
+		habilitarDeshabilitarDia( val );
+	});
 });
 </script>
