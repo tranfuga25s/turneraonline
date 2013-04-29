@@ -213,11 +213,11 @@ class MedicosController extends AppController {
 			);
 		$this->Turno->create();
 		if( $this->Turno->save( $data ) ) {
-			$this->Session->setFlash( 'Sobre turno creado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash( 'Sobre turno creado correctamente', 'flash/info' );
 		} else {
-			$this->Session->setFlash( 'No se pudo generar el sobreturno' , 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se pudo generar el sobreturno' , 'flash/error' );
 			pr( $this->Turno->validationErrors );
-			die();
+			die('Error al hacer el save del sobreturno' );
 		}
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}

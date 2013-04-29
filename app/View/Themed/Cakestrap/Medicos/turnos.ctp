@@ -209,7 +209,7 @@ $( function() {
 	</div>
 	<div class="modal-footer">
 		<?php echo $this->Form->button( 'Cancelar Turno', array( 'class' => 'btn btn-danger' ) ); ?>
-		<?php echo $this->Form->button( 'No cancelar', array( 'class' => 'btn btn-success', 'onclick' => "actualizar = true;" ) ); ?>
+		<?php echo $this->Form->button( 'No cancelar', array( 'class' => 'btn btn-success', 'onclick' => "actualizar = true;", "data-dismiss" => 'modal' ) ); ?>
 	</div>
 	<?php echo $this->Form->end(); ?>
 </div>
