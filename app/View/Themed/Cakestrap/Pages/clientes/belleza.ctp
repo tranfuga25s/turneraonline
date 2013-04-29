@@ -1,8 +1,10 @@
-<?php $this->set( 'title_for_layout', "Sistema adecuado al médico" ); ?>
+<?php 
+$this->set( 'title_for_layout', "Sistema de turnos para salones de belleza" ); 
+?>
 <div class="row-fluid">
 	<div class="span12">
-		<h3>Sistema de turnos para médico individual</h3>
-		<p>Todo el sistema se encuentra preparado para que una sola persona sea capaz de administrarlo.<br />Sin necesidad de secretarias ni intermediarios. El m&eacute;dico administra y mantiene todas los turnos.</p>
+		<h3>Sistema de turnos para salones de belleza</h3>
+		<p>	Todo el sistema se encuentra preparado para que una o várias personas puedan administrarlo.</p>
 	</div>
 </div>
 <div class="row-fluid">
@@ -13,11 +15,11 @@
 				<tbody>
 					<tr>
 						<td width="20"><span class="icon-check">&nbsp;</span></td>
-						<td align="left">Todo es administrable por el único médico del sistema.</td>
+						<td align="left">Todo es administrable por la secretaria o las encargadas del salón de belleza.</td>
 					</tr>
 					<tr>
 						<td width="20"><span class="icon-check">&nbsp;</span></td>
-						<td>Ventana de turnos auto-actualizable para el m&eacute;dico.</td>
+						<td>Ventana de turnos auto-actualizable para cada parte del salón.</td>
 					</tr>
 					<tr>
 						<td width="20"><span class="icon-check">&nbsp;</span></td>
@@ -54,7 +56,7 @@
 	
 	<div class="span6 well">
 		<h4>Precios</h4>
-		<?php echo $this->element( 'precios', array( 'id_servicio' => intval( Configure::read( 'Gestotux.id_servicio.medico' ) ), 'nombre' => "Médico" ) ); ?>
+		<?php echo $this->element( 'precios', array( 'id_servicio' => intval( Configure::read( 'Gestotux.id_servicio.belleza' ) ), 'nombre' => "Salón de belleza" ) ); ?>
 	</div>
 	
 </div>

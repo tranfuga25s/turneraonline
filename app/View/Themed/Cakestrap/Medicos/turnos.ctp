@@ -50,6 +50,7 @@ function sobreturno( medico, turno, hora, min ) {
 
 function cancelarTurno( id_turno ) {
 	actualizar = false;
+	$("#MedicoIdTurno").attr( 'value', id_turno );
 	$("#cancelarTurno").modal();
 }
 
@@ -196,7 +197,8 @@ $( function() {
 <!--------------------------------------------------------------------------------------------------------->
 <!--------------------------------- CANCELAR UN TURNO ----------------------------------------------------->
 <div id="cancelarTurno"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="cancelarTurno" aria-hidden="true">
-	<?php echo $this->Form->create( 'Medico', array( 'action' => 'cancelar', 'class' => 'form-inline' ) ); ?>
+	<?php echo $this->Form->create( 'Medico', array( 'action' => 'cancelar', 'class' => 'form-inline' ) );
+		  echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => -1 ) ); ?>
 	<div class="modal-header">
 		<?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) ); ?>
 		<h3>¿Está seguro que desea cancelar este turno?</h3>
@@ -206,8 +208,8 @@ $( function() {
 		<?php echo $this->Form->radio( 'quien', array( 'p' => 'Paciente', 'm' => 'Médico' ), array( 'legend' => false ) ); ?>
 	</div>
 	<div class="modal-footer">
-		<?php echo $this->Form->button( 'Si', array( 'class' => 'btn btn-danger', 'onclick' => "$(\"#MedicoIdMedico\").clone().attr( 'value', id_turno ).attr( 'name', 'data[Medico][id_turno]' ).appendTo( \"#MedicoCancelarForm\"); $(\"#MedicoCancelarForm\").submit();" ) ); ?>
-		<?php echo $this->Form->button( 'No', array( 'class' => 'btn btn-success', 'onclick' => "actualizar = true;" ) ); ?>
+		<?php echo $this->Form->button( 'Cancelar Turno', array( 'class' => 'btn btn-danger' ) ); ?>
+		<?php echo $this->Form->button( 'No cancelar', array( 'class' => 'btn btn-success', 'onclick' => "actualizar = true;" ) ); ?>
 	</div>
 	<?php echo $this->Form->end(); ?>
 </div>
