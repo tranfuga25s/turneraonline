@@ -10,6 +10,6 @@ class ClinicaFixture extends CakeTestFixture {
 	 *
 	 * @var array
 	 */
-	public $import = array('table' => 'clinicas', 'records' => true);
+	public $import = array( 'table' => 'clinicas', 'records' => true );
 
 }

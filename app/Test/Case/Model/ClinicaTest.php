@@ -12,7 +12,7 @@ class ClinicaTestCase extends CakeTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = array('app.clinica');
+	public $fixtures = array( 'app.clinica', 'app.consultorio', 'app.secretaria', 'app.medico' );
 
 	/**
 	 * setUp method
@@ -23,6 +23,9 @@ class ClinicaTestCase extends CakeTestCase {
 		parent::setUp();
 
 		$this->Clinica = ClassRegistry::init('Clinica');
+		$this->Medico = ClassRegistry::init('Medico');
+		$this->Secretaria = ClassRegistry::init('Secretaria');
+		$this->Consultorio = ClassRegistry::init('Consultorio');
 	}
 
 	/**
@@ -32,7 +35,6 @@ class ClinicaTestCase extends CakeTestCase {
 	 */
 	public function tearDown() {
 		unset($this->Clinica);
-
 		parent::tearDown();
 	}
 	
@@ -55,6 +57,28 @@ class ClinicaTestCase extends CakeTestCase {
 			$this->assertNotEqual( null, $coordenada['lat'], "La coordenada lat es nula" );
 			$this->assertNotEqual( null, $coordenada['lng'], "La coordenada lng es nula" );	
 		}
+		
+	 }
+	 
+	 /**
+	  * Prueba la condición de que si se elimina una clinica con datos asociados no se debería de poder hacer
+	  * 
+	  */
+	 public function testEliminacion() {
+	 	
+		// Elijo una clinica para eliminar que tenga al menos un medico, una secretaria y un consultorio asociado
+		$id_medicos = $this->Medico->find( 'list', array( 'fields' => array( 'clinica_id' ) ) );
+		$id_secretarias = $this->Secretaria->find( 'list', array( 'fields' => array( 'clinica_id' ) ) );
+		$id_consultorios = $this->Consultorio->find( 'list', array( 'fields' => array( 'clinica_id' ) ) );
+		
+		$ids = array_merge( $id_medicos, $id_secretarias, $id_consultorios );
+		$id_clinica = array_pop( array_reverse( $ids ) );
+		
+		$this->assertNotEqual( $id_clinica,       0, "No se pudo seleccionar una clinica - cero"        );
+		$this->assertNotEqual( $id_clinica,    null, "No se pudo seleciconar una clinica - null"        );
+		$this->assertNotEqual( $id_clinica, array(), "No se pudo seleccionar una clinica - array vacio" );	
+		
+		$this->assertNotEqual( $this->Clinica->delete( $id_clinica ), true, "La clinica no debe ser eliminada!" );
 		
 	 }
 
