@@ -1,11 +1,12 @@
 <?php
 App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
+
 /**
  * Avisos Controller
  */
 class AvisosController extends AppController {
-
+	
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -125,6 +126,7 @@ class AvisosController extends AppController {
 	 * 
 	 */
 	public function administracion_cpanel() {
+		// Verifico si está andando el sistema de avisos
 			
 	}
 	
@@ -139,15 +141,44 @@ class AvisosController extends AppController {
 	 * Muestra la configuración y/o habilitacion del sistema de email
 	 */
 	public function administracion_email() {
-		
+		// Cargo los templates disponibles
+		$data = array(
+			'nuevoTurno' => array(
+				'nombre' => 'Recordatorio de turno proximo',
+				'explicacion' => 'Este aviso es enviado avisando al paciente de que tiene un turno dentro de las 12 horas proximas',
+				'template' => 'nuevoTurno',
+				'Formato' => array( 
+					'text' => array(
+						'nombre' => 'Solo texto',
+						'content' => 'Formato solo texto',
+						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
+					 ),
+					 'html' => array(
+					 	'nombre' => 'Html',
+					 	'content' => 'Formato en html',
+						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
+					 ) 
+				)
+			)
+		);
+		$this->set( 'avisos', $data );
 	}
 	
 	/**
 	 * Muestra la lista de notificaciones pendientes de envio
 	 */
 	public function administracion_pendiente() {
+		// cargo las notificaciones que hay que enviar todavía
+		$this->set( 'pendientes', $this->paginate() );
 		
 	}
-
+	
+	/** 
+	 * Función para administrar las redirecciones según sea necesario
+	 * @param string $que Que elemento configurar
+	 */
+	public function administracion_configurar( $que = 'email' ) {
+		$this->redirect( array( 'action' => $que ) );
+	}
 }
 
