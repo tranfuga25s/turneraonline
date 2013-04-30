@@ -10,7 +10,7 @@ App::uses('AppModel', 'Model');
 class Turno extends AppModel {
 
 	public $primaryKey = 'id_turno';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'fecha_inicio' => array(
 			'datetime' => array( 'rule' => array('datetime') )
@@ -58,7 +58,7 @@ class Turno extends AppModel {
 	 * array( 2012 => array( 1 => array( 1, 2, ... ) ) )
 	 * El día se devolverá si existe algun turno en el.
 	 */
-	public function buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico ) {
+	public function buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico, $solo_visibles = false ) {
 		/**************************
 		 *  estructura a armar
 		 * array( 'ano' => array( 'mes' => array( 'dia', 'dia' ) ) );
@@ -67,16 +67,22 @@ class Turno extends AppModel {
 		 if( $id_medico == null || $id_medico == 0 ) {
 			// Busco todos los medicos de esta clinica y especialidad
 			$condiciones = array();
-			if( $id_clinica != null ) {
+			if( $id_clinica != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'clinica_id' => $id_clinica ) );
 			} 
-			if( $id_especialidad != null ) {
+			if(  $id_especialidad != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'especialidad_id' => $id_especialidad ) );
+			}
+			if( $solo_visibles ) {
+				$condiciones = array_merge( $condiciones, array( 'visible' => true ) );
 			}
 			$medicos = $this->Medico->find( 'list',
 					array( 'fields' => 'id_medico',
 					       'conditions' => $condiciones )
 					);
+			if( count( $medicos ) < 0 ) {
+				return array( date( "Y" ) => array( date( "m" ) => array() ) );
+			}
 		 } else {
 			$medicos = $id_medico;
 		 }
@@ -126,10 +132,14 @@ class Turno extends AppModel {
 			if( $id_especialidad != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'especialidad_id' => $id_especialidad ) );
 			}
+			$condiciones = array_merge( array( 'visible' => true ), $condiciones );
 			$medicos = $this->Medico->find( 'list',
 					array( 'fields' => 'id_medico',
 					       'conditions' => $condiciones )
 					);
+			if( count( $medicos ) <= 0 ) {
+				return array();
+			}
 		} else {
 			$medicos = $id_medico;
 		}
@@ -483,5 +493,15 @@ class Turno extends AppModel {
    	
    }
 
+  /*!
+   * Busca la lista de turnos de un usuario específico
+   * @param id_usuario Identificador del usuario
+   * @return Array con los turnos encontrados
+   */
+   public function buscarHistoricoUsuario( $id_usuario ) {
+   	return $this->find( 'all', array( 'conditions' => array( 'paciente_id' => $id_usuario ),
+   									  'recursive' => -1,
+   									  'order' => array( 'fecha_inicio' => 'desc' ) ) );
+   }
+
 }
-?>

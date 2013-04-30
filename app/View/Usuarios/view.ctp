@@ -12,6 +12,16 @@
 			<?php echo h($usuario['Usuario']['nombre']); ?>
 			&nbsp;
 		</dd>
+		<dt>Sexo</dt>
+		<dd>
+			<?php 
+			if( $usuario['Usuario']['sexo'] == 'm' ) {
+				echo "Masculino";
+			} else {
+				echo "Femenino";
+			} ?>
+			&nbsp;
+		</dd>
 		<dt>Apellido</dt>
 		<dd>
 			<?php echo h($usuario['Usuario']['apellido']); ?>
@@ -29,7 +39,12 @@
 		</dd>
 		<dt>Obra Social</dt>
 		<dd>
-			<?php echo $this->Html->link( $usuario['ObraSocial']['nombre'], array('controller' => 'obras_sociales', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'])); ?>
+			<?php
+			if( $usuario['Usuario']['obra_social_id'] != null ) { 
+				echo $this->Html->link( $usuario['ObraSocial']['nombre'], array( 'controller' => 'obras_sociales', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) );
+			} else {
+				echo "Ninguna";
+			} ?>
 			&nbsp;
 		</dd>
 		<dt>Notificaciones</dt>

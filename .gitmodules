@@ -1,0 +1,18 @@
+[submodule "app/Plugin/GoogleChart"]
+	path = app/Plugin/GoogleChart
+	url = https://github.com/scottharwell/cakephp-googlecharts-plugin.git
+[submodule "app/Plugin/gestotux"]
+	path = app/Plugin/gestotux
+	url = https://github.com/tranfuga25s/cakephp-gestotux.git
+[submodule "app/Plugin/PreguntaFrecuente"]
+	path = app/Plugin/PreguntaFrecuente
+	url = https://github.com/tranfuga25s/cakephp-preguntafrecuente.git
+[submodule "app/Plugin/DebugKit"]
+	path = app/Plugin/DebugKit
+	url = git://github.com/cakephp/debug_kit.git
+[submodule "app/Plugin/Waltook"]
+	path = app/Plugin/Waltook
+	url = git@github.com:tranfuga25s/cakephp-waltook.git
+[submodule "app/Plugin/Utils"]
+	path = app/Plugin/Utils
+	url = git://github.com/CakeDC/utils.git

@@ -13,6 +13,7 @@
 		echo $this->Form->input( 'email' );
 		echo $this->Form->input( 'nombre' );
 		echo $this->Form->input( 'apellido' );
+		echo $this->Form->input( 'sexo', array( 'label' => 'Sexo:', 'options' => array( 'm' => 'Masculino', 'f' => 'Femenino' ) ) );
 		echo $this->Form->input( 'telefono' );
 		echo $this->Form->input( 'celular' );
 		echo $this->Form->input( 'obra_social_id', array( 'options' => $obras_sociales, 'empty' => 'Ninguna' ) );

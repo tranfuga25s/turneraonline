@@ -12,6 +12,7 @@ App::uses('AppModel', 'Model');
 class Medico extends AppModel {
 
 	public $primaryKey = 'id_medico';
+	public $actAs = array( 'AuditLog.Auditable' );
 	
 	public $validate = array(
 			'usuario_id' => array(
@@ -67,10 +68,19 @@ class Medico extends AppModel {
 	/**
 	 * Devuleve el listado de medicos como para un select
 	 */
-	public function lista( $id_filtro = null ) {
+	public function lista( $id_filtro = null, $solo_visibles = false ) {
+		$cond = array();
 		if( $id_filtro != null ) {
-			$cond = array( 'id_usuario' => $id_filtro );
-		} else { $cond = array(); }
+			$cond = array_merge( array( 'id_usuario' => $id_filtro ), $cond );
+		}
+		if( $solo_visibles ) {
+			$ids = $this->find( 'list', array( 'conditions' => array( 'visible' => true ), 'fields' => array( 'id_medico' ) ) );
+			if( $id_filtro != null ) {
+				$cond = array_merge( $cond, array( 'id_usuario' => array_intersect( $ids, $id_filtro ) ) );
+			} else {
+				$cond = array_merge( $cond, array( 'id_usuario' => $ids ) );
+			}
+		}
 		$conds = array_merge( array( 'grupo_id' => 2 ), $cond );
 		return $this->Usuario->find( 'list',
 			array( 'conditions' => $conds, 'fields' => array( 'id_usuario', 'razonsocial' )
@@ -78,10 +88,33 @@ class Medico extends AppModel {
 
 	}
 
+	/** 
+	 * Muestra la lista de medicos que tienen la propiedad de visible seteada como verdadera.
+	 * Si se pasa como parametro algún ID de medico especifico, se mostrará solo la información de ese médico, sin importar si se encuentra visible o no.
+	 * El formato de devolución es un array con [$id_medico] => $razonsocial
+	 * \param id_filtro Identificador a filtrar.
+	 * \return array con el formato $id_medico => $razonsocial
+	 */
 	public function lista2( $id_filtro = null ) {
-		if( $id_filtro != null ) {
-			$cond = array( 'id_medico' => $id_filtro );
-		} else { $cond = array(); }
+		$cond = array();
+		$ids = $this->find( 'list', array( 'conditions' => array( 'visible' => true ), 'fields' => array( 'id_medico' ) ) );
+		if( count( $ids > 0 ) && $id_filtro == null ) {
+			$cond = array( 'id_medico' => $ids );
+		} else if( count( $ids <= 0 ) && $id_filtro == null ) {
+			return array();
+		} else {
+			// Filtro los medicos pasados como parametros con los de la lista de visibles
+			if( is_array( $id_filtro ) ) {
+				$resultado = array_intersect( $id_filtro, $ids );
+			} else {
+				if( in_array( $id_filtro, $ids ) ) {
+					$resultado = array( $id_filtro );
+				} else {
+					$resultado = array();
+				}
+			}
+			$cond = array( 'id_medico' => $resultado );
+		}
 		$lista = $this->find( 'list', array( 'conditions' => $cond, 'fields' => array( 'id_medico', 'usuario_id' ) ) );
 		$lusuario = $this->Usuario->find( 'list', array( 'conditions' => array( 'grupo_id' => 2 ), 'fields' => array( 'id_usuario', 'razonsocial' ) ) );
 		foreach( $lista as $id_med => $id_us ) {
@@ -92,6 +125,12 @@ class Medico extends AppModel {
 		return $lista;
 	}
 
+	/**
+	 * Función de eliminación de medicos
+	 * Tiene la facilidad de eliminar todos los turnos ( previa cancelación ) y la disponibilidades asociadas.
+	 * \param $id_medico Identificador del medico
+	 * \return Verdadero si se pudo eliminar el médico
+	 */
 	public function eliminar( $id_medico ) {
 		$turnos = $this->Turno->find( 'list', array( 'conditions' => array( 'medico_id' => $id_medico ) ) );
 		foreach( $turnos as $turno ) {
@@ -104,8 +143,6 @@ class Medico extends AppModel {
 		
 		// Finalmente elimino el medico
 		return $this->delete( $id_medico );
-		
-	
 	}
 
 }

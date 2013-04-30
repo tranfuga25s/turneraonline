@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeTime', 'Utility');
 /**
  * Turnos Controller
  *
@@ -82,9 +83,6 @@ class TurnosController extends AppController {
 	* @return void
 	*/
 	public function nuevo( $id_usuario = null ) {
-		$this->set( 'clinicas', $this->Turno->Consultorio->Clinica->find( 'list' ) );
-		$this->set( 'especialidades', $this->Especialidad->find( 'list' ) );
-		$this->set( 'medicos', $this->Turno->Medico->lista() );
 		$this->set( 'usuario', $this->Auth->user() );
 	}
 
@@ -188,8 +186,7 @@ class TurnosController extends AppController {
 				$this->set( 'especialidades',
 					$this->Especialidad->find( 'list', array( 'conditions' => array( 'id_especialidad' => $id_especialidad ) ) ) );
 				// No filtro por medico ya que quiero que los demás esten disponibles.
-				$this->set( 'medicos',
-					$this->Turno->Medico->lista2() );
+				$this->set( 'medicos', $this->Turno->Medico->lista2() );
 
 			}
 			$this->set( 'id_clinica', $id_clinica );
@@ -232,7 +229,8 @@ class TurnosController extends AppController {
 				$this->set( 'meses_siguientes', 1 );
 			} else { $this->set( 'meses_siguientes', 0 ); }
 			// Busco en la disponibilidad de los medicos
-			$this->set( 'turnos', $this->Turno->buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico ) );
+			$turnos = $this->Turno->buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico, true );
+			$this->set( 'turnos', $turnos );
 			$this->set( 'mes', $mes );
 			$this->set( 'ano', $ano );
 		}
@@ -348,10 +346,28 @@ class TurnosController extends AppController {
 	* @return void
 	*/
 	public function administracion_index() {
+		$conditions = array();
+		if( !empty( $this->request->data ) ) {
+			if( $this->request->data['Turno']['atendido']  ) { $conditions['atendido'] = true; 	 }
+			if( $this->request->data['Turno']['reservado'] ) { $conditions[] = '`Turno`.`paciente_id` IS NOT NULL';  }
+			if( $this->request->data['Turno']['cancelado'] ) { $conditions['cancelado'] = true;  }
+			if( $this->request->data['Turno']['consultorio_id'] != 0 ) { $conditions['consultorio_id'] = $this->request->data['Turno']['consultorio_id']; }
+			if( $this->request->data['Turno']['medico_id'] != 0 ) { $conditions['medico_id'] = $this->request->data['Turno']['medico_id']; }
+			if( $this->request->data['Turno']['fechaDesdeCkB'] ) {
+				$conditions['DATE( `Turno`.`fecha_inicio` ) >= '] = $this->request->data['Turno']['fechaDesde']['year'].'-'.
+												                    $this->request->data['Turno']['fechaDesde']['month'].'-'.
+												                    $this->request->data['Turno']['fechaDesde']['day']; }
+			if( $this->request->data['Turno']['fechaHastaCkB'] ) {
+				$conditions['DATE( `Turno`.`fecha_fin` ) <= '] = $this->request->data['Turno']['fechaHasta']['year'].'-'.
+												     	         $this->request->data['Turno']['fechaHasta']['month'].'-'.
+												                 $this->request->data['Turno']['fechaHasta']['day']; }
+		}
 		$this->Turno->recursive = 2;
 		$this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
 		$this->Turno->Paciente->virtualFields = array( 'razonsocial' => 'CONCAT( Paciente.apellido, \', \', Paciente.nombre )' );
-		$this->set('turnos', $this->paginate());
+		$this->set('turnos', $this->paginate( 'Turno', $conditions ) );
+		$this->set( 'consultorios', $this->Turno->Consultorio->find('list') );
+		$this->set( 'medicos', $this->Turno->Medico->lista2() );
 	}
 
 	/**

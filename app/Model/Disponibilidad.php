@@ -9,6 +9,7 @@ class Disponibilidad extends AppModel {
 
 	public $useTable = 'disponibilidad';
 	public $primaryKey = 'id_disponibilidad';
+	public $actAs = array( 'AuditLog.Auditable' );
 
 	public $hasMany = array(
 		'DiaDisponibilidad' => array(
@@ -52,4 +53,3 @@ class Disponibilidad extends AppModel {
 	}
 
 }
-?>

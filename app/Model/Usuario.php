@@ -8,7 +8,7 @@ class Usuario extends AppModel {
 
 	public $primaryKey = 'id_usuario';
 	//public $displayField = 'razonsocial';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $virtualFields = array(
 		'razonsocial' => 'CONCAT( Usuario.apellido, \', \', Usuario.nombre )' );
 

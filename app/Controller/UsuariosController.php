@@ -50,6 +50,7 @@ class UsuariosController extends AppController {
 					case 'index':
 					case 'add':
 					case 'delete':
+					case 'historico':
 					{ return true; break; }
 				}
 				// no pongo break para que acredite las acciones de menos prioridad
@@ -69,15 +70,15 @@ class UsuariosController extends AppController {
 		return false;
 	}
 
-/**
- * Metodo de login de usuario para la pagina
- *
- * @return void
- */
+	/**
+	 * Metodo de login de usuario para la pagina
+	 *
+	 * @return void
+	 */
 	public function ingresar() {
 		if ($this->request->is('post')) {
 			if ( $this->Auth->login() ) {
-				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'home' ) );
+				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
 			} else {
 				$this->Session->setFlash( "El email ingresado o la contraseña son incorrectas", 'default', array(), 'auth');
 			}
@@ -170,6 +171,7 @@ class UsuariosController extends AppController {
 	 * @return void
 	 */
 	public function administracion_ingresar() {
+		$this->layout='adminlogin';
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );
@@ -180,11 +182,11 @@ class UsuariosController extends AppController {
 		}
 	}
 
-/**
- * Metodo de salir de login de usuario para la administracion
- *
- * @return void
- */
+	/**
+	 * Metodo de salir de login de usuario para la administracion
+	 *
+	 * @return void
+	 */
 	public function administracion_salir() {
 		$this->redirect( $this->Auth->logout() );
 	}
@@ -193,11 +195,11 @@ class UsuariosController extends AppController {
 		$this->redirect( $this->Auth->logout() );
 	}
 
-/**
- * Metodo recuperar la contraseña
- *
- * @return void
- */
+	/**
+	 * Metodo recuperar la contraseña
+	 *
+	 * @return void
+	 */
 	public function recuperarContra() {
 		if( $this->request->isPost() ) {
 			if( !empty( $this->data['Recuperar']['email'] ) ) {
@@ -235,10 +237,10 @@ class UsuariosController extends AppController {
 		$this->set( 'dominio', $_SERVER['SERVER_NAME'] ); 
 	}
 
-/**
- * Metodo para mostrar el formulario de registración y agregar nuevos usuarios
- *
- */
+	/**
+	 * Metodo para mostrar el formulario de registración y agregar nuevos usuarios
+	 *
+	 */
 	public function registrarse() {
 		if ( $this->request->is('post') ) {
 			// Verifico que las contraseñas coincidan
@@ -287,6 +289,7 @@ class UsuariosController extends AppController {
 		$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
 		$this->set( 'dominio', $_SERVER['SERVER_NAME'] );
 	}
+
    /*!
     * Funcion llamada cuando un usuario desea dar de baja su cuenta.
     */
@@ -308,6 +311,7 @@ class UsuariosController extends AppController {
 					} else {
 						if( $this->Usuario->delete( $id ) ) {
 							$this->log( 'Usuario de id='.$id.' fue dado de baja' );
+							$this->log( 'Razon de baja:'.$this->data['Usuario']['razon'] );
 							$this->Session->setFlash( 'El usuario fue dado de baja correctamente.<br />Gracias por haber utilizado nuestros servicios!' );
 							$this->borrarCacheUsuarios();
 							$this->redirect( '/' );
@@ -321,29 +325,36 @@ class UsuariosController extends AppController {
 	}
 
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
+	/**
+	 * view method
+	 *
+	 * @param string $id
+	 * @return void
+	 */
+	public function view( $id = null ) {
 		if( $id == null ) {
 			$id = $this->Auth->user( 'id_usuario' );
 		}
 		$this->Usuario->id = $id;
 		if (!$this->Usuario->exists()) {
+			die( "El USUARIO NO EXISTE!" );
 			throw new NotFoundException( 'El usuario no es valido' );
+		}
+		$usuario = $this->Usuario->read( null, $id );
+		if( $usuario['Usuario']['celular'] == '' && $usuario['Usuario']['telefono'] == '' ) {
+			$this->Session->setFlash( 'Por favor, ingrese algún número telefónico para que nos podamos poner en contacto con usted.' );
+		} else if( $usuario['Usuario']['celular'] == '' ) {
+			$this->Session->setFlash( 'Por favor, ingrese un número de celular para que pueda recibir notificaciones por mensaje de texto' );
 		}
 		$this->set( 'usuario', $this->Usuario->read( null, $id ) );
 	}
 
-/*!
- * Metodo par ver los datos por medio del medico
- * 
- * @param int $id
- * @return void
- */
+	/*!
+	 * Metodo par ver los datos por medio del medico
+	 * 
+	 * @param int $id
+	 * @return void
+	 */
 	public function verPorMedico( $id = null ) {
 		if( $id == null ) {
 			throw new NotFoundException( 'El usuario no existe' );
@@ -379,12 +390,12 @@ class UsuariosController extends AppController {
 	}
 
 
-/**
- * Metodo para que un usuario pueda modificar sus datos
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * Metodo para que un usuario pueda modificar sus datos
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function edit($id = null) {
 		$this->Usuario->id = $id;
 		if (!$this->Usuario->exists()) {
@@ -405,13 +416,13 @@ class UsuariosController extends AppController {
 		}
 	}
 
-/**
- * Metodo para darse de baja como usuario. Punto importante.
- *
- * @param string $id
- * @return void
- */
-public function delete($id = null) {
+	/**
+	 * Metodo para darse de baja como usuario. Punto importante.
+	 *
+	 * @param string $id
+	 * @return void
+	 */
+	public function delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}
@@ -446,28 +457,28 @@ public function delete($id = null) {
 		$this->redirect(array('action' => 'index'));
 	}
 
-/**
- * Metodo para mostrar el panel de control de la administración
- * @return void
- */
+	/**
+	 * Metodo para mostrar el panel de control de la administración
+	 * @return void
+	 */
 	public function administracion_cpanel() {}
 
-/**
- * Listado de usuarios de la administración.
- *
- * @return void
- */
+	/**
+	 * Listado de usuarios de la administración.
+	 *
+	 * @return void
+	 */
 	public function administracion_index() {
 		$this->Usuario->recursive = 0;
 		$this->set( 'usuarios', $this->paginate() );
 	}
 
-/**
- * administracion_view method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_view method
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function administracion_view($id = null) {
 		$this->Usuario->id = $id;
 		if (!$this->Usuario->exists()) {
@@ -476,11 +487,11 @@ public function delete($id = null) {
 		$this->set('usuario', $this->Usuario->read(null, $id));
 	}
 
-/**
- * administracion_add method
- *
- * @return void
- */
+	/**
+	 * administracion_add method
+	 *
+	 * @return void
+	 */
 	public function administracion_add() {
 		if ($this->request->is('post')) {
 			$this->Usuario->create();
@@ -497,12 +508,12 @@ public function delete($id = null) {
 		$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
 	}
 
-/**
- * administracion_edit method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_edit method
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function administracion_edit($id = null) {
 		$this->Usuario->id = $id;
 		if (!$this->Usuario->exists()) {
@@ -523,12 +534,12 @@ public function delete($id = null) {
 		}
 	}
 
-/**
- * administracion_delete method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_delete method
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function administracion_delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -539,17 +550,17 @@ public function delete($id = null) {
 		}
 		$this->loadModel( 'Turno' );
 		if( $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene turnos asociados todavía." );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
 			$this->redirect( array( 'action' => 'index'  ) );
 		}
 		$this->loadModel( 'Medico' );
 		if( $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene un medico asociado" );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		$this->loadModel( 'Secretaria' );
 		if( $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razon:</b> El usuario tiene una secretaria asociada" );
+			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $this->Usuario->delete() ) {
@@ -561,7 +572,10 @@ public function delete($id = null) {
 		$this->redirect(array('action' => 'index'));
 	}
 
-
+   /**
+    * Función para cambiar la contraseña
+    * @param string $id_usuario Identificador de usuario
+    */
 	public function administracion_cambiarContra( $id_usuario = null ) {
 		if( $this->request->is( 'post' ) ) {
 			if( $this->data['Usuario']['contra'] != $this->data['Usuario']['recontra'] ) {
@@ -583,6 +597,10 @@ public function delete($id = null) {
 		$this->set( 'data', $this->Usuario->read() );
 	}
 	
+   /**
+    * Funcion pra dar de alta cuando se intenta reservar un turno
+    * @param integer $id_turno Identificador del turno
+    */	
 	public function altaTurno( $id_turno = null, $id_medico = null, $secretaria = true, $nombre = null, $accion = null ) {
 		if( $this->request->isPost() ) {
 			if( $this->Usuario->verificarSiExiste( $this->data['Usuario']['email'] ) ) {
@@ -634,5 +652,21 @@ public function delete($id = null) {
 			Cache::delete( substr( $clave, 5 ) );
 		}
 		Cache::gc();
+	}
+
+    /**
+	 * Muestra el listado de turnos del paciente para el médico
+	 * 
+	 * @param usuario_id integer Identificación del usuario buscado
+	 * @throws NotFoundException Si el usuario no existe
+	 */
+	public function historico( $usuario_id ) {
+		$this->Usuario->id = $usuario_id;
+		if( !$this->Usuario->exists() ) {
+			throw new NotFoundException( "El usuario no existe" );
+		}
+		$this->loadModel( 'Turnos' );
+		$this->set( 'usuario', $this->Usuario->read() );
+		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
 }

@@ -1,8 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?php echo $this->Facebook->html(); ?>
 <head>
 	<?php echo $this->Html->charset(); ?>
-	<title> <?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
+	<title><?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->Html->css('cake.generic');
@@ -10,7 +9,9 @@
 		echo $this->Html->css( 'start/jquery-ui');
 		echo $this->Html->script( 'jquery-1.7.2.min' );
 		echo $this->Html->script( 'jquery-ui-1.8.20.custom.min' );
-		echo $scripts_for_layout;
+		echo $this->fetch('meta');
+		echo $this->fetch('css');
+		echo $this->fetch('script');
 	?>
 	<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, ginecologia, medico, paciente, pedir turno, argentina, alejandro, alejandro talin, oncologia, tracto genital, Docente Faculta de Medicina" />
 </head>
@@ -38,10 +39,8 @@
 
 		<div id="content">
 			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->Session->flash( 'auth' ); ?>
-			<?php echo $content_for_layout; ?>
+			<?php echo $this->fetch('content'); ?>
 		</div>
-
 		<div id="footer">
 			<div style="float: left;"><?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012</div>
 			<?php echo $this->Html->link(
@@ -51,4 +50,5 @@
 				);	?>
 		</div>
 </body>
+<?php echo $this->Facebook->init(); ?>
 </html>

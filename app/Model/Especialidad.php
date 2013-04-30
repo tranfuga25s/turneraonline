@@ -9,7 +9,7 @@ class Especialidad extends AppModel {
 	public $useTable = 'especialidades';
 	public $primaryKey = 'id_especialidad';
 	public $displayField = 'nombre';
-
+	public $actAs = array( 'AuditLog.Auditable' );
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(

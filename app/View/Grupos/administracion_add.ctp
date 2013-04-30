@@ -1,17 +1,13 @@
-<div class="grupos form">
+<?php $this->set( 'title_for_layout', "Agregar nuevo grupo" ); ?>
+<div id="acciones">
+	<?php echo $this->Html->link( 'Lista de Grupos', array('action' => 'index'));?>
+</div>
+<br />
 <?php echo $this->Form->create('Grupo');?>
-	<fieldset>
-		<legend><?php echo __('Administracion Add Grupo'); ?></legend>
-	<?php
-		echo $this->Form->input('nombre');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Grupos'), array('action' => 'index'));?></li>
-	</ul>
-</div>
+<fieldset>
+	<legend><h2>Agregar nuevo grupo</h2></legend>
+<?php
+	echo $this->Form->input('nombre', array( 'type' => 'text' ) );
+	echo $this->Form->end( 'Agregar' );
+?>
+</fieldset>

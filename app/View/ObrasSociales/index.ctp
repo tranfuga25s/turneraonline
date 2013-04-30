@@ -4,6 +4,29 @@
 	$("a","#botones").button();
  });
 </script>
+<style>
+	.contenedor-os {
+		width: 100%;
+	}
+	
+	.contenedor-os div {
+		margin: 2px 2px 2px 2px;
+		border: 1px solid gray;
+		display: inline-block;
+		text-decoration: none;
+		color: white;
+		font-size: 15px;
+		text-shadow: 1px 1px gray;
+		border-radius: 4px;
+		box-shadow: 2px 2px black;
+	}
+	
+	.contenedor-os div img {
+		border: none;
+		height: 150px;
+		width: 150px;
+	}
+</style>
 <div id="botones">
 	<?php echo $this->Html->link( 'Inicio', '/' );
 		  echo $this->Html->link( 'Nuevo turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) );
@@ -13,34 +36,26 @@
 <br />
 <div class="decorado1">
 	<div class="titulo1">Listado de Obras Sociales Disponibles</div>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('nombre');?></th>
-			<th><?php echo $this->Paginator->sort('direccion');?></th>
-			<th><?php echo $this->Paginator->sort('telefono');?></th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($obrasSociales as $obrasSociale): ?>
-	<tr>
-		<td><?php echo $this->Html->link( h($obrasSociale['ObraSocial']['nombre']), array('action' => 'view', $obrasSociale['ObraSocial']['id_obra_social'])); ?>&nbsp;</td>
-		<td><?php echo h($obrasSociale['ObraSocial']['direccion']); ?>&nbsp;</td>
-		<td><?php echo h($obrasSociale['ObraSocial']['telefono']); ?>&nbsp;</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
+	<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
+	<div class="contenedor-os">
+		<?php foreach( $obrasSociales as $obraSocial ):
+			if( is_null( $obraSocial['ObraSocial']['logo'] ) ) {
+				echo $this->Html->link( 
+						'<div>'.
+						$this->Html->image( 'cabecera.png' ).'<br />'.
+						h( $obraSocial['ObraSocial']['nombre'] )					
+						.'</div>',
+					  array( 'action' => 'view', $obraSocial['ObraSocial']['id_obra_social'] ),
+					  array( 'escape' => false ) );				
+			} else {
+				echo $this->Html->link( 
+						'<div>'.
+						$this->Html->image( $obrasSocial['ObraSocial']['logo'] ).'<br />'.
+						h($obrasSociale['ObraSocial']['nombre'])					
+						.'</div>',
+					  array( 'action' => 'view', $obrasSocial['ObraSocial']['id_obra_social'] ),
+					  array( 'escape' => false ) );
+			}
+		   endforeach; ?>
 	</div>
 </div>

@@ -80,7 +80,7 @@
  * Application wide charset encoding
  */
 	Configure::write( 'App.encoding', 'UTF-8');
-	Configure::write( 'Date.timezone', 'America/Buenos_Aires' );
+	Configure::write( 'Date.timezone', 'America/Argentina/Buenos_Aires' );
 	Configure::write( 'Config.language', 'spa' );
 
 /**
@@ -136,7 +136,7 @@
  * Defines the default error type when using the log() function. Used for
  * differentiating error logging and debugging. Currently PHP supports LOG_DEBUG.
  */
-	define('LOG_ERROR', 2);
+	define('LOG_ERROR', LOG_ERR );
 
 /**
  * Session configuration.
@@ -232,7 +232,7 @@
  * Uncomment this line and correct your server timezone to fix 
  * any date & time related errors.
  */
-	date_default_timezone_set('America/Buenos_Aires');
+	date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 /**
  *

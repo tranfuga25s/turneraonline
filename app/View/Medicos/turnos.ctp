@@ -163,12 +163,14 @@ $(function(){
    <div class="titulo2">Elija el día que desea:</div><br />
    <?php echo $this->Form->create( 'Medico', array( 'action' => 'turnos' ) ); ?>
    <?php  echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
-   <table style="width: 625px; padding: 0px;"><tbody><tr>
+   <table style="width: 650px; padding: 0px;"><tbody><tr>
     	<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', '< Dia', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "ayer" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) ); ?></td>
 		<td style="padding: 0px;"><?php  echo "<b>Fecha:</b>" . $this->Form->dateTime( 'fecha', 'DMY', null, array( 'value' => array( 'day' => $dia, 'month' => $mes, 'year' => $ano ), 'empty' => false, 'monthNames' => array( 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ) ) ); ?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Dia >', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "manana" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
+		<td rowspan="2">&nbsp;</td>
+		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?></td>
 	</tr><tr>
 		<td style="padding: 0px;"><?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false ) ); ?></td>
     </tr></tbody></table>
@@ -251,7 +253,7 @@ if($hoy) { ?>
 			<th>Estado</th>
 			<th>Hora</th>
 			<th>Paciente</th>
-			<th>Acciones</th>
+			<?php if( $acciones ) : ?><th>Acciones</th><?php endif; ?>
 		</tr>
 	<?php foreach( $turnos as $turno ) { ?>
 		<tr>
@@ -278,6 +280,7 @@ if($hoy) { ?>
 					 echo "<td>".$this->Html->link(  $turno['Paciente']['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'verPorSecretaria', $turno['Paciente']['id_usuario'] ) )."</td>";
    			    }
 			}
+			if( $acciones ) {
 			?>
 			<td class="actions" style="text-align: left;">
 				<?php
@@ -302,6 +305,7 @@ if($hoy) { ?>
 																								', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )' ) );
 				?>
 			</td>
+			<?php } // En if acciones ?>
 		</tr>
 	<?php } // End foreach turnos ?>
 	</tbody>
