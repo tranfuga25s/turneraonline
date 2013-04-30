@@ -111,6 +111,10 @@ $( function() {
 				<?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'class' => 'btn','onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?>
 				<?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?>			
    			</div>
+   			&nbsp;
+   			<?php if( !$hoy ) {
+   				echo $this->Html->tag( 'a', 'Ir a hoy', array( 'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );
+			} ?>
    </fieldset>
 </div>
 
