@@ -7,33 +7,42 @@ App::uses('Usuario', 'Model');
  *
  */
 class UsuarioTestCase extends CakeTestCase {
-/**
- * Fixtures
- *
- * @var array
- */
+	
+	/**
+	 * Fixtures
+	 *
+	 * @var array
+	 */
 	public $fixtures = array('app.usuario');
 
-/**
- * setUp method
- *
- * @return void
- */
+	/**
+	 * setUp method
+	 *
+	 * @return void
+	 */
 	public function setUp() {
 		parent::setUp();
 
 		$this->Usuario = ClassRegistry::init('Usuario');
 	}
 
-/**
- * tearDown method
- *
- * @return void
- */
+	/**
+	 * tearDown method
+	 *
+	 * @return void
+	 */
 	public function tearDown() {
 		unset($this->Usuario);
 
 		parent::tearDown();
 	}
-
+	/**
+	 * Prueba la condición de que si se elimina una clinica con datos asociados no se debería de poder hacer
+	 * 
+	 */
+	 public function testEliminacion() {
+	 	
+		$this->assertNotEqual( $this->Usuario->delete( $id_clinica ), true, "La clinica no debe ser eliminada!" );
+		
+	 }
 }

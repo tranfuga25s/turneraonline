@@ -42,6 +42,28 @@ class Clinica extends AppModel {
 		),
 		'Medicos' => array( 
 			'class' => 'Medico'
+		),
+		'Secretarias' => array(
+			'class' => 'Secretaria'
 		)
 	);
+	
+	/**
+	 * Verifica si existen datos asociados
+	 */
+	public function beforeDelete() {
+		$cantidad = $this->Medicos->find( 'count', array( 'conditions' => array( 'clinica_id' => $this->id ) ) );
+		if( $cantidad > 0 ) {
+			return false;
+		}
+		$cantidad = $this->Secretaria->find( 'count', array( 'conditions' => array( 'clinica_id' => $this->id ) ) );
+		if( $cantidad > 0 ) {
+			return false;
+		}
+		$cantidad = $this->Consultorios->find( 'count', array( 'conditions' => array( 'clinica_id' => $this->id ) ) );
+		if( $cantidad > 0 ) {
+			return false;
+		}
+		return true;
+	}
 }
