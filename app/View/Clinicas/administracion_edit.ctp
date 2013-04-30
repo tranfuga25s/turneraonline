@@ -18,12 +18,12 @@
 
         //add marker
         $options = array(
-            'lat' => ( $this->data['Clinica']['lat'] == null ) ? 50 : $this->data['Clinica']['lat'],
-            'lng' => ( $this->data['Clinica']['lng'] == null ) ? 50 : $this->data['Clinica']['lng'],	
+            'lat' => ( $this->request->data['Clinica']['lat'] == null ) ? 50 : $this->request->data['Clinica']['lat'],
+            'lng' => ( $this->request->data['Clinica']['lng'] == null ) ? 50 : $this->request->data['Clinica']['lng'],	
             'directions' => false,
             'content' => '',
             'center' => true,
-            'title' => $this->data['Clinica']['nombre'] # optional
+            'title' => $this->request->data['Clinica']['nombre'] # optional
         );
 
         //set event when drag to update lng and lat

@@ -1,9 +1,9 @@
 <?php $this->set( 'title_for_layout', "Editar un médico" ); ?>
 <div id="acciones">
 	<?php echo $this->Html->link( 'Lista de Médicos', array('action' => 'index'));
-		  echo $this->Html->link( 'Modificar datos de usuario', array( 'controller' => 'usuarios', 'action' => 'edit', $this->data['Medico']['usuario_id'] ) );
+		  echo $this->Html->link( 'Modificar datos de usuario', array( 'controller' => 'usuarios', 'action' => 'edit', $this->request->data['Medico']['usuario_id'] ) );
 		  echo $this->Html->link( 'Modificar Disponibilidad', array( 'action' => 'disponibilidad' ) );
-		  echo $this->Html->link( 'Dar de baja como médico', array( 'action' => 'darBaja', $this->data['Medico']['id_medico'] ) ); ?>
+		  echo $this->Html->link( 'Dar de baja como médico', array( 'action' => 'darBaja', $this->request->data['Medico']['id_medico'] ) ); ?>
 </div>
 <br />
 <?php echo $this->Form->create('Medico');?>
