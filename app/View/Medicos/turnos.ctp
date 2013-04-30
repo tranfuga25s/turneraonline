@@ -170,7 +170,7 @@ $(function(){
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
 		<td rowspan="2">&nbsp;</td>
-		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?></td>
+		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') ); ?></td>
 	</tr><tr>
 		<td style="padding: 0px;"><?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false ) ); ?></td>
     </tr></tbody></table>
