@@ -44,6 +44,11 @@ class TurnoTestCase extends CakeTestCase {
 		$this->assertEqual( $t, $r );
 		 
 	}
+    
+    public function testRegenerar() {
+        
+        $this->assertEqual(1, 1);
+    }
 
 /**
  * tearDown method

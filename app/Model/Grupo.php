@@ -7,8 +7,11 @@ App::uses('AppModel', 'Model');
 class Grupo extends AppModel {
 
 	public $primaryKey = 'id_grupo';
+	
 	public $displayField = 'nombre';
+	
 	public $actAs = array( 'AuditLog.Auditable' );
+	
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(
@@ -19,4 +22,17 @@ class Grupo extends AppModel {
 	);
 
 	public $hasMany = array( 'Usuarios' );
+	
+	/**
+	 * Permite saber si existen usuarios relacionados con este grupo
+	 * @return boolean Verdadero si existen usuarios relacionados con este grupo
+	 */
+    public function tieneUsuariosAsociados() {
+    	$count = $this->Usuarios->find( 'count', array( 'conditions' => array( 'grupo_id' => $this->id ) ) );
+		if( $count > 0 ) {
+			return true;
+		}
+		return false;
+	}
+	   
 }

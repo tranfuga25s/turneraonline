@@ -1,181 +1,118 @@
 <?php
 App::uses('AppController', 'Controller');
 /**
- * Grupos Controller
- *
+ * Controlador de grupos del sistema
+ * Administra los grupos que asignan luego permisos
  * @property Grupo $Grupo
  */
 class GruposController extends AppController {
 
-
-/**
- * index method
- *
- * @return void
- */
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 		$this->Grupo->recursive = 0;
 		$this->set('grupos', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * view method
+	 * @param string $id Identificador del grupo
+	 * @return void
+	 */
 	public function view($id = null) {
 		$this->Grupo->id = $id;
 		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
+			throw new NotFoundException( 'Grupo Invalido' );
 		}
-		$this->set('grupo', $this->Grupo->read(null, $id));
+		$this->set('grupo', $this->Grupo->read( null, $id ) );
 	}
 
-/**
- * add method
- *
- * @return void
- */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->Grupo->create();
-			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash(__('The grupo has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The grupo could not be saved. Please, try again.'));
-			}
-		}
-	}
-
-/**
- * edit method
- *
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
-		$this->Grupo->id = $id;
-		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
-		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash(__('The grupo has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The grupo could not be saved. Please, try again.'));
-			}
-		} else {
-			$this->request->data = $this->Grupo->read(null, $id);
-		}
-	}
-
-/**
- * delete method
- *
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
-		$this->Grupo->id = $id;
-		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
-		}
-		if ($this->Grupo->delete()) {
-			$this->Session->setFlash(__('Grupo deleted'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->Session->setFlash(__('Grupo was not deleted'));
-		$this->redirect(array('action' => 'index'));
-	}
-/**
- * administracion_index method
- *
- * @return void
- */
+	/**
+	 * administracion_index method
+	 * @return void
+	 */
 	public function administracion_index() {
 		$this->Grupo->recursive = 0;
-		$this->set('grupos', $this->paginate());
+		$this->set( 'grupos', $this->paginate() );
 	}
 
-/**
- * administracion_view method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_view method
+	 * @param string $id Identificador del grupo
+	 * @return void
+	 */
 	public function administracion_view($id = null) {
 		$this->Grupo->id = $id;
 		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
+			throw new NotFoundException( 'Grupo Invalido' );
 		}
-		$this->set('grupo', $this->Grupo->read(null, $id));
+		$this->set( 'grupo', $this->Grupo->read( null, $id ) );
 	}
 
-/**
- * administracion_add method
- *
- * @return void
- */
+	/**
+	 * administracion_add method
+	 * @return void
+	 */
 	public function administracion_add() {
 		if ($this->request->is('post')) {
 			$this->Grupo->create();
 			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash(__('The grupo has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash( 'El grupo ha sido guardado correctamente', 'default', array( 'class' => 'success' ) );
+				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash(__('The grupo could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'El grupo no pudo ser guardado correctamente', 'default', array( 'class' => 'error' ) );
 			}
 		}
 	}
 
-/**
- * administracion_edit method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_edit method
+	 * @param string $id Identificador del grupo
+	 * @return void
+	 */
 	public function administracion_edit($id = null) {
 		$this->Grupo->id = $id;
 		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
+			throw new NotFoundException( 'Grupo invalido' );
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash(__('The grupo has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash( 'El grupo fue modificado correctamente', 'default', array( 'class' => 'success' ) );
+				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash(__('The grupo could not be saved. Please, try again.'));
+				$this->Session->setFlash( 'El grupo no pudo ser guardado', 'default', array( 'class' => 'error' ) );
 			}
 		} else {
-			$this->request->data = $this->Grupo->read(null, $id);
+			$this->request->data = $this->Grupo->read( null, $id );
 		}
 	}
 
-/**
- * administracion_delete method
- *
- * @param string $id
- * @return void
- */
+	/**
+	 * administracion_delete method
+	 * @param string $id Identificador del grupo a eliminar
+	 * @return void
+	 */
 	public function administracion_delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
 		}
 		$this->Grupo->id = $id;
 		if (!$this->Grupo->exists()) {
-			throw new NotFoundException(__('Invalid grupo'));
+			throw new NotFoundException( 'Grupo invalido' );
+		}
+		if( $this->Grupo->tieneUsuariosAsociados() ) {
+			$this->Session->setFlash( $this->Session->flash().'<br />. El grupo no se puede eliminar. Existen usuarios que pertenecen a este grupo todavía.', 'default', array( 'class' => 'success' ) );
+			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Grupo->delete()) {
-			$this->Session->setFlash(__('Grupo deleted'));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash( 'Grupo eliminado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash(__('Grupo was not deleted'));
-		$this->redirect(array('action' => 'index'));
+		$this->Session->setFlash( 'El Grupo no pudo ser eliminado', 'default', array( 'class' => 'error' ) );
+		$this->redirect( array( 'action' => 'index' ) );
 	}
+
 }

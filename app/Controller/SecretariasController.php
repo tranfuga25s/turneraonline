@@ -92,36 +92,36 @@ class SecretariasController extends AppController {
 		$consultorios = $this->Consultorio->find( 'list', array( 'conditions' => array( 'clinica_id' => $clinicas ), 'fields' => array( 'id_consultorio' ) ) );
 		
 		if( $this->request->isPost() ) {
-			if( isset( $this->data['Secretarias']['actualizacion'] ) ) {
-				$this->Session->write( "actualizacion", $this->data['Secretarias']['actualizacion'] );
-				$this->set( 'actualizacion', $this->data['Secretarias']['actualizacion'] );
-				if( $this->data['Secretarias']['actualizacion'] == 'true' ) {
+			if( isset( $this->request->data['Secretarias']['actualizacion'] ) ) {
+				$this->Session->write( "actualizacion", $this->request->data['Secretarias']['actualizacion'] );
+				$this->set( 'actualizacion', $this->request->data['Secretarias']['actualizacion'] );
+				if( $this->request->data['Secretarias']['actualizacion'] == 'true' ) {
 					$accion = " habilitada ";
 				} else { $accion = " deshabilitada"; }
 				$this->Session->setFlash( 'Auto actualización de la página ha sido' . $accion );
 			} else {
-				$this->data = $this->data['Secretaria'];
+				$this->request->data = $this->request->data['Secretaria'];
 				// Busco la fecha e que me pasaron
-				if( isset( $this->data['accion'] ) ) {
+				if( isset( $this->request->data['accion'] ) ) {
 					$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
 					$t2 = clone $t;
-					if( $this->data['accion'] == 'ayer' ) {
+					if( $this->request->data['accion'] == 'ayer' ) {
 						$t2 = $t->sub( new DateInterval( "P1D" ) );
-					} else if( $this->data['accion'] == 'manana' ) {
+					} else if( $this->request->data['accion'] == 'manana' ) {
 						$t2 = $t->add( new DateInterval( "P1D" ) );
-					} else  if( $this->data['accion'] == 'mes' ) {
+					} else  if( $this->request->data['accion'] == 'mes' ) {
 						$t2 = $t->add( new DateInterval( "P1M" ) );
-					} else if( $this->data['accion'] == 'sem' ) {
+					} else if( $this->request->data['accion'] == 'sem' ) {
 						$t2 = $t->add( new DateInterval( "P1W" ) );
-					} else if( $this->data['accion'] == 'hoy' ) {
+					} else if( $this->request->data['accion'] == 'hoy' ) {
 						$t2 = new DateTime( 'now' );
 					}
 					// Actualizo la fecha
 					$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
 				} else {
-					$this->cambiarDia( $this->data['fecha']['day'],
-									   $this->data['fecha']['month']+1,
-									   $this->data['fecha']['year'] );				
+					$this->cambiarDia( $this->request->data['fecha']['day'],
+									   $this->request->data['fecha']['month']+1,
+									   $this->request->data['fecha']['year'] );				
 				}
 		   }
 		}
@@ -162,14 +162,14 @@ class SecretariasController extends AppController {
     */
 	public function sobreturno( $id_turno = null, $id_paciente = null, $id_medico = null ) {
 		if( $this->request->isPost() ) {
-			$this->data = $this->data['Turno'];
+			$this->request->data = $this->request->data['Turno'];
 			
-			$id_turno    = $this->data['id_turno'];
-			$id_paciente = $this->data['spaciente'];
-			$id_medico   = $this->data['id_medico'];
-			$hora        = $this->data['hora'];
-			$min         = $this->data['min'];
-			$duracion    = $this->data['duracion'];
+			$id_turno    = $this->request->data['id_turno'];
+			$id_paciente = $this->request->data['spaciente'];
+			$id_medico   = $this->request->data['id_medico'];
+			$hora        = $this->request->data['hora'];
+			$min         = $this->request->data['min'];
+			$duracion    = $this->request->data['duracion'];
 		} else {
 			// Si entro por aquí, tuve que dar de alta el paciente.
 			if( $id_turno == null || $id_paciente == null || $id_medico == null ) {
@@ -194,7 +194,7 @@ class SecretariasController extends AppController {
 		if( ! $this->Turno->Paciente->exists() ) {
 			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.' );
 			$this->Session->write( array( 'st.medico' => $id_medico, 'st.hora' => $hora, 'st.min' => $min, 'st.duracion' => $duracion ) );
-			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->data['spaciente'], 'sobreturno' ) );
+			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->request->data['spaciente'], 'sobreturno' ) );
 		}
 
 		$this->Turno->Medico->id = $id_medico;
@@ -264,13 +264,13 @@ class SecretariasController extends AppController {
 	public function cancelar( $id_turno = null ) {
 		
 		if( $id_turno == null ) {
-			$id_turno = $this->data['Secretaria']['id_turno'];
+			$id_turno = $this->request->data['Secretaria']['id_turno'];
 		} else {
 			// Se coloca esto ya que solo cancelamos desde la vista de los turnos del paciente
-			$this->data = array( 'Secretaria' => array( 'quien' => 'p' ) );
+			$this->request->data = array( 'Secretaria' => array( 'quien' => 'p' ) );
 		}
 
-		if( $this->data['Secretaria']['quien'] == "m" ){
+		if( $this->request->data['Secretaria']['quien'] == "m" ){
 			
 			$ids = array();
 			$ids[] = $id_turno;
@@ -299,7 +299,7 @@ class SecretariasController extends AppController {
 		   } else {
 		   		$this->Session->setFlash( "No se canceló ningún turno" );
 		   }
-		} else if( $this->data['Secretaria']['quien'] == "p" ) {
+		} else if( $this->request->data['Secretaria']['quien'] == "p" ) {
 			$this->Turno->id = $id_turno;
 			if( $this->Turno->exists() ) {
 				$this->Turno->set( 'paciente_id', null );
@@ -314,7 +314,7 @@ class SecretariasController extends AppController {
 				$this->Session->setFlash( 'El turno no existe!' );
 			}	
 		} else {
-			pr( $this->data );
+			pr( $this->request->data );
 			die();
 			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto' );
 		}
@@ -327,10 +327,10 @@ class SecretariasController extends AppController {
     */
 	public function reservar( $id_turno = null, $id_paciente = null, $id_medico = null ) {
 		if( $this->request->isPost() ) {
-			$this->data = $this->data['Turno'];
-			$id_turno = $this->data['id_turno'];
-			$id_paciente = $this->data['rpaciente'];
-			$id_medico = $this->data['id_medico'];
+			$this->request->data = $this->request->data['Turno'];
+			$id_turno = $this->request->data['id_turno'];
+			$id_paciente = $this->request->data['rpaciente'];
+			$id_medico = $this->request->data['id_medico'];
 			// Divido el codigo del paciente
 			$tmp = split( "-", $id_paciente );
 			$id_paciente = $tmp[0];
@@ -352,7 +352,7 @@ class SecretariasController extends AppController {
 		$this->Usuario->id = $id_paciente;
 		if( !$this->Usuario->exists() ) {
 			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.' );
-			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->data['rpaciente'], 'reservar' ) );
+			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->request->data['rpaciente'], 'reservar' ) );
 		}
 
 		// No verifico la  restricción de cantidad de turnos x día
@@ -403,7 +403,7 @@ class SecretariasController extends AppController {
 	 		$id_usuario = $this->Auth->user( 'id_usuario' );
 			$t = $this->Secretaria->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_secretaria' ) ) );
 	 		$this->Secretaria->id = $t['Secretaria']['id_secretaria'];
-			if( $this->data['Secretaria']['resumen'] ) {
+			if( $this->request->data['Secretaria']['resumen'] ) {
 				$accion = " habilitado  ";
 				$estado = true;
 			} else {

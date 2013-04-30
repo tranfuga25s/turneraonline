@@ -6,8 +6,6 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class AvisosController extends AppController {
 
-	//var $scaffold;
-
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -120,6 +118,35 @@ class AvisosController extends AppController {
 		$this->Aviso->saveAssociated( $datos );
 		$this->autoRender = false;
 		return "";
+	}
+
+	/**
+	 * Muestra la configuración de las notificaciones del sistema
+	 * 
+	 */
+	public function administracion_cpanel() {
+			
+	}
+	
+	/**
+	 *  Muestra la configuración y/o habilitacion del sistema de sms
+	 */
+	public function administracion_sms() {
+		
+	}
+	
+	/**
+	 * Muestra la configuración y/o habilitacion del sistema de email
+	 */
+	public function administracion_email() {
+		
+	}
+	
+	/**
+	 * Muestra la lista de notificaciones pendientes de envio
+	 */
+	public function administracion_pendiente() {
+		
 	}
 
 }

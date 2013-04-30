@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Model.Datasource.Database
  * @since         CakePHP(tm) v 1.2.0
@@ -1130,7 +1131,7 @@ class MysqlTest extends CakeTestCase {
 				$linkModel = $this->Model->Category2->{$assoc};
 				$external = isset($assocData['external']);
 
-				if ($this->Model->Category2->alias == $linkModel->alias && $type != 'hasAndBelongsToMany' && $type != 'hasMany') {
+				if ($this->Model->Category2->alias == $linkModel->alias && $type !== 'hasAndBelongsToMany' && $type !== 'hasMany') {
 					$result = $this->Dbo->generateAssociationQuery($this->Model->Category2, $linkModel, $type, $assoc, $assocData, $queryData, $external, $null);
 					$this->assertFalse(empty($result));
 				} else {
@@ -2445,6 +2446,11 @@ class MysqlTest extends CakeTestCase {
 		$expected = " WHERE `id` IN (2, 5, 6, 9, 12, 45, 78, 43, 76)";
 		$this->assertEquals($expected, $result);
 
+		$conditions = array('`Correction`.`source` collate utf8_bin' => array('kiwi', 'pear'));
+		$result = $this->Dbo->conditions($conditions);
+		$expected = " WHERE `Correction`.`source` collate utf8_bin IN ('kiwi', 'pear')";
+		$this->assertEquals($expected, $result);
+
 		$conditions = array('title' => 'user(s)');
 		$result = $this->Dbo->conditions($conditions);
 		$expected = " WHERE `title` = 'user(s)'";
@@ -2495,6 +2501,23 @@ class MysqlTest extends CakeTestCase {
 			'? BETWEEN Model.field1 AND Model.field2' => '2009-03-04'
 		)));
 		$expected = " WHERE '2009-03-04' BETWEEN Model.field1 AND Model.field2";
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test that array conditions with only one element work.
+ *
+ * @return
+ */
+	public function testArrayConditionsOneElement() {
+		$conditions = array('id' => array(1));
+		$result = $this->Dbo->conditions($conditions);
+		$expected = " WHERE id = (1)";
+		$this->assertEquals($expected, $result);
+
+		$conditions = array('id NOT' => array(1));
+		$result = $this->Dbo->conditions($conditions);
+		$expected = " WHERE NOT (id = (1))";
 		$this->assertEquals($expected, $result);
 	}
 
@@ -2983,6 +3006,7 @@ class MysqlTest extends CakeTestCase {
 		);
 		$result = $this->Dbo->buildIndex($data);
 		$expected = array('FULLTEXT KEY `MyFtIndex` (`name`, `description`)');
+		$this->assertEquals($expected, $result);
 
 		$data = array(
 			'MyTextIndex' => array('column' => 'text_field', 'length' => array('text_field' => 20))

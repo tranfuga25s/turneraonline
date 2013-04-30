@@ -75,7 +75,7 @@ $i = 0;
 foreach ( $usuarios as $usuario ):
 	echo "<tr>";
 		echo "<td>".$usuario['Usuario']['razonsocial']."</td>";
-		echo "<td>".$this->Html->link( h( $usuario['Grupo']['nombre'] ), array( 'controller' => 'grupo', 'action' => 'view', $usuario['Grupo']['id_grupo'] ) )."</td>";
+		echo "<td>".$this->Html->link( h( $usuario['Grupo']['nombre'] ), array( 'controller' => 'grupos', 'action' => 'view', $usuario['Grupo']['id_grupo'] ) )."</td>";
 		echo '<td class="actions">';
 		echo $this->Html->link( 'Ver', array( 'action' => 'view', $usuario['Usuario']['id_usuario'] ) );
 		echo $this->Html->link( 'Editar', array('action' => 'edit', $usuario['Usuario']['id_usuario'] ) );

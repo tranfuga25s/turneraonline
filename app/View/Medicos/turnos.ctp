@@ -170,7 +170,7 @@ $(function(){
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?></td>
 		<td rowspan="2" style="padding: 0px;"><?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?></td>
 		<td rowspan="2">&nbsp;</td>
-		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?></td>
+		<td rowspan="2" style="padding: 0px;"><?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') ); ?></td>
 	</tr><tr>
 		<td style="padding: 0px;"><?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false ) ); ?></td>
     </tr></tbody></table>
@@ -253,7 +253,7 @@ if($hoy) { ?>
 			<th>Estado</th>
 			<th>Hora</th>
 			<th>Paciente</th>
-			<th>Acciones</th>
+			<?php if( $acciones ) : ?><th>Acciones</th><?php endif; ?>
 		</tr>
 	<?php foreach( $turnos as $turno ) { ?>
 		<tr>
@@ -280,6 +280,7 @@ if($hoy) { ?>
 					 echo "<td>".$this->Html->link(  $turno['Paciente']['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'verPorSecretaria', $turno['Paciente']['id_usuario'] ) )."</td>";
    			    }
 			}
+			if( $acciones ) {
 			?>
 			<td class="actions" style="text-align: left;">
 				<?php
@@ -304,6 +305,7 @@ if($hoy) { ?>
 																								', '. date( "i", strtotime( $turno['Turno']['fecha_inicio'] ) ) .' )' ) );
 				?>
 			</td>
+			<?php } // En if acciones ?>
 		</tr>
 	<?php } // End foreach turnos ?>
 	</tbody>

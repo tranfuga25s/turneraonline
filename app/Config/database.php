@@ -67,17 +67,17 @@ class DATABASE_CONFIG {
 		'password' => 'turnera',
 		'database' => 'turnera',
 		'prefix' => '',
-		'encoding' => 'utf8',
-	);
-
-	public $test = array(
-		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'sag3d',
-		'password' => 'sag3d',
-		'database' => 'sag3d',
-		'prefix' => 'test',
 		'encoding' => 'utf8'
 	);
+    
+    public $test = array(
+        'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'login' => 'turnera',
+        'password' => 'turnera',
+        'database' => 'turnera',
+        'prefix' => 'test_',
+        'encoding' => 'utf8'
+    );
 }

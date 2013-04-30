@@ -1,16 +1,16 @@
 <?php $this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );  ?>
 <script>
 	function generarEmail() {
-		var nombre = $("input[type=text]#UsuarioNombre" ).val();
-		var apellido = $("input[type=text]#UsuarioApellido" ).val();
+		var nombre = $("#UsuarioNombre" ).val().toLowerCase();
+		var apellido = $("#UsuarioApellido" ).val().toLowerCase();
 		if( nombre == '' || apellido == '' ) {
-			$("#aviso").dialog({ buttons: { "Ok": function() { $(this).dialog("close"); } } } );
+			$("#aviso").modal();
 			return;			
 		}
-		var email = nombre+apellido+"@<?php echo substr( $dominio, 4, strlen($dominio) ); ?>";
-		$("input[type=text]#UsuarioEmail").val( email );
-		$("input[type=password]#UsuarioContra").val( email );
-		$("input[type=password]#UsuarioConfirmacontra").val( email );
+		var email = nombre+apellido+"@<?php if( strpos( "www.", $dominio ) === FALSE ) { echo $dominio; } else { echo substr( $dominio, 4, strlen($dominio) ); } ?>";
+		$("#UsuarioEmail").val( email );
+		$("#UsuarioContra").val( email );
+		$("#UsuarioConfirmacontra").val( email );
 	}
 	
 	$( function() { $("#botonemail").button(); });

@@ -1,12 +1,13 @@
 <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP Project
  * @package       Cake.Test.Case.Controller
  * @since         CakePHP(tm) v 1.2.0.5436
@@ -102,7 +103,7 @@ class ControllerPost extends CakeTestModel {
  * @return void
  */
 	public function find($type = 'first', $options = array()) {
-		if ($type == 'popular') {
+		if ($type === 'popular') {
 			$conditions = array($this->name . '.' . $this->primaryKey . ' > ' => '1');
 			$options = Hash::merge($options, compact('conditions'));
 			return parent::find('all', $options);
@@ -446,11 +447,24 @@ class ControllerTest extends CakeTestCase {
 
 		$result = $Controller->loadModel('ControllerPost');
 		$this->assertTrue($result);
-		$this->assertTrue(is_a($Controller->ControllerPost, 'ControllerPost'));
-		$this->assertTrue(in_array('ControllerPost', $Controller->uses));
+		$this->assertInstanceOf('ControllerPost', $Controller->ControllerPost);
+		$this->assertContains('ControllerPost', $Controller->uses);
+	}
 
-		ClassRegistry::flush();
-		unset($Controller);
+/**
+ * Test loadModel() when uses = true.
+ *
+ * @return void
+ */
+	public function testLoadModelUsesTrue() {
+		$request = new CakeRequest('controller_posts/index');
+		$response = $this->getMock('CakeResponse');
+		$Controller = new Controller($request, $response);
+		$Controller->uses = true;
+
+		$Controller->loadModel('ControllerPost');
+		$this->assertInstanceOf('ControllerPost', $Controller->ControllerPost);
+		$this->assertContains('ControllerPost', $Controller->uses);
 	}
 
 /**

@@ -125,19 +125,19 @@ class UsuariosController extends AppController {
     public function index() {
     	$cond = array();
     	if( $this->request->isPost() ) {
-    		if( !empty( $this->data['Usuario']['texto'] ) ) {
+    		if( !empty( $this->request->data['Usuario']['texto'] ) ) {
     			$cond = array_merge( $cond, array( 'OR' => 
-    							array( '`Usuario`.`nombre` LIKE' => '%'.$this->data['Usuario']['texto'].'%',
-    							       '`Usuario`.`apellido` LIKE' => '%'.$this->data['Usuario']['texto'].'%' ) ) );
-				$this->set( 'texto',  $this->data['Usuario']['texto'] );
+    							array( '`Usuario`.`nombre` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%',
+    							       '`Usuario`.`apellido` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%' ) ) );
+				$this->set( 'texto',  $this->request->data['Usuario']['texto'] );
     		}
-			if( !empty(  $this->data['Usuario']['grupo_id'] )  ) {
-				$cond = array_merge( $cond, array( 'grupo_id' => $this->data['Usuario']['grupo_id'] ) );
-				$this->set( 'grupo_id',  $this->data['Usuario']['grupo_id'] );
+			if( !empty(  $this->request->data['Usuario']['grupo_id'] )  ) {
+				$cond = array_merge( $cond, array( 'grupo_id' => $this->request->data['Usuario']['grupo_id'] ) );
+				$this->set( 'grupo_id',  $this->request->data['Usuario']['grupo_id'] );
 			}
-			if( !empty(  $this->data['Usuario']['obra_social'] ) ) {
-				$cond = array_merge( $cond, array( 'obra_social_id' => $this->data['Usuario']['obra_social'] ) );
-				$this->set( 'obra_social',  $this->data['Usuario']['obra_social'] );
+			if( !empty(  $this->request->data['Usuario']['obra_social'] ) ) {
+				$cond = array_merge( $cond, array( 'obra_social_id' => $this->request->data['Usuario']['obra_social'] ) );
+				$this->set( 'obra_social',  $this->request->data['Usuario']['obra_social'] );
 			}
     	}
     	$this->set( 'usuarios', $this->paginate( 'Usuario', $cond ) );
@@ -176,7 +176,7 @@ class UsuariosController extends AppController {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );
 			} else {
-				//echo AuthComponent::password( $this->data['Usuario']['contra'] );
+				//echo AuthComponent::password( $this->request->data['Usuario']['contra'] );
 				$this->Session->setFlash( 'El email ingresado o la contraseña son incorrectas', 'default', array(), 'auth');
 			}
 		}
@@ -202,11 +202,11 @@ class UsuariosController extends AppController {
 	 */
 	public function recuperarContra() {
 		if( $this->request->isPost() ) {
-			if( !empty( $this->data['Recuperar']['email'] ) ) {
-				if( !$this->Usuario->verificarSiExiste( $this->data['Recuperar']['email'] ) ) {
+			if( !empty( $this->request->data['Recuperar']['email'] ) ) {
+				if( !$this->Usuario->verificarSiExiste( $this->request->data['Recuperar']['email'] ) ) {
 					$this->Session->setFlash( 'La casilla de email ingresada no existe en nuestro sistema. Por favor, registrese en nuestro sitio.');
 				} else {
-					$nueva_contra = $this->Usuario->generarNuevaContraseña( $this->data['Recuperar']['email'] );
+					$nueva_contra = $this->Usuario->generarNuevaContraseñarray( $this->request->data['Recuperar']['email'] );
 					if( $nueva_contra != false ) {
 						// Envio el email explicandolo
 						$de = Configure::read( 'Turnera.email' );
@@ -214,8 +214,8 @@ class UsuariosController extends AppController {
 						$email = new CakeEmail();
 						$email->template( 'recuperaContra', 'usuario' );
 						$email->emailFormat( 'both' );
-						$email->to( $this->data['Recuperar']['email'] );
-						$email->viewVars( array( 'email' => $this->data['Recuperar']['email'], 'contra' => $nueva_contra ) );
+						$email->to( $this->request->data['Recuperar']['email'] );
+						$email->viewVars( array( 'email' => $this->request->data['Recuperar']['email'], 'contra' => $nueva_contra ) );
 						$email->subject( 'Su nueva contraseña' );
 						$email->from( $de );
 						$email->send();
@@ -270,7 +270,7 @@ class UsuariosController extends AppController {
 							->emailFormat( 'both' )
 							->from( $de )
 							->to( $this->request->data['Usuario']['email'] )
-							->viewVars( array( 'usuario' => $this->data['Usuario'] ) )
+							->viewVars( array( 'usuario' => $this->request->data['Usuario'] ) )
 							->subject( 'Bienvenido al sistema de turnos' )
 							->send();
 							// Hago que el usuario se logee directamente
@@ -296,14 +296,14 @@ class UsuariosController extends AppController {
 	public function eliminarUsuario()
 	{
 		if( $this->request->isPost() ) {
-			if( empty( $this->data['Usuario']['email'] ) ) {
+			if( empty( $this->request->data['Usuario']['email'] ) ) {
 				$this->Session->setFlash( 'El correo electronico no puede estar vacío' );
 			} else {
-				if( ! $this->Usuario->verificarSiExiste( $this->data['Usuario']['email'] ) ) {
+				if( ! $this->Usuario->verificarSiExiste( $this->request->data['Usuario']['email'] ) ) {
 					$this->Session->setFlash( 'El correo electronico ingresado no pertenece a ningún usuario registrado' );
 				} else {
 					// Elimino los turnos que tenga asociados
-					$id = $this->Usuario->find( 'first', array( 'conditions' => array( 'email' => $this->data['Usuario']['email'] ), 'fields' => array( 'id_usuario' ) ) );
+					$id = $this->Usuario->find( 'first', array( 'conditions' => array( 'email' => $this->request->data['Usuario']['email'] ), 'fields' => array( 'id_usuario' ) ) );
 					$id = $id['Usuario']['id_usuario'];
 					$this->loadModel( 'Turno' );
 					if( ! $this->Turno->eliminarTurnosUsuario( $id ) ) {
@@ -311,7 +311,7 @@ class UsuariosController extends AppController {
 					} else {
 						if( $this->Usuario->delete( $id ) ) {
 							$this->log( 'Usuario de id='.$id.' fue dado de baja' );
-							$this->log( 'Razon de baja:'.$this->data['Usuario']['razon'] );
+							$this->log( 'Razon de baja:'.$this->request->data['Usuario']['razon'] );
 							$this->Session->setFlash( 'El usuario fue dado de baja correctamente.<br />Gracias por haber utilizado nuestros servicios!' );
 							$this->borrarCacheUsuarios();
 							$this->redirect( '/' );
@@ -578,10 +578,10 @@ class UsuariosController extends AppController {
     */
 	public function administracion_cambiarContra( $id_usuario = null ) {
 		if( $this->request->is( 'post' ) ) {
-			if( $this->data['Usuario']['contra'] != $this->data['Usuario']['recontra'] ) {
+			if( $this->request->data['Usuario']['contra'] != $this->request->data['Usuario']['recontra'] ) {
 				$this->Session->setFlash( "Las contraseñas no coinciden." );
 			} else {
-				if( $this->Usuario->save( $this->data, false ) ) {
+				if( $this->Usuario->save( $this->request->data, false ) ) {
 					$this->Session->setFlash( "Contraseña cambiada correctamente" );
 					$this->redirect( array( 'action' => 'index' ) );
 				} else {
@@ -603,7 +603,7 @@ class UsuariosController extends AppController {
     */	
 	public function altaTurno( $id_turno = null, $id_medico = null, $secretaria = true, $nombre = null, $accion = null ) {
 		if( $this->request->isPost() ) {
-			if( $this->Usuario->verificarSiExiste( $this->data['Usuario']['email'] ) ) {
+			if( $this->Usuario->verificarSiExiste( $this->request->data['Usuario']['email'] ) ) {
 				$this->Session->setFlash( 'El email proporcionado ya está registrado en el sistema.');
 			} else {
 				$this->Usuario->create();
@@ -622,7 +622,7 @@ class UsuariosController extends AppController {
 					->emailFormat( 'both' )
 					->from( $de )
 					->to( $this->request->data['Usuario']['email'] )
-					->viewVars( array( 'usuario' => $this->data['Usuario'] ) )
+					->viewVars( array( 'usuario' => $this->request->data['Usuario'] ) )
 					->subject( 'Bienvenido al sistema de turnos' )
 					->send();
 					if( $secretaria ) {
