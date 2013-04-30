@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Controller.Component
  * @since         CakePHP(tm) v 2.0
@@ -371,6 +372,7 @@ class PaginatorComponent extends Component {
 			$field = key($options['order']);
 			if (!in_array($field, $whitelist)) {
 				$options['order'] = null;
+				return $options;
 			}
 		}
 
@@ -384,7 +386,7 @@ class PaginatorComponent extends Component {
 				}
 
 				if ($object->hasField($field)) {
-					$order[$alias . '.' . $field] = $value;
+					$order[$object->alias . '.' . $field] = $value;
 				} elseif ($object->hasField($key, true)) {
 					$order[$field] = $value;
 				} elseif (isset($object->{$alias}) && $object->{$alias}->hasField($field, true)) {
