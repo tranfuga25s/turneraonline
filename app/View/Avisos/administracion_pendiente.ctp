@@ -20,8 +20,8 @@ $this->set( 'title_for_layout', "Notificaciones pendientes" );
 				<td><?php echo $pendiente['Aviso']['template']; ?></td>
 				<td><?php echo $this->Time->nice( $pendiente['Aviso']['fecha_envio'] ); ?></td>
 				<td class="acciones">
-					<?php echo $this->Html->link( 'ver', array( 'action' => 'view', $pendiente['Aviso']['id_aviso'] ) ); ?>
-					<?php echo $this->Html->link( 'cancelar', array( 'action' => 'cancelar', $pendiente['Aviso']['id_aviso'] ) ); ?>
+					<?php echo $this->Html->link( 'Ver', array( 'action' => 'view', $pendiente['Aviso']['id_aviso'] ) ); ?>
+					<?php echo $this->Html->link( 'Cancelar', array( 'action' => 'cancelar', $pendiente['Aviso']['id_aviso'] ) ); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
