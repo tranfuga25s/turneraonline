@@ -73,7 +73,7 @@
                                         <li><?php echo $this->Html->link( 'Auditoria', array( 'plugin' => 'audit_log', 'controller' => 'audit_log', 'action' => 'index' ) ); ?></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Notificaciones</a></li>
+                                <li><?php echo $this->Html->link( 'Notificaciones', array( 'controller' => 'avisos', 'action' => 'cpanel', 'plugin' => false ) ); ?></li>
                                 <li><?php echo $this->Html->link( 'Configuracion', array( 'controller' => 'configuracion', 'action' => 'ver', 'plugin' => false ) ); ?></li>
                             </ul>
                         </li>
