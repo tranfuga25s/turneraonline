@@ -220,7 +220,7 @@ class AvisosController extends AppController {
 			$this->loadModel( $v['modelo'] );
 			$this->$v['modelo']->id = $v['id'];
 			if( !$this->$v['modelo']->exists() ) {
-				throw new NotFoundException( 'No se encontró uno de los datos del aviso. Modelo:'.$v['modelo'].' - id: '.$v['id'] );
+				throw new NotFoundException( 'No se encontró uno de los datos del aviso. Modelo: '.$v['modelo'].' - id: '.$v['id'] );
 			}
 			$this->$v['modelo']->recursive = -1;
 			$datos[ $v['nombre'] ] = $this->$v['modelo']->read();

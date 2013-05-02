@@ -5,7 +5,7 @@ $this->set( 'title_for_layout', "Notificaciones" );
 	<!-- Configurar:
 	<?php echo $this->Html->link( 'Email', array( 'action' => 'email' ) ); ?>
 	<?php echo $this->Html->link( 'SMS', array( 'action' => 'sms' ) ); ?>
-	&nbsp;  |--> Ver: 
+	&nbsp;  |-->
 	<?php echo $this->Html->link( 'Notificaciones Pendientes', array( 'action' => 'pendiente' ) ); ?>
 </div>
 <br />
@@ -25,7 +25,7 @@ $this->set( 'title_for_layout', "Notificaciones" );
 			<tr>
 				<td>Aviso de cancelación de turno</td>
 				<td><?php echo $this->Html->image( 'test-pass-icon.png' ); ?></td>
-				<td><?php echo $this->Html->image( 'test-fail-icon.png' ); ?></td>
+				<td><?php echo $this->Html->image( 'test-fail-icon.png', array( 'alt' => 'El servicio no se encuentra habilitado' ) ); ?></td>
 			</tr>
 			<!--<tr>
 				<td>Aviso de cancelación de turno</td>
@@ -48,20 +48,20 @@ $this->set( 'title_for_layout', "Notificaciones" );
 			<th>Acciones</th>
 			<tr>
 				<td>Email</td>
-				<td><?php echo $this->Html->image( 'test-pass-icon.png' ); ?></td>
+				<td><?php echo $this->Html->image( 'test-pass-icon.png', array( 'El envío de mensajes por email está activo' ) ); ?></td>
 				<td class="acciones">
-					<?php echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'email' ) ); ?>
+					<?php //echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'email' ) ); ?>
 				</td>
 			</tr>
 			<tr>
 				<td>SMS</td>
 				<td>
-					<?php echo $this->Html->image( 'test-fail-icon.png' ); ?>
+					<?php echo $this->Html->image( 'test-fail-icon.png', array( 'alt' => 'El servicio no se encuentra habilitado' ) ); ?>
 					El servicio no se encuentra habilitado
 				</td>
 				<td class="acciones">
 					<?php echo $this->Html->link( 'Habilitar', array( 'action' => 'test' ) ); ?>
-					<?php echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'sms' ) ); ?>
+					<?php //echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'sms' ) ); ?>
 				</td>
 			</tr>
 		</tbody>
