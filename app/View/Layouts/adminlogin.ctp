@@ -34,9 +34,9 @@
                     
         <!-- Background wrapper -->
         <div id="box">
-	        <?php echo $this->Session->flash(); ?><?php echo $this->Session->flash( 'auth' ); ?>
+	        <?php echo $this->Session->flash(); ?>
+	        <?php echo $this->Session->flash( 'auth', array( 'class' => 'error' ) ); ?>
             <?php echo $content_for_layout; ?>
-        <!-- End of bgwrap -->
         </div>      
   </body>
 </html>
