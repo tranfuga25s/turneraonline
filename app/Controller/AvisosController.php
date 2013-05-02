@@ -243,5 +243,24 @@ class AvisosController extends AppController {
 			throw new NotFoundException( 'No se encontró el formato de renderizado'.$formato );
 		}
 	}
+
+	/**
+	 * Función para cancelar un aviso
+	 * @param integer $id_aviso Identificador del aviso a cancelar
+	 */
+	 public function administracion_cancelar( $id_aviso = null ) {
+	 	$this->Aviso->id = $id_aviso;
+		if( !$this->Aviso->exists() ) {
+			throw new NotFoundException( 'No existe el aviso que intenta cancelar' );
+		}
+		
+		if( $this->Aviso->delete( true ) ) {
+			$this->Session->setFlash( 'El aviso ha sido cancelado correctamente', 'default', array( 'class' => 'success' ) );
+		} else {
+			$this->Session->setFlash( 'El aviso no pudo ser cancelado', 'default', array( 'class' => 'error' ) );
+		}
+		$this->redirect( array( 'action' => 'pendiente' ) );
+	 }
+	 
 }
 
