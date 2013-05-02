@@ -1,11 +1,12 @@
 <?php
 App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
+
 /**
  * Avisos Controller
  */
 class AvisosController extends AppController {
-
+	
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -125,6 +126,7 @@ class AvisosController extends AppController {
 	 * 
 	 */
 	public function administracion_cpanel() {
+		// Verifico si está andando el sistema de avisos
 			
 	}
 	
@@ -139,15 +141,126 @@ class AvisosController extends AppController {
 	 * Muestra la configuración y/o habilitacion del sistema de email
 	 */
 	public function administracion_email() {
-		
+		// Cargo los templates disponibles
+		$data = array(
+			'nuevoTurno' => array(
+				'nombre' => 'Recordatorio de turno proximo',
+				'explicacion' => 'Este aviso es enviado avisando al paciente de que tiene un turno dentro de las 12 horas proximas',
+				'template' => 'nuevoTurno',
+				'Formato' => array( 
+					'text' => array(
+						'nombre' => 'Solo texto',
+						'content' => 'Formato solo texto',
+						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
+					 ),
+					 'html' => array(
+					 	'nombre' => 'Html',
+					 	'content' => 'Formato en html',
+						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
+					 ) 
+				)
+			)
+		);
+		$this->set( 'avisos', $data );
 	}
 	
 	/**
 	 * Muestra la lista de notificaciones pendientes de envio
 	 */
 	public function administracion_pendiente() {
-		
+		// cargo las notificaciones que hay que enviar todavía
+		$this->set( 'pendientes', $this->paginate( array( 'fecha_envio >= NOW()' ) ) );
+		$this->set( 'vencidas', $this->paginate( array( 'fecha_envio <= NOW()' ) ) );
+	}
+	
+	/** 
+	 * Función para administrar las redirecciones según sea necesario
+	 * @param string $que Que elemento configurar
+	 */
+	public function administracion_configurar( $que = 'email' ) {
+		$this->redirect( array( 'action' => $que ) );
 	}
 
+	/**
+	 * Función para ver un aviso
+	 * @param integer $id Identificador del aviso
+	 */
+	public function administracion_view( $id_aviso = null ) {
+		$this->Aviso->id = $id_aviso;
+		if( !$this->Aviso->exists() ) {
+			throw new NotFoundException( 'El aviso no existe o ya fue enviado' );
+		}
+		$this->Aviso->recursive = -1;
+		$aviso = $this->Aviso->read( null, $id_aviso );
+		// Busco el destinatario
+		$id_usuario = $this->Aviso->VariableAviso->find( 'first', array( 'conditions' => array( 'aviso_id' => $id_aviso, 'nombre' => 'usuario' ), 'fields' => array( 'id' ) ) );
+		$id_usuario = $id_usuario['VariableAviso']['id'];
+		$this->loadModel( 'Usuario' );
+		$destinos = $this->Usuario->read( array( 'email', 'celular' ), $id_usuario );
+		$aviso['Aviso']['para'] = $destinos['Usuario'];
+		$this->set( 'aviso', $aviso );
+	}
+	
+	/**
+	 * Función para renderizar el formato de un aviso
+	 * @param integer $id_aviso Identificador del aviso
+	 * @param string $formato Identificador del formato ( email o sms )
+	 * @return Contenido html renderizado
+	 */
+	public function administracion_renderizar_aviso( $id_aviso = null, $formato = 'email' ) {
+		$this->Aviso->id = $id_aviso;
+		if( !$this->Aviso->exists() ) {
+			throw new NotFoundExpception( 'No se encontró el aviso buscado' );
+		}
+		$this->Aviso->recursive = 2;
+		$demail = $this->Aviso->read( null, $id_aviso );
+
+		$datos = array();
+		foreach( $demail['VariableAviso'] as $v ) {
+			$this->loadModel( $v['modelo'] );
+			$this->$v['modelo']->id = $v['id'];
+			if( !$this->$v['modelo']->exists() ) {
+				throw new NotFoundException( 'No se encontró uno de los datos del aviso. Modelo: '.$v['modelo'].' - id: '.$v['id'] );
+			}
+			$this->$v['modelo']->recursive = -1;
+			$datos[ $v['nombre'] ] = $this->$v['modelo']->read();
+		}
+		$datos['email_de'] = Configure::read( 'Turnera.email' );
+		unset( $demail['VariablesAviso'] );
+		$demail['Aviso']['datos'] = $datos;
+
+		// Busco la vista a renderizar
+		if( $formato == 'email' ) {
+			$demail['Aviso']['formato'] = 'html';
+			foreach( $demail['Aviso']['datos'] as $k=>$d ) {
+				$this->set( $k, $d );
+			}
+			$this->layout = 'Emails/'.$demail['Aviso']['formato'].'/'.$demail['Aviso']['layout'];
+			return $this->render( '../Emails/'.$demail['Aviso']['formato'].'/'.Inflector::underscore( $demail['Aviso']['template'] ) );
+		} else if( $formato == 'sms' ) {
+			return "Todavía no se encuentra disponible esta característica";
+		} else {
+			throw new NotFoundException( 'No se encontró el formato de renderizado'.$formato );
+		}
+	}
+
+	/**
+	 * Función para cancelar un aviso
+	 * @param integer $id_aviso Identificador del aviso a cancelar
+	 */
+	 public function administracion_cancelar( $id_aviso = null ) {
+	 	$this->Aviso->id = $id_aviso;
+		if( !$this->Aviso->exists() ) {
+			throw new NotFoundException( 'No existe el aviso que intenta cancelar' );
+		}
+		
+		if( $this->Aviso->delete( $id_aviso, true ) ) {
+			$this->Session->setFlash( 'El aviso ha sido cancelado correctamente', 'default', array( 'class' => 'success' ) );
+		} else {
+			$this->Session->setFlash( 'El aviso no pudo ser cancelado', 'default', array( 'class' => 'error' ) );
+		}
+		$this->redirect( array( 'action' => 'pendiente' ) );
+	 }
+	 
 }
 

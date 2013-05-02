@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -853,11 +854,24 @@ class CakeTimeTest extends CakeTestCase {
 
 		$date = new DateTime('+1 hour', new DateTimeZone('America/New_York'));
 		$result = $this->Time->fromString($date, 'Asia/Kuwait');
+
 		$date->setTimezone(new DateTimeZone('Asia/Kuwait'));
 		$expected = $date->format('U') + $date->getOffset();
 		$this->assertWithinMargin($expected, $result, 1);
 
 		$this->_restoreSystemTimezone();
+	}
+
+/**
+ * Test that datetimes in the default timezone are not modified.
+ *
+ * @return void
+ */
+	public function testFromStringWithDateTimeNoConversion() {
+		Configure::write('Config.timezone', date_default_timezone_get());
+		$date = new DateTime('2013-04-09');
+		$result = $this->Time->fromString($date);
+		$this->assertEquals($result, $date->format('U'));
 	}
 
 /**

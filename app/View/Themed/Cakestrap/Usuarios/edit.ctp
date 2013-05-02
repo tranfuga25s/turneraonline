@@ -1,7 +1,7 @@
 <?php $this->set( 'title_for_layout', "Editar mis datos" ); ?>
 <div class="row-fluid">
 
-	<?php echo $this->element( 'menu/usuario', array( 'usuario' => $this->data ) ); ?>
+	<?php echo $this->element( 'menu/usuario', array( 'usuario' => $this->request->data ) ); ?>
 		
 	<div class="span10 well">
 		<?php echo $this->Form->create('Usuario'); ?>

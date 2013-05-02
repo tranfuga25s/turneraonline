@@ -309,11 +309,11 @@ class TurnosController extends AppController {
 	public function administracion_trasladar( $id_turno = null ) {
 		if( $this->request->isPost() ) {
 			// Pedido por ajax
-			if( $this->params['named']['id_turno'] == null ) {
+			if( $this->request->params['named']['id_turno'] == null ) {
 				throw new NotFoundException( 'El turno solicitado no existe' );
 			}
 			$this->autoRender = false;
-			$id_turno = $this->params['named']['id_turno'];
+			$id_turno = $this->request->params['named']['id_turno'];
 			return json_encode( array( 'estado' => false, 'id_turno' => $id_turno, 'mensaje' => 'No implementado todavía' ) );
 		}
 	}
@@ -500,8 +500,8 @@ class TurnosController extends AppController {
 			throw new NotFoundExpection( 'Metodo no implementado de esta forma' );
 			return;
 		}
-		$id_turno = $this->data['Turno']['id_turno'];
-		$nhoras = $this->data['Turno']['horas'];
+		$id_turno = $this->request->data['Turno']['id_turno'];
+		$nhoras = $this->request->data['Turno']['horas'];
 		$this->Turno->id = $id_turno;
 		if( !$this->Turno->exists() ) {
 			throw new NotFoundException( "El turno solititado no existe!" );

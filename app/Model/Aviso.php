@@ -9,7 +9,12 @@ class Aviso extends AppModel {
 	public $primaryKey = 'id_aviso';
 	public $displayField = 'subject';
 
-	public $hasMany = array( 'VariableAviso' => array( 'class' => 'VariableAviso', 'dependent' => true ) );
+	public $hasMany = array( 
+		'VariableAviso' => array( 
+			'class' => 'VariableAviso',
+			'dependent' => true
+		 ) 
+	);
 
    /*!
     * Función que revisa si existe algún aviso pendiente a enviar.

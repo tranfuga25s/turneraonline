@@ -73,8 +73,8 @@
    <li><?php echo $this->Html->link(
                 $this->Html->image( 'assets/notification-icon.png' ) 
                 .'<span>Notificaciones</span>',
-                '#',
-                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Todavía no implementado' ) ); ?></li>
+                array( 'plugin' => false, 'controller' => 'avisos', 'action' => 'cpanel' ),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Notificaciones del sistema' ) ); ?></li>
    <li>	<?php echo $this->Html->link( 
    				$this->Html->image( 'cabecera.png' )
    				.'<span>Auditoria</span>',

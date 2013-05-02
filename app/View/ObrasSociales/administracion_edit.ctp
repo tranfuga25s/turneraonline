@@ -12,8 +12,8 @@
 	echo $this->Form->input('nombre');
 	echo $this->Form->input('direccion');
 	echo $this->Form->input('telefono');
-	if( $this->data['ObraSocial']['logo'] != '' ) {
-		echo $this->Html->image( $this->data['ObraSocial']['logo'] );
+	if( $this->request->data['ObraSocial']['logo'] != '' ) {
+		echo $this->Html->image( $this->request->data['ObraSocial']['logo'] );
 	}
 	echo $this->Form->input('logo', array( 'type' => 'file', 'label' => 'Cambiar logo:' ) );
 ?>

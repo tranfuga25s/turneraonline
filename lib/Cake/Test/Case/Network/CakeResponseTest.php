@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Network
  * @since         CakePHP(tm) v 2.0
@@ -360,7 +361,7 @@ class CakeResponseTest extends CakeTestCase {
 	public function testHttpCodes() {
 		$response = new CakeResponse();
 		$result = $response->httpCodes();
-		$this->assertEquals(39, count($result));
+		$this->assertEquals(40, count($result));
 
 		$result = $response->httpCodes(100);
 		$expected = array(100 => 'Continue');
@@ -373,7 +374,7 @@ class CakeResponseTest extends CakeTestCase {
 
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(41, count($response->httpCodes()));
+		$this->assertEquals(42, count($response->httpCodes()));
 
 		$result = $response->httpCodes(1337);
 		$expected = array(1337 => 'Undefined Unicorn');
@@ -382,7 +383,7 @@ class CakeResponseTest extends CakeTestCase {
 		$codes = array(404 => 'Sorry Bro');
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(41, count($response->httpCodes()));
+		$this->assertEquals(42, count($response->httpCodes()));
 
 		$result = $response->httpCodes(404);
 		$expected = array(404 => 'Sorry Bro');

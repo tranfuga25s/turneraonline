@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 0.2.9
@@ -129,7 +130,6 @@ class File {
 		if (!$force && is_resource($this->handle)) {
 			return true;
 		}
-		clearstatcache();
 		if ($this->exists() === false) {
 			if ($this->create() === false) {
 				return false;
@@ -211,7 +211,7 @@ class File {
  */
 	public static function prepare($data, $forceWindows = false) {
 		$lineBreak = "\n";
-		if (DIRECTORY_SEPARATOR == '\\' || $forceWindows === true) {
+		if (DIRECTORY_SEPARATOR === '\\' || $forceWindows === true) {
 			$lineBreak = "\r\n";
 		}
 		return strtr($data, array("\r\n" => $lineBreak, "\n" => $lineBreak, "\r" => $lineBreak));
@@ -277,7 +277,6 @@ class File {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/file-folder.html#File::delete
  */
 	public function delete() {
-		clearstatcache();
 		if (is_resource($this->handle)) {
 			fclose($this->handle);
 			$this->handle = null;
@@ -409,6 +408,11 @@ class File {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/file-folder.html#File::exists
  */
 	public function exists() {
+		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+			clearstatcache(true, $this->path);
+		} else {
+			clearstatcache();
+		}
 		return (file_exists($this->path) && is_file($this->path));
 	}
 
@@ -526,7 +530,7 @@ class File {
  * @return Folder Current folder
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/file-folder.html#File::Folder
  */
-	public function &folder() {
+	public function folder() {
 		return $this->Folder;
 	}
 

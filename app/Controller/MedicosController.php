@@ -69,20 +69,20 @@ class MedicosController extends AppController {
 		$id_medico = $t['Medico']['id_medico'];
 
 		if( $this->request->isPost() ) {
-			$this->data = $this->data['Medico'];
+			$this->request->data = $this->request->data['Medico'];
 			// Busco la fecha e que me pasaron
 			if( isset( $this->data['accion'] ) ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
-				if( $this->data['accion'] == 'ayer' ) {
+				if( $this->request->data['accion'] == 'ayer' ) {
 					$t2 = $t->sub( new DateInterval( "P1D" ) );
-				} else if( $this->data['accion'] == 'manana' ) {
+				} else if( $this->request->data['accion'] == 'manana' ) {
 					$t2 = $t->add( new DateInterval( "P1D" ) );
-				} else  if( $this->data['accion'] == 'mes' ) {
+				} else  if( $this->request->data['accion'] == 'mes' ) {
 					$t2 = $t->add( new DateInterval( "P1M" ) );
-				} else if( $this->data['accion'] == 'sem' ) {
+				} else if( $this->request->data['accion'] == 'sem' ) {
 					$t2 = $t->add( new DateInterval( "P1W" ) );
-				} else if( $this->data['accion'] == 'hoy' ) {
+				} else if( $this->request->data['accion'] == 'hoy' ) {
 					$t2 = new DateTime('now');
 				}
 				// Actualizo la fecha
@@ -146,14 +146,14 @@ class MedicosController extends AppController {
     */
 	public function sobreturno( $id_turno = null, $id_paciente = null, $id_medico = null ) {
 		if( $this->request->isPost() ) {
-			$this->data = $this->data['Medico'];
+			$this->request->data = $this->request->data['Medico'];
 			
-			$id_turno    = $this->data['id_turno'];
-			$id_paciente = $this->data['spaciente'];
-			$id_medico   = $this->data['id_medico'];
-			$hora        = $this->data['hora'];
-			$min         = $this->data['min'];
-			$duracion    = $this->data['duracion'];
+			$id_turno    = $this->request->data['id_turno'];
+			$id_paciente = $this->request->data['spaciente'];
+			$id_medico   = $this->request->data['id_medico'];
+			$hora        = $this->request->data['hora'];
+			$min         = $this->request->data['min'];
+			$duracion    = $this->request->data['duracion'];
 		} else {
 			// Si entro por aquí, tuve que dar de alta el paciente.
 			if( $id_turno == null || $id_paciente == null || $id_medico == null ) {
@@ -178,7 +178,7 @@ class MedicosController extends AppController {
 		if( ! $this->Turno->Paciente->exists() ) {
 			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'default', array( 'class' => 'success' ) );
 			$this->Session->write( array( 'st.medico' => $id_medico, 'st.hora' => $hora, 'st.min' => $min, 'st.duracion' => $duracion ) );
-			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->data['spaciente'], 'sobreturno' ) );
+			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->request->data['spaciente'], 'sobreturno' ) );
 		}
 
 		$this->Turno->Medico->id = $id_medico;
@@ -248,17 +248,17 @@ class MedicosController extends AppController {
 	public function cancelar( $id_turno = null ) {
 		
 		if( $id_turno == null ) {
-			$id_turno = $this->data['Medico']['id_turno'];
+			$id_turno = $this->request->data['Medico']['id_turno'];
 		} else {
 			// Se coloca esto ya que solo cancelamos desde la vista de los turnos del paciente
-			$this->data = array( 'Medico' => array( 'quien' => 'p' ) );
+			$this->request->data = array( 'Medico' => array( 'quien' => 'p' ) );
 		}
 
-		if( $this->data['Medico']['quien'] == "m" ) {
+		if( $this->request->data['Medico']['quien'] == "m" ) {
 			
 			// Veo si es algo especial
 			$ids = array();
-			if( isset( $this->data['Medico']['que'] ) ) {
+			if( isset( $this->request->data['Medico']['que'] ) ) {
 				// Cargo los ids de los turnos según corresponda.
 				$f1 = new DateTime( 'now' );
 				$f2 = clone $f1; 
@@ -268,7 +268,7 @@ class MedicosController extends AppController {
 				$id_usuario = $this->Auth->user( 'id_usuario' );
 				$t = $this->Medico->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_medico' ) ) );
 				$id_medico = $t['Medico']['id_medico'];
-				if( $this->data['Medico']['que'] == 'dia' ) {
+				if( $this->request->data['Medico']['que'] == 'dia' ) {
 					$ids[] = $this->Turno->find( 'list', array( 'conditions' =>
 													 array( 'medico_id' => $id_medico,
 													 		'DATE( fecha_inicio ) >=' => $f1->format( 'Y-m-d' ),
@@ -278,7 +278,7 @@ class MedicosController extends AppController {
 													   'fields' => array( 'id_turno' ),
 													   'recursive' => -1
 													  ) );																  
-				} else if( $this->data['Medico']['que'] == 'proximo' ) {
+				} else if( $this->request->data['Medico']['que'] == 'proximo' ) {
 					$ids[] = $this->Turno->find( 'list', array( 'conditions' =>
 													 array( 'medico_id' => $id_medico,
 													 		'DATE( fecha_inicio ) >=' => $f1->format( 'Y-m-d' ),
@@ -322,7 +322,7 @@ class MedicosController extends AppController {
 		   } else {
 		   		$this->Session->setFlash( "No se canceló ningún turno", 'default', array( 'class' => 'error' ) );
 		   }
-		} else if( $this->data['Medico']['quien'] == "p" ) {
+		} else if( $this->request->data['Medico']['quien'] == "p" ) {
 			$this->Turno->id = $id_turno;
 			if( $this->Turno->exists() ) {
 				$this->Turno->set( 'paciente_id', null );
@@ -337,7 +337,7 @@ class MedicosController extends AppController {
 				$this->Session->setFlash( 'El turno no existe!', 'default', array( 'class' => 'error' ) );
 			}	
 		} else {
-			pr( $this->data );
+			pr( $this->request->data );
 			die();
 			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'default', array( 'class' => 'error' ) );
 		}
@@ -350,10 +350,10 @@ class MedicosController extends AppController {
     */
 	public function reservar( $id_turno = null, $id_paciente = null, $id_medico = null ) {
 		if( $this->request->isPost() ) {
-			$this->data = $this->data['Medico'];
-			$id_turno = $this->data['id_turno'];
-			$id_paciente = $this->data['rpaciente'];
-			$id_medico = $this->data['id_medico'];
+			$this->request->data = $this->request->data['Medico'];
+			$id_turno = $this->request->data['id_turno'];
+			$id_paciente = $this->request->data['rpaciente'];
+			$id_medico = $this->request->data['id_medico'];
 			// Divido el codigo del paciente
 			$tmp = split( "-", $id_paciente );
 			$id_paciente = $tmp[0];
@@ -584,75 +584,75 @@ class MedicosController extends AppController {
 		                5 => 'viernes', 
 		                6 => 'sabado' );
 		if( $this->request->isPost() ) {
-			$this->Medico->id = $this->data['Medico']['id_medico'];
+			$this->Medico->id = $this->request->data['Medico']['id_medico'];
 			if( !$this->Medico->exists() ) {
 				throw new NotFoundException( 'El medico no existe en la base de datos' );
 			}
-			if( $this->data['Medico']['duracion'] == 0 ) {
+			if( $this->request->data['Medico']['duracion'] == 0 ) {
 				$this->Session->setFlash( 'La duración del turno no puede ser cero' );
 			} else {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
-					if( $this->data['Medico'][$dia] ) {
-						if( $this->data[$dia]['hinicio'] == 0      && $this->data[$dia]['hfin'] == 0 
-						 && $this->data[$dia]['hiniciotarde'] == 0 && $this->data[$dia]['hfintarde'] == 0 ) {
+					if( $this->request->data['Medico'][$dia] ) {
+						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0 
+						 && $this->request->data[$dia]['hiniciotarde'] == 0 && $this->request->data[$dia]['hfintarde'] == 0 ) {
 								$mensaje_flash .= 'El horario del día &nbsp;'.$dia.'&nbsp; tiene mal ajustados los horarios de inicio y fin.<br />';
-						} else if( $this->data[$dia]['hinicio'] == $this->data[$dia]['hfin'] 
-						        && $this->data[$dia]['minicio'] == $this->data[$dia]['mfin'] && $this->data[$dia]['hinicio'] != 0 ) {
+						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin'] 
+						        && $this->request->data[$dia]['minicio'] == $this->request->data[$dia]['mfin'] && $this->request->data[$dia]['hinicio'] != 0 ) {
 								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';	
-						} else if( $this->data[$dia]['hiniciotarde'] == $this->data[$dia]['hfintarde'] 
-							    && $this->data[$dia]['miniciotarde'] == $this->data[$dia]['mfintarde']  && $this->data[$dia]['hiniciotarde'] != 0 ) {
+						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde'] 
+							    && $this->request->data[$dia]['miniciotarde'] == $this->request->data[$dia]['mfintarde']  && $this->request->data[$dia]['hiniciotarde'] != 0 ) {
 								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';	
 						}
 						if( $this->Medico->Disponibilidad->verificar(
-								$this->data['Medico']['id_medico'],
-								$this->data['Medico']['consultorio'],
+								$this->request->data['Medico']['id_medico'],
+								$this->request->data['Medico']['consultorio'],
 						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ), 
-								date( 'H:i:s', mktime( $this->data[$dia]['hinicio']     , $this->data[$dia]['minicio']     , 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hfin']        , $this->data[$dia]['mfin']        , 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hiniciotarde'], $this->data[$dia]['miniciotarde'], 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hfintarde']   , $this->data[$dia]['mfintarde']   , 0 ) )
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
 							) ) { 
 							$mensaje_flash .= "El horario del dia ".strtoupper($dia)." en el consultorio seleccionado ya está ocupado por otro medico<br />";
 						}
 					}
 				}
 				if( $mensaje_flash != '' ) {
-					$id_medico = $this->data['Medico']['id_medico'];
+					$id_medico = $this->request->data['Medico']['id_medico'];
 					$this->Session->setFlash( $mensaje_flash );
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
 						$datos = array( 'Disponibilidad' => 
-							array( 	'medico_id'      => $this->data['Medico']['id_medico'],
-								    'duracion'       => intval( $this->data['Medico']['duracion'] ),
-								    'consultorio_id' => $this->data['Medico']['consultorio']
+							array( 	'medico_id'      => $this->request->data['Medico']['id_medico'],
+								    'duracion'       => intval( $this->request->data['Medico']['duracion'] ),
+								    'consultorio_id' => $this->request->data['Medico']['consultorio']
 							)
 						);
 						// Busco si existe una disponibilidad anterior
-						if( $this->Medico->Disponibilidad->find( 'count', array( 'conditions' => array( 'medico_id' => $this->data['Medico']['id_medico'] ) ) ) > 0 ) {
+						if( $this->Medico->Disponibilidad->find( 'count', array( 'conditions' => array( 'medico_id' => $this->request->data['Medico']['id_medico'] ) ) ) > 0 ) {
 							// Ya existe esta disponibilidad
 							$d = $this->Medico->Disponibilidad->find( 'first',
-								 array( 'conditions' => array( 'medico_id' => $this->data['Medico']['id_medico'] ),
+								 array( 'conditions' => array( 'medico_id' => $this->request->data['Medico']['id_medico'] ),
 									    'fields'     => array( 'id_disponibilidad' ) ) );
 							$datos['Disponibilidad']['id_disponibilidad'] = $d['Disponibilidad']['id_disponibilidad'];
 						}
 						$this->Medico->Disponibilidad->save( $datos );
 						// Elimino los datos anteriores
-						if( $this->data['Medico']['disponibilidad_id'] > 0 ) {
-							$this->Medico->Disponibilidad->DiaDisponibilidad->deleteAll( array( 'disponibilidad_id' => $this->data['Medico']['disponibilidad_id'] ) );
+						if( $this->request->data['Medico']['disponibilidad_id'] > 0 ) {
+							$this->Medico->Disponibilidad->DiaDisponibilidad->deleteAll( array( 'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'] ) );
 						}
 						// Guardo los datos asociados - Genero todos los dias para mas comodidad en el script de generación automatica
 						foreach( $dias as $dia ) {
-							if( $this->data['Medico'][$dia] == 1 ) {
+							if( $this->request->data['Medico'][$dia] == 1 ) {
 								$dat = array( 'DiaDisponibilidad' => 
-										array(	'dia' => $this->data[$dia]['numero'],
-											    'disponibilidad_id' => $this->data['Medico']['disponibilidad_id'],
+										array(	'dia' => $this->request->data[$dia]['numero'],
+											    'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'],
 											    'habilitado' => true,
-											    'hora_inicio'       => date( 'H:i:s', mktime( $this->data[$dia]['hinicio']     , $this->data[$dia]['minicio']     , 0 ) ),
-											    'hora_fin'          => date( 'H:i:s', mktime( $this->data[$dia]['hfin']        , $this->data[$dia]['mfin']        , 0 ) ),
-											    'hora_inicio_tarde' => date( 'H:i:s', mktime( $this->data[$dia]['hiniciotarde'], $this->data[$dia]['miniciotarde'], 0 ) ),
-											    'hora_fin_tarde'    => date( 'H:i:s', mktime( $this->data[$dia]['hfintarde']   , $this->data[$dia]['mfintarde']   , 0 ) )
+											    'hora_inicio'       => date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
+											    'hora_fin'          => date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
+											    'hora_inicio_tarde' => date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
+											    'hora_fin_tarde'    => date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
 										)
 								);
 								$this->Medico->Disponibilidad->DiaDisponibilidad->create();
@@ -661,7 +661,7 @@ class MedicosController extends AppController {
 
 						}
 						// Busco cuantos turnos no coinciden y redirecciono si es necesario - devuleve un array con los ids que nocoinciden
-						$acambiar = $this->Medico->Turno->generarTurnos( $this->data );
+						$acambiar = $this->Medico->Turno->generarTurnos( $this->request->data );
 						if( count( $acambiar ) <= 0 ) {
 							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
 							$this->redirect( array( 'action' => 'index' ) );
@@ -752,75 +752,75 @@ class MedicosController extends AppController {
 		                5 => 'viernes', 
 		                6 => 'sabado' );
 		if( $this->request->isPost() ) {
-			$this->Medico->id = $this->data['Medico']['id_medico'];
+			$this->Medico->id = $this->request->data['Medico']['id_medico'];
 			if( !$this->Medico->exists() ) {
 				throw new NotFoundException( 'El medico no existe en la base de datos' );
 			}
-			if( $this->data['Medico']['duracion'] == 0 ) {
+			if( $this->request->data['Medico']['duracion'] == 0 ) {
 				$this->Session->setFlash( 'La duración del turno no puede ser cero' );
 			} else {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
-					if( $this->data['Medico'][$dia] ) {
-						if( $this->data[$dia]['hinicio'] == 0      && $this->data[$dia]['hfin'] == 0 
-						 && $this->data[$dia]['hiniciotarde'] == 0 && $this->data[$dia]['hfintarde'] == 0 ) {
+					if( $this->request->data['Medico'][$dia] ) {
+						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0 
+						 && $this->request->data[$dia]['hiniciotarde'] == 0 && $this->request->data[$dia]['hfintarde'] == 0 ) {
 								$mensaje_flash .= 'El horario del día &nbsp;'.$dia.'&nbsp; tiene mal ajustados los horarios de inicio y fin.<br />';
-						} else if( $this->data[$dia]['hinicio'] == $this->data[$dia]['hfin'] 
-						        && $this->data[$dia]['minicio'] == $this->data[$dia]['mfin'] && $this->data[$dia]['hinicio'] != 0 ) {
+						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin'] 
+						        && $this->request->data[$dia]['minicio'] == $this->request->data[$dia]['mfin'] && $this->request->data[$dia]['hinicio'] != 0 ) {
 								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';	
-						} else if( $this->data[$dia]['hiniciotarde'] == $this->data[$dia]['hfintarde'] 
-							    && $this->data[$dia]['miniciotarde'] == $this->data[$dia]['mfintarde']  && $this->data[$dia]['hiniciotarde'] != 0 ) {
+						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde'] 
+							    && $this->request->data[$dia]['miniciotarde'] == $this->request->data[$dia]['mfintarde']  && $this->request->data[$dia]['hiniciotarde'] != 0 ) {
 								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';	
 						}
 						if( $this->Medico->Disponibilidad->verificar(
-								$this->data['Medico']['id_medico'],
-								$this->data['Medico']['consultorio'],
+								$this->request->data['Medico']['id_medico'],
+								$this->request->data['Medico']['consultorio'],
 						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ), 
-								date( 'H:i:s', mktime( $this->data[$dia]['hinicio']     , $this->data[$dia]['minicio']     , 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hfin']        , $this->data[$dia]['mfin']        , 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hiniciotarde'], $this->data[$dia]['miniciotarde'], 0 ) ),
-								date( 'H:i:s', mktime( $this->data[$dia]['hfintarde']   , $this->data[$dia]['mfintarde']   , 0 ) )
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
+								date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
 							) ) { 
 							$mensaje_flash .= "El horario del dia ".strtoupper($dia)." en el consultorio seleccionado ya está ocupado por otro medico<br />";
 						}
 					}
 				}
 				if( $mensaje_flash != '' ) {
-					$id_medico = $this->data['Medico']['id_medico'];
+					$id_medico = $this->request->data['Medico']['id_medico'];
 					$this->Session->setFlash( $mensaje_flash );
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
 						$datos = array( 'Disponibilidad' => 
-									array( 	'medico_id'      => $this->data['Medico']['id_medico'],
-										    'duracion'       => intval( $this->data['Medico']['duracion'] ),
-										    'consultorio_id' => $this->data['Medico']['consultorio']
+									array( 	'medico_id'      => $this->request->data['Medico']['id_medico'],
+										    'duracion'       => intval( $this->request->data['Medico']['duracion'] ),
+										    'consultorio_id' => $this->request->data['Medico']['consultorio']
 									)
 						);
 						// Busco si existe una disponibilidad anterior
-						if( $this->Medico->Disponibilidad->find( 'count', array( 'conditions' => array( 'medico_id' => $this->data['Medico']['id_medico'] ) ) ) > 0 ) {
+						if( $this->Medico->Disponibilidad->find( 'count', array( 'conditions' => array( 'medico_id' => $this->request->data['Medico']['id_medico'] ) ) ) > 0 ) {
 							// Ya existe esta disponibilidad
 							$d = $this->Medico->Disponibilidad->find( 'first',
-								 array( 'conditions' => array( 'medico_id' => $this->data['Medico']['id_medico'] ),
+								 array( 'conditions' => array( 'medico_id' => $this->request->data['Medico']['id_medico'] ),
 									    'fields'     => array( 'id_disponibilidad' ) ) );
 							$datos['Disponibilidad']['id_disponibilidad'] = $d['Disponibilidad']['id_disponibilidad'];
 						}
 						$this->Medico->Disponibilidad->save( $datos );
 						// Elimino los datos anteriores
-						if( $this->data['Medico']['disponibilidad_id'] > 0 ) {
-							$this->Medico->Disponibilidad->DiaDisponibilidad->deleteAll( array( 'disponibilidad_id' => $this->data['Medico']['disponibilidad_id'] ) );
+						if( $this->request->data['Medico']['disponibilidad_id'] > 0 ) {
+							$this->Medico->Disponibilidad->DiaDisponibilidad->deleteAll( array( 'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'] ) );
 						}
 						// Guardo los datos asociados - Genero todos los dias para mas comodidad en el script de generación automatica
 						foreach( $dias as $dia ) {
-							if( $this->data['Medico'][$dia] == 1 ) {
+							if( $this->request->data['Medico'][$dia] == 1 ) {
 								$dat = array( 'DiaDisponibilidad' => 
-										array(	'dia' => $this->data[$dia]['numero'],
-											    'disponibilidad_id' => $this->data['Medico']['disponibilidad_id'],
+										array(	'dia' => $this->request->data[$dia]['numero'],
+											    'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'],
 											    'habilitado' => true,
-											    'hora_inicio'       => date( 'H:i:s', mktime( $this->data[$dia]['hinicio']     , $this->data[$dia]['minicio']     , 0 ) ),
-											    'hora_fin'          => date( 'H:i:s', mktime( $this->data[$dia]['hfin']        , $this->data[$dia]['mfin']        , 0 ) ),
-											    'hora_inicio_tarde' => date( 'H:i:s', mktime( $this->data[$dia]['hiniciotarde'], $this->data[$dia]['miniciotarde'], 0 ) ),
-											    'hora_fin_tarde'    => date( 'H:i:s', mktime( $this->data[$dia]['hfintarde']   , $this->data[$dia]['mfintarde']   , 0 ) )
+											    'hora_inicio'       => date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
+											    'hora_fin'          => date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
+											    'hora_inicio_tarde' => date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
+											    'hora_fin_tarde'    => date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
 										)
 								);
 								$this->Medico->Disponibilidad->DiaDisponibilidad->create();
@@ -829,7 +829,7 @@ class MedicosController extends AppController {
 
 						}
 						// Busco cuantos turnos no coinciden y redirecciono si es necesario - devuleve un array con los ids que nocoinciden
-						$acambiar = $this->Medico->Turno->generarTurnos( $this->data );
+						$acambiar = $this->Medico->Turno->generarTurnos( $this->request->data );
 						if( count( $acambiar ) <= 0 ) {
 							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
 							$this->redirect( '/' );

@@ -7,12 +7,13 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 1.2.4560
@@ -153,7 +154,7 @@ class Debugger {
  * @param string $class
  * @return object
  */
-	public static function &getInstance($class = null) {
+	public static function getInstance($class = null) {
 		static $instance = array();
 		if (!empty($class)) {
 			if (!$instance || strtolower($class) != strtolower(get_class($instance[0]))) {
@@ -256,7 +257,7 @@ class Debugger {
 		);
 		echo $self->outputError($data);
 
-		if ($error == 'Fatal Error') {
+		if ($error === 'Fatal Error') {
 			exit();
 		}
 		return true;
@@ -325,9 +326,9 @@ class Debugger {
 			if (in_array($signature, $options['exclude'])) {
 				continue;
 			}
-			if ($options['format'] == 'points' && $trace['file'] != '[internal]') {
+			if ($options['format'] === 'points' && $trace['file'] !== '[internal]') {
 				$back[] = array('file' => $trace['file'], 'line' => $trace['line']);
-			} elseif ($options['format'] == 'array') {
+			} elseif ($options['format'] === 'array') {
 				$back[] = $trace;
 			} else {
 				if (isset($self->_templates[$options['format']]['traceLine'])) {
@@ -342,7 +343,7 @@ class Debugger {
 			}
 		}
 
-		if ($options['format'] == 'array' || $options['format'] == 'points') {
+		if ($options['format'] === 'array' || $options['format'] === 'points') {
 			return $back;
 		}
 		return implode("\n", $back);
@@ -420,7 +421,7 @@ class Debugger {
 	}
 
 /**
- * Wraps the highlight_string funciton in case the server API does not
+ * Wraps the highlight_string function in case the server API does not
  * implement the function as it is the case of the HipHop interpreter
  *
  * @param string $str the string to convert
@@ -846,7 +847,7 @@ class Debugger {
  * @return void
  */
 	public static function checkSecurityKeys() {
-		if (Configure::read('Security.salt') == 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi') {
+		if (Configure::read('Security.salt') === 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi') {
 			trigger_error(__d('cake_dev', 'Please change the value of \'Security.salt\' in app/Config/core.php to a salt value specific to your application'), E_USER_NOTICE);
 		}
 

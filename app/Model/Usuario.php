@@ -92,11 +92,11 @@ class Usuario extends AppModel {
 	}
 
 	/*!
-	 * @fn generarNuevaContraseña( $email, $contra )
+	 * @fn generarNuevaContraseñarray( $email, $contra )
 	 * Genera una nueva contraseña para el usuario, la coloca en la variable $contra y la asigna al email pasado como referencia.
 	 * @return Verdadero si el email está dado de alta en el sistema
 	 */
-	public function generarNuevaContraseña( $email = null, $contra = null ) {
+	public function generarNuevaContraseñarray( $email = null, $contra = null ) {
 		$str = "ABCDE2FGHIJKLM4NOPQRSTUVWXY2Zabcdefghij5klmnopqrstu2vwxyz1234567890";
 		$contra = "";
 		for( $i=0; $i<8; $i++ ) {

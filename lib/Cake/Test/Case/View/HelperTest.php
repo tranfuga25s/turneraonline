@@ -5,12 +5,13 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/2.0/en/development/testing.html>
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -655,6 +656,21 @@ class HelperTest extends CakeTestCase {
 
 		$result = $this->Helper->assetUrl('foo.jpg?one=two&three=four');
 		$this->assertEquals('foo.jpg?one=two&amp;three=four', $result);
+	}
+
+/**
+ * Test assetUrl with no rewriting.
+ *
+ * @return void
+ */
+	public function testAssetUrlNoRewrite() {
+		$this->Helper->request->addPaths(array(
+			'base' => '/cake_dev/index.php',
+			'webroot' => '/cake_dev/app/webroot/',
+			'here' => '/cake_dev/index.php/tasks',
+		));
+		$result = $this->Helper->assetUrl('img/cake.icon.png', array('fullBase' => true));
+		$this->assertEquals('http://localhost/cake_dev/app/webroot/img/cake.icon.png', $result);
 	}
 
 /**
