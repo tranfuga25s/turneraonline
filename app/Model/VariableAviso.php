@@ -1,7 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Modelo para los avisos
+ * Modelo para las variables de los avisos
  *
  */
 class VariableAviso extends AppModel {

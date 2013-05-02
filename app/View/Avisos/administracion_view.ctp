@@ -46,7 +46,7 @@ $this->set( 'title_for_layout', "Ver aviso" );
 			
 		</dl>
 	</fieldset>
-	<fieldset>
+	<!-- <fieldset>
 		<legend><h2>SMS</h2></legend>
 		<dl>
 			<dt>Número de teléfono:</dt>
@@ -54,5 +54,5 @@ $this->set( 'title_for_layout', "Ver aviso" );
 			
 			<?php echo $this->requestAction( array( 'action' => 'renderizar_aviso', $aviso['Aviso']['id_aviso'], 'sms' ) ); ?>
 		</dl>
-	</fieldset>
+	</fieldset> -->
 </div>

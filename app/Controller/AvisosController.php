@@ -169,8 +169,8 @@ class AvisosController extends AppController {
 	 */
 	public function administracion_pendiente() {
 		// cargo las notificaciones que hay que enviar todavía
-		$this->set( 'pendientes', $this->paginate() );
-		
+		$this->set( 'pendientes', $this->paginate( array( 'fecha_envio >= NOW()' ) ) );
+		$this->set( 'vencidas', $this->paginate( array( 'fecha_envio <= NOW()' ) ) );
 	}
 	
 	/** 
@@ -254,7 +254,7 @@ class AvisosController extends AppController {
 			throw new NotFoundException( 'No existe el aviso que intenta cancelar' );
 		}
 		
-		if( $this->Aviso->delete( true ) ) {
+		if( $this->Aviso->delete( $id_aviso, true ) ) {
 			$this->Session->setFlash( 'El aviso ha sido cancelado correctamente', 'default', array( 'class' => 'success' ) );
 		} else {
 			$this->Session->setFlash( 'El aviso no pudo ser cancelado', 'default', array( 'class' => 'error' ) );
