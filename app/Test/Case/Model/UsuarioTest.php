@@ -19,7 +19,9 @@ class UsuarioTestCase extends CakeTestCase {
 							 'app.especialidad',
 							 'app.clinica',
 							 'app.obras_sociales',
-							 'app.grupo');
+							 'app.grupo',
+							 'app.turno',
+							 'app.consultorio');
 
 	/**
 	 * setUp method
@@ -28,10 +30,7 @@ class UsuarioTestCase extends CakeTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-
 		$this->Usuario = ClassRegistry::init('Usuario');
-		$this->Secretaria = ClassRegistry::init('Secretaria');
-		$this->Medico = ClassRegistry::init('Medico');
 	}
 
 	/**
@@ -41,42 +40,58 @@ class UsuarioTestCase extends CakeTestCase {
 	 */
 	public function tearDown() {
 		unset($this->Usuario);
-		unset($this->Secretaria);
-		unset($this->Medico);
-
 		parent::tearDown();
 	}
 	
 	/**
-	 * Prueba la condición de que si se elimina una clinica con datos asociados no se debería de poder hacer
+	 * Prueba la condición de que si se elimina un usuario con datos asociados a un médico no se debería de poder hacer
 	 * 
 	 */
 	 public function testEliminacionUsuarioMedico() {
-	 		 	
+	 	$this->Medico = ClassRegistry::init('Medico');	 	
 	 	$id_usuario = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ) ) );
+		$id_usuario = $id_usuario['Medico']['usuario_id'];
 								
 		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar una secretaria - cero"        );
 		$this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar una secretaria - null"        );
 		$this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar una secretaria - array vacio" );	
 	 	
 		$this->assertNotEqual( $this->Usuario->delete( $id_usuario ), true, "Un usuario linkeado con un medico no debe ser eliminado!" );
-		
+		unset($this->Medico);		
 	 }
 	 
 	/**
-	 * Prueba la condición de que si se elimina una clinica con datos asociados no se debería de poder hacer
+	 * Prueba la condición de que si se elimina un usuario con datos asociados a una secretaria no se debería de poder hacer
 	 * 
 	 */
 	 public function testEliminacionUsuarioSecretaria() {
-	 	
+	 		
+	 	$this->Secretaria = ClassRegistry::init('Secretaria');
 	 	$id_usuario = $this->Secretaria->find( 'first', array( 'fields' => array( 'usuario_id' ) ) );
-								
+		$id_usuario = $id_usuario['Secretaria']['usuario_id'];
+
 		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar una secretaria - cero"        );
 		$this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar una secretaria - null"        );
-		$this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar una secretaria - array vacio" );	
+		$this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar una secretaria - array vacio" );
 		
 		$this->assertNotEqual( $this->Usuario->delete( $id_usuario ), true, "Un usuario linkeado con una secretaria no debe ser eliminado!" );
+		unset($this->Secretaria);
+	 }
+	 
+	/**
+	 * Prueba la condición de que si se elimina un usuario con datos asociados a turnos no se debería de poder hacer
+	 * 
+	 */
+	 public function testEliminacionUsuarioTurno() {
+	 	$this->Turno = ClassRegistry::init('Turno');
+	 	$id_usuario = $this->Turno->find( 'first', array( 'fields' => array( 'paciente_id' ), 'conditions' => array( 'paciente_id IS NOT NULL' ) ) );
+		$id_usuario = $id_usuario['Turno']['paciente_id'];								
+		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar un paciente - cero"        );
+		$this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar un paciente - null"        );
+		$this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar un paciente - array vacio" );	
 		
+		$this->assertNotEqual( $this->Usuario->delete( $id_usuario ), true, "Un usuario linkeado con un turno no debe ser eliminado!" );
+		unset($this->Turno);
 	 }
 
 }
