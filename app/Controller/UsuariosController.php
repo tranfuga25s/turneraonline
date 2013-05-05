@@ -61,6 +61,7 @@ class UsuariosController extends AppController {
 				switch( $this->request->params['action'] ) {
 					case 'view':
 					case 'edit':
+					case 'cambiarContra':
 					{ return true; break; }
 					default:
 					{ return false; break; }
@@ -456,6 +457,37 @@ class UsuariosController extends AppController {
 		}
 		$this->Session->setFlash( __('Usuario was not deleted') );
 		$this->redirect(array('action' => 'index'));
+	}
+
+   /**
+    * Función para cambiar la contraseña
+    * @param string $id_usuario Identificador de usuario
+    */
+	public function cambiarContra( $id_usuario = null ) {
+		if( $this->request->is( 'post' ) ) {
+			if( $this->request->data['Usuario']['contra'] != $this->request->data['Usuario']['recontra'] ) {
+				$this->Session->setFlash( "Las contraseñas no coinciden." );
+			} else if( AuthComponent::password( $this->request->data['Usuario']['anterior'] ) != $this->Auth->user( 'contra' ) ) {
+				$this->Session->setFlash( "La contraseña actual no coincide" );
+			} else {
+				if( $this->Usuario->save( $this->request->data, false ) ) {
+					$this->Session->setFlash( "Contraseña cambiada correctamente" );
+					$this->redirect( array( 'action' => 'index' ) );
+				} else {
+					$this->Session->setFlash( "No se pudo cambiar la contraseña" );
+					pr( $this->Usuario->invalidFields() );
+				}
+			}
+		}
+		if( $id_usuario == null ) {
+			// Cargo el usuario actual
+			$id_usuario = $this->Auth->user( 'id_usuario' );
+		}
+		$this->Usuario->id = $id_usuario;
+		if (!$this->Usuario->exists()) {
+			throw new NotFoundException( 'El usuario no es valido' );
+		}
+		$this->set( 'data', $this->Usuario->read() );
 	}
 
 	/**
