@@ -166,6 +166,7 @@ class Turno extends AppModel {
 			'conditions' => array(
 				'medico_id' => $medicos,
 				'paciente_id IS NULL',
+				'cancelado != 1',
 				"DATE( fecha_inicio ) >=" => $f1->format( 'Y-m-d' ),
 				"DATE( fecha_fin ) <" => $f2->format( 'Y-m-d' ),
 				"TIME( fecha_inicio ) >=" => $f1->format( 'H:i:s' ),

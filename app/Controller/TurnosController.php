@@ -266,12 +266,15 @@ class TurnosController extends AppController {
                                                      'action' => 'agregarAvisoNuevoTurno', 
                                                      'id_turno' => $this->request->data['Turno']['id_turno'], 
                                                      'id_paciente' => $id_paciente ) );
+						$this->set( 'tiempo', $tiempo );
+	                    $this->set( 'turno', $turno );
+	                    $this->set( 'usuario', $usuario );
+	                    $this->set( 'error', $error );
+                    } else {
+                    	$this->Session->setFlash( $error );
+						$this->render( 'nuevo/error' );
+						return;
                     }
-            
-                    $this->set( 'tiempo', $tiempo );
-                    $this->set( 'turno', $turno );
-                    $this->set( 'usuario', $usuario );
-                    $this->set( 'error', $error );
                 	break;
                 }
 			}
