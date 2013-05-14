@@ -65,4 +65,3 @@ function enviarReserva( id_turno, horario ) {
 }
 </script>
 <?php echo $this->Form->end(); ?>
-<?php echo $this->element( 'sql_dump' ); ?>
