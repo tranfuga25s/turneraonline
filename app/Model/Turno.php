@@ -92,23 +92,27 @@ class Turno extends AppModel {
 			$dia = date( 'd' );
 		} else { $dia = 1; }
 		$condiciones = array(  'DATE( fecha_inicio ) >= ' => date( 'Y-m-d', mktime( 0, 0, 0, $mes, $dia, $ano ) ),
-  			               'DATE( fecha_fin) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ) );
+  			                   'DATE( fecha_fin    ) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ) );
 		if( $medicos != array() ) {
 			$condiciones = array_merge( $condiciones, array( 'medico_id' => $medicos ) );
 		}
-		$this->virtualFields = array( 'dia' => 'DATE_FORMAT( fecha_inicio,  \'%e\' )' );
+		$this->virtualFields = array( 'dia' => 'DATE_FORMAT( fecha_inicio,  \'%e\' )',
+		                              'cantidad' => 'COUNT( DATE_FORMAT( fecha_inicio, \'%e\' ) )' );
 		$datos =  $this->find( 'all',
 				array(  'conditions' => $condiciones,
-					'order' => array( 'dia' ),
-					'recursive' => -1,
-					'fields' => array( 'DISTINCT DATE_FORMAT( fecha_inicio, \'%e\' ) as `Turno__dia`' )
-			)
+					    'order' => array( '`Turno__dia`' ),
+					    'recursive' => -1,
+					    'group' => 'dia',
+					    'fields' => array( 'COUNT( DATE_FORMAT( fecha_inicio, \'%e\' ) ) as `Turno__cantidad`',
+					                       'DATE_FORMAT( fecha_inicio, \'%e\' ) as `Turno__dia`' )
+			     )
 		);
 		$this->virtualFields = null;
 		$dias = array();
+        //debug( $datos );
 		if( count( $datos ) > 0 ) {
 			foreach( $datos as $dato ) {
-				$dias[] = $dato['Turno']['dia'];
+				$dias[$dato['Turno']['dia']] = $dato['Turno']['cantidad'];
 			}
 		} else {
 			$dias = array();
@@ -157,6 +161,7 @@ class Turno extends AppModel {
 		$f2 = clone $f1;
 		$f2->add( new DateInterval( "P1D" ) );
 		$f2->setTime( 23, 59, 59 );
+        $this->unbindModel( array( 'belongsTo' => array( 'Medico' ) ) );
 		return  $this->find( 'all', array(
 			'conditions' => array(
 				'medico_id' => $medicos,

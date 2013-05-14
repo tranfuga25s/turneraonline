@@ -18,4 +18,17 @@ class Especialidad extends AppModel {
 			)
 		)
 	);
+	
+	public $hasMany = array( 'Medico' );
+	
+	/**
+	 * Devuelve el listado de especialidades según una clinica específica
+	 * @param integer $id_clinica Identificador de Clínica
+	 * @return Lista de Especialidades que tiene la clinica
+	 */
+	public function listaPorClinica( $id_clinica ) {
+		return $this->find( 'list', array( 	'conditions' => array( 'id_especialidad' => $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id_clinica ), 
+																															'fields' => array( 'especialidad_id' ) ) ) ), 
+											'fields' => array( 'id_especialidad', 'nombre' ) ) );
+	}
 }

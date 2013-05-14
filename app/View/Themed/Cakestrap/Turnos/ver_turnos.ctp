@@ -23,7 +23,10 @@ $this->set( 'title_for_layout', "Mis turnos" );
 						<td><?php echo $this->Html->link($turno['Consultorio']['nombre'], array('controller' => 'consultorios', 'action' => 'view', $turno['Consultorio']['id_consultorio'])); ?></td>
 						<td class="actions">
 							<?php //echo $this->Html->link( 'Notificaciones', array( 'action' => 'edit', $turno['Turno']['id_turno'])); ?>
-							<?php echo $this->Form->postLink( 'Cancelar', array( 'action' => 'cancelar', $turno['Turno']['id_turno'] ), null, 'Esta seguro que desea cancelar el turno?' ); ?>
+							<?php echo $this->Form->postLink( 'Cancelar', 
+							                                  array( 'action' => 'cancelar', $turno['Turno']['id_turno'] ), 
+							                                  array( 'class' => 'btn btn-danger' ),
+							                                  'Esta seguro que desea cancelar el turno?' ); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
