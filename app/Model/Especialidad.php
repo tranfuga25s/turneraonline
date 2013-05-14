@@ -19,7 +19,12 @@ class Especialidad extends AppModel {
 		)
 	);
 	
-	public $hasMany = array( 'Medico' );
+	public $hasMany = array( 
+		'Medico' => array(
+			'className' => 'Medico',
+			'foreignKey' => 'especialidad_id' 
+		)
+	);
 	
 	/**
 	 * Devuelve el listado de especialidades según una clinica específica

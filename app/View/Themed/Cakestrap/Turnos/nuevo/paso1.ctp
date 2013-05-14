@@ -11,7 +11,7 @@ echo $this->Form->input( 'id_clinica', array( 'type' => 'hidden', 'value' => -1 
 			<div class="thumbnail text-center">
 				<?php echo $this->Html->image( 'cabecera.png', array( 'class' => 'thumbnail' ) ); ?>
 				<?php echo $clinica; ?>
-				<?php echo $this->Form->button( 'Elegir', array( 'class' => 'btn btn-primary', 'onclick' => 'enviar( '.$id_clinica.', "'.$this->Html->link( $clinica, array( 'controller' => 'clinicas', 'action' => 'view', $id_clinica ) ).'" )' ) ); ?>
+				<?php echo $this->Form->button( 'Elegir', array( 'class' => 'btn btn-primary', 'onclick' => 'enviar( '.$id_clinica.', "'.$this->Html->link( $clinica, array( 'controller' => 'clinicas', 'action' => 'view', $id_clinica ), array( 'target' => '_blank') ).'" )' ) ); ?>
 			</div>
 		</li>
 	<?php endforeach; ?>	

@@ -140,6 +140,9 @@ class Calendar2Helper extends AppHelper {
             
 
         }
+		if( $options['prev_count'] == 0 ) {
+			$calendar_top_navigation[] = array( ' ' => array( 'colspan' => 2 ) );
+		}
 
         // Show the current month / year in between previous and next months
         $calendar_top_navigation[] = array(
@@ -164,6 +167,9 @@ class Calendar2Helper extends AppHelper {
                                      )
                                 ) => array( 'colspan' => 2, 'style' => 'text-align: right;' ) );
         }
+		if( $options['next_count'] == 0 ) {
+			$calendar_top_navigation[] = array( ' ' => array( 'colspan' => 2 ) );
+		}
         //$calendar_top_navigation .= $this->Html->div('calendar-clear','&nbsp;');
 
         //$calendar_content .= $this->Html->tag('div',$calendar_top_navigation,array('id' => $this->top_navigation_id));

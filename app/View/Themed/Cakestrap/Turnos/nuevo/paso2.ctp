@@ -92,6 +92,6 @@ function enviarMedico( id_medico, nombre ) {
 <?php echo $this->Form->end(); ?>
 <?php if( isset( $nombre_clinica ) ) : ?>
 <script type="text/javascript">
-$("#clinica").html( '<?php echo $this->Html->link( $nombre_clinica, array( 'controller' => 'clinica', 'action' => 'view', $id_clinica ) ); ?>' );
+$("#clinica").html( '<?php echo $this->Html->link( $nombre_clinica, array( 'controller' => 'clinica', 'action' => 'view', $id_clinica ), array( 'target' => '_blank' ) ); ?>' );
 </script>
 <?php endif ?>

@@ -13,16 +13,14 @@ echo $this->Form->input( 'ano', array( 'type' => 'hidden', 'value' => -1 ) );
 	<p>La cantidad de turnos disponibles en cada día se muestran dentro del ovalo gris</p>
 	<!-- Calendario -->
 	<?php 
-	//debug( $turnos );
+	debug( $turnos );
 	echo $this->Calendar2->draw(
 	array( 	'month' => $mes,
     		'year' => $ano,
     		'events' => $turnos,
     		'link_template' => '',
-    		//'next_count' => $meses_siguientes,
-    		'next_count' => 1,
-    		//'prev_count' => $meses_anteriores,
-    		'prev_count' => 1,
+    		'next_count' => $meses_siguientes,
+    		'prev_count' => $meses_anteriores,
     		'show_day_link' => true,
     		'ajax' => true ) ); ?>
 </fieldset>
@@ -50,6 +48,25 @@ function enviarDia( ano, mes, dia ) {
 				alert( 'No se pudo cargar los datos de el calendario. Existió un error.\n Intente nuevamente más tarde' ); 
 			 }
 		} );
+}
+
+function cargarCalendario( mes, ano ) {
+	$("#TurnoMes").attr( 'value', mes );
+	$("#TurnoAno").attr( 'value', ano );
+	$("#TurnoPaso").attr( 'value', $("#TurnoPaso").val() - 1 );
+	$.ajax( { async: false,
+	      data: $("#TurnoNuevoForm").serialize(),
+		  evalScripts: true,
+		  type: "post",
+		  format: 'json',
+		  url: '<?php echo Router::url( array( 'action' => 'cargarDatos' ) ); ?>',
+		  success: function ( datos ) {
+		  	$("#cambiar").html( datos );
+		  },
+		  error: function() {
+			alert( 'No se pudo cargar los datos de el calendario. Existió un error.\n Intente nuevamente más tarde' ); 
+		 }
+	} );
 }
 </script>
 <?php echo $this->Form->end(); ?>
@@ -93,4 +110,3 @@ td.today {
     background-color: cyan;
 }
 </style>
-<?php echo $this->element( 'sql_dump' ); ?>

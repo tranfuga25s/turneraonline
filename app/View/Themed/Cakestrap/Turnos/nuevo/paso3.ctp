@@ -19,7 +19,7 @@ echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => -1 )
 				'.$this->Html->image( 'perfil-generico.jpg', array( 'width' => '88%', 'class' => 'thumbnail', 'alt' => $Medico ) ).'
 				'.$Medico.'
 			</div>
-			', array( 'onclick' => 'enviarMedico( '.$id_medico.',"'.$Medico.'" )' ) ); ?>
+			', array( 'onclick' => 'enviarMedico( '.$id_medico.',"'.$this->Html->link( $Medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ), array( 'target' => '_blank' ) ).'" )' ) ); ?>
 		</li>
 	<?php endforeach; ?>	
 	</ul>
@@ -30,6 +30,7 @@ function enviarMedico( id_medico, nombre ) {
 	$("#TurnoIdMedico").attr( 'value', id_clinica );
 	// Coloco el nombre en su lugar
 	$("#medico").html( nombre );
+	// Solicito el caledario
 	$.ajax( { async: false,
 		      data: $("#TurnoNuevoForm").serialize(),
 			  evalScripts: true,

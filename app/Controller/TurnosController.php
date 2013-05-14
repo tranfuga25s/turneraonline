@@ -148,15 +148,20 @@ class TurnosController extends AppController {
 					$paso++;
 				}
 				case 5: { // Muestro el calendario
+
+					if( !isset( $id_clinica ) ) { $id_clinica = $this->request->data['Turno']['id_clinica']; }
+					if( !isset( $id_medico ) ) { $id_medico = $this->request->data['Turno']['id_medico']; }
+					if( !isset( $id_especialidad ) ) { $id_especialidad = $this->request->data['Turno']['id_especialidad']; }					
+
 					// De manera predeterminada el el día de hoy que hay que cargar
-					if( $id_medico <= 0 ) { die( 'Medico es nulo' ); }
 					$hoy = new DateTime('now');
 					$dia = $hoy->format( 'd' );
 					$mes = $hoy->format( 'n' );
 					$ano = $hoy->format( 'Y' );
+
 					// Verifico si no estoy pidiendo otro més o año
-					if( isset( $this->request->data['mes'] ) ) { $mes = $this->request->data['mes']; }
-					if( isset( $this->request->data['ano'] ) ) { $ano = $this->request->data['ano']; }
+					if( isset( $this->request->data['Turno']['mes'] ) ) { $mes = $this->request->data['Turno']['mes']; }
+					if( isset( $this->request->data['Turno']['ano'] ) ) { $ano = $this->request->data['Turno']['ano']; }
 					
 					// Busco la cantidad de meses hacia adelante y atras que se pueden buscar
 					$cant_dias = Configure::read( 'Turnera.dias_turnos' );
@@ -183,7 +188,7 @@ class TurnosController extends AppController {
 					
 					$turnos = $this->Turno->buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico, true );
 					
-					$this->set( compact( 'dia', 'mes', 'ano', 'turnos' ) );
+					$this->set( compact( 'dia', 'mes', 'ano', 'turnos', 'id_clinica', 'id_medico', 'id_especialidad' ) );
 					break;
 				}
 				case 6: { // Muestro los horarios
