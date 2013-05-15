@@ -234,9 +234,9 @@ class MedicosController extends AppController {
 		}
 		$this->Turno->set( 'recibido', true );
 		if( $this->Turno->save() ) {
-			$this->Session->setFlash( 'El turno ha sido colocado como recibido' , 'default', array( 'class' => 'success' ) );
+			$this->Session->setFlash( 'El turno ha sido colocado como recibido' , 'flash/success', array( 'class' => 'success' ) );
 		} else {
-			$this->Session->setFlash( 'No se pudo colocar el turno como recibido', 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se pudo colocar el turno como recibido', 'flash/success', array( 'class' => 'error' ) );
 		}
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}
@@ -320,7 +320,7 @@ class MedicosController extends AppController {
 				}
 				$this->Session->setFlash($mensaje);
 		   } else {
-		   		$this->Session->setFlash( "No se canceló ningún turno", 'default', array( 'class' => 'error' ) );
+		   		$this->Session->setFlash( "No se canceló ningún turno", 'flash/error', array( 'class' => 'error' ) );
 		   }
 		} else if( $this->request->data['Medico']['quien'] == "p" ) {
 			$this->Turno->id = $id_turno;
@@ -329,17 +329,17 @@ class MedicosController extends AppController {
 				$this->Turno->set( 'atendido', false );
 				$this->Turno->set( 'recibido', false );
 				if( $this->Turno->save() ) {
-					$this->Session->setFlash( 'Turno liberado correctamente' , 'default', array( 'class' => 'success' ) );
+					$this->Session->setFlash( 'Turno liberado correctamente' , 'flash/success', array( 'class' => 'success' ) );
 				} else {
-					$this->Session->setFlash( 'El turno no se pudo liberar', 'default', array( 'class' => 'error' ) );
+					$this->Session->setFlash( 'El turno no se pudo liberar', 'flash/error', array( 'class' => 'error' ) );
 				}
 			} else {
-				$this->Session->setFlash( 'El turno no existe!', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'El turno no existe!', 'flash/error', array( 'class' => 'error' ) );
 			}	
 		} else {
 			pr( $this->request->data );
 			die();
-			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'flash/error', array( 'class' => 'error' ) );
 		}
 	    $this->redirect( array( 'action' => 'turnos' ) );
 	}
