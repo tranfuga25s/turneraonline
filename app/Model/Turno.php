@@ -91,8 +91,18 @@ class Turno extends AppModel {
 		if( $mes == $mactual ) {
 			$dia = date( 'd' );
 		} else { $dia = 1; }
-		$condiciones = array(  'DATE( fecha_inicio ) >= ' => date( 'Y-m-d', mktime( 0, 0, 0, $mes, $dia, $ano ) ),
-  			                   'DATE( fecha_fin    ) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ) );
+        // Si la fecha es hoy, pongo el horario como corresponde
+        if( date( 'd', mktime( 0, 0, 0, $mes, $dia, $ano ) ) == date( 'd' ) ) {
+            $condfinicio = 'fecha_inicio';
+            $finicio = date( 'Y-m-d H:m:s' );
+        } else {
+            $condfinicio = 'DATE( fecha_inicio)';
+            $finicio = date( 'Y-m-d', mktime( 0, 0, 0, $mes, $dia, $ano ) );
+        }
+		$condiciones = array(  $condfinicio.' >= ' => $finicio,
+  			                   'DATE( fecha_fin    ) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ),
+  			                   'paciente_id IS NULL',
+  			                   'cancelado != 1' );
 		if( $medicos != array() ) {
 			$condiciones = array_merge( $condiciones, array( 'medico_id' => $medicos ) );
 		}
