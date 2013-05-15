@@ -27,7 +27,7 @@ echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => -1 )
 <script type="text/javascript">
 function enviarMedico( id_medico, nombre ) {
 	// Actualizo el valor del formulario
-	$("#TurnoIdMedico").attr( 'value', id_clinica );
+	$("#TurnoIdMedico").attr( 'value', id_medico );
 	// Coloco el nombre en su lugar
 	$("#medico").html( nombre );
 	// Solicito el caledario

@@ -13,7 +13,7 @@ echo $this->Form->input( 'ano', array( 'type' => 'hidden', 'value' => -1 ) );
 	<p>La cantidad de turnos disponibles en cada día se muestran dentro del ovalo gris</p>
 	<!-- Calendario -->
 	<?php 
-	debug( $turnos );
+	//debug( $turnos );
 	echo $this->Calendar2->draw(
 	array( 	'month' => $mes,
     		'year' => $ano,
