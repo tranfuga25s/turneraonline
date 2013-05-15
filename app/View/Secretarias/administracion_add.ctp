@@ -1,23 +1,19 @@
+<div id="acciones">
+    <?php echo $this->Html->link( 'Lista de Secretarias', array('action' => 'index'));
+          echo $this->Html->link( 'Lista de Usuarios', array('controller' => 'usuarios', 'action' => 'index'));
+          echo $this->Html->link( 'Nuevo Usuario', array('controller' => 'usuarios', 'action' => 'add'));
+          echo $this->Html->link( 'Lista de Clinicas', array('controller' => 'clinicas', 'action' => 'index')); ?>    
+</div>
 <div class="secretarias form">
 <?php echo $this->Form->create('Secretaria');?>
 	<fieldset>
-		<legend><?php echo __('Administracion Add Secretaria'); ?></legend>
+		<legend><h2>Agregar nueva secretaria</h2></legend>
+		<p>Recuerde que para habilitar una secretaria, el usuario a habilitar debe de estar perteneciendo al grupo secretarias.</p>
 	<?php
-		echo $this->Form->input('usuario_id');
-		echo $this->Form->input('clinica_id');
-		echo $this->Form->input('resumen');
+		echo $this->Form->input('usuario_id', array( 'label' => 'Usuario a convertir:'));
+		echo $this->Form->input('clinica_id', array( 'label' => 'Clínica:' ) );
+		echo $this->Form->input('resumen', array( 'label' => 'Enviar resumen diario a su email con los turnos del día'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Secretarias'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Usuarios'), array('controller' => 'usuarios', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Usuario'), array('controller' => 'usuarios', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Clinicas'), array('controller' => 'clinicas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Clinica'), array('controller' => 'clinicas', 'action' => 'add')); ?> </li>
-	</ul>
+    <?php echo $this->Form->end( 'Agregar' );?>
 </div>

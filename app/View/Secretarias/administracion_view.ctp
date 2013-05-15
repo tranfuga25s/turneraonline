@@ -15,12 +15,12 @@
 <div class="decorado1">
 <div class="titulo1">Datos de la Secretaria</div>
 	<dl>
-		<dt><?php echo __('Clinica'); ?></dt>
+		<dt>Clinica:</dt>
 		<dd>
 			<?php echo $this->Html->link($secretaria['Clinica']['nombre'], array('controller' => 'clinicas', 'action' => 'view', $secretaria['Clinica']['id_clinica'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Resumen'); ?></dt>
+		<dt>Resumen diario:</dt>
 		<dd>
 			<?php
 			if(  $secretaria['Secretaria']['resumen'] ) {
@@ -34,7 +34,7 @@
 	<br />
 <div class="titulo1">Datos de su usuario</div>
 	<dl>	
-		<dt>Razon Social</dt>
+		<dt>Razón Social</dt>
 		<dd>
 			<?php echo h( $secretaria['Usuario']['razonsocial'] ); ?>
 			&nbsp;
