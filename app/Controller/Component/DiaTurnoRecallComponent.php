@@ -50,7 +50,14 @@ class DiaTurnoRecallComponent extends Component {
 	$this->Controller->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
 	$this->Controller->set( 'dia', $this->dia );
 	$this->Controller->set( 'mes', $this->mes-1 ); // Lista de meses base 0 
-	$this->Controller->set( 'ano', $this->ano ); 
+	$this->Controller->set( 'ano', $this->ano );
+    if( $this->dia == date( 'd' ) &&
+        $this->mes == date( 'm' ) &&
+        $this->ano == date( 'Y' ) ) {
+        $this->Controller->set( 'hoy', true );        
+    } else {
+        $this->Controller->set( 'hoy', false );
+    }
   }
   
   /**
