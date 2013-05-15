@@ -16,7 +16,7 @@ echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => -1 )
 					<?php echo $this->Html->link( $especialidad, 
 												  '#', 
 												  array( 'onclick' => 
-												        'enviarEspecialidad( '.$id_especialidad.', "'.$especialidad.'")' ) ); ?>
+												        'enviarEspecialidad( '.$id_especialidad.', \''.$this->Html->link( $especialidad, array( 'controller' => 'especialidad', 'action' => 'view', $id_especialidad ), array( 'target' => '_blank', 'escape' => false ) ).'\' ) ' ) ); ?>
 				</li>			
 			<?php endforeach; ?>	
 			</ul>
@@ -34,7 +34,7 @@ echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => -1 )
 						'.$this->Html->image( 'perfil-generico.jpg', array( 'width' => '88%', 'class' => 'thumbnail', 'alt' => $Medico ) ).'
 						'.$Medico.'
 					</div>
-					', array( 'onclick' => 'enviarMedico( '.$id_medico.',"'.$Medico.'" )' ) ); ?>
+					', array( 'onclick' => 'enviarMedico( '.$id_medico.', \''.$this->Html->link( $Medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ), array( 'target' => '_blank', 'escape' => false ) ).'\' )' ) ); ?>
 				</li>
 			<?php endforeach; ?>	
 			</ul>

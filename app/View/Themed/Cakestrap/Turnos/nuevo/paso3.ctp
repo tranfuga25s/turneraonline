@@ -19,7 +19,7 @@ echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => -1 )
 				'.$this->Html->image( 'perfil-generico.jpg', array( 'width' => '88%', 'class' => 'thumbnail', 'alt' => $Medico ) ).'
 				'.$Medico.'
 			</div>
-			', array( 'onclick' => 'enviarMedico( '.$id_medico.',"'.$this->Html->link( $Medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ), array( 'target' => '_blank' ) ).'" )' ) ); ?>
+			', array( 'onclick' => 'enviarMedico( '.$id_medico.', \''.$this->Html->link( $Medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ), array( 'target' => '_blank', 'escape' => false ) ).'\' )' ) ); ?>
 		</li>
 	<?php endforeach; ?>	
 	</ul>
