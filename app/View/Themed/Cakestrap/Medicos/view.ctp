@@ -50,7 +50,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 		<div>
 			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'class' => 'btn btn-primary btn-block' ) );
 			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ), array( 'class' => 'btn btn-info btn-block' ) ); 
-			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ), array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
+			      echo $this->Html->link( 'Volver', '/', array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
 		</div>
 	</div>
 </div>
