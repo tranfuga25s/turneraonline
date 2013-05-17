@@ -8,8 +8,8 @@ $this->set( 'title_for_layout', "Facebook" );
 			<li class="nav-header">Extras > Integración con facebook</li>
 			<li><?php echo $this->Html->tag( 'a', '<i class="icon-chevron-right"></i>Ingreso sin registración', '#salir' ); ?></li>
 			<li><?php echo $this->Html->tag( 'a', '<i class="icon-chevron-right"></i>Elementos disponibles', '#salir' ); ?></li>
+			<?php echo $this->Html->tag( 'a', 'Volver', array( 'class' => 'btn btn-primary', 'onclick' => 'window.history.back();' ) ); ?>
 		</ul>
-		<?php echo $this->Html->link( 'Volver', '', array( 'class' => 'btn btn-primary', 'onclick' => 'window.history.back();' ) ); ?>
 	</div>
 
 	<div class="span9 offset1">
