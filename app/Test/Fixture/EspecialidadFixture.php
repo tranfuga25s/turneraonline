@@ -7,6 +7,8 @@
  */
 class EspecialidadFixture extends CakeTestFixture {
 
+    public $table = 'test_especialidades'; // INTRESANTE!
+
 	/**
 	 * Import
 	 *
