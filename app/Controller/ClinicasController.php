@@ -46,7 +46,7 @@ class ClinicasController extends AppController {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Listado de clinicas para reservar turnos
 	 */
@@ -71,6 +71,7 @@ class ClinicasController extends AppController {
 	}
 
 	public function index() {
+	    $this->Clinica->recursive = -1;
 		$this->set( 'clinicas', $this->paginate() );
 	}
 
@@ -93,7 +94,7 @@ class ClinicasController extends AppController {
 		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'especialidad_id' ) );
 		$clinica['Especialidades'] = $this->Especialidad->find( 'all', array( 'conditions' => array( 'id_especialidad' => $ids ) ) );
 		$this->set( 'clinica', $clinica );
-		
+
 		$this->helpers[] = 'GoogleMapV3';
 	}
 
