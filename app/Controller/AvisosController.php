@@ -240,7 +240,7 @@ class AvisosController extends AppController {
 		} else if( $formato == 'sms' ) {
 			return "Todavía no se encuentra disponible esta característica";
 		} else {
-			throw new NotFoundException( 'No se encontró el formato de renderizado'.$formato );
+			throw new NotFoundException( 'No se encontró el formato de renderizado: '.$formato );
 		}
 	}
 
