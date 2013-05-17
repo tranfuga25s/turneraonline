@@ -144,5 +144,20 @@ class Medico extends AppModel {
 		// Finalmente elimino el medico
 		return $this->delete( $id_medico );
 	}
+	
+	/*!
+	 * Devuelve el listado de medicos publicados según una clínica
+	 * @param integer $id_clinica Identificador de la clinica
+	 */
+	public function listaPorClinica( $id_clinica ) {
+		$lista = $this->find( 'list', array( 'conditions' => array( 'clinica_id' => $id_clinica, 'visible' => true ), 'fields' => array( 'id_medico', 'usuario_id' ) ) );
+		$lusuario = $this->Usuario->find( 'list', array( 'conditions' => array( 'grupo_id' => 2 ), 'fields' => array( 'id_usuario', 'razonsocial' ) ) );
+		foreach( $lista as $id_med => $id_us ) {
+			if( array_key_exists( $id_us, $lusuario ) ) {
+				$lista[$id_med]= $lusuario[$id_us];
+			}   
+		}
+		return $lista;
+	}
 
 }

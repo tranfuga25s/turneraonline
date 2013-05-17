@@ -91,24 +91,38 @@ class Turno extends AppModel {
 		if( $mes == $mactual ) {
 			$dia = date( 'd' );
 		} else { $dia = 1; }
-		$condiciones = array(  'DATE( fecha_inicio ) >= ' => date( 'Y-m-d', mktime( 0, 0, 0, $mes, $dia, $ano ) ),
-  			               'DATE( fecha_fin) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ) );
+        // Si la fecha es hoy, pongo el horario como corresponde
+        if( date( 'd', mktime( 0, 0, 0, $mes, $dia, $ano ) ) == date( 'd' ) ) {
+            $condfinicio = 'fecha_inicio';
+            $finicio = date( 'Y-m-d H:m:s' );
+        } else {
+            $condfinicio = 'DATE( fecha_inicio)';
+            $finicio = date( 'Y-m-d', mktime( 0, 0, 0, $mes, $dia, $ano ) );
+        }
+		$condiciones = array(  $condfinicio.' >= ' => $finicio,
+  			                   'DATE( fecha_fin    ) <= ' => date( 'Y-m-d', mktime( 23, 59, 59, $mes, date( 't', mktime( 0, 0, 0, $mes, 1, $ano ) ), $ano ) ),
+  			                   'paciente_id IS NULL',
+  			                   'cancelado != 1' );
 		if( $medicos != array() ) {
 			$condiciones = array_merge( $condiciones, array( 'medico_id' => $medicos ) );
 		}
-		$this->virtualFields = array( 'dia' => 'DATE_FORMAT( fecha_inicio,  \'%e\' )' );
+		$this->virtualFields = array( 'dia' => 'DATE_FORMAT( fecha_inicio,  \'%e\' )',
+		                              'cantidad' => 'COUNT( DATE_FORMAT( fecha_inicio, \'%e\' ) )' );
 		$datos =  $this->find( 'all',
 				array(  'conditions' => $condiciones,
-					'order' => array( 'dia' ),
-					'recursive' => -1,
-					'fields' => array( 'DISTINCT DATE_FORMAT( fecha_inicio, \'%e\' ) as `Turno__dia`' )
-			)
+					    'order' => array( '`Turno__dia`' ),
+					    'recursive' => -1,
+					    'group' => 'dia',
+					    'fields' => array( 'COUNT( DATE_FORMAT( fecha_inicio, \'%e\' ) ) as `Turno__cantidad`',
+					                       'DATE_FORMAT( fecha_inicio, \'%e\' ) as `Turno__dia`' )
+			     )
 		);
 		$this->virtualFields = null;
 		$dias = array();
+        //debug( $datos );
 		if( count( $datos ) > 0 ) {
 			foreach( $datos as $dato ) {
-				$dias[] = $dato['Turno']['dia'];
+				$dias[$dato['Turno']['dia']] = $dato['Turno']['cantidad'];
 			}
 		} else {
 			$dias = array();
@@ -157,10 +171,12 @@ class Turno extends AppModel {
 		$f2 = clone $f1;
 		$f2->add( new DateInterval( "P1D" ) );
 		$f2->setTime( 23, 59, 59 );
+        $this->unbindModel( array( 'belongsTo' => array( 'Medico' ) ) );
 		return  $this->find( 'all', array(
 			'conditions' => array(
 				'medico_id' => $medicos,
 				'paciente_id IS NULL',
+				'cancelado != 1',
 				"DATE( fecha_inicio ) >=" => $f1->format( 'Y-m-d' ),
 				"DATE( fecha_fin ) <" => $f2->format( 'Y-m-d' ),
 				"TIME( fecha_inicio ) >=" => $f1->format( 'H:i:s' ),
@@ -418,6 +434,12 @@ class Turno extends AppModel {
 		} else { return false; }
 	}
 	
+    /**
+     * Elimina los turnos relacionados con el usuario. Todos, incluso los echos ya.
+     * @param $id_usuario Identificador del usuario
+     * @return verdadero si se pudo realizar la accion.
+     * @author Esteban Zeller
+     */
 	public function eliminarTurnosUsuario( $id_usuario = null ) {
 		if( $id_usuario != null ) {
 			if( $this->updateAll( array( 'paciente_id' => null ), array( 'paciente_id' => $id_usuario ) ) ) {
@@ -427,6 +449,12 @@ class Turno extends AppModel {
 	    return false;
 	}
 	
+    /**
+     * Cancela un turno y no permite utilizarlo nuevamente.
+     * Desliga al paciente del turno.
+     * @param $id_turno Identificador del turno. Sino se usará $this->id
+     * @author Esteban Zeller
+     */
 	public function cancelar( $id_turno = null ) {
 		if( $id_turno == null ) 
 			return false;
@@ -440,8 +468,34 @@ class Turno extends AppModel {
 		return false;
 	}
 
-   /*!
+    /**
+     * Libera un turno como si lo cancelara un paciente.
+     * Permite que el turno pueda estar disponible nuevamente.
+     * @param $id_turno integer Identificador del turno. Sino se usara $this->id
+     * @author Esteban Zeller
+     */    
+    public function liberar( $id_turno = null ) {
+        if( $id_turno == null && $this->id == null ) { 
+            return false;
+        } else if( $this->id != null && $id_turno == null ) {
+            $id_turno = $this->id;
+        }
+        
+        $this->id = $id_turno;
+        $this->set( 'cancelado', false );
+        $this->set( 'atendido', false );
+        $this->set( 'recibido', false );
+        $this->set( 'paciente_id', null );
+        if( $this->save() ) {
+                return true;
+        }
+        return false;
+    }
+
+   /**
     * Devuelve verdadero si un turno se encuentra reservado
+    * @param $id_turno integer identificador del turno.
+    * @author Esteban Zeller
     */
    public function reservado( $id_turno = null ) {
 		if( $id_turno == null ) 
@@ -455,7 +509,8 @@ class Turno extends AppModel {
    }
 
   /*!
-   * Selecciona los IDS de turno de las fechas compranedidas en los parametros para el medico seleccionado
+   * Selecciona los IDS de turno de las fechas comprendidas en los parametros para el medico seleccionado
+   * 
    */
    public function seleccionarIDS( $fini, $ffin, $id_medico ) {
    	  $dato = $this->find( 'list', 

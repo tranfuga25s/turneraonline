@@ -85,7 +85,7 @@
 				<?php foreach ( $usuarios as $usuario ) : ?>
 				<tr>
 					<td><?php echo h( $usuario['Usuario']['razonsocial'] ); ?></td>
-					<td><?php echo $this->Html->link( h( $usuario['Grupo']['nombre'] ), array( 'controller' => 'grupo', 'action' => 'view', $usuario['Grupo']['id_grupo'] ) ); ?></td>
+					<td><?php echo $this->Html->link( h( $usuario['Grupo']['nombre'] ), array( 'controller' => 'grupos', 'action' => 'view', $usuario['Grupo']['id_grupo'] ) ); ?></td>
 					<td class="actions">
 						<?php
 						echo $this->Html->link( 'Ver', array( 'action' => 'view', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini') );

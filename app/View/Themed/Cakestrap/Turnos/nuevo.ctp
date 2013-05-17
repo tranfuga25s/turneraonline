@@ -1,5 +1,14 @@
 <?php $this->set( 'title_for_layout', "Pedir nuevo turno" ); ?>
 
+<script type="text/javascript">
+// Variable que guarda la clinica
+var id_clinica = -1;
+// Variable que guarda la especialidad
+var id_especialidad = -1;
+// Variable que guarda el profesional
+var id_medico = -1;
+</script>
+
 <div class="navbar">
 	<div class="navbar-inner">
 		<ul class="nav nav-pills">
@@ -14,28 +23,34 @@
 <div class="row-fluid">
 	
 	<div class="span3">
-		<h4>Reservar Nuevo Turno</h4>
 		<table class="table table-hover table-bordered">
 			<tbody>
 				<tr>
-					<td width="20">Clinica</td>
-					<td>&nbsp;</td>
+					<td colspan="2"><h4>Reservar Nuevo Turno</h4></td>
 				</tr>
 				<tr>
-					<td>Especialidades</td>
-					<td>&nbsp;</td>
+					<td width="20">Clinica:</td>
+					<td id="clinica">&nbsp;</td>
 				</tr>
 				<tr>
-					<td>Profesionales</td>
-					<td>&nbsp;</td>
+					<td>Especialidad:</td>
+					<td id="especialidad">&nbsp;</td>
 				</tr>
 				<tr>
-					<td>Fecha</td>
-					<td></td>
+					<td>Profesional:</td>
+					<td id="medico">&nbsp;</td>
 				</tr>
 				<tr>
-					<td>Hora</td>
-					<td></td>
+					<td>Fecha:</td>
+					<td id="fecha"></td>
+				</tr>
+				<tr>
+					<td>Hora:</td>
+					<td id="hora"></td>
+				</tr>
+				<tr>
+					<td>Paciente</td>
+					<td><?php echo $this->Html->link( $usuario['razonsocial'], array( 'controller' => 'usuarios', 'action' => 'view', $usuario['id_usuario'] ) ); ?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -43,7 +58,6 @@
 	</div>
 	
 	<div id="cambiar" class="span9 well">
-		
 	</div>
 
 </div>
@@ -52,7 +66,7 @@
 
 
 <script type="text/javascript" language="JavaScript">
-
+/*
 function cambiaronDatos() {
 	var id_medico = $("#medico option:selected").val();
 	var id_clinica = $("#clinica option:selected").val();
@@ -164,34 +178,58 @@ function cargarTurnos( ano, mes, dia ) {
 			alert( 'Existió un error al descagar la lista de turnos disponibles. \n Intente nuevamente.');
 		  }
 	} );
+}*/
+
+function cargarClinica() {
+	$.ajax( { async: true,
+		      data: { 'Turno': { 'paso': 1 } },
+			  evalScripts: true,
+			  type: "post",
+			  format: 'json',
+			  url: '<?php echo Router::url( array( 'action' => 'cargarDatos' ) ); ?>',
+			  success: function ( datos, textoEstado, jqXHR ) {
+			  	$("#cambiar").html( datos );
+				// Formato del array
+				/*var elementos = JSON.parse( datos );
+				$("#clinica").empty().append( elementos.clinicas );
+				$("#dmedico").empty().append( elementos.medicos );
+				$("#despecialidad").empty().append( elementos.especialidades );
+				$("#medico").bind( 'change', function() { cambiaronDatos(); } );
+				$("#especialidad").bind( 'change', function() { cambiaronDatos(); } );
+				$("#clinica").bind( 'change', function() { cambiaronDatos(); } );*/
+			 },
+			  error: function() {
+				alert( 'No se pudo cargar los datos de las clinicas. Existió un error.\n Intente nuevamente mas tarde'); 
+			 }
+		} );
 }
 
 function cargaInicial() {
+	cargarClinica();
 	// Pido los datos para actualizar el contenido
-	$("#cargando").dialog({ modal: true });
-	$.ajax( { async: true,
-		  data: { 'id_clinica': 0,
-		    	  'id_especialidad': 0,
-				  'id_medico': 0
-			},
-		  evalScripts: true,
-		  type: "post",
-		  format: 'json',
-		  url: '<?php echo Router::url( array( 'controller' => "turnos", 'action' => 'cargarDatos' ) ); ?>',
-		  success: function ( datos, textoEstado, jqXHR ) {
-			// Formato del array
-			var elementos = JSON.parse( datos );
-			$("#dclinica").empty().append( elementos.clinicas );
-			$("#dmedico").empty().append( elementos.medicos );
-			$("#despecialidad").empty().append( elementos.especialidades );
-			$("#medico").bind( 'change', function() { cambiaronDatos(); } );
-			$("#especialidad").bind( 'change', function() { cambiaronDatos(); } );
-			$("#clinica").bind( 'change', function() { cambiaronDatos(); } );
-		 },
-		  error: function() {
-			alert( 'No se pudo cargar los datos del sistema de clinicas, medicos y especialidades. Existió un error.\n Intente nuevamente mas tarde'); 
-		 }
-	} );
+	/*$.ajax( { async: true,
+			  data: { 'id_clinica': id_clinica,
+			    	  'id_especialidad': id_especialidad,
+					  'id_medico': id_medico
+			  },
+			  evalScripts: true,
+			  type: "post",
+			  format: 'json',
+			  url: '<?php //echo Router::url( array( 'controller' => "turnos", 'action' => 'cargarDatos' ) ); ?>',
+			  success: function ( datos, textoEstado, jqXHR ) {
+				// Formato del array
+				var elementos = JSON.parse( datos );
+				$("#dclinica").empty().append( elementos.clinicas );
+				$("#dmedico").empty().append( elementos.medicos );
+				$("#despecialidad").empty().append( elementos.especialidades );
+				$("#medico").bind( 'change', function() { cambiaronDatos(); } );
+				$("#especialidad").bind( 'change', function() { cambiaronDatos(); } );
+				$("#clinica").bind( 'change', function() { cambiaronDatos(); } );
+			 },
+			  error: function() {
+				alert( 'No se pudo cargar los datos del sistema de clinicas, medicos y especialidades. Existió un error.\n Intente nuevamente mas tarde'); 
+			 }
+		} );
 
 	$.ajax( { async: true,
 		  data: { 'id_clinica': 0,
@@ -212,15 +250,12 @@ function cargaInicial() {
 		  error: function() {
 			alert( 'No se pudo descargar los datos para el calendario de turnos.\n Intente mas tarde.');
 		  }
-	} );
+	} );*/
 }
 
 $( function() {
-	$("a", ".menu").button();
 	cargaInicial();	
 });
 
 </script>
-<div style="display: none;" id="cargando" title="Cargando datos...">
-	Espere por favor, cargando los datos necesarios.
-</div>
+

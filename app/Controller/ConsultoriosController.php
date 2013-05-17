@@ -87,7 +87,7 @@ class ConsultoriosController extends AppController {
 		if (!$this->Consultorio->exists()) {
 			throw new NotFoundException( 'Consultorio invalido');
 		}
-		$this->set('consultorio', $this->Consultorio->read(null, $id));
+		$this->set( 'consultorio', $this->Consultorio->read( null, $id ) );
 	}
 
 /**
@@ -122,7 +122,7 @@ class ConsultoriosController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Consultorio->save($this->request->data)) {
-				$this->Session->setFlash( 'El consultorio fue modificado correctamente', 'default', array( 'class' => 'error') );
+				$this->Session->setFlash( 'El consultorio fue modificado correctamente', 'default', array( 'class' => 'success') );
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash( 'El consultorio no ha podido ser modificado, intente nuevamente.', 'default', array( 'class' => 'error') );
@@ -131,7 +131,7 @@ class ConsultoriosController extends AppController {
 			$this->request->data = $this->Consultorio->read(null, $id);
 		}
 		$clinicas = $this->Consultorio->Clinica->find('list');
-		$this->set(compact('clinicas'));
+		$this->set( compact( 'clinicas' ) );
 	}
 
 /**

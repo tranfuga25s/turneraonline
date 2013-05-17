@@ -3,15 +3,16 @@ $this->set( 'title_for_layout', "Sistema de mensajes SMS" );
 ?>
 
 <div class="row-fluid">
-	
+
 	<div class="span2" id="navegacion">
 		<ul class="nav nav-list well affix span2">
 			<li class="nav-header">Extras > Mensajes de Texto</li>
 			<li><?php echo $this->Html->tag( 'a', '<i class="icon-chevron-right"></i>Avisos', '#avisos' ); ?></li>
 			<li><?php echo $this->Html->tag( 'a', '<i class="icon-chevron-right"></i>Costos', '#costos' ); ?></li>
+			<?php echo $this->Html->tag( 'a', 'Volver', array( 'class' => 'btn btn-primary', 'onclick' => 'window.history.back();' ) ); ?>
 		</ul>
 	</div>
-	
+
 	<div class="span9 offset1">
 		<h3>Sistema de mensajes de texto a celular</h3>
 		<p>Este sistema le permite estar en contacto con las personas que tiene algún turno reservado.</p>

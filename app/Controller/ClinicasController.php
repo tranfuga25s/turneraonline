@@ -36,6 +36,7 @@ class ClinicasController extends AppController {
 				switch( $this->request->params['actions'] ) {
 					case 'clinicasInicio':
 					case 'view':
+					case 'cargarDatosClinicas':
 					{ return true; break; }
 					default:
 					{ return false; break; }
@@ -45,6 +46,19 @@ class ClinicasController extends AppController {
 		}
 		return false;
 	}
+	
+	/**
+	 * Listado de clinicas para reservar turnos
+	 */
+	 public function cargarDatosClinicas() {
+	 	if( $this->request->isPost() ) {
+	 		$clinicas = $this->Clinica->find( 'list', array( 'conditions' => array( 'publicado' => true ) ) );
+			$this->set( 'clinicas', $clinicas );
+			return $this->render();
+	 	} else {
+	 		return json_encode( array( 'error' => 'Método no implementado' ) );
+	 	}
+	 }
 
 	/**
  	 * Listado de clinicas para la pagina inicial

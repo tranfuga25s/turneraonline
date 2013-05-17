@@ -3,14 +3,14 @@ $this->set( 'title_for_layout', "Mis turnos" );
 ?>
 <div class="row-fluid">
 	
-	<?php echo $this->element( 'menu/usuario', array( 'usuario' => array( 'Usuario' => array( 'id_usuario' => $usuario['Paciente']['id_usuario'] ) ) ) ); ?>
+	<?php echo $this->element( 'menu/usuario' ); ?>
 	
 	<div class="span9">
 		<h4>Turnos reservados</h4>
 		<?php if( count( $turnos ) <= 0 ) { ?>
 			Usted no posee ningun turno pr&oacute;ximo.<br /><br />
 		<?php } else { ?>
-			<table>
+			<table class="table table-hover table-condensed table-striped">
 				<tbody>
 					<th>M&eacute;dico</th>
 					<th>Fecha y Hora</th>
@@ -23,7 +23,10 @@ $this->set( 'title_for_layout', "Mis turnos" );
 						<td><?php echo $this->Html->link($turno['Consultorio']['nombre'], array('controller' => 'consultorios', 'action' => 'view', $turno['Consultorio']['id_consultorio'])); ?></td>
 						<td class="actions">
 							<?php //echo $this->Html->link( 'Notificaciones', array( 'action' => 'edit', $turno['Turno']['id_turno'])); ?>
-							<?php echo $this->Form->postLink( 'Cancelar', array( 'action' => 'cancelar', $turno['Turno']['id_turno'] ), null, 'Esta seguro que desea cancelar el turno?' ); ?>
+							<?php echo $this->Form->postLink( 'Cancelar', 
+							                                  array( 'action' => 'cancelar', $turno['Turno']['id_turno'] ), 
+							                                  array( 'class' => 'btn btn-danger' ),
+							                                  'Esta seguro que desea cancelar el turno?' ); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -33,7 +36,7 @@ $this->set( 'title_for_layout', "Mis turnos" );
 	
 		<h4>Turnos Vencidos</h4>
 		<?php if( count( $turnosanteriores ) > 0 ) { ?>
-		<table class="table table-hover">
+		<table class="table table-hover table-condensed table-striped">
 			<tbody>
 				<th>M&eacute;dico</th>
 				<th>Fecha y Hora</th>

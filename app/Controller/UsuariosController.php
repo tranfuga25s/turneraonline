@@ -8,7 +8,8 @@ App::uses('Folder', 'Utility');
  * @property Usuario $Usuario
  */
 class UsuariosController extends AppController {
-
+	
+	public $components = array( 'RequestHandler' );
 
 	public function beforeFilter() {
 		// Defino que acciones son publicas
@@ -89,14 +90,14 @@ class UsuariosController extends AppController {
 	public function pacientes() {
 		$this->layout = 'ajax';
 		$this->autoRender = false;
-		if( isset( $this->request->query['term'] ) ) {
-			$term = $this->request->query['term'];
+		if( isset( $this->request->query['query'] ) ) {
+			$term = $this->request->query['query'];
 			$ret = Cache::read( 'pacientes-'.$term );
 			if( $ret == false ) {
 				$data = $this->Usuario->find( 'all', 
 					array(  'fields' => array( 'razonsocial', 'id_usuario' ), 
-						'conditions' => array( 'razonsocial LIKE ' => "%".$term."%" ),
-						'order' => array( 'razonsocial' ) ) );
+							'conditions' => array( 'razonsocial LIKE ' => "%".$term."%" ),
+							'order' => array( 'razonsocial' ) ) );
 				$ret = array();
 				foreach( $data as $d ) { 
 					$ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
@@ -104,20 +105,20 @@ class UsuariosController extends AppController {
 				$ret = json_encode( $ret );
 				Cache::write( 'pacientes-'.$term, $ret );
 			}
-			return $ret;
+
 		} else {
 			$ret = Cache::read( 'pacientes' );
 			if( $ret == false ) {
-				$data = $this->Usuario->find( 'all', array(  'fields' => array( 'razonsocial', 'id_usuario' ), 'order' => array( 'razonsocial' ) ) );
+				$data = $this->Usuario->find( 'all', array(  'fields' => array( 'razonsocial', 'id_usuario', 'nombre', 'apellido' ), 'order' => array( 'razonsocial' ) ) );
 				$ret = array();
 				foreach( $data as $d ) { 
-					$ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
+				    $ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
 				Cache::write( 'pacientes', $ret );
 			}
-			return $ret;
 		}
+		return $ret;
 	}
 
    /*!
@@ -343,9 +344,9 @@ class UsuariosController extends AppController {
 		}
 		$usuario = $this->Usuario->read( null, $id );
 		if( $usuario['Usuario']['celular'] == '' && $usuario['Usuario']['telefono'] == '' ) {
-			$this->Session->setFlash( 'Por favor, ingrese algún número telefónico para que nos podamos poner en contacto con usted.' );
+			$this->Session->setFlash( 'Por favor, ingrese algún número telefónico para que nos podamos poner en contacto con usted.', 'flash/info' );
 		} else if( $usuario['Usuario']['celular'] == '' ) {
-			$this->Session->setFlash( 'Por favor, ingrese un número de celular para que pueda recibir notificaciones por mensaje de texto' );
+			$this->Session->setFlash( 'Por favor, ingrese un número de celular para que pueda recibir notificaciones por mensaje de texto', 'flash/info' );
 		}
 		$this->set( 'usuario', $this->Usuario->read( null, $id ) );
 	}

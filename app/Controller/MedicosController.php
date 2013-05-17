@@ -8,13 +8,9 @@ App::uses('AppController', 'Controller');
 class MedicosController extends AppController {
 
 	var $helpers = array( 'Html', 'Form', 'Paginator', 'Js' => array( 'Jquery' ) );
-	var $components = array( 'RequestHandler' );
+	var $components = array( 'RequestHandler', 'AutoUpdateRecall', 'DiaTurnoRecall' => array( 'variable' => 'Medico' ) );
 	var $uses = array( 'Medico', 'Consultorio', 'Turno' );
 	
-	
-	private $dia;
-	private $mes;
-	private $ano;
 	
 	public function beforeFilter() {
 		$this->Auth->allow( array( 'view' ) );
@@ -38,12 +34,6 @@ class MedicosController extends AppController {
 					case 'reservar':
 					case 'atendido':
 					case 'autoactualizacion':
-					{
-						$this->verificarDia();
-						$this->loadModel('Turno');
-						return true; 
-						break;
-					}
 					case 'verExcepciones':
 					case 'disponibilidad':
 					{
@@ -69,37 +59,6 @@ class MedicosController extends AppController {
 	}
 
    /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * guardandolos en las variables de sesion 
-    */
-	function verificarDia() {
-		if( !$this->Session->check( "Medico.dia" ) ) {
-			$this->Session->write( "Medico.dia", date( 'j' ) );
-			$this->Session->write( "Medico.mes", date( 'n' ) );
-			$this->Session->write( "Medico.ano", date( 'Y' ) );
-		}
-		$this->dia = $this->Session->read( "Medico.dia" );
-		$this->mes = $this->Session->read( "Medico.mes" );
-		$this->ano = $this->Session->read( "Medico.ano" );
-		$this->set( 'actualizacion', $this->Session->read( 'actualizacion', true ) );
-	}
-	
-	function cambiarDia( $dia, $mes, $ano ) {
-		if( $this->Session->read( "Medico.dia" ) != $dia ) {
-			$this->Session->write( "Medico.dia", $dia );
-		}
-		if( $this->Session->read( "Medico.mes" ) != $mes ) {
-			$this->Session->write( "Medico.mes", $mes );
-		}
-		if( $this->Session->read( "Medico.ano" ) != $ano ) {
-			$this->Session->write( "Medico.ano", $ano );
-		}
-		$this->dia = $dia;
-		$this->mes = $mes;
-		$this->ano = $ano;		
-	}
-
-   /**
     * Muestra los turnos del dia elegido
     * 
     */
@@ -112,8 +71,8 @@ class MedicosController extends AppController {
 		if( $this->request->isPost() ) {
 			$this->request->data = $this->request->data['Medico'];
 			// Busco la fecha e que me pasaron
-			if( isset( $this->request->data['accion'] ) ) {
-				$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
+			if( isset( $this->data['accion'] ) ) {
+				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
 				if( $this->request->data['accion'] == 'ayer' ) {
 					$t2 = $t->sub( new DateInterval( "P1D" ) );
@@ -127,23 +86,18 @@ class MedicosController extends AppController {
 					$t2 = new DateTime('now');
 				}
 				// Actualizo la fecha
-				$this->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
+				$this->DiaTurnoRecall->cambiarDia( $t2->format( "j" ), $t2->format( "n" ), $t2->format( "Y" ) );
 			} else {
-				$this->cambiarDia( $this->request->data['fecha']['day'],
-								   $this->request->data['fecha']['month']+1,
-								   $this->request->data['fecha']['year'] );				
+				$this->DiaTurnoRecall->cambiarDia( $this->data['fecha']['day'],
+								   				   $this->data['fecha']['month']+1,
+								                   $this->data['fecha']['year'] );				
 			}
 		}
 
-		$this->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
-		$this->set( 'dia', $this->dia );
-		$this->set( 'mes', $this->mes-1 ); // Lista de meses base 0 
-		$this->set( 'ano', $this->ano ); 
-		
 		$this->Turno->Paciente->virtualFields = array( 'razonsocial' => ' CONCAT( Paciente.apellido, \', \', Paciente.nombre ) ' );
 		$this->Turno->unbindModel( array( 'belongsTo' => array( 'Consultorio' ) ) );
 		$f1 = new DateTime( 'now' );
-		$f1->setDate( $this->ano, $this->mes, $this->dia ); $f1->setTime( 0, 0, 0 );
+		$f1->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() ); $f1->setTime( 0, 0, 0 );
 		$f2 = clone $f1; $f2->add( new DateInterval( "P1D" ) );
 		$this->set( 'turnos' , $this->Turno->find( 'all', array( 'conditions' => array( 
 												'medico_id' => $id_medico,
@@ -152,18 +106,12 @@ class MedicosController extends AppController {
 												'order' => 'fecha_inicio',
 									 			'limit' => 80 ) )
 												);
-		$f2 = new DateTime( 'now' ); $f2->setTime( 0, 0, 0 );
-		if( $f2 == $f1 ) {
-			 // Estoy en el día de hoy
-			 $this->set( 'hoy', true );
-		} else {
-			// Estoy en otro día
-			$this->set( 'hoy', false );
-		}
+
 		// Verifico si se pueden colocar las acciones
 		if( $f1 >= $f2 ) {
 			$this->set( 'acciones', true );
 		} else { $this->set( 'acciones', false ); }		
+
 	}
 
 	/**
@@ -172,15 +120,8 @@ class MedicosController extends AppController {
 	 */
 	public function autoactualizacion() {
 		if( $this->request->isPost() ) {
-			if( isset( $this->request->data['Medicos']['actualizacion'] ) ) {
-				debug( $this->request->data ); die( 'Miron' );
-				$actualizacion = ( $this->request->data['Medicos']['actualizacion'] == 1 ) ? true: false;
-				$this->Session->write( "actualizacion", $actualizacion);
-				$this->set( 'actualizacion', $actualizacion );
-				if( $this->request->data['Medicos']['actualizacion'] == false ) {
-					$accion = " deshabilitada ";
-				} else { $accion = " habilitada"; }
-				$this->Session->setFlash( 'Auto actualización de la página ha sido' . $accion, 'flash/info' );
+			if( isset( $this->data['Medicos']['actualizacion'] ) ) {
+				$this->AutoUpdateRecall->cambiarAutoActualizacion( $this->data['Medicos']['actualizacion'], true, 'flash/info' );
 			} else {
 				$this->Session->setFlash( 'Auto actualización no seteada', 'flash/error' );
 			}
@@ -189,108 +130,7 @@ class MedicosController extends AppController {
 	}
 	
 
-   /**
-    * Genera un sobreturno con los datos especificados
-    * Los parametros son utilizados solamente cuando se debe dar de alta el usuario que fue ingresado.
-    * Se necesitan los siguientes parametros: id_turno, spaciente, id_medico, hora, min, duracion.
-    * spaciente es la cadena: <id_usuario - nombre usuario> si el usuario está dado de alta sino se dará de alta.
-    */
-	public function sobreturno( $id_turno = null, $id_paciente = null, $id_medico = null ) {
-		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['Medico'];
-			
-			$id_turno    = $this->request->data['id_turno'];
-			$id_paciente = $this->request->data['spaciente'];
-			$id_medico   = $this->request->data['id_medico'];
-			$hora        = $this->request->data['hora'];
-			$min         = $this->request->data['min'];
-			$duracion    = $this->request->data['duracion'];
-		} else {
-			// Si entro por aquí, tuve que dar de alta el paciente.
-			if( $id_turno == null || $id_paciente == null || $id_medico == null ) {
-				throw new NotFoundException( "Error de parametros" );
-			}
-			$id_medico = $this->Session->read( 'st.medico' );
-			$hora = $this->Session->read( 'st.hora' );
-			$min = $this->Session->read( 'st.min' );
-			$duracion = $this->Session->read( 'st.duracion' );
-			$this->Session->delete( 'st' );			
-		}
 
-		$this->Turno->id = $id_turno;
-		if( ! $this->Turno->exists() ) {
-			throw new NotFoundException( 'El turno no existe, '.$id_turno );
-		}
-		$this->Turno->Paciente->virtualFields = '';
-		$this->Turno->unbindModel( array( 'belongsTo' => array( 'Consultorio', 'Medico', 'Paciente' ) ) );
-		$turno = $this->Turno->read();
-
-		$this->Turno->Paciente->id = $id_paciente;
-		if( ! $this->Turno->Paciente->exists() ) {
-			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'default', array( 'class' => 'success' ) );
-			$this->Session->write( array( 'st.medico' => $id_medico, 'st.hora' => $hora, 'st.min' => $min, 'st.duracion' => $duracion ) );
-			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->request->data['spaciente'], 'sobreturno' ) );
-		}
-
-		$this->Turno->Medico->id = $id_medico;
-		if( ! $this->Turno->Medico->exists() ) {
-			throw new NotFoundException( 'El médico no existe, '.$id_medico );
-		}
-		$this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno', 'Excepcion' ) ) );
-		$this->Turno->Medico->unbindModel( array( 'belongsTo' => array( 'Especialidad', 'Clinica', 'Usuario' ) ) );
-		$medico = $this->Turno->Medico->read();
-
-		// Cargo la cantidad de horas configuradas en el sistema
-		$tiempo = Configure::read( 'Turnera.notificaciones.horas_proximo' );
-		if( $duracion == null ) {
-			$duracion = $medico['Disponibilidad']['duracion'];
-		}
-
-		// Genero el sobreturno
-		$finicio = DateTime::createFromFormat( 'Y-m-d H:i:s', $turno['Turno']['fecha_inicio'] );
-		$finicio->setTime( $hora, $min, 0 );
-		$ffin = clone $finicio;
-		$ffin->add( new DateInterval( "PT".$duracion."M" ) );
-		$data = array(  'Turno' =>
-				array(	'fecha_inicio'   => $finicio->format( 'Y-m-d H:i:s' ),
-						'fecha_fin'      => $ffin->format( 'Y-m-d H:i:s' ),
-						'medico_id'      => $id_medico,
-						'consultorio_id' => $turno['Turno']['consultorio_id'],
-						'paciente_id'    => $id_paciente,
-						'recibido'       => true,
-						'atendido'       => false,
-						'cancelado'	     => false
-				)
-			);
-		$this->Turno->create();
-		if( $this->Turno->save( $data ) ) {
-			$this->Session->setFlash( 'Sobre turno creado correctamente', 'default', array( 'class' => 'success' ) );
-		} else {
-			$this->Session->setFlash( 'No se pudo generar el sobreturno' , 'default', array( 'class' => 'error' ) );
-			pr( $this->Turno->validationErrors );
-			die();
-		}
-		$this->redirect( array( 'action' => 'turnos' ) );
-	}
-
-   /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * 
-    */
-	public function recibido( $id_turno = null ) {
-		
-		$this->Turno->id = $id_turno;
-		if( ! $this->Turno->exists() ) {
-			throw new NotFoundException( 'El turno no existe, '.$id_turno );
-		}
-		$this->Turno->set( 'recibido', true );
-		if( $this->Turno->save() ) {
-			$this->Session->setFlash( 'El turno ha sido colocado como recibido' , 'default', array( 'class' => 'success' ) );
-		} else {
-			$this->Session->setFlash( 'No se pudo colocar el turno como recibido', 'default', array( 'class' => 'error' ) );
-		}
-		$this->redirect( array( 'action' => 'turnos' ) );
-	}
 
    /**
     * Mantiene el día en que debe ser mostrados los turnos
@@ -371,7 +211,7 @@ class MedicosController extends AppController {
 				}
 				$this->Session->setFlash($mensaje);
 		   } else {
-		   		$this->Session->setFlash( "No se canceló ningún turno", 'default', array( 'class' => 'error' ) );
+		   		$this->Session->setFlash( "No se canceló ningún turno", 'flash/error', array( 'class' => 'error' ) );
 		   }
 		} else if( $this->request->data['Medico']['quien'] == "p" ) {
 			$this->Turno->id = $id_turno;
@@ -380,100 +220,36 @@ class MedicosController extends AppController {
 				$this->Turno->set( 'atendido', false );
 				$this->Turno->set( 'recibido', false );
 				if( $this->Turno->save() ) {
-					$this->Session->setFlash( 'Turno liberado correctamente' , 'default', array( 'class' => 'success' ) );
+					$this->Session->setFlash( 'Turno liberado correctamente' , 'flash/success', array( 'class' => 'success' ) );
 				} else {
-					$this->Session->setFlash( 'El turno no se pudo liberar', 'default', array( 'class' => 'error' ) );
+					$this->Session->setFlash( 'El turno no se pudo liberar', 'flash/error', array( 'class' => 'error' ) );
 				}
 			} else {
-				$this->Session->setFlash( 'El turno no existe!', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'El turno no existe!', 'flash/error', array( 'class' => 'error' ) );
 			}	
 		} else {
 			pr( $this->request->data );
 			die();
-			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'default', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'flash/error', array( 'class' => 'error' ) );
 		}
 	    $this->redirect( array( 'action' => 'turnos' ) );
 	}
 	
    /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * 
+    * Muestra el indice de médicos
+    * @return void
     */
-	public function reservar( $id_turno = null, $id_paciente = null, $id_medico = null ) {
-		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['Medico'];
-			$id_turno = $this->request->data['id_turno'];
-			$id_paciente = $this->request->data['rpaciente'];
-			$id_medico = $this->request->data['id_medico'];
-			// Divido el codigo del paciente
-			$tmp = split( "-", $id_paciente );
-			$id_paciente = $tmp[0];
-		} else {
-			// Si entro por aquí, tuve que dar de alta el paciente.
-			if( $id_turno == null || $id_paciente == null || $id_medico == null ) {
-				throw new NotFoundException( "Error de parametros" );
-			}
-		}
-		
-		$this->Turno->id = $id_turno;
-		if (!$this->Turno->exists()) {
-			throw new NotFoundException( 'El turno solicitado no existe'.$id_turno );
-		}
-		$this->Turno->unbindModel( array( 'belongsTo' => array( 'Paciente' ) ) );
-		$turno = $this->Turno->read();
-
-		$this->loadModel( 'Usuario' );
-		$this->Usuario->id = $id_paciente;
-		if( !$this->Usuario->exists() ) {
-			$this->Session->setFlash( 'El Usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'default', array( 'class' => 'success' ) );
-			$this->redirect( array( 'controller' => 'usuarios', 'action' => 'altaTurno', $id_turno, $id_medico, true, $this->request->data['rpaciente'], 'reservar' ) );
-		}
-
-		// No verifico la  restricción de cantidad de turnos x día
-		// Cargo la cantidad de horas configuradas en el sistema
-		$tiempo = Configure::read( 'Turnera.notificaciones.horas_proximo' );
-
-		$this->Usuario->recursive = -1;
-		$usuario = $this->Usuario->read();
-
-		$turno['Medico'] = $this->Usuario->read( null, $turno['Medico']['usuario_id'] );
-
-		$error = '';
-		if( $this->Turno->reservar( $id_turno, $id_paciente, $error )  ) {
-			$this->requestAction( array( 'controller' => 'avisos', 'action' => 'agregarAvisoNuevoTurno', 'id_turno' => $id_turno, 'id_paciente' => $id_paciente ) );
-			$this->Session->setFlash('El turno se reservó correctamente', 'default', array( 'class' => 'success' ) );
-		} else {
-			$this->Session->setFlash( " Existió un error al intentar reservar el turno.\n Error:".$error , 'default', array( 'class' => 'error' ) );
-		}
-		$this->redirect( array( 'action' => 'turnos' ) );
-	}
-
-   /**
-    * Mantiene el día en que debe ser mostrados los turnos
-    * 
-    */
-	public function atendido( $id_turno = null ) {
-
-		$this->Turno->id = $id_turno;
-		if( ! $this->Turno->exists() ) {
-			throw new NotFoundException( 'El turno no existe, '.$id_turno );
-		}
-		$this->Turno->set( 'recibido', true );
-		$this->Turno->set( 'atendido', true );
-		if( $this->Turno->save() ) {
-			$this->Session->setFlash( 'El turno ha sido colocado como atendido' , 'default', array( 'class' => 'success' ) );
-		} else {
-			$this->Session->setFlash( 'No se pudo colocar el turno como atendido', 'default', array( 'class' => 'error' ) );
-		}
-		$this->redirect( array( 'action' => 'turnos' ) );
-	}
-	
-
 	public function index() {
 		$this->Medico->recursive = 0;
 		$this->set( 'medicos', $this->paginate() );
 	}
 
+   /**
+    * Función para ver los horarios y datos del medico.
+    * Si el identificador es nulo, se toma el primer médico que encuentra.
+    * @param $id integer Identificador del médico.
+    * @return void
+    */
 	public function view( $id = null ) {
 		if( $id == null ) {
 			// Quieren ver los horarios de atención - Muestro el del primer médico
@@ -489,10 +265,10 @@ class MedicosController extends AppController {
 	}
 
 	/**
-	* administracion_index method
-	*
-	* @return void
-	*/
+	 * administracion_index method
+	 *
+	 * @return void
+	 */
 	public function administracion_index() {
 	    $this->layout = 'administracion';
 		$this->Medico->recursive = 0;
@@ -631,7 +407,7 @@ class MedicosController extends AppController {
 				throw new NotFoundException( 'El medico no existe en la base de datos' );
 			}
 			if( $this->request->data['Medico']['duracion'] == 0 ) {
-				$this->Session->setFlash( 'La duración del turno no puede ser cero' );
+				$this->Session->setFlash( 'La duración del turno no puede ser cero', 'default', array( 'class' => 'error' ) );
 			} else {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
@@ -705,10 +481,10 @@ class MedicosController extends AppController {
 						// Busco cuantos turnos no coinciden y redirecciono si es necesario - devuleve un array con los ids que nocoinciden
 						$acambiar = $this->Medico->Turno->generarTurnos( $this->request->data );
 						if( count( $acambiar ) <= 0 ) {
-							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
+							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos', 'default', array( 'class' => 'success' ) );
 							$this->redirect( array( 'action' => 'index' ) );
 						} else {
-							$this->Session->setFlash( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.' );
+							$this->Session->setFlash( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.', 'default', array( 'class' => 'error' ) );
 							$this->loadModel( 'Turno' );
 							$this->Turno->Paciente->virtualFields = array( 'razon_social' => 'CONCAT( Paciente.apellido, \',\', Paciente.nombre )' );
 							$this->set( 'turnos', $this->Turno->find( 'all', array( 'conditions' => array( 'id_turno' => $acambiar ) ) ) );
