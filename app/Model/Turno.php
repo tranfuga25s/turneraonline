@@ -434,6 +434,12 @@ class Turno extends AppModel {
 		} else { return false; }
 	}
 	
+    /**
+     * Elimina los turnos relacionados con el usuario. Todos, incluso los echos ya.
+     * @param $id_usuario Identificador del usuario
+     * @return verdadero si se pudo realizar la accion.
+     * @author Esteban Zeller
+     */
 	public function eliminarTurnosUsuario( $id_usuario = null ) {
 		if( $id_usuario != null ) {
 			if( $this->updateAll( array( 'paciente_id' => null ), array( 'paciente_id' => $id_usuario ) ) ) {
@@ -443,6 +449,12 @@ class Turno extends AppModel {
 	    return false;
 	}
 	
+    /**
+     * Cancela un turno y no permite utilizarlo nuevamente.
+     * Desliga al paciente del turno.
+     * @param $id_turno Identificador del turno. Sino se usará $this->id
+     * @author Esteban Zeller
+     */
 	public function cancelar( $id_turno = null ) {
 		if( $id_turno == null ) 
 			return false;
@@ -456,8 +468,34 @@ class Turno extends AppModel {
 		return false;
 	}
 
-   /*!
+    /**
+     * Libera un turno como si lo cancelara un paciente.
+     * Permite que el turno pueda estar disponible nuevamente.
+     * @param $id_turno integer Identificador del turno. Sino se usara $this->id
+     * @author Esteban Zeller
+     */    
+    public function liberar( $id_turno = null ) {
+        if( $id_turno == null && $this->id == null ) { 
+            return false;
+        } else if( $this->id != null && $id_turno == null ) {
+            $id_turno = $this->id;
+        }
+        
+        $this->id = $id_turno;
+        $this->set( 'cancelado', false );
+        $this->set( 'atendido', false );
+        $this->set( 'recibido', false );
+        $this->set( 'paciente_id', null );
+        if( $this->save() ) {
+                return true;
+        }
+        return false;
+    }
+
+   /**
     * Devuelve verdadero si un turno se encuentra reservado
+    * @param $id_turno integer identificador del turno.
+    * @author Esteban Zeller
     */
    public function reservado( $id_turno = null ) {
 		if( $id_turno == null ) 
@@ -471,7 +509,8 @@ class Turno extends AppModel {
    }
 
   /*!
-   * Selecciona los IDS de turno de las fechas compranedidas en los parametros para el medico seleccionado
+   * Selecciona los IDS de turno de las fechas comprendidas en los parametros para el medico seleccionado
+   * 
    */
    public function seleccionarIDS( $fini, $ffin, $id_medico ) {
    	  $dato = $this->find( 'list', 

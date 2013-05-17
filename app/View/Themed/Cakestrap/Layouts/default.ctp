@@ -63,7 +63,8 @@
 			</div><!-- #footer .container -->
 			
 		</div><!-- #main-container -->
-		
+		<?php echo $this->element( 'sql_dump' ); ?>
+		<?php echo $this->Js->writeBuffer(); ?>
 	</body>
 <?php echo $this->Facebook->init(); ?>
 </html>
