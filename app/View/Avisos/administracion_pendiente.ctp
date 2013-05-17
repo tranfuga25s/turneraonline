@@ -27,6 +27,14 @@ $this->set( 'title_for_layout', "Notificaciones pendientes" );
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<p><?php echo $this->Paginator->counter( array( 'format' => 'Pagina {:page} de {:pages}, mostrando {:current} de {:count} en total, desde {:start} al {:end}' ) ); ?></p>
+    <div class="paging">
+    <?php
+        echo $this->Paginator->prev( '< Anterior', array(), null, array('class' => 'prev disabled'));
+        echo $this->Paginator->numbers(array('separator' => ''));
+        echo $this->Paginator->next( ' Siguiente >', array(), null, array('class' => 'next disabled'));
+    ?>
+    </div>
 	<br />
 	<h2>Notificaciones vencidas</h2>
 	<p>Este listado es las notificaciones que no se enviaron por alguna razón.</p>
@@ -49,6 +57,14 @@ $this->set( 'title_for_layout', "Notificaciones pendientes" );
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<p><?php echo $this->Paginator->counter( array( 'format' => 'Pagina {:page} de {:pages}, mostrando {:current} de {:count} en total, desde {:start} al {:end}' ) ); ?></p>
+    <div class="paging">
+    <?php
+        echo $this->Paginator->prev( '< Anterior', array(), null, array('class' => 'prev disabled'));
+        echo $this->Paginator->numbers(array('separator' => ''));
+        echo $this->Paginator->next( ' Siguiente >', array(), null, array('class' => 'next disabled'));
+    ?>
+    </div>
 </div>
 <script>
 	$("a",".acciones").button();
