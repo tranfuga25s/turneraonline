@@ -8,7 +8,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 	</div>
 </div>
 <div class="row-fluid">	
-	<div class="span9">
+	<div class="span5 well well-large">
 		<dl class="dl-horizontal">
 			<dt>Especialidad:</dt>
 			<dd><?php echo $medico['Especialidad']['nombre']; ?></dd>
@@ -16,7 +16,19 @@ $this->set( 'title_for_layout', "Datos del médico" );
 			<dt>Cl&iacute;nica:</dt>
 			<dd><?php echo $medico['Clinica']['nombre']; ?></dd>
 		</dl>
+    </div>
+    
+    <div class="span3 well well-small">
+        <div>
+            <?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'class' => 'btn btn-primary btn-block' ) );
+                  echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ), array( 'class' => 'btn btn-info btn-block' ) ); 
+                  echo $this->Html->link( 'Volver', '/', array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
+        </div>
+    </div>
+</div>
 
+<div class="row-fluid">    
+    <div class="span8">
 		<h4>Disponibilidad horaria</h4>
 		<table class="table table-hover table-bordered	">
 			<tbody>
@@ -45,14 +57,7 @@ $this->set( 'title_for_layout', "Datos del médico" );
 	    </table>
 	</div>
 	
-	<div class="span3 well">
-		<h3><a href="#">Acci&oacute;nes</a></h3>
-		<div>
-			<?php echo $this->Html->link( 'Sacar turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ), array( 'class' => 'btn btn-primary btn-block' ) );
-			      echo $this->Html->link( 'Contactar', array( 'controller' => 'contacto', 'action' => 'formulario' ), array( 'class' => 'btn btn-info btn-block' ) ); 
-			      echo $this->Html->link( 'Volver', array( 'controller' => 'turnos', 'verTurnos' ), array( 'class' => 'btn  btn-inverse btn-block' ) ); ?>
-		</div>
-	</div>
+
 </div>
 
 <div class="row-fluid">

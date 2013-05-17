@@ -1,20 +1,29 @@
 <?php
 $this->set( 'title_for_layout', "Darse de baja" );
 ?>
-<div class="decorado1">
-	<div class="titulo1">Darse de baja del sistema</div>
-	Por favor ingrese la casilla de correo con que se dió de alta al sistema para dar de baja el usuario asociado.
-	<?php
-	echo $this->Form->create( 'Usuario', array( 'action' => 'eliminarUsuario' ) );
-	echo $this->Form->input( 'email', array( 'label' => 'Correo electronico' ) );
-	echo $this->Form->input( 'razon', array( 'type' => 'text', 'label' => 'Si desea, especifique la razón de su decisión' ) );
-	echo $this->Form->end( 'Dar de baja' );
-	?>
-	<br />
-	<div class="ui-state-error ui-corner-all">
-		<br />
-		<span style="font-size: 16px;"><b>ATENCION:</b>&nbsp; Este proceso es irreversible!<br /></span>
-		Esta acción eliminará todos los datos personales y reservas a futuro y pasado que el usuario tenga asociado!<br />
-		<br />
-	</div>
+<div class="row-fluid">
+
+    <div id="dialogo" class="alert fade in out">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <b>ATENCION:</b> Este proceso es irreversible!
+        Esta acción eliminará todos los datos personales y reservas a futuro y pasado que el usuario tenga asociado!
+    </div>
+
+    <div class="span5 offset2">
+        <?php echo $this->Form->create( 'Usuario', array( 'action' => 'eliminarUsuario' ) ); ?>
+        <legend class="text-center">Darse de baja del sistema</legend>
+        <p>Por favor ingrese la casilla de correo con que se dió de alta al sistema para dar de baja el usuario asociado.</p>
+        <div class="text-center">
+            <?php
+            echo $this->Form->input( 'email', array( 'label' => 'Correo electronico' ) );
+            echo $this->Form->input( 'razon', array( 'type' => 'text', 'label' => 'Si desea, especifique la razón de su decisión' ) );
+            ?>            
+        </div>
+        <?php echo $this->Form->submit( 'Darme de baja', array( 'div' => array( 'class' => 'form-actions text-center' ), 'class' => 'btn btn-danger' ) ); ?>
+        <?php echo $this->Form->end(); ?>
+    </div>
+    
+
+   
 </div>
+		

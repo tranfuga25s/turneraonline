@@ -20,7 +20,7 @@
 			
 			echo $this->fetch('script');
 		?>
-		<meta lang="es" name="keywords" content="Turnos, turnos online, santa fe, clinica, ginecologia, medico, paciente, pedir turno, argentina, alejandro, alejandro talin, oncologia, tracto genital, Docente Faculta de Medicina" />
+		<meta lang="es" name="keywords" content="Turnos, turnos online, clinica, medico, paciente, pedir turno, argentina" />
 	</head>
 
 	<body>
@@ -37,15 +37,34 @@
 			</div><!-- #header .container -->
 			
 			<div id="footer" class="container well">
-				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp; <?php echo $this->Html->link(
+				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp; 
+				<?php echo $this->Html->link(
 					$this->Html->image( 'tr.logo.png', array( 'alt' => "TR Sistemas Informaticos Integrados", 'border' => '0' ) ),
 						'http://www.bscomputacion.org/',
-						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right' )
+						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right', 'style' => 'margin-left: 3px;' )
 					);	?>
+				<div class="pull-right">
+				   <?php echo $this->Html->tag( 'a', '<i class="icon-info-sign"></i>', 
+				   			array( 	'escape' => false, 
+				   					'data-toogle' => 'popover', 
+				   					'title' => 'Informacion del tema', 
+				   					'data-original-title' => 'Informacion del tema', 
+				   					'data-placement' => 'left',
+				   					'data-html' => 'true',
+				   					'data-trigger' => 'click',
+				   					'id' => 'test',
+				   					'data-content' =>
+				   						"Tema basado en <a href='http://twitter.github.io/bootstrap' target='_blank'>Bootstrap</a>".
+				   						"<br />".
+				   						"Iconos basados en <a href='http://glyphicons.com/' taget='_blank'>Glyphicons</a>"
+				   	 ) ); ?>
+			   </div>
+			   <script>$(function() { $("#test").popover(); });</script>
 			</div><!-- #footer .container -->
 			
 		</div><!-- #main-container -->
-		
+		<?php echo $this->element( 'sql_dump' ); ?>
+		<?php echo $this->Js->writeBuffer(); ?>
 	</body>
 <?php echo $this->Facebook->init(); ?>
 </html>

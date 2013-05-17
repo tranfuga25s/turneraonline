@@ -73,12 +73,18 @@ class Aviso extends AppModel {
 	 */
 	public function cancelarAvisoNuevoTurno( $id_turno ) {
 		// Busco a que ID corresponde este turno.
-		$ret = $this->VariableAviso->find('first', array( 'conditions' => array( 'modelo' => 'Turno', 'id' => $id_turno ), 'fields' => array( 'aviso_id' ) ) );
-		$this->id = $ret['VariableAviso']['aviso_id'];
-		$template = $this->read( 'template' );
-		if( $template == 'nuevoTurno' ) {
-			$this->VariableAviso->deleteAll( array( 'modelo' => 'Turno', 'id' => $id_turno ) );
-			$this->delete();
-		}
+		$ret = $this->VariableAviso->find( 'first', array( 'conditions' => array( 'modelo' => 'Turno', 
+		                                                                          'id' => $id_turno ), 
+		                                                   'fields' => array( 'aviso_id' ) ) );
+        if( $ret != array() ) {
+    		$this->id = $ret['VariableAviso']['aviso_id'];
+    		$template = $this->read( 'template' );
+    		if( $template == 'nuevoTurno' ) {
+    			$this->VariableAviso->deleteAll( array( 'modelo' => 'Turno', 'id' => $id_turno ) );
+    			$this->delete();
+    		}
+        } else {
+            $this->log( "La cancelación de un nuevo turno no pudo encontrar los datos relacionados con el turno. Id de turno:".$id_turno, 'error' );
+        }
 	}
 }
