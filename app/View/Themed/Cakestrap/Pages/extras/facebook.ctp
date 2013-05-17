@@ -2,7 +2,7 @@
 $this->set( 'title_for_layout', "Facebook" );
 ?>
 <div class="row-fluid">
-	
+
 	<div class="span2" id="navegacion">
 		<ul class="nav nav-list well affix span2">
 			<li class="nav-header">Extras > Integración con facebook</li>
@@ -10,15 +10,15 @@ $this->set( 'title_for_layout', "Facebook" );
 			<li><?php echo $this->Html->tag( 'a', '<i class="icon-chevron-right"></i>Elementos disponibles', '#salir' ); ?></li>
 		</ul>
 	</div>
-	
+
 	<div class="span9 offset1">
 		<h4>Integración con facebook</h4>
 		<p>Este sistema le permite integrar la plataforma de turnos con el sistema de facebook.</p>
-		
+
 		<h5>Ingreso sin registración</h5>
 		<p>Esta integración permite a los usuarios utilizar su cuenta de facebook para darse de alta al sistema y solicitar los turnos.<br />El sistema capturará los datos del usuario automaticamente y le permitirá realizar todas las mismas acciones tal cual si se hubiese dado de alta manualmente en el sitio.</p>
 		<p>Agregar esta integración no elimina la posibilidad de seguir utilizando el sistema de usuarios normal de la aplicación.</p>
-		
+
 		<h5>Elementos disponibles para colocar</h5>
 		<ul class="media-list">
 			<li class="media">
@@ -39,7 +39,7 @@ $this->set( 'title_for_layout', "Facebook" );
 					<p>El botón enviar le permite a los usuarios facilmente enviar contenido a sus amigos.</p>
 				</div>
 			</li>
-			
+
 			<li class="media">
 				<div class="media-object pull-left thumbnail">
 					<img class="img" src="https://fbcdn-dragon-a.akamaihd.net/cfs-ak-ash3/676528/839/343235882446936-/follow.png" width="128" height="88">
@@ -49,7 +49,7 @@ $this->set( 'title_for_layout', "Facebook" );
 					<p>El botón Segir permite a los usuario suscribirse a otras personas directamente desde tu sitio. ( También es llamado el boton de suscripción)</p>
 				</div>
 			</li>
-			
+
 			<li class="media">
 				<div class="media-object pull-left thumbnail">
 					<img class="img" src="https://fbcdn-dragon-a.akamaihd.net/cfs-ak-prn1/676551/223/161113474041532-/comments.png" width="128" height="88">
@@ -69,7 +69,7 @@ $this->set( 'title_for_layout', "Facebook" );
 					<p>El sistema de actividades le permite mostrar a los usuarios que están haciendo los amigos en el sitio a través del Me gusta y Comentarios.</p>
 				</div>
 			</li>
-			
+
  			<li class="media">
 				<div class="media-object pull-left thumbnail">
 					<img class="img" src="https://fbcdn-dragon-a.akamaihd.net/cfs-ak-ash3/676670/313/570035976347835-/recommendations%20box.png" width="128" height="88">
@@ -87,7 +87,7 @@ $this->set( 'title_for_layout', "Facebook" );
 				</div>
 				<div class="media-body">
 					<h6 class="media-heading">Barra de Recommendaciones</h6>
-					<p>The Recommendations Bar allows users to like content, get recommendations, and share what they’re reading with their friends.</p>
+					<p>La barra de recomendaciones le permite a los usuarios poner me gusta en el contenido, obtener recomendaciones y compartir lo que están leyendo con sus amigos.</p>
 				</div>
 			</li>
 
@@ -98,7 +98,7 @@ $this->set( 'title_for_layout', "Facebook" );
 				</div>
 				<div class="media-body">
 					<h6 class="media-heading">Caja de Like</h6>
-					<p>The Like Box enables users to like your Facebook Page and view its stream directly from your website.</p>
+					<p>La Caja de Like le permite a los usuarios poner me gusta en tu pagina de Facebook y ver las novedades directamente desde tu sitio.</p>
 				</div>
 			</li>
 
@@ -108,7 +108,7 @@ $this->set( 'title_for_layout', "Facebook" );
 				</div>
 				<div class="media-body">
 					<h6 class="media-heading">Pila de Caras</h6>
-					<p>The Facepile plugin displays the Facebook profile pictures of users who have liked your page or have signed up for your site.</p>
+					<p>La pila de caras muestra las fotos de perfil de los usuarios que han echo me gusta a tu pagina o han escrito en el muro de tu apliacion.</p>
 				</div>
 			</li>
 		</ul>
