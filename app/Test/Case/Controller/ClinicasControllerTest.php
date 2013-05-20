@@ -99,39 +99,20 @@ class ClinicasControllerTestCase extends ControllerTestCase {
     }
 
     /**
-     * testAdd method
-     *
-     * @return void
-     */
-    public function testAdd() {
-        $this->assertEqual( false, true, "No implementado!" );
-    }
-
-    /**
-     * testEdit method
-     *
-     * @return void
-     */
-    public function testEdit() {
-        $this->assertEqual( false, true, "No implementado!" );
-    }
-
-    /**
-     * testDelete method
-     *
-     * @return void
-     */
-    public function testDelete() {
-        $this->assertEqual( false, true, "No implementado!" );
-    }
-
-    /**
      * testAdministracionIndex method
      *
      * @return void
      */
     public function testAdministracionIndex() {
-        $this->assertEqual( false, true, "No implementado!" );
+        $this->testAction( '/administracion/clinicas/index' );
+        $this->assertInternalType( 'array', $this->vars['clinicas'], 'La vista no tiene definido su listado' );
+        $this->assertNotEqual( count( $this->vars['clinicas'] ), 0, 'No hay ninguna clínica activa' );
+        foreach( $this->vars['clinicas'] as $clinica ) {
+            $this->assertNotEqual( array_key_exists( 'Medicos', $clinica ), true, 'El listado de clinicas posee los médicos relacionados' );
+            $this->assertNotEqual( array_key_exists( 'Secretarias', $clinica ), true, 'El listado de clinicas posee los médicos relacionados' );
+            $this->assertNotEqual( array_key_exists( 'Consultorios', $clinica ), true, 'El listado de clinicas posee los médicos relacionados' );
+            //$this->assertNotEqual( $clinica['Clinica']['publicado'], false, 'El listado está mostrando una clinica no publicada' );
+        }
     }
 
     /**
@@ -140,7 +121,30 @@ class ClinicasControllerTestCase extends ControllerTestCase {
      * @return void
      */
     public function testAdministracionView() {
-        $this->assertEqual( false, true, "No implementado!" );
+        $this->Clinica = new Clinica();
+        $data = $this->Clinica->find( 'first', array( 'fields' => array( 'id_clinica' ), 'recursive' => -1 ) );
+        $id_clinica = $data['Clinica']['id_clinica'];
+        unset( $data );
+        unset( $this->Clinica );
+        $result = $this->testAction( '/clinicas/view/'.$id_clinica );
+        $this->assertInternalType( 'array', $this->vars['clinica'], 'La vista no tiene definido sus datos en la variable clinica' );
+        // Verifico que exista las coordenadas
+        $this->assertNotEqual( $this->vars['clinica']['Clinica']['lat'], null, 'La coordenada de latitud no puede ser nula' );
+        $this->assertNotEqual( $this->vars['clinica']['Clinica']['lng'], null, 'La coordenada de longitud no puede ser nula' );
+        // @TODO Verifico que cargue el helper de los mapas
+    }
+
+    /**
+     * testAdministracionViewNonExistent method
+     *
+     * @return void
+     */
+    public function testAdministracionView() {
+        $this->Clinica = $this->generate( 'Clinica', array(
+                'methods' => array( 'view' ) ) );
+
+        $this->Clinica->will( $this->testAction( '/clinicas/view/-1' ),
+                              $this->throwException( new NotFoundException() ) );
     }
 
     /**
@@ -148,26 +152,26 @@ class ClinicasControllerTestCase extends ControllerTestCase {
      *
      * @return void
      */
-    public function testAdministracionAdd() {
+  /*  public function testAdministracionAdd() {
         $this->assertEqual( false, true, "No implementado!" );
-    }
+    }*/
 
     /**
      * testAdministracionEdit method
      *
      * @return void
      */
-    public function testAdministracionEdit() {
+   /* public function testAdministracionEdit() {
         $this->assertEqual( false, true, "No implementado!" );
-    }
+    }*/
 
     /**
      * testAdministracionDelete method
      *
      * @return void
      */
-    public function testAdministracionDelete() {
+    /*public function testAdministracionDelete() {
         $this->assertEqual( false, true, "No implementado!" );
-    }
+    }*/
 
 }
