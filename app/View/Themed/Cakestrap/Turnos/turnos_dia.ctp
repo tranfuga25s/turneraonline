@@ -4,7 +4,7 @@
 <?php if( $actualizacion == true ) { ?>
 var actualizar = true;
 <?php } else { ?>
-var actualizar = false; 
+var actualizar = false;
 <?php } ?>
 
 function cambiarDia() {
@@ -33,7 +33,7 @@ function mostrarCancelarTurnos() {
 </script>
 
 <div class="row-fluid">
-    
+
     <div class="navbar">
         <div class="navbar-inner">
             <ul class="nav">
@@ -43,10 +43,14 @@ function mostrarCancelarTurnos() {
                 <li><?php echo $this->Html->tag( 'a', 'Cancelar turnos', array( 'onclick' => 'mostrarCancelarTurnos()' ) ); ?></li>
                 <?php endif; ?>
                 <li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
-                <li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li> 
+                <li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
             </ul>
-        </div>  
+            <ul class="nav pull-right">
+                <li class="active"><?php echo $this->Html->tag( 'a', $fechas ); ?></li>
+            </ul>
+        </div>
     </div>
+
 </div>
 
 <div id="seldia" style="display:none;" class="alert alert-info">
@@ -55,29 +59,30 @@ function mostrarCancelarTurnos() {
    <fieldset>
         Elija el día que desea:
         <?php echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
+        <?php echo $this->Form->input( 'accion', array( 'type' => 'hidden', 'value' => false ) ); ?>
         <div class="btn-toolbar">
-            <div class="btn-group"><?php  echo $this->Html->tag( 'a', '< Dia', array(  'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "ayer" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) ); ?></div>&nbsp;
+            <div class="btn-group"><?php  echo $this->Html->tag( 'a', '< Dia', array(  'class' => 'btn', 'onclick' => '$("#'.$modelo.'Accion").val( "ayer" ); $("#'.$modelo.'TurnosForm").submit()' ) ); ?></div>&nbsp;
             <?php echo "&nbsp;<b>Fecha:</b>" . $this->Form->dateTime( 'fecha', 'DMY', null, array( 'class' => array( 'class' => 'input-small' ), 'value' => array( 'day' => $dia, 'month' => $mes, 'year' => $ano ), 'empty' => false, 'monthNames' => array( 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ) ) ); ?>
-            <?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#MedicoIdMedic").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo( "#MedicoTurnosFOrm"); $("#MedicoTurnosForm").submit()') ); ?>
+            <?php echo $this->Html->tag( 'a', 'Ir a hoy', array( 'onclick' => '$("#'.$modelo.'Accion").val( "hoy" ); $("#'.$modelo.'TurnosForm").submit();') ); ?>
             <?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false, 'class' => 'btn btn-success' ) ); ?>
             &nbsp;
             <div class="btn-group">
-                <?php  echo $this->Html->tag( 'a', 'Dia >', array( 'class' => 'btn','onclick' => '$("#MedicoIdMedico").clone().attr( "value", "manana" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?>
-                <?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'class' => 'btn','onclick' => '$("#MedicoIdMedico").clone().attr( "value", "sem" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );?>
-                <?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "mes" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()') );?>            
+                <?php  echo $this->Html->tag( 'a', 'Dia >', array( 'class' => 'btn','onclick' => '$("#'.$modelo.'Accion").val( "manana" ); $("#'.$modelo.'TurnosForm").submit();') );?>
+                <?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'class' => 'btn','onclick' => '$("#'.$modelo.'Accion").val( "sem" ); $("#'.$modelo.'TurnosForm").submit();' ) );?>
+                <?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'class' => 'btn', 'onclick' => '$("#'.$modelo.'Accion").val( "mes"  ); $("#'.$modelo.'TurnosForm").submit();') );?>
             </div>
             &nbsp;
             <?php if( !$hoy ) {
-                echo $this->Html->tag( 'a', 'Ir a hoy', array( 'class' => 'btn', 'onclick' => '$("#MedicoIdMedico").clone().attr( "value", "hoy" ).attr( "name", "data[Medico][accion]" ).appendTo("#MedicoTurnosForm"); $("#MedicoTurnosForm").submit()' ) );
+                echo $this->Html->tag( 'a', 'Ir a hoy', array( 'class' => 'btn', 'onclick' => '$("#'.$modelo.'Accion").val( "hoy"  ); $("#'.$modelo.'TurnosForm").submit();' ) );
             } ?>
    </fieldset>
 </div>
 
-<?php 
+<?php
 echo $this->element( 'Turnos/reservar'    , array( 'redirect' => $modelo ) );
 echo $this->element( 'Turnos/autorefresco', array( 'redirect' => $modelo ) );
 echo $this->element( 'Turnos/cancelar'    , array( 'redirect' => $modelo ) );
-echo $this->element( 'Turnos/sobreturno'  , array( 'redirect' => $modelo ) ); 
+echo $this->element( 'Turnos/sobreturno'  , array( 'redirect' => $modelo ) );
 ?>
 
 <?php if( $hoy ) { ?>
@@ -91,10 +96,10 @@ echo $this->element( 'Turnos/sobreturno'  , array( 'redirect' => $modelo ) );
     Seleccione por favor que desea cancelar:
     <div class="btn-group">
         <?php echo $this->Html->tag( 'a', 'Todos los turnos hasta el final del día', array( 'class' => 'btn btn-danger', 'onclick' => 'cancelarTurnos( \'dia\' )' ) );
-              echo $this->Html->tag( 'a', 'Próximo turno', array( 'class' => 'btn btn-danger', 'onclick' => 'cancelarTurnos( \'proximo\' )' ) ); 
+              echo $this->Html->tag( 'a', 'Próximo turno', array( 'class' => 'btn btn-danger', 'onclick' => 'cancelarTurnos( \'proximo\' )' ) );
               echo $this->Html->tag( 'a', 'Cancelar', array( 'class' => 'btn btn-success', 'onclick' => '$("#cancelar").slideUp()' ) ); ?>
     </div>
-    <?php echo $this->Form->end(); ?> 
+    <?php echo $this->Form->end(); ?>
 </div>
 <?php } ?>
 

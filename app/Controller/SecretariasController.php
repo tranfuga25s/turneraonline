@@ -25,7 +25,7 @@ class SecretariasController extends AppController {
 					case 'cancelar':
 					case 'resumen':
 					{
-						return true; 
+						return true;
 						break;
 					}
 				}
@@ -36,7 +36,7 @@ class SecretariasController extends AppController {
 
    /**
     * Muestra los turnos del dia elegido
-    * 
+    *
     */
 	public function turnos() {
 		// Datos basicos
@@ -53,9 +53,9 @@ class SecretariasController extends AppController {
 		// Busco los consultorios de estas clinicas
 		$this->loadModel( 'Consultorio' );
 		$consultorios = $this->Consultorio->find( 'list', array( 'conditions' => array( 'clinica_id' => $clinicas ), 'fields' => array( 'id_consultorio' ) ) );
-		
+
 		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['Secretaria'];
+			$this->request->data = $this->request->data['secretarias'];
 			// Busco la fecha e que me pasaron
 			if( isset( $this->request->data['accion'] ) ) {
 				$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
@@ -76,7 +76,7 @@ class SecretariasController extends AppController {
 			} else {
 				$this->DiaTurnoRecall->cambiarDia( $this->data['fecha']['day'],
                                                    $this->data['fecha']['month']+1,
-                                                   $this->data['fecha']['year'] );			
+                                                   $this->data['fecha']['year'] );
 			}
 		}
 		// Lista de nombres de medicos
@@ -85,14 +85,14 @@ class SecretariasController extends AppController {
 
 		$this->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
 		$this->set( 'dia', $this->dia );
-		$this->set( 'mes', $this->mes-1 ); // Lista de meses base 0 
-		$this->set( 'ano', $this->ano ); 
-		
-		// Cargo todos los turnos del día x consultorio		
+		$this->set( 'mes', $this->mes-1 ); // Lista de meses base 0
+		$this->set( 'ano', $this->ano );
+
+		// Cargo todos los turnos del día x consultorio
 		$cons = $this->Consultorio->find( 'all', array( 'conditions' => array( 'id_consultorio' => $consultorios ),
 										  'fields' => array( 'id_consultorio', 'nombre' ),
 										  'recursive' => -1 ) );
-		
+
 		$this->Turno->Paciente->virtualFields = array( 'razonsocial' => ' CONCAT( Paciente.apellido, \', \', Paciente.nombre ) ' );
 		$this->Turno->unbindModel( array( 'belongsTo' => array( 'Consultorio' ) ) );
 		$nuevo = array();
@@ -114,10 +114,10 @@ class SecretariasController extends AppController {
 
    /**
     * Mantiene el día en que debe ser mostrados los turnos
-    * 
+    *
     */
 	public function cancelar( $id_turno = null ) {
-		
+
 		if( $id_turno == null ) {
 			$id_turno = $this->request->data['Secretaria']['id_turno'];
 		} else {
@@ -126,7 +126,7 @@ class SecretariasController extends AppController {
 		}
 
 		if( $this->request->data['Secretaria']['quien'] == "m" ){
-			
+
 			$ids = array();
 			$ids[] = $id_turno;
 			if( count( $ids ) > 0 ) {
@@ -167,7 +167,7 @@ class SecretariasController extends AppController {
 				}
 			} else {
 				$this->Session->setFlash( 'El turno no existe!' );
-			}	
+			}
 		} else {
 			pr( $this->request->data );
 			die();
@@ -175,9 +175,9 @@ class SecretariasController extends AppController {
 		}
 	    $this->redirect( array( 'action' => 'turnos' ) );
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	 public function resumen() {
 	 	// muestro la opción para el resumen
@@ -194,14 +194,14 @@ class SecretariasController extends AppController {
 			}
 			if( $this->Secretaria->saveField( 'resumen', $estado ) ) {
 				$this->Session->setFlash( "Resumen diario ".$accion." correctamente." );
-				$this->redirect( '/' );		
+				$this->redirect( '/' );
 			} else {
 				$this->Session->setFlash( "No se pudo guardar el cambio" );
 			}
-	 	} 
+	 	}
 	 	$this->set( 'resumen', $this->Secretaria->field( 'resumen' ) );
 		$this->set( 'id_secretaria', $this->Secretaria->field( 'id_secretaria' ) );
-	 	
+
 	 }
 	/**
 	 * administracion_index method
