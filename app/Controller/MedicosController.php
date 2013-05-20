@@ -10,8 +10,8 @@ class MedicosController extends AppController {
 	var $helpers = array( 'Html', 'Form', 'Paginator', 'Js' => array( 'Jquery' ) );
 	var $components = array( 'RequestHandler', 'AutoUpdateRecall', 'DiaTurnoRecall' => array( 'variable' => 'Medico' ) );
 	var $uses = array( 'Medico', 'Consultorio', 'Turno' );
-	
-	
+
+
 	public function beforeFilter() {
 		$this->Auth->allow( array( 'view' ) );
         parent::beforeFilter();
@@ -60,7 +60,7 @@ class MedicosController extends AppController {
 
    /**
     * Muestra los turnos del dia elegido
-    * 
+    *
     */
 	public function turnos() {
 		// Datos básicos
@@ -69,7 +69,7 @@ class MedicosController extends AppController {
 		$id_medico = $t['Medico']['id_medico'];
 
 		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['Medico'];
+			$this->request->data = $this->request->data['medicos'];
 			// Busco la fecha e que me pasaron
 			if( isset( $this->data['accion'] ) ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
@@ -90,7 +90,7 @@ class MedicosController extends AppController {
 			} else {
 				$this->DiaTurnoRecall->cambiarDia( $this->data['fecha']['day'],
 								   				   $this->data['fecha']['month']+1,
-								                   $this->data['fecha']['year'] );				
+								                   $this->data['fecha']['year'] );
 			}
 		}
 
@@ -99,7 +99,7 @@ class MedicosController extends AppController {
 		$f1 = new DateTime( 'now' );
 		$f1->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() ); $f1->setTime( 0, 0, 0 );
 		$f2 = clone $f1; $f2->add( new DateInterval( "P1D" ) );
-		$this->set( 'turnos' , $this->Turno->find( 'all', array( 'conditions' => array( 
+		$this->set( 'turnos' , $this->Turno->find( 'all', array( 'conditions' => array(
 												'medico_id' => $id_medico,
 												'DATE( fecha_inicio ) >=' =>  $f1->format( 'Y-m-d' ),
 												'DATE( fecha_fin ) <' => $f2->format( 'Y-m-d' ) ),
@@ -110,13 +110,13 @@ class MedicosController extends AppController {
 		// Verifico si se pueden colocar las acciones
 		if( $f1 >= $f2 ) {
 			$this->set( 'acciones', true );
-		} else { $this->set( 'acciones', false ); }		
+		} else { $this->set( 'acciones', false ); }
 
 	}
 
 	/**
 	 * Cambia la opción de autoactualización de ventana
-	 * 
+	 *
 	 */
 	public function autoactualizacion() {
 		if( $this->request->isPost() ) {
@@ -128,16 +128,16 @@ class MedicosController extends AppController {
 		}
 		$this->redirect( array( 'action' => 'turnos' ) );
 	}
-	
+
 
 
 
    /**
     * Mantiene el día en que debe ser mostrados los turnos
-    * 
+    *
     */
 	public function cancelar( $id_turno = null ) {
-		
+
 		if( $id_turno == null ) {
 			$id_turno = $this->request->data['Medico']['id_turno'];
 		} else {
@@ -146,14 +146,14 @@ class MedicosController extends AppController {
 		}
 
 		if( $this->request->data['Medico']['quien'] == "m" ) {
-			
+
 			// Veo si es algo especial
 			$ids = array();
 			if( isset( $this->request->data['Medico']['que'] ) ) {
 				// Cargo los ids de los turnos según corresponda.
 				$f1 = new DateTime( 'now' );
-				$f2 = clone $f1; 
-				$f2->setTime( 0, 0, 0 ); 
+				$f2 = clone $f1;
+				$f2->setTime( 0, 0, 0 );
 				$f2->add( new DateInterval("P1D" ) );
 				$this->loadModel( 'Turno' );
 				$id_usuario = $this->Auth->user( 'id_usuario' );
@@ -168,7 +168,7 @@ class MedicosController extends AppController {
 													       ),
 													   'fields' => array( 'id_turno' ),
 													   'recursive' => -1
-													  ) );																  
+													  ) );
 				} else if( $this->request->data['Medico']['que'] == 'proximo' ) {
 					$ids[] = $this->Turno->find( 'list', array( 'conditions' =>
 													 array( 'medico_id' => $id_medico,
@@ -179,13 +179,13 @@ class MedicosController extends AppController {
 													   'fields' => array( 'id_turno' ),
 													   'recursive' => -1,
 													   'limit' => 1
-													  ) );					
+													  ) );
 				}
 			} else {
 				// Eliminando un solo turno desde la seccion normal
 				$ids[] = $id_turno;
 			}
-			// Eliminación			
+			// Eliminación
 			if( count( $ids ) > 0 ) {
 			   	$correcto = $incorrecto = array();
 			   	foreach( $ids as $id ) {
@@ -226,7 +226,7 @@ class MedicosController extends AppController {
 				}
 			} else {
 				$this->Session->setFlash( 'El turno no existe!', 'flash/error', array( 'class' => 'error' ) );
-			}	
+			}
 		} else {
 			pr( $this->request->data );
 			die();
@@ -234,7 +234,7 @@ class MedicosController extends AppController {
 		}
 	    $this->redirect( array( 'action' => 'turnos' ) );
 	}
-	
+
    /**
     * Muestra el indice de médicos
     * @return void
@@ -339,11 +339,11 @@ class MedicosController extends AppController {
 		$clinicas = $this->Medico->Clinica->find('list');
 		$this->set( compact('usuarios', 'especialidades', 'clinicas' ) );
 	}
-	
+
 	public function administracion_ponerEnVisible( $id_medico = null ) {
 		$this->Medico->id = $id_medico;
 		if( !$this->Medico->exists() ) {
-			throw new NotFoundException( 'El medico elegido no existe!' ); 
+			throw new NotFoundException( 'El medico elegido no existe!' );
 		}
 		if( $this->Medico->saveField( 'visible', true ) ) {
 			$this->Session->setFlash( 'Medico pasado a visible correctamente', 'default', array( 'class' => 'success' ) );
@@ -356,7 +356,7 @@ class MedicosController extends AppController {
 	public function administracion_sacarDeVisible( $id_medico = null ) {
 		$this->Medico->id = $id_medico;
 		if( !$this->Medico->exists() ) {
-			throw new NotFoundException( 'El medico elegido no existe!' ); 
+			throw new NotFoundException( 'El medico elegido no existe!' );
 		}
 		if( $this->Medico->saveField( 'visible', false ) ) {
 			$this->Session->setFlash( 'Medico pasado a invisible correctamente', 'default', array( 'class' => 'success' ) );
@@ -384,7 +384,7 @@ class MedicosController extends AppController {
 			$this->Session->setFlash( 'El médico fue eliminado correctamente.', 'default', array( 'class' => 'success' ) );
 			$this->redirect( array( 'action' => 'index' ) );
 		} else {
-			$this->Session->setFlash( 'El médico no pudo ser eliminado', 'default', array( 'class' => 'error' ) ); 
+			$this->Session->setFlash( 'El médico no pudo ser eliminado', 'default', array( 'class' => 'error' ) );
 		}
 		$this->redirect( array( 'action' => 'index' ) );
 	}
@@ -394,12 +394,12 @@ class MedicosController extends AppController {
 	*
 	*/
 	public function administracion_disponibilidad( $id_medico = null ) {
-		$dias = array(  0 => 'domingo', 
-		                1 => 'lunes', 
-		                2 => 'martes', 
-		                3 => 'miercoles', 
-		                4 => 'jueves', 
-		                5 => 'viernes', 
+		$dias = array(  0 => 'domingo',
+		                1 => 'lunes',
+		                2 => 'martes',
+		                3 => 'miercoles',
+		                4 => 'jueves',
+		                5 => 'viernes',
 		                6 => 'sabado' );
 		if( $this->request->isPost() ) {
 			$this->Medico->id = $this->request->data['Medico']['id_medico'];
@@ -412,25 +412,25 @@ class MedicosController extends AppController {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
 					if( $this->request->data['Medico'][$dia] ) {
-						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0 
+						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0
 						 && $this->request->data[$dia]['hiniciotarde'] == 0 && $this->request->data[$dia]['hfintarde'] == 0 ) {
 								$mensaje_flash .= 'El horario del día &nbsp;'.$dia.'&nbsp; tiene mal ajustados los horarios de inicio y fin.<br />';
-						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin'] 
+						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin']
 						        && $this->request->data[$dia]['minicio'] == $this->request->data[$dia]['mfin'] && $this->request->data[$dia]['hinicio'] != 0 ) {
-								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';	
-						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde'] 
+								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';
+						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde']
 							    && $this->request->data[$dia]['miniciotarde'] == $this->request->data[$dia]['mfintarde']  && $this->request->data[$dia]['hiniciotarde'] != 0 ) {
-								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';	
+								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';
 						}
 						if( $this->Medico->Disponibilidad->verificar(
 								$this->request->data['Medico']['id_medico'],
 								$this->request->data['Medico']['consultorio'],
-						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ), 
+						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
-							) ) { 
+							) ) {
 							$mensaje_flash .= "El horario del dia ".strtoupper($dia)." en el consultorio seleccionado ya está ocupado por otro medico<br />";
 						}
 					}
@@ -441,7 +441,7 @@ class MedicosController extends AppController {
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
-						$datos = array( 'Disponibilidad' => 
+						$datos = array( 'Disponibilidad' =>
 							array( 	'medico_id'      => $this->request->data['Medico']['id_medico'],
 								    'duracion'       => intval( $this->request->data['Medico']['duracion'] ),
 								    'consultorio_id' => $this->request->data['Medico']['consultorio']
@@ -463,7 +463,7 @@ class MedicosController extends AppController {
 						// Guardo los datos asociados - Genero todos los dias para mas comodidad en el script de generación automatica
 						foreach( $dias as $dia ) {
 							if( $this->request->data['Medico'][$dia] == 1 ) {
-								$dat = array( 'DiaDisponibilidad' => 
+								$dat = array( 'DiaDisponibilidad' =>
 										array(	'dia' => $this->request->data[$dia]['numero'],
 											    'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'],
 											    'habilitado' => true,
@@ -562,12 +562,12 @@ class MedicosController extends AppController {
 			$t = $this->Medico->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_medico' ) ) );
 			$id_medico = $t['Medico']['id_medico'];
 		}
-		$dias = array(  0 => 'domingo', 
-		                1 => 'lunes', 
-		                2 => 'martes', 
-		                3 => 'miercoles', 
-		                4 => 'jueves', 
-		                5 => 'viernes', 
+		$dias = array(  0 => 'domingo',
+		                1 => 'lunes',
+		                2 => 'martes',
+		                3 => 'miercoles',
+		                4 => 'jueves',
+		                5 => 'viernes',
 		                6 => 'sabado' );
 		if( $this->request->isPost() ) {
 			$this->Medico->id = $this->request->data['Medico']['id_medico'];
@@ -580,25 +580,25 @@ class MedicosController extends AppController {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
 					if( $this->request->data['Medico'][$dia] ) {
-						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0 
+						if( $this->request->data[$dia]['hinicio'] == 0      && $this->request->data[$dia]['hfin'] == 0
 						 && $this->request->data[$dia]['hiniciotarde'] == 0 && $this->request->data[$dia]['hfintarde'] == 0 ) {
 								$mensaje_flash .= 'El horario del día &nbsp;'.$dia.'&nbsp; tiene mal ajustados los horarios de inicio y fin.<br />';
-						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin'] 
+						} else if( $this->request->data[$dia]['hinicio'] == $this->request->data[$dia]['hfin']
 						        && $this->request->data[$dia]['minicio'] == $this->request->data[$dia]['mfin'] && $this->request->data[$dia]['hinicio'] != 0 ) {
-								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';	
-						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde'] 
+								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.'&nbsp; tiene un horario de inicio y fin identicos para le horario de mañana.<br />';
+						} else if( $this->request->data[$dia]['hiniciotarde'] == $this->request->data[$dia]['hfintarde']
 							    && $this->request->data[$dia]['miniciotarde'] == $this->request->data[$dia]['mfintarde']  && $this->request->data[$dia]['hiniciotarde'] != 0 ) {
-								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';	
+								$mensaje_flash .= 'El horario del día&nbsp;'.$dia.' tiene un horario de inicio y fin identicos para le horario de tarde.<br />';
 						}
 						if( $this->Medico->Disponibilidad->verificar(
 								$this->request->data['Medico']['id_medico'],
 								$this->request->data['Medico']['consultorio'],
-						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ), 
+						        array_pop( array_reverse( array_keys( $dias, $dia ) ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hinicio']     , $this->request->data[$dia]['minicio']     , 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hfin']        , $this->request->data[$dia]['mfin']        , 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hiniciotarde'], $this->request->data[$dia]['miniciotarde'], 0 ) ),
 								date( 'H:i:s', mktime( $this->request->data[$dia]['hfintarde']   , $this->request->data[$dia]['mfintarde']   , 0 ) )
-							) ) { 
+							) ) {
 							$mensaje_flash .= "El horario del dia ".strtoupper($dia)." en el consultorio seleccionado ya está ocupado por otro medico<br />";
 						}
 					}
@@ -609,7 +609,7 @@ class MedicosController extends AppController {
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
-						$datos = array( 'Disponibilidad' => 
+						$datos = array( 'Disponibilidad' =>
 									array( 	'medico_id'      => $this->request->data['Medico']['id_medico'],
 										    'duracion'       => intval( $this->request->data['Medico']['duracion'] ),
 										    'consultorio_id' => $this->request->data['Medico']['consultorio']
@@ -631,7 +631,7 @@ class MedicosController extends AppController {
 						// Guardo los datos asociados - Genero todos los dias para mas comodidad en el script de generación automatica
 						foreach( $dias as $dia ) {
 							if( $this->request->data['Medico'][$dia] == 1 ) {
-								$dat = array( 'DiaDisponibilidad' => 
+								$dat = array( 'DiaDisponibilidad' =>
 										array(	'dia' => $this->request->data[$dia]['numero'],
 											    'disponibilidad_id' => $this->request->data['Medico']['disponibilidad_id'],
 											    'habilitado' => true,
@@ -729,12 +729,12 @@ class MedicosController extends AppController {
 		if( !$this->Medico->exists() ) {
 			throw new NotFoundException( "Usted no se un médico." );
 		}
-		$this->set( 'medico', $this->Medico->read() ); 
+		$this->set( 'medico', $this->Medico->read() );
 		$excepciones = $this->Medico->Disponibilidad->Excepciones->find( 'all', array( 'conditions' => array( 'medico_id' => $id_medico ) ) );
 		$this->set( 'excepciones', $excepciones );
 		$this->render( '/Excepciones/indice_medico' );
 	}
-	
+
 	public function administracionEliminarExcepcion() {
 		$this->autoRender = false;
 		return json_encode( array( 'guardado' => false, 'error' => '\n No implementado' ) );
