@@ -32,7 +32,7 @@ class TurnosController extends AppController {
                     case 'atendido':
                     case 'sobreturno':
                     case 'cancelar':
-                    case 'reservarTurno':                        
+                    case 'reservarTurno':
                     {
                         return true; break;
                     }
@@ -124,7 +124,7 @@ class TurnosController extends AppController {
 					} else {
 						$this->set( 'clinicas', $this->Clinica->find( 'list' ) );
 						break;
-					}				
+					}
 				}
 				case 2: { // Selecciono la especialidad y/o médico
 					if( !isset( $id_clinica ) ) { $id_clinica = $this->request->data['Turno']['id_clinica']; }
@@ -154,7 +154,7 @@ class TurnosController extends AppController {
                             $this->set( 'nombre_especialidad', $nombre_esp );
                         } else {
                             $id_especialidad = $this->request->data['Turno']['id_especialidad'];
-                        } 
+                        }
                     }
 					$this->set( compact( 'id_clinica', 'id_medico', 'id_especialidad' ) );
 					$paso++;
@@ -163,7 +163,7 @@ class TurnosController extends AppController {
 
 					if( !isset( $id_clinica ) ) { $id_clinica = $this->request->data['Turno']['id_clinica']; }
 					if( !isset( $id_medico ) ) { $id_medico = $this->request->data['Turno']['id_medico']; }
-					if( !isset( $id_especialidad ) ) { $id_especialidad = $this->request->data['Turno']['id_especialidad']; }					
+					if( !isset( $id_especialidad ) ) { $id_especialidad = $this->request->data['Turno']['id_especialidad']; }
 
 					// De manera predeterminada el el día de hoy que hay que cargar
 					$hoy = new DateTime('now');
@@ -174,32 +174,32 @@ class TurnosController extends AppController {
 					// Verifico si no estoy pidiendo otro més o año
 					if( isset( $this->request->data['Turno']['mes'] ) ) { $mes = $this->request->data['Turno']['mes']; }
 					if( isset( $this->request->data['Turno']['ano'] ) ) { $ano = $this->request->data['Turno']['ano']; }
-					
+
 					// Busco la cantidad de meses hacia adelante y atras que se pueden buscar
 					$cant_dias = Configure::read( 'Turnera.dias_turnos' );
 					if( $cant_dias == null ) {
 						die( "Error de lectura de configuracion" );
 					}
-		
+
 					$fecha_inicio = new DateTime( 'now' );
-		
+
 					$fecha_fin = $fecha_inicio;
 					$fecha_fin->add( new DateInterval( "P".$cant_dias."D" ) );
-		
+
 					$fecha_buscada = new DateTime();
 					$fecha_buscada->setDate( $ano, $mes, 1 );
 					$fecha_buscada2 = $fecha_buscada;
 					$fecha_buscada2->add( new DateInterval( "P1M" ) );
-		
+
 					if( $fecha_buscada > $fecha_inicio && $fecha_buscada < $fecha_fin ) {
 						$this->set( 'meses_anteriores', 1 );
 					} else { $this->set( 'meses_anteriores', 0 ); }
 					if( $fecha_fin > $fecha_buscada2 ) {
 						$this->set( 'meses_siguientes', 1 );
 					} else { $this->set( 'meses_siguientes', 0 ); }
-					
+
 					$turnos = $this->Turno->buscarDisponibilidad( $mes, $ano, $id_clinica, $id_especialidad, $id_medico, true );
-					
+
 					$this->set( compact( 'dia', 'mes', 'ano', 'turnos', 'id_clinica', 'id_medico', 'id_especialidad' ) );
 					break;
 				}
@@ -207,7 +207,7 @@ class TurnosController extends AppController {
 				    // Verifico que lleguen todos los parametros necesarios
 				    $datos = $this->request->data['Turno'];
 				    if( !array_key_exists( 'dia', $datos ) ) {
-                        throw new NotFoundException( 'Falta indicar el día que se desea el turno' );				        
+                        throw new NotFoundException( 'Falta indicar el día que se desea el turno' );
 				    }
                     if( !array_key_exists( 'mes', $datos ) ) {
                         throw new NotFoundException( 'Falta indicar el mes que se desea el turno' );
@@ -218,25 +218,25 @@ class TurnosController extends AppController {
                     if( !array_key_exists( 'id_medico', $datos ) ) {
                         throw new NotFoundException( 'Falta indicar el medico que se desea el turno' );
                     }
-                    
+
                     // Veo si el día es hoy de poner los turnos con hora mayor a la actual
-                    if( $datos['dia'] == date( 'j' ) && 
-                        $datos['mes'] == date( 'n' ) && 
+                    if( $datos['dia'] == date( 'j' ) &&
+                        $datos['mes'] == date( 'n' ) &&
                         $datos['ano'] == date( 'Y' ) ) {
-                        $this->set( 'turnos', $this->Turno->buscarTurnos( $datos['dia'], 
-                                                                          $datos['mes'], 
-                                                                          $datos['ano'], 
-                                                                          $datos['id_clinica'], 
-                                                                          $datos['id_especialidad'], 
+                        $this->set( 'turnos', $this->Turno->buscarTurnos( $datos['dia'],
+                                                                          $datos['mes'],
+                                                                          $datos['ano'],
+                                                                          $datos['id_clinica'],
+                                                                          $datos['id_especialidad'],
                                                                           $datos['id_medico'],
-                                                                          false, 
-                                                                          date( 'H' ), 
+                                                                          false,
+                                                                          date( 'H' ),
                                                                           date( 'i' ) ) );
                     } else {
-                        $this->set( 'turnos', $this->Turno->buscarTurnos( $datos['dia'], 
-                                                                          $datos['mes'], 
+                        $this->set( 'turnos', $this->Turno->buscarTurnos( $datos['dia'],
+                                                                          $datos['mes'],
                                                                           $datos['ano'],
-                                                                          $datos['id_clinica'], 
+                                                                          $datos['id_clinica'],
                                                                           $datos['id_especialidad'],
                                                                           $datos['id_medico'] ) );
                     }
@@ -250,23 +250,23 @@ class TurnosController extends AppController {
                     } else {
                         $id_paciente = $this->request->data['Turno']['id_paciente'];
                     }
-            
+
                     $this->Turno->id = $this->request->data['Turno']['id_turno'];
                     if (!$this->Turno->exists()) {
                         throw new NotFoundException( 'El turno solicitado no existe' );
                     }
                     $this->Turno->unbindModel( array( 'belongsTo' => array( 'Paciente' ) ) );
                     $turno = $this->Turno->read();
-            
+
                     // Verificar restricción de cantidad de turnos x día.
                     if( $this->Turno->verificarTurnosEnDia( $turno['Turno']['fecha_inicio'], $id_paciente ) ) {
                         $this->Session->setFlash( "Usted ya ha reservado un turno para este día. Solo puede reservar un turno por día" );
                         $this->render( 'nuevo/error' );
                         return;
                     }
-            
+
                     $tiempo = Configure::read( 'Turnera.notificaciones.horas_proximo' );
-            
+
                     $this->loadModel( 'Usuario' );
                     $this->Usuario->id = $id_paciente;
                     if( !$this->Usuario->exists() ) {
@@ -274,14 +274,14 @@ class TurnosController extends AppController {
                     }
                     $this->Usuario->recursive = -1;
                     $usuario = $this->Usuario->read();
-            
+
                     $turno['Medico'] = $this->Usuario->read( null, $turno['Medico']['usuario_id'] );
-            
+
                     $error = '';
                     if( $this->Turno->reservar( $this->request->data['Turno']['id_turno'], $id_paciente, $error )  ) {
-                        $this->requestAction( array( 'controller' => 'avisos', 
-                                                     'action' => 'agregarAvisoNuevoTurno', 
-                                                     'id_turno' => $this->request->data['Turno']['id_turno'], 
+                        $this->requestAction( array( 'controller' => 'avisos',
+                                                     'action' => 'agregarAvisoNuevoTurno',
+                                                     'id_turno' => $this->request->data['Turno']['id_turno'],
                                                      'id_paciente' => $id_paciente ) );
 						$this->set( 'tiempo', $tiempo );
 	                    $this->set( 'turno', $turno );
@@ -308,7 +308,7 @@ class TurnosController extends AppController {
      * La parte del usuario se hace por el tipo tutorial
      */
     public function reservarTurno() {
-        
+
         debug( $this->data );
         // Los datos vienen por post
         if( !$this->request->isPost() ) {
@@ -320,15 +320,15 @@ class TurnosController extends AppController {
         } else {
             $id_paciente = intval( array_pop( array_reverse( split( '-', $this->data['Turno']['rpaciente'] ) ) ) );
         }
-        
+
         if( !array_key_exists( 'id_turno', $this->data['Turno'] ) ) {
             throw new MissingParameterException( 'id_turno' );
         } else { $id_turno = $this->data['Turno']['id_turno']; }
-        
+
         if( !array_key_exists( 'controlador', $this->data['Turno'] ) ) {
             throw new MissingParameterException( 'controlador' );
         } else { $controlador = $this->data['Turno']['controlador']; }
-                
+
         $this->Turno->id = $id_turno;
         if (!$this->Turno->exists()) {
             throw new NotFoundException( 'El turno solicitado no existe' );
@@ -339,18 +339,18 @@ class TurnosController extends AppController {
         if( !$this->Usuario->exists() ) {
             throw new NotFoundException( 'El usuario solicitado no existe' );
         }
-        
+
         $error = '';
         if( $this->Turno->reservar( $id_turno, $id_paciente, $error )  ) {
-            $this->requestAction( array( 'controller' => 'avisos', 
-                                         'action' => 'agregarAvisoNuevoTurno', 
-                                         'id_turno' => $id_turno, 
+            $this->requestAction( array( 'controller' => 'avisos',
+                                         'action' => 'agregarAvisoNuevoTurno',
+                                         'id_turno' => $id_turno,
                                          'id_paciente' => $id_paciente ) );
-            $this->Session->setFlash( "Turno reservado correctamente" );                                         
+            $this->Session->setFlash( "Turno reservado correctamente" );
         } else {
             $this->Session->setFlash( "No se pudo hacer la reserva.<br />Razón: ".$error, 'flash/error' );
         }
-        
+
         $this->redirect( array( 'action' => 'turnos', 'controller' => $controlador ) );
 
     }
@@ -373,7 +373,7 @@ class TurnosController extends AppController {
             $this->Session->setFlash( 'No se pudo colocar el turno como atendido', 'flash/error' );
         }
         $this->redirect( array( 'action' => 'turnos', 'controller' => $controlador ) );
-    } 
+    }
 
    /**
     * Marca un turno como recibido desde la vista del secretario y el médico
@@ -406,16 +406,16 @@ class TurnosController extends AppController {
         } else {
             // Si entro por aquí, tuve que dar de alta el paciente.
             extract( $this->Session->read( 'turno' ) );
-            $this->Session->delete( 'turno' );         
+            $this->Session->delete( 'turno' );
         }
 
         // Verifico los parámetros
         if( !isset( $id_turno ) ) {
             throw new MissingParameterException( 'id_turno' );
-        } 
+        }
         if( !isset( $id_paciente ) ) {
             throw new MissingParameterException( 'id_paciente' );
-        } 
+        }
         if( !isset( $duracion ) ) {
             throw new MissingParameterException( 'duracion' );
         }
@@ -425,7 +425,7 @@ class TurnosController extends AppController {
         if( !isset( $min ) ) {
             throw new MissingParameterException( 'min' );
         }
-        
+
         $this->Turno->id = $id_turno;
         if( ! $this->Turno->exists() ) {
             throw new NotFoundException( 'El turno no existe, '.$id_turno );
@@ -438,12 +438,12 @@ class TurnosController extends AppController {
         if( ! $this->Turno->Paciente->exists() ) {
             $this->Session->setFlash( 'El usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'flash/info' );
             $this->Session->write( array( 'turno' => $this->data['Turno'] ) );
-            $this->redirect( array( 'controller' => 'usuarios', 
-                                    'action' => 'altaTurno', 
-                                    $id_turno, 
-                                    $id_medico, 
-                                    true, 
-                                    $this->request->data['spaciente'], 
+            $this->redirect( array( 'controller' => 'usuarios',
+                                    'action' => 'altaTurno',
+                                    $id_turno,
+                                    $id_medico,
+                                    true,
+                                    $this->request->data['spaciente'],
                                     'sobreturno' ) );
         }
 
@@ -501,24 +501,24 @@ class TurnosController extends AppController {
      * Funcion llamada cuando un usuario desea cancelar un turno que resevó con anterioridad.
      */
     public function cancelar( $id_turno = null ) {
-        
-        if( $this->request->isPost() ) {
-            extract( $this->data['Turno'] );
+
+        if( $this->request->isPost() && $id_turno == null ) {
+            extract( $this->request->data['Turno'] );
             if( !isset( $id_turno ) ) {
-                throw new MissingParameterException( "id_turno" );                
+                throw new MissingParameterException( "id_turno" );
             }
         } else {
              if( $id_turno == null ) {
-                throw new NotFoundException( "El turno no está especificado" );                 
+                throw new NotFoundException( "El turno no está especificado" );
              }
              $quien = 'p'; // Libera el turno
         }
-        
+
         $this->Turno->id = $id_turno;
         if( !$this->Turno->exists() ) {
             throw new NotFoundException( "El turno especificado no existe" );
         }
-        
+
         if( $quien == 'p' ) {
             // Libero el turno.
             if( $this->Turno->liberar( $id_turno ) ) {
@@ -537,9 +537,9 @@ class TurnosController extends AppController {
                 $this->Session->setFlash( "Existió un error al intentar cancelar el turno", 'flash/error' );
             }
         }
-        
-        if( $controlador != null ) {
-            $this->redirect( array( 'controller' => $controlador, 'action' => 'turnos' ) );   
+
+        if( isset( $controlador ) && $controlador != null ) {
+            $this->redirect( array( 'controller' => $controlador, 'action' => 'turnos' ) );
         } else {
             $this->redirect( array( 'action' => 'verTurnos' ) );
         }
@@ -569,8 +569,8 @@ class TurnosController extends AppController {
             $this->Session->setFlash( 'No se pudieron cambiar la cantidad de horas. Se dejó de manera predeterminada.', 'flash/error' );
         }
         $this->redirect( array( 'action' => 'verTurnos' ) );
-    } 
-    
+    }
+
     /*!
      * administracion_index method
      *
@@ -790,7 +790,7 @@ class TurnosController extends AppController {
 		$this->paginate = array( 'medico_id' => $id_medico );
 		$this->set( 'turnos', $this->paginate() );
 	}
-	
 
-	 
+
+
 }
