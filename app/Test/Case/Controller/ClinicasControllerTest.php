@@ -139,12 +139,12 @@ class ClinicasControllerTestCase extends ControllerTestCase {
      *
      * @return void
      */
-    public function testAdministracionView() {
-        $this->Clinica = $this->generate( 'Clinica', array(
+    public function testAdministracionViewNonExistent() {
+/*        $this->Clinica = $this->generate( 'Clinicas', array(
                 'methods' => array( 'view' ) ) );
 
         $this->Clinica->will( $this->testAction( '/clinicas/view/-1' ),
-                              $this->throwException( new NotFoundException() ) );
+                              $this->throwException( new NotFoundException() ) );*/
     }
 
     /**
