@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * * Mantiene el día en que debe ser mostrados los turnos guardandolos en las variables de sesion
  * Copyright (c) 2013 Zeller Esteban
@@ -12,17 +12,17 @@
  App::uses( 'Component', 'Controller' );
 
 class DiaTurnoRecallComponent extends Component {
-  	
+
   var $components = array( 'Session' );
-  
+
   var $Controller = null;
-  
+
   var $dia = null;
   var $mes = null;
   var $ano = null;
-  
+
   var $sessionvar = null;
-  
+
   function __construct( ComponentCollection $collection, $settings = array() ) {
   	if( array_key_exists( "variable", $settings ) ) {
   		$this->sessionvar = $settings['variable'].".";
@@ -43,30 +43,30 @@ class DiaTurnoRecallComponent extends Component {
 	$this->dia = $this->Session->read( $this->sessionvar."dia" );
 	$this->mes = $this->Session->read( $this->sessionvar."mes" );
 	$this->ano = $this->Session->read( $this->sessionvar."ano" );
-	
+
   }
-  
+
   function beforeRender( &$controller ) {
-	$this->Controller->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
-	$this->Controller->set( 'dia', $this->dia );
-	$this->Controller->set( 'mes', $this->mes-1 ); // Lista de meses base 0 
-	$this->Controller->set( 'ano', $this->ano );
+	$controller->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
+	$controller->set( 'dia', $this->dia );
+	$controller->set( 'mes', $this->mes-1 ); // Lista de meses base 0
+	$controller->set( 'ano', $this->ano );
     if( $this->dia == date( 'd' ) &&
         $this->mes == date( 'm' ) &&
         $this->ano == date( 'Y' ) ) {
-        $this->Controller->set( 'hoy', true );        
+        $controller->set( 'hoy', true );
     } else {
-        $this->Controller->set( 'hoy', false );
+        $controller->set( 'hoy', false );
     }
   }
-  
+
   /**
    * Cambia el valor actual de la session de autoactualizacion
    * @param $valor boolean Valor a cambiar
    * @param $mensaje boolean Muestra o no el mensaje de cambio de valor
    */
   public function cambiarDia( $dia, $mes, $ano ) {
-  	
+
 		if( $this->Session->read( $this->sessionvar."dia" ) != $dia ) {
 			$this->Session->write( $this->sessionvar."dia", $dia );
 		}
@@ -80,9 +80,9 @@ class DiaTurnoRecallComponent extends Component {
 		$this->mes = $mes;
 		$this->ano = $ano;
   }
-  
+
   public function dia() { return $this->dia; }
   public function mes() { return $this->mes; }
   public function ano() { return $this->ano; }
-  
+
 }

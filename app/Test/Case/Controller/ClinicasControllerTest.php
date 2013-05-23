@@ -126,7 +126,7 @@ class ClinicasControllerTestCase extends ControllerTestCase {
         $id_clinica = $data['Clinica']['id_clinica'];
         unset( $data );
         unset( $this->Clinica );
-        $result = $this->testAction( '/clinicas/view/'.$id_clinica );
+        $result = $this->testAction( '/administracion/clinicas/view/'.$id_clinica );
         $this->assertInternalType( 'array', $this->vars['clinica'], 'La vista no tiene definido sus datos en la variable clinica' );
         // Verifico que exista las coordenadas
         $this->assertNotEqual( $this->vars['clinica']['Clinica']['lat'], null, 'La coordenada de latitud no puede ser nula' );
@@ -152,9 +152,11 @@ class ClinicasControllerTestCase extends ControllerTestCase {
      *
      * @return void
      */
-  /*  public function testAdministracionAdd() {
-        $this->assertEqual( false, true, "No implementado!" );
-    }*/
+    public function testAdministracionAdd() {
+        // Pruebo envío por get
+        /*$result = $this->testAction( '/administracion/clinicas/add', array( 'method' => 'get' ) );
+        $this->assertEqual( $result, true, "Salida:" .print_r( $result, true ) );*/
+    }
 
     /**
      * testAdministracionEdit method

@@ -13,6 +13,8 @@ class ControllersTests extends PHPUnit_Framework_TestSuite {
 		$suite = new PHPUnit_Framework_TestSuite('All Controller Tests');
         $path = APP_TEST_CASES . DS . 'Controller' . DS;
         $suite->addTestFile( $path.'ClinicasControllerTest.php' );
+        $suite->addTestFile( $path.'TurnosControllerTest.php' );
+        $suite->addTestFile( $path.'UsuariosControllerTest.php' );
 		return $suite;
 	}
 }

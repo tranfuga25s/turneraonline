@@ -5,7 +5,7 @@
  * ObrasSocialeFixture
  *
  */
-class ObrasSocialesFixture extends CakeTestFixture {
+class ObraSocialFixture extends CakeTestFixture {
 
 	/**
 	 * Import
