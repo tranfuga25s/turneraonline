@@ -11,7 +11,7 @@ endif;
 
 $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 <div class="row-fluid">
-		
+
 	<div class="span6 well">
 		<div class="row-fluid">
 			<div class="span12">
@@ -36,7 +36,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 	<div class="span6 well">
 		<?php echo $this->element( 'carrusel' ); ?>
 	</div><!-- carrusel -->
-	
+
 
 </div>
 
@@ -57,7 +57,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 			</div>
 			<?php echo $this->Form->end(); ?>
 		</fieldset>
-		<?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>	
+		<!-- <?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?> -->
 	<?php } else { ?>
 		<fieldset>
 			<legend>Bienvenido <?php if( $loggeado ) { echo ", ". $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; } ?> !</legend>
@@ -67,57 +67,57 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 							<li><?php echo $this->Html->link( '<i class="icon-calendar"></i> Pedir turno', array( 'controller' => 'turnos', 'action' => 'nuevo', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ), array( 'escape' => false ) ); ?></li>
-				<?php   } 
+				<?php   }
 			    	    if( $usuarioactual['grupo_id'] == 3 ) { // SECRETARIAS ?>
 							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Turnos del día', array( 'controller' => 'secretarias', 'action' => 'turnos' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-th-list"></i> Resumen Diario', array( 'controller' => 'secretarias', 'action' => 'resumen' ), array( 'escape' => false )  ); ?></li>
-			
+
 				<?php 	} else if( $usuarioactual['grupo_id'] == 2 ) { // MEDICOS ?>
 							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Turnos del día', array( 'controller' => 'medicos', 'action' => 'turnos' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-calendar"></i> Disponibilidad', array( 'controller' => 'medicos', 'action' => 'disponibilidad' ), array( 'escape' => false )  ); ?></li>
-							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>				
-			
+							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
+
 				<?php 	} else if( $usuarioactual['grupo_id'] == 1 ) { // ADMINISTRADORES ?>
 							<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ) ); ?></li>
 							<li><?php echo $this->Html->link( 'Administración', '/administracion/usuarios/cpanel' ); ?></li>
-			
+
 				<?php 	} ?>
 							<li class="divider"></li>
-							<li><?php echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>				
+							<li><?php echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>
 			</ul>
 	<?php } ?>
 	</div>
-	
+
 	<div class="span6 well">
 		<fieldset><legend>¿Como puedo probarlo?</legend></fieldset>
 		<p>Para ingresar y ver las características de este sitio ingrese mediante cualquiera de las siguientes cuentas:</p>
 		<!-- Secretarias -->  <br />
 		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
 		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'secretaria@turnera.com' ) );
-			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'secretaria' ) ); 
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'secretaria' ) );
 			  echo $this->Form->submit(  'Secretarias', array( 'class' => 'btn btn-primary btn-block btn-large ', 'div' => false )  );
 			  echo $this->Form->end(); ?>
 		<!-- Medicos --> <br />
 		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
 		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'medico@turnera.com' ) );
-			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'medico' ) ); 
-			  echo $this->Form->submit(  'Medico', array( 'class' => 'btn btn-info btn-block btn-large ', 'div' => false )  ); 
-			  echo $this->Form->end(); ?>	  
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'medico' ) );
+			  echo $this->Form->submit(  'Medico', array( 'class' => 'btn btn-info btn-block btn-large ', 'div' => false )  );
+			  echo $this->Form->end(); ?>
 		<!-- Paciente --> <br />
 		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
 		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'paciente@turnera.com' ) );
-			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'paciente' ) ); 
-			  echo $this->Form->submit( 'Paciente', array( 'class' => 'btn  btn-success btn-block btn-large ', 'div' => false )  );	
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'paciente' ) );
+			  echo $this->Form->submit( 'Paciente', array( 'class' => 'btn  btn-success btn-block btn-large ', 'div' => false )  );
 			  echo $this->Form->end(); ?>
 		<!-- Administrador --> <br />
 		<?php echo $this->Form->create( 'Usuario', array( 'action' => '/ingresar' ) );
 		      echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => 'admin@turnera.com' ) );
-			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'admin' ) ); 
+			  echo $this->Form->input( 'contra', array( 'type' => 'hidden', 'value' => 'admin' ) );
 			  echo $this->Form->submit( 'Administrador', array( 'class' => 'btn  btn-inverse btn-block btn-large ', 'div' => false ) );
 			  echo $this->Form->end(); ?>
 	</div>
-			
+
 </div>
 
 <div class="row-flow">
