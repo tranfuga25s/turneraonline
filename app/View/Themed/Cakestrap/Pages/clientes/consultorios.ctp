@@ -24,6 +24,10 @@
 						<td width="20"><span class="icon-check">&nbsp;</span></td>
 						<td>Se utiliza la p&aacute;gina como m&eacute;todo de contacto y administraci&oacute;n.</td>
 					</tr>
+	                <tr>
+                        <td width="20"><span class="icon-check">&nbsp;</span></td>
+                        <td>Panel de control para el administrador del sistema.</td>
+                    </tr>
 					<tr>
 						<td width="20"><span class="icon-check">&nbsp;</span></td>
 						<td>Mensaje de resumen diario por email para cada secretaria.</td>
@@ -31,7 +35,7 @@
 				</tbody>
 			</table>
 		</div>
-	
+
 		<div class="well">
 			<h4>Extras Opcionales</h4>
 			<table class="table table-condensed table-hover">
@@ -52,17 +56,21 @@
 			</table>
 		</div>
 	</div>
-	
+
 	<div class="span6 well">
 		<h4>Precios</h4>
 		<?php echo $this->element( 'precios', array( 'id_servicio' => Configure::read( 'Gestotux.id_servicio.consultorios'), 'nombre' => "Consultorio" ) ); ?>
 	</div>
-	
+
 </div>
 <div class="row-fluid">
 
-	<div class="span4 well"><?php echo $this->Facebook->like(); ?></div>
-	<div class="span4 well"><?php echo $this->Facebook->recommendations(); ?></div>
-	<div class="span4 well"><?php echo $this->Facebook->comments(); ?></div>
-	
+	<div class="span5 well">
+	    <?php echo $this->Facebook->like(); ?>
+	    <?php echo $this->Facebook->recommendations(); ?>
+	</div>
+	<div class="span7 well">
+	    <?php echo $this->Facebook->comments(); ?>
+	</div>
+
 </div>

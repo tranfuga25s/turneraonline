@@ -1,5 +1,5 @@
-<?php 
-$this->set( 'title_for_layout', "Sistema adecuado para dentistas" ); 
+<?php
+$this->set( 'title_for_layout', "Sistema adecuado para dentistas" );
 ?>
 <div class="row-fluid">
 	<div class="span12">
@@ -33,7 +33,7 @@ $this->set( 'title_for_layout', "Sistema adecuado para dentistas" );
 				</tbody>
 			</table>
 		</div>
-	
+
 		<div class="well">
 			<h4>Extras Opcionales</h4>
 			<table class="table table-condensed table-hover">
@@ -54,10 +54,21 @@ $this->set( 'title_for_layout', "Sistema adecuado para dentistas" );
 			</table>
 		</div>
 	</div>
-	
+
 	<div class="span6 well">
 		<h4>Precios</h4>
 		<?php echo $this->element( 'precios', array( 'id_servicio' => intval( Configure::read( 'Gestotux.id_servicio.medico' ) ), 'nombre' => "Médico" ) ); ?>
 	</div>
-	
+
+</div>
+<div class="row-fluid">
+
+    <div class="span5 well">
+        <?php echo $this->Facebook->like(); ?>
+        <?php echo $this->Facebook->recommendations(); ?>
+    </div>
+    <div class="span7 well">
+        <?php echo $this->Facebook->comments(); ?>
+    </div>
+
 </div>

@@ -6,7 +6,7 @@
 	</div>
 </div>
 <div class="row-fluid">
-	<div class="span6">
+	<div class="span5">
 		<div class="well">
 			<h4>Caraterísticas</h4>
 			<table class="table table-condensed table-hover">
@@ -30,7 +30,7 @@
 				</tbody>
 			</table>
 		</div>
-	
+
 		<div class="well">
 			<h4>Extras Opcionales</h4>
 			<table class="table table-condensed table-hover">
@@ -51,10 +51,21 @@
 			</table>
 		</div>
 	</div>
-	
-	<div class="span6 well">
+
+	<div class="span7 well">
 		<h4>Precios</h4>
-		<?php echo $this->element( 'precios', array( 'id_servicio' => intval( Configure::read( 'Gestotux.id_servicio.medico' ) ), 'nombre' => "Médico" ) ); ?>
+		<?php echo $this->element( 'precios', array( 'id_servicio' => Configure::read( 'Gestotux.id_servicio.medico' ), 'nombre' => "Médico" ) ); ?>
 	</div>
-	
+
+</div>
+<div class="row-fluid">
+
+    <div class="span5 well">
+        <?php echo $this->Facebook->like(); ?>
+        <?php echo $this->Facebook->recommendations(); ?>
+    </div>
+    <div class="span7 well">
+        <?php echo $this->Facebook->comments(); ?>
+    </div>
+
 </div>
