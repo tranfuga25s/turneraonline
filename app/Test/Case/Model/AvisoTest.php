@@ -3,13 +3,15 @@ App::uses('Aviso', 'Model');
 
 /**
  * Aviso Test Case
- *
+ * @property Aviso Aviso Modelo de avisos
  */
 class AvisoTest extends CakeTestCase {
 
+    private $Aviso = null;
+
 	/**
 	 * Fixtures
-	 *
+	 * @TODO Agregar fixture estático
 	 * @var array
 	 */
 	public $fixtures = array(
@@ -44,6 +46,7 @@ class AvisoTest extends CakeTestCase {
 	 * @return void
 	 */
 	public function testExistePendiente() {
+	    $this->assertEqual( $this->Aviso->existePendiente(), true, 'No se detectó corretamente el aviso pendiente' );
 	}
 
 	/**
@@ -70,5 +73,5 @@ class AvisoTest extends CakeTestCase {
 	public function testCancelarAvisoNuevoTurno() {
 	}
 
-	
+
 }
