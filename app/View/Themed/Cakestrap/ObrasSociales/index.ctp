@@ -2,16 +2,23 @@
 
 <div class="row-fluid">
 
-	<?php echo $this->element( 'menu/usuario' ); ?>
-	
-	<div class="span9">
+	<?php
+	if( isset( $usuarioactual ) ) {
+	   echo $this->element( 'menu/usuario' );
+        $ancho = 9;
+	} else {
+	    $ancho = 12;
+	}
+	?>
+
+	<div class="span<?= $ancho; ?>">
 		<h4>Listado de Obras Sociales Disponibles</h4>
 		<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
 		<ul class="media-list">
 			<?php foreach( $obrasSociales as $obraSocial ) :
 				if( is_null( $obraSocial['ObraSocial']['logo'] ) ) { $obraSocial['ObraSocial']['logo'] = 'cabecera.png'; } ?>
 			<li class="media">
-				<?php echo $this->Html->link( $this->Html->image( $obraSocial['ObraSocial']['logo'], array( 'class' => 'media-object' ) ), 
+				<?php echo $this->Html->link( $this->Html->image( $obraSocial['ObraSocial']['logo'], array( 'class' => 'media-object' ) ),
 													  array( 'action' => 'view', $obraSocial['ObraSocial']['id_obra_social'] ),
 						  							  array( 'escape' => false, 'class' => 'pull-left' ) ); ?>
 			    <div class="media-body">
@@ -25,5 +32,5 @@
 			<?php endforeach; ?>
 			</ul>
 		</div>
-	</div>	
+	</div>
 </div>
