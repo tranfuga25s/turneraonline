@@ -99,6 +99,22 @@ class ClinicasControllerTestCase extends ControllerTestCase {
     }
 
     /**
+     * Testea que si se llama al metodo sin ningua clinica, devuelva datos válidos
+     */
+    public function testViewEmptyParameter() {
+        $this->Clinica = new Clinica();
+        $data = $this->Clinica->find( 'count', array( 'fields' => array( 'id_clinica' ), 'recursive' => -1 ) );
+        $this->assertNotEqual( $data, 0, "No existe ninguna clinica seteada en el sistema" );
+        unset( $data );
+        unset( $this->Clinica );
+        $result = $this->testAction( '/clinicas/view' );
+        $this->assertInternalType( 'array', $this->vars['clinica'], 'La vista no tiene definido sus datos en la variable clinica' );
+        // Verifico que exista las coordenadas
+        $this->assertNotEqual( $this->vars['clinica']['Clinica']['lat'], null, 'La coordenada de latitud no puede ser nula' );
+        $this->assertNotEqual( $this->vars['clinica']['Clinica']['lng'], null, 'La coordenada de longitud no puede ser nula' );
+    }
+
+    /**
      * testAdministracionIndex method
      *
      * @return void
