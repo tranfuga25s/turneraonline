@@ -99,6 +99,15 @@ class ClinicasControllerTestCase extends ControllerTestCase {
     }
 
     /**
+     * Función que prueba la vista de clinica cuando no se pasa ningún elemento para ver.
+     * Debería de cargar la primera clínica que encuentre.
+     */
+    public function testViewEmptyParameter() {
+        $result = $this->testAction( '/clinicas/view' );
+        $this->assertInternalType( 'array', $this->vars['clinica'], 'La vista no tiene definido sus datos en la variable clinica cuando no se pasa parámetro' );
+    }
+
+    /**
      * testAdministracionIndex method
      *
      * @return void
