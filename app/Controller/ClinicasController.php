@@ -75,16 +75,18 @@ class ClinicasController extends AppController {
 		$this->set( 'clinicas', $this->paginate() );
 	}
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @param string $id
+     * @return void
+     */
 	public function view($id = null) {
 		$this->Clinica->id = $id;
 		if (!$this->Clinica->exists()) {
-			throw new NotFoundException( 'La clinica no existe' );
+			// Cargo la primera clínica que existe
+			$ids = $this->Clinica->find( 'first', array( 'fields' => array( 'fields' => 'id_clinica' ), 'recursive' => -1 ) );
+            $id = $ids['Clinica']['id_clinica'];
 		}
 		$clinica = $this->Clinica->read( null, $id );
 		$this->loadModel( 'Medico' );
