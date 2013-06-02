@@ -107,7 +107,7 @@ class SecretariasController extends AppController {
 									 			'limit' => 80 ) );
 			$nuevo[] = $c;
 		}
-        //debug( $nuevo );
+
 		$this->set( 'consultorios', $nuevo );
         $this->set( 'controller', $this->name );
 	}
