@@ -5,7 +5,7 @@
  	$("#cambiarcontra").dialog({
  		modal: true,
  		width: 500,
- 		buttons: 
+ 		buttons:
  		{
  			"Enviar": function() {
 				$("#RecuperarEmail").val( email );
@@ -14,27 +14,25 @@
  			},
  			"Cancelar": function() {
  				$(this).dialog('close');
- 			}	
- 		} 		
- 	});	
+ 			}
+ 		}
+ 	});
  }
- 
- $( function() { 
- 	$("a", "#accion").button(); 
+
+ $( function() {
+ 	$("a", "#accion").button();
   });
 </script>
 <div class="row-fluid">
-	
+
 	<div class="navbar">
 		<div class="navbar-inner">
 			<ul class="nav">
 				<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
-				<li class="active"><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
-				<li><?php echo $this->Html->link( 'Nuevo Paciente', array( 'action'     => 'add' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Filtrar'       , '#', array( 'onclick' => '$("#dfiltro").slideDown();' ) ); ?></li>
-				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li> 
+				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
 			</ul>
-		</div>	
+		</div>
 	</div>
 </div>
 
@@ -46,8 +44,7 @@
 				<tr>
 					<td>Filtrar por:</td>
 					<td><?php echo $this->Form->input( 'texto'      , array( 'div' => false, 'label' => false, 'placeholder' => 'Texto a buscar' ) ); ?></td>
-					<td><?php echo $this->Form->input( 'grupo_id'   , array( 'div' => false, 'label' => false, 'options' => $grupos,   'before' => 'y/o grupo:', 'empty' => 'Ninguno' ) ); ?></td>
-					<td><?php echo $this->Form->input( 'obra_social', array( 'div' => false, 'label' => false, 'options' => $obrassociales,  'before' => 'y/o obra social:', 'empty' => 'Ninguno' ) ); ?></td> 
+					<td><?php echo $this->Form->input( 'obra_social', array( 'div' => false, 'label' => false, 'options' => $obrassociales,  'before' => 'y/o obra social:', 'empty' => 'Ninguno' ) ); ?></td>
 					<td><?php echo $this->Form->end  ( array( 'label' => 'Filtrar', 'div' => false, 'class' => 'btn btn-success' ) ); ?></td>
 				</tr>
 			</tbody>
@@ -70,9 +67,6 @@
 		if( isset( $texto ) ) {
 			echo "<div style=\"text-align: left;\">Filtrando nombre y apellido que contentan <b>".$texto."</b></div><br />";
 		}
-		if( isset( $grupo_id ) ) {
-			echo "<div style=\"text-align: left;\">Filtrando pacientes que pertenecen al grupo  <b>".$grupos[$grupo_id]."</b></div><br />";
-		}
 		if( isset( $obra_social ) ) {
 			echo "<div style=\"text-align: left;\">Filtrando pacientes que tienen obra social  <b>".$obrassociales[$obra_social]."</b></div><br />";
 		}
@@ -80,12 +74,14 @@
 		<table class="table table-hover table-bordered">
 			<tbody>
 				<th><?php echo $this->Paginator->sort( 'razon_social' ); ?></th>
-				<th><?php echo $this->Paginator->sort( 'grupo_id' ); ?></th>
+				<th><?php echo $this->Paginator->sort( 'obrasocial.nombre', 'Obra social' ); ?></th>
+				<th>Telefonos</th>
 				<th>Acciones</th>
 				<?php foreach ( $usuarios as $usuario ) : ?>
 				<tr>
 					<td><?php echo h( $usuario['Usuario']['razonsocial'] ); ?></td>
-					<td><?php echo $this->Html->link( h( $usuario['Grupo']['nombre'] ), array( 'controller' => 'grupos', 'action' => 'view', $usuario['Grupo']['id_grupo'] ) ); ?></td>
+					<td><?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obra_social', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?></td>
+					<td><?php echo $usuario['Usuario']['telefono'].'<br />'.$usuario['Usuario']['celular']; ?></td>
 					<td class="actions">
 						<?php
 						echo $this->Html->link( 'Ver', array( 'action' => 'view', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini') );
@@ -99,8 +95,8 @@
 						//echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'verPorMedico' ), array('class' => 'btn btn-mini') );
 						?>
 					</td>
-				</tr>					
-				<?php endforeach; ?>				
+				</tr>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
 		<p><small><?php echo $this->Paginator->counter(array('format' => 'Pagina {:page} de {:pages}, mostrando {:current} de {:count}, desde {:start} al {:end}')); ?></small></p>

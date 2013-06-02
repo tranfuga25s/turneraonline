@@ -124,17 +124,13 @@ class UsuariosController extends AppController {
     							       '`Usuario`.`apellido` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%' ) ) );
 				$this->set( 'texto',  $this->request->data['Usuario']['texto'] );
     		}
-			if( !empty(  $this->request->data['Usuario']['grupo_id'] )  ) {
-				$cond = array_merge( $cond, array( 'grupo_id' => $this->request->data['Usuario']['grupo_id'] ) );
-				$this->set( 'grupo_id',  $this->request->data['Usuario']['grupo_id'] );
-			}
+			$cond['grupo_id'] = 4;
 			if( !empty(  $this->request->data['Usuario']['obra_social'] ) ) {
 				$cond = array_merge( $cond, array( 'obra_social_id' => $this->request->data['Usuario']['obra_social'] ) );
 				$this->set( 'obra_social',  $this->request->data['Usuario']['obra_social'] );
 			}
     	}
     	$this->set( 'usuarios', $this->paginate( 'Usuario', $cond ) );
-		$this->set( 'grupos', $this->Usuario->Grupo->find( 'list' ) );
 		$this->set( 'obrassociales', $this->Usuario->ObraSocial->find( 'list' ) );
     }
 
