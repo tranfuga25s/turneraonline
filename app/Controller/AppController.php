@@ -23,9 +23,7 @@ class AppController extends Controller {
 			'loginAction'    => array( 'controller' => 'usuarios', 'action' => 'ingresar', 'administracion' => false ),
             'logoutRedirect' => array( 'controller' => 'pages'   , 'action' => 'display', 'homeVenta', 'administracion' => false ),
             'loginRedirect'  => array( 'controller' => 'usuarios', 'action' => 'view'    ),
-            'authorize'      => array( 'Controller' ),
-            //'unauthorizedRedirect' => array( 'administracion' => false, 'controller' => 'usuarios', 'action' => 'view' )
-            'unauthorizedRedirect' => false
+            'authorize'      => array( 'Controller' )
 		),
 		'Session',
 		'PaginationRecall',

@@ -32,7 +32,7 @@
 					<td>Tel&eacute;fono</td>
 					<td><?php echo h($clinica['Clinica']['telefono']); ?>&nbsp;</td>
 				</tr>
-				<?php } 
+				<?php }
 				if( !empty( $clinica['Clinica']['email'] ) )  {?>
 				<tr>
 					<td>Email:</td>
@@ -41,7 +41,7 @@
 				<?php } ?>
 			</tbody>
 		</table>
-		
+
 		<?php if( isset( $clinica['Especialidades'] ) && !empty( $clinica['Especialidades'] ) ) : ?>
 		<h3>Especialidades Disponibles</h3>
 		<table class="table table-hover table-condensed">
@@ -54,8 +54,8 @@
 			</tbody>
 		</table>
 		<?php endif; ?>
-		
-		
+
+
 		<?php if( isset( $clinica['Medicos'] ) && !empty( $clinica['Medicos'] ) ) : ?>
 		<h3>M&eacute;dicos que atienden en esta cl&iacute;nica</h3>
 		<table class="table table-hover table-condensed">
@@ -70,12 +70,17 @@
 		<?php endif; ?>
 	</div>
 
-	<!-- MAP DIV -->	
+	<!-- MAP DIV -->
 	<div class="span6">
 		<?php
 		// init map (prints container)
-		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true, "autoCenter" => true ) );
-		 
+		echo $this->GoogleMapV3->map(
+          array( 'div' =>
+              array( 'height'=>'400',
+                     'width'=>'100%' ),
+              "autoScript" => true,
+              "zoom" => intval( $clinica['Clinica']['zoom']  ) )
+        );
 		// add markers
 		$options = array(
 		    'lat' => $clinica['Clinica']['lat'],
@@ -88,13 +93,13 @@
 		    		.$clinica['Clinica']['telefono'].'<br />'
 		    		.'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
 		);
-		
+
 		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
-		 
+
 		// print js
 		echo $this->GoogleMapV3->script();
 	?>
 	</div>
 	<!-- End mapdiv -->
 </div>
-<?php //pr( $clinica ); ?>
+<?php pr( $clinica ); ?>
