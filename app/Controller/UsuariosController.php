@@ -8,29 +8,20 @@ App::uses('Folder', 'Utility');
  * @property Usuario $Usuario
  */
 class UsuariosController extends AppController {
-	
+
 	public $components = array( 'RequestHandler' );
 
 	public function beforeFilter() {
+	    parent::beforeFilter();
 		// Defino que acciones son publicas
-		$this->Auth->allow( array( 	'ingresar', 
-						'administracion_ingresar',
+		$this->Auth->allow( array( 	'ingresar',
+						'administracion_ingresaradmin',
 						'administracion_salir',
 						'salir',
 						'recuperarContra',
 						'registrarse',
 						'cancelar',
 						'eliminarUsuario' ) );
-		if( $this->request->administracion == "administracion" ) {
-			$this->layout = 'administracion';
-		}
-		// coloco los datos del usuario
-		$adentro = $this->Auth->loggedIn();
-		$this->set( 'loggeado', $adentro );
-		if( $adentro ) {
-			$this->set( 'usuarioactual', $this->Auth->user() );
-		}
-		Configure::load( '', 'Turnera' );
 	}
 
 	public function isAuthorized( $usuario = null ) {
@@ -94,12 +85,12 @@ class UsuariosController extends AppController {
 			$term = $this->request->query['query'];
 			$ret = Cache::read( 'pacientes-'.$term );
 			if( $ret == false ) {
-				$data = $this->Usuario->find( 'all', 
-					array(  'fields' => array( 'razonsocial', 'id_usuario' ), 
+				$data = $this->Usuario->find( 'all',
+					array(  'fields' => array( 'razonsocial', 'id_usuario' ),
 							'conditions' => array( 'razonsocial LIKE ' => "%".$term."%" ),
 							'order' => array( 'razonsocial' ) ) );
 				$ret = array();
-				foreach( $data as $d ) { 
+				foreach( $data as $d ) {
 					$ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
@@ -111,7 +102,7 @@ class UsuariosController extends AppController {
 			if( $ret == false ) {
 				$data = $this->Usuario->find( 'all', array(  'fields' => array( 'razonsocial', 'id_usuario', 'nombre', 'apellido' ), 'order' => array( 'razonsocial' ) ) );
 				$ret = array();
-				foreach( $data as $d ) { 
+				foreach( $data as $d ) {
 				    $ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
@@ -128,7 +119,7 @@ class UsuariosController extends AppController {
     	$cond = array();
     	if( $this->request->isPost() ) {
     		if( !empty( $this->request->data['Usuario']['texto'] ) ) {
-    			$cond = array_merge( $cond, array( 'OR' => 
+    			$cond = array_merge( $cond, array( 'OR' =>
     							array( '`Usuario`.`nombre` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%',
     							       '`Usuario`.`apellido` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%' ) ) );
 				$this->set( 'texto',  $this->request->data['Usuario']['texto'] );
@@ -144,7 +135,7 @@ class UsuariosController extends AppController {
     	}
     	$this->set( 'usuarios', $this->paginate( 'Usuario', $cond ) );
 		$this->set( 'grupos', $this->Usuario->Grupo->find( 'list' ) );
-		$this->set( 'obrassociales', $this->Usuario->ObraSocial->find( 'list' ) );    	
+		$this->set( 'obrassociales', $this->Usuario->ObraSocial->find( 'list' ) );
     }
 
    /*!
@@ -172,7 +163,7 @@ class UsuariosController extends AppController {
 	 *
 	 * @return void
 	 */
-	public function administracion_ingresar() {
+	public function administracion_ingresaradmin() {
 		$this->layout='adminlogin';
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
@@ -223,7 +214,7 @@ class UsuariosController extends AppController {
 						$email->send();
 						if( $this->Auth->loggedIn() ) {
 							$this->Session->setFlash( 'Se envió una nueva contraseña de ingreso al usuario' );
-							$this->redirect( array( 'action' => 'index' ) );	
+							$this->redirect( array( 'action' => 'index' ) );
 						} else {
 							$this->Session->setFlash( 'Se ha enviado un mensaje con su nueva contraseña.<br />Por favor, revise su casilla de correo para obtener los datos y así poder ingresar al sistema.' );
 							$this->redirect( array( 'action' => 'ingresar' ) );
@@ -236,7 +227,7 @@ class UsuariosController extends AppController {
 				$this->Session->setFlash( 'Por favor, ingrese una dirección de correo electronico para solicitar su nueva contraseña.');
 			}
 		}
-		$this->set( 'dominio', $_SERVER['SERVER_NAME'] ); 
+		$this->set( 'dominio', $_SERVER['SERVER_NAME'] );
 	}
 
 	/**
@@ -323,7 +314,7 @@ class UsuariosController extends AppController {
 					}
 				}
 			}
-		} 		
+		}
 	}
 
 
@@ -353,7 +344,7 @@ class UsuariosController extends AppController {
 
 	/*!
 	 * Metodo par ver los datos por medio del medico
-	 * 
+	 *
 	 * @param int $id
 	 * @return void
 	 */
@@ -373,7 +364,7 @@ class UsuariosController extends AppController {
 
 	/*!
 	 * Metodo par ver los datos por medio del medico
-	 * 
+	 *
 	 * @param int $id
 	 * @return void
 	 */
@@ -629,11 +620,11 @@ class UsuariosController extends AppController {
 		}
 		$this->set( 'data', $this->Usuario->read() );
 	}
-	
+
    /**
     * Funcion pra dar de alta cuando se intenta reservar un turno
     * @param integer $id_turno Identificador del turno
-    */	
+    */
 	public function altaTurno( $id_turno = null, $id_medico = null, $secretaria = true, $nombre = null, $accion = null ) {
 		if( $this->request->isPost() ) {
 			if( $this->Usuario->verificarSiExiste( $this->request->data['Usuario']['email'] ) ) {
@@ -659,7 +650,7 @@ class UsuariosController extends AppController {
 					->subject( 'Bienvenido al sistema de turnos' )
 					->send();
 					if( $secretaria ) {
-						$this->redirect( array( 'controller' => 'secretarias', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) ); 
+						$this->redirect( array( 'controller' => 'secretarias', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) );
 					} else {
 						$this->redirect( array( 'controller' => 'medicos', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) );
 					}
@@ -667,7 +658,7 @@ class UsuariosController extends AppController {
 					$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
 				}
 			}
-		}	
+		}
 		$this->set( 'id_turno', $id_turno );
 		$this->set( 'id_medico', $id_medico );
 		$this->set( 'secretaria', $secretaria );
@@ -689,7 +680,7 @@ class UsuariosController extends AppController {
 
     /**
 	 * Muestra el listado de turnos del paciente para el médico
-	 * 
+	 *
 	 * @param usuario_id integer Identificación del usuario buscado
 	 * @throws NotFoundException Si el usuario no existe
 	 */
