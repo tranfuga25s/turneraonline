@@ -16,8 +16,7 @@
 		<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
 		<ul class="media-list">
 			<?php foreach( $obrasSociales as $obraSocial ) :
-				if( is_null( $obraSocial['ObraSocial']['logo'] ) ) { $obraSocial['ObraSocial']['logo'] = 'cabecera.png'; } ?>
-			<li class="media">
+                if( is_null( $obraSocial['ObraSocial']['logo'] ) || $obraSocial['ObraSocial']['logo'] == '' ) { $obraSocial['ObraSocial']['logo'] = 'cabecera.png'; } ?>			<li class="media">
 				<?php echo $this->Html->link( $this->Html->image( $obraSocial['ObraSocial']['logo'], array( 'class' => 'media-object' ) ),
 													  array( 'action' => 'view', $obraSocial['ObraSocial']['id_obra_social'] ),
 						  							  array( 'escape' => false, 'class' => 'pull-left' ) ); ?>
