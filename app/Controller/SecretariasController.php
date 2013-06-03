@@ -57,8 +57,8 @@ class SecretariasController extends AppController {
 		if( $this->request->isPost() ) {
 			$this->request->data = $this->request->data['secretarias'];
 			// Busco la fecha e que me pasaron
-			if( isset( $this->request->data['accion'] ) ) {
-				$t = new DateTime('now'); $t->setDate( $this->ano, $this->mes, $this->dia );
+			if( isset( $this->request->data['accion'] ) && $this->request->data['accion'] != '' ) {
+				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano, $this->DiaTurnoRecall->mes, $this->DiaTurnoRecall->dia );
 				$t2 = clone $t;
 				if( $this->request->data['accion'] == 'ayer' ) {
 					$t2 = $t->sub( new DateInterval( "P1D" ) );

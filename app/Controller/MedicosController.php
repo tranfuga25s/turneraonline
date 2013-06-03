@@ -71,7 +71,7 @@ class MedicosController extends AppController {
 		if( $this->request->isPost() ) {
 			$this->request->data = $this->request->data['medicos'];
 			// Busco la fecha e que me pasaron
-			if( isset( $this->data['accion'] ) ) {
+			if( isset( $this->data['accion'] ) && $this->data['accion'] != '' ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
 				if( $this->request->data['accion'] == 'ayer' ) {
