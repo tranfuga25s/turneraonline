@@ -102,4 +102,3 @@
 	</div>
 	<!-- End mapdiv -->
 </div>
-<?php pr( $clinica ); ?>
