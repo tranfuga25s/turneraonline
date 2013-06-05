@@ -309,7 +309,6 @@ class TurnosController extends AppController {
      */
     public function reservarTurno() {
 
-        debug( $this->data );
         // Los datos vienen por post
         if( !$this->request->isPost() ) {
             throw new NotImplementedException( 'Este método no está implementado' );
@@ -346,7 +345,7 @@ class TurnosController extends AppController {
                                          'action' => 'agregarAvisoNuevoTurno',
                                          'id_turno' => $id_turno,
                                          'id_paciente' => $id_paciente ) );
-            $this->Session->setFlash( "Turno reservado correctamente" );
+            $this->Session->setFlash( "Turno reservado correctamente", 'flash/success' );
         } else {
             $this->Session->setFlash( "No se pudo hacer la reserva.<br />Razón: ".$error, 'flash/error' );
         }
