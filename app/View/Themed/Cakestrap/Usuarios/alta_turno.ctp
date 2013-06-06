@@ -5,7 +5,7 @@
  * @version 1
  */
 
-$this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );  
+$this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );
 ?>
 <script>
 	function generarEmail() {
@@ -13,7 +13,7 @@ $this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );
 		var apellido = $("#UsuarioApellido" ).val().toLowerCase();
 		if( nombre == '' || apellido == '' ) {
 			$("#aviso").modal();
-			return;			
+			return;
 		}
 		var email = nombre+apellido+"@<?php if( strpos( "www.", $dominio ) === FALSE ) {	echo $dominio; } else { echo substr( $dominio, 4, strlen($dominio) ); } ?>";
 		$("#UsuarioEmail").val( email );
@@ -23,7 +23,7 @@ $this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );
 </script>
 
 <div class="row-fluid">
-	
+
 	<div class="span12 well">
 		<?php echo $this->Form->create( 'Usuario' ); ?>
 		<fieldset>
@@ -39,9 +39,6 @@ $this->set( 'title_for_layout', "Dar de alta usuario y reservar turno" );
 			echo $this->Form->input( 'contra', array( 'type' => 'password', 'label' => 'Contraseña' ) );
 			echo $this->Form->input( 'confirmacontra', array( 'type' => 'password', 'label' => 'Confirmar contraseña' ) );
 			echo $this->Form->input( 'grupo_id', array( 'type' => 'hidden', 'value' => 4 ) );
-			echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => $id_turno ) );
-			echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => $id_medico ) );
-			echo $this->Form->input( 'secretaria', array( 'type' => 'hidden', 'value' => $secretaria ) );
 			?>
 		</fieldset>
 		<?php echo $this->Form->end( array( 'label' => 'Dar de alta y reservar turno', 'class' => 'btn btn-success', 'div' => array( 'class' => 'form-actions' ) ) ); ?>

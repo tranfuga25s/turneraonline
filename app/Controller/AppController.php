@@ -1,6 +1,7 @@
 <?php
 App::uses('Controller', 'Controller');
 App::uses('Folder', 'Utility');
+App::uses('MissingParameterException', 'Error' );
 /**
  * Application Controller
  *

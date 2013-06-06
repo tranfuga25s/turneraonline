@@ -165,8 +165,8 @@ class UsuariosController extends AppController {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );
 			} else {
-				//echo AuthComponent::password( $this->request->data['Usuario']['contra'] );
-				$this->Session->setFlash( 'El email ingresado o la contraseña son incorrectas', 'default', array(), 'auth');
+				echo AuthComponent::password( $this->request->data['Usuario']['contra'] );
+				$this->Session->setFlash( 'El email ingresado o la contraseña son incorrectas', 'default', array( 'class' => 'error' ), 'auth');
 			}
 		}
 	}
@@ -602,10 +602,10 @@ class UsuariosController extends AppController {
 				$this->Session->setFlash( "Las contraseñas no coinciden." );
 			} else {
 				if( $this->Usuario->save( $this->request->data, false ) ) {
-					$this->Session->setFlash( "Contraseña cambiada correctamente" );
+					$this->Session->setFlash( "Contraseña cambiada correctamente", 'default', array( 'class' => 'success' ) );
 					$this->redirect( array( 'action' => 'index' ) );
 				} else {
-					$this->Session->setFlash( "No se pudo cambiar la contraseña" );
+					$this->Session->setFlash( "No se pudo cambiar la contraseña", 'default', array( 'class' => 'error' ) );
 					pr( $this->Usuario->invalidFields() );
 				}
 			}
@@ -620,8 +620,11 @@ class UsuariosController extends AppController {
    /**
     * Funcion pra dar de alta cuando se intenta reservar un turno
     * @param integer $id_turno Identificador del turno
+    * @param integer $id_medico Identificador del médico
+    * @param string $nombre Nombre del nuevo paciente
+    * @param string $accion Accion del controlador Turnos para redirigir
     */
-	public function altaTurno( $id_turno = null, $id_medico = null, $secretaria = true, $nombre = null, $accion = null ) {
+	public function altaTurno( $id_turno = null, $id_medico = null, $nombre = null, $accion = null ) {
 		if( $this->request->isPost() ) {
 			if( $this->Usuario->verificarSiExiste( $this->request->data['Usuario']['email'] ) ) {
 				$this->Session->setFlash( 'El email proporcionado ya está registrado en el sistema.');
@@ -629,35 +632,14 @@ class UsuariosController extends AppController {
 				$this->Usuario->create();
 				if ( $this->Usuario->save( $this->request->data ) ) {
 					$this->borrarCacheUsuarios();
-					$this->Session->setFlash('El usuario se agregó correctamente' );
-					$id_turno = $this->request->data['Usuario']['id_turno'];
-					$id_medico = $this->request->data['Usuario']['id_medico'];
-					$id_usuario = $this->Usuario->id;
-					$this->request->data['Usuario'] = array_merge( $this->request->data['Usuario'], array( 'id' => $id_usuario ) );
-					$de = Configure::read( 'Turnera.email_notificaciones' );
-					if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }
-					// Crear email de bienvenida!
-					$email = new CakeEmail();
-					$email->template( 'bienvenida', 'usuario' )
-					->emailFormat( 'both' )
-					->from( $de )
-					->to( $this->request->data['Usuario']['email'] )
-					->viewVars( array( 'usuario' => $this->request->data['Usuario'] ) )
-					->subject( 'Bienvenido al sistema de turnos' )
-					->send();
-					if( $secretaria ) {
-						$this->redirect( array( 'controller' => 'secretarias', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) );
-					} else {
-						$this->redirect( array( 'controller' => 'medicos', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) );
-					}
+					$this->Session->setFlash( 'El usuario se agregó correctamente', 'flash/success' );
+					$this->enviarBienvenida( $this->Usuario->id );
+					$this->redirect( array( 'controller' => 'turnos', 'action' => $accion, $this->Usuario->id ) );
 				} else {
-					$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
+					$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.', 'flash/error' );
 				}
 			}
 		}
-		$this->set( 'id_turno', $id_turno );
-		$this->set( 'id_medico', $id_medico );
-		$this->set( 'secretaria', $secretaria );
 		$this->set( 'nombre', $nombre );
 		$this->set( 'dominio', $_SERVER['SERVER_NAME'] );
 		$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
@@ -689,4 +671,31 @@ class UsuariosController extends AppController {
 		$this->set( 'usuario', $this->Usuario->read() );
 		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
+
+    /**
+     * Funcion utilizada para enviar el email de bienvenida al usuario nuevo
+     */
+    private function enviarBienvenida( $id_usuario = null ) {
+
+        $this->Usuario->id = $id_usuario;
+        if( !$this->Usuario->exists() ) {
+            throw new NotFoundException( 'El usuario '.$id_usuario.' no existe' );
+        }
+
+        // Preparo los datos para la bienvenida
+        $usuario = $this->Usuario->read( null, $id_usuario );
+
+        $de = Configure::read( 'Turnera.email_notificaciones' );
+        if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }
+
+        // Crear email de bienvenida!
+        $email = new CakeEmail();
+        $email->template( 'bienvenida', 'usuario' )
+              ->emailFormat( 'both' )
+              ->from( $de )
+              ->to( $this->request->data['Usuario']['email'] )
+              ->viewVars( array( 'usuario' => $usuario ) )
+              ->subject( 'Bienvenido a nuestro sistema de turnos online' )
+              ->send();
+    }
 }

@@ -307,17 +307,20 @@ class TurnosController extends AppController {
      * Reserva un turno por parte del medico o la secretaria
      * La parte del usuario se hace por el tipo tutorial
      */
-    public function reservarTurno() {
+    public function reservarTurno( $id_paciente = null ) {
 
-        // Los datos vienen por post
+        // Los datos vienen por post -  a travez de agregar el paciente
         if( !$this->request->isPost() ) {
-            throw new NotImplementedException( 'Este método no está implementado' );
+            $this->request->data['Turno'] = $this->Session->read(  'turno' );
+            $this->Session->delete( 'turno' );
         }
         // Verifico los parámetros
         if( !array_key_exists( 'rpaciente', $this->data['Turno'] ) ) {
             throw new MissingParameterException( 'rpaciente' );
         } else {
-            $id_paciente = intval( array_pop( array_reverse( split( '-', $this->data['Turno']['rpaciente'] ) ) ) );
+            if( $id_paciente == null ) {
+                $id_paciente = intval( array_pop( array_reverse( split( '-', $this->data['Turno']['rpaciente'] ) ) ) );
+            }
         }
 
         if( !array_key_exists( 'id_turno', $this->data['Turno'] ) ) {
@@ -336,7 +339,14 @@ class TurnosController extends AppController {
         $this->loadModel( 'Usuario' );
         $this->Usuario->id = $id_paciente;
         if( !$this->Usuario->exists() ) {
-            throw new NotFoundException( 'El usuario solicitado no existe' );
+            $this->Session->setFlash( 'El usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'flash/info' );
+            $this->Session->write( array( 'turno' => $this->data['Turno'] ) );
+            $this->redirect( array( 'controller' => 'usuarios',
+                                    'action' => 'altaTurno',
+                                    $id_turno,
+                                    $this->Turno->field( 'medico_id' ),
+                                    $this->data['Turno']['rpaciente'],
+                                    'reservarTurno' ) );
         }
 
         $error = '';
@@ -347,7 +357,7 @@ class TurnosController extends AppController {
                                          'id_paciente' => $id_paciente ) );
             $this->Session->setFlash( "Turno reservado correctamente", 'flash/success' );
         } else {
-            $this->Session->setFlash( "No se pudo hacer la reserva.<br />Razón: ".$error, 'flash/error' );
+            $this->Session->setFlash( "No se pudo hacer la reserva.<br /> Razón: ".$error, 'flash/error' );
         }
 
         $this->redirect( array( 'action' => 'turnos', 'controller' => $controlador ) );
@@ -399,9 +409,14 @@ class TurnosController extends AppController {
     * Se necesitan los siguientes parametros: id_turno, spaciente, id_medico, hora, min, duracion.
     * spaciente es la cadena: <id_usuario - nombre usuario> si el usuario está dado de alta sino se dará de alta.
     */
-    public function sobreturno() {
+    public function sobreturno( $id_paciente = null ) {
         if( $this->request->isPost() ) {
             extract( $this->request->data['Turno'] );
+            // Extraigo el ID del paciente
+            if( !isset( $spaciente ) ) {
+                throw new MissingParameterException( 'spaciente' );
+            }
+            $id_paciente = intval( array_pop( array_reverse( split( '-', $this->data['Turno']['spaciente'] ) ) ) );
         } else {
             // Si entro por aquí, tuve que dar de alta el paciente.
             extract( $this->Session->read( 'turno' ) );
@@ -409,6 +424,10 @@ class TurnosController extends AppController {
         }
 
         // Verifico los parámetros
+        if( !isset( $id_medico ) ) {
+            throw new MissingParameterException( 'id_medico' );
+        }
+        // Usa el turno para sacar el día
         if( !isset( $id_turno ) ) {
             throw new MissingParameterException( 'id_turno' );
         }
@@ -423,6 +442,9 @@ class TurnosController extends AppController {
         }
         if( !isset( $min ) ) {
             throw new MissingParameterException( 'min' );
+        }
+        if( !isset( $controlador ) ) {
+            throw new MissingParameterException( 'controlador' );
         }
 
         $this->Turno->id = $id_turno;
@@ -441,8 +463,7 @@ class TurnosController extends AppController {
                                     'action' => 'altaTurno',
                                     $id_turno,
                                     $id_medico,
-                                    true,
-                                    $this->request->data['spaciente'],
+                                    $this->request->data['Turno']['spaciente'],
                                     'sobreturno' ) );
         }
 
