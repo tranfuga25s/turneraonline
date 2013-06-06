@@ -1,18 +1,18 @@
 <?php
 $this->set( 'title_for_layout', "Condiciones del servicio" );
 ?>
-<div class="affix span2" id="costado">
-    <ul class="nav nav-list">
-        <li class="nav-header">Condiciones del servicio</li>
-        <li class="active"><a href="#">Inicio</a></li>
-        <li><a href="#uso">Uso de la información personal</a></li>
-        <li><a href="#condiciones">Aceptacion de las condicioens</a></li>
-        <li><a href="#eliminacion">Solicitud de eliminación de datos personales</a></li>
-    </ul>
-</div>
-
 <div class="row-fluid">
-    <div class="span9 offset3" data-spy="affix" data-offset-top="200">
+    <div class="span2" id="costado">
+        <ul class="nav nav-list">
+            <li class="nav-header">Condiciones del servicio</li>
+            <li class="active"><a href="#">Inicio</a></li>
+            <li><a href="#uso">Uso de la información personal</a></li>
+            <li><a href="#condiciones">Aceptacion de las condicioens</a></li>
+            <li><a href="#eliminacion">Solicitud de eliminación de datos personales</a></li>
+        </ul>
+    </div>
+
+    <div class="span9">
         <h3>Condiciones del servicio</h3>
         Debido a que este sitio recauda información personal es pertinente dar a conocer al usuario los usos que se le dará a los datos que proporcione mediante este sistema.<br />
         En conformidad con la Ley 25.326 de Protección de Datos Personales, y por lo en ella solicitado, se le informa al usuario los usos que se les dará a la información ingresada en este sitio:<br />
@@ -37,4 +37,3 @@ $this->set( 'title_for_layout', "Condiciones del servicio" );
         <br />
     </div>
 </div>
-<script>$( function() { $('#costado').affix(); });</script>
