@@ -73,25 +73,32 @@
 		?>
 		<table class="table table-hover table-bordered">
 			<tbody>
-				<th><?php echo $this->Paginator->sort( 'razon_social' ); ?></th>
+				<th><?php echo $this->Paginator->sort( 'razon_social', 'Razon Social / Email' ); ?></th>
 				<th><?php echo $this->Paginator->sort( 'obrasocial.nombre', 'Obra social' ); ?></th>
 				<th>Telefonos</th>
 				<th>Acciones</th>
 				<?php foreach ( $usuarios as $usuario ) : ?>
 				<tr>
-					<td><?php echo h( $usuario['Usuario']['razonsocial'] ); ?></td>
-					<td><?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obra_social', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?></td>
-					<td><?php echo $usuario['Usuario']['telefono'].'<br />'.$usuario['Usuario']['celular']; ?></td>
+					<td><?php echo h( $usuario['Usuario']['razonsocial'] ); ?><br />
+                        <i class="icon-envelope"></i><?php echo $this->Html->link( $usuario['Usuario']['email'], 'mailto:'.$usuario['Usuario']['email']  ); ?>
+                    </td>
+					<td>
+					    <?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obra_social', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?>
+				    </td>
+					<td>
+					    <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['telefono']; ?><br />
+					    <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['celular']; ?>
+					</td>
 					<td class="actions">
 						<?php
-						echo $this->Html->link( 'Ver', array( 'action' => 'view', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini') );
-						echo $this->Html->link( 'Editar', array('action' => 'edit', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini') );
-						echo $this->Form->postLink(	'Eliminar',
+						echo $this->Html->link( '<i class=" icon-eye-open"></i> Ver', array( 'action' => 'view', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini', 'escape' => false ) );
+						echo $this->Html->link( '<i class="icon-edit"></i> Editar', array('action' => 'edit', $usuario['Usuario']['id_usuario'] ), array('class' => 'btn btn-mini', 'escape' => false ) );
+						echo $this->Form->postLink(	'<i class="icon-trash"></i> Eliminar',
 													array('action' => 'delete', $usuario['Usuario']['id_usuario']),
-													 array('class' => 'btn btn-mini'),
+													 array('class' => 'btn btn-mini', 'escape' => false ),
 													'Se eliminaran TODOS los datos relacionados al paciente.\n Esta seguro que desea eliminar el item' . ' #' . $usuario['Usuario']['id_usuario']
 						);
-						echo $this->Html->tag( 'a', 'Camb contra', array( 'onclick' => 'cambiaContra( \''.$usuario['Usuario']['email'].'\' )', 'class' => 'btn btn-mini' ) );
+						echo $this->Html->tag( 'a', '<i class="icon-asterisk"></i> Camb contra', array( 'onclick' => 'cambiaContra( \''.$usuario['Usuario']['email'].'\' )', 'class' => 'btn btn-mini', 'escape' => false ) );
 						//echo $this->Html->link( 'Turnos', array( 'controller' => 'turnos', 'action' => 'verPorMedico' ), array('class' => 'btn btn-mini') );
 						?>
 					</td>
