@@ -6,7 +6,7 @@
 		<title><?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
 		<?php
 			echo $this->Html->meta('icon');
-			
+
 			echo $this->fetch('meta');
 
 			echo $this->Html->css('bootstrap.min');
@@ -14,10 +14,10 @@
 			echo $this->Html->css('core');
 
 			echo $this->fetch('css');
-			
+
 			echo $this->Html->script('libs/jquery');
 			echo $this->Html->script('libs/bootstrap.min');
-			
+
 			echo $this->fetch('script');
 		?>
 		<meta lang="es" name="keywords" content="Turnos, turnos online, clinica, medico, paciente, pedir turno, argentina" />
@@ -28,27 +28,28 @@
 			<div id="header" class="container">
 				<?php echo $this->element('menu/top_menu'); ?>
 			</div><!-- #header .container -->
-			
+
 			<div id="content" class="container">
 
 				<?php echo $this->Session->flash(); ?>
 
 				<?php echo $this->fetch('content'); ?>
 			</div><!-- #header .container -->
-			
+
 			<div id="footer" class="container well">
-				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp; 
+				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp;
 				<?php echo $this->Html->link(
 					$this->Html->image( 'tr.logo.png', array( 'alt' => "TR Sistemas Informaticos Integrados", 'border' => '0' ) ),
 						'http://www.bscomputacion.org/',
 						array( 'target' => '_blank', 'escape' => false, 'class' => 'pull-right', 'style' => 'margin-left: 3px;' )
 					);	?>
 				<div class="pull-right">
-				   <?php echo $this->Html->tag( 'a', '<i class="icon-info-sign"></i>', 
-				   			array( 	'escape' => false, 
-				   					'data-toogle' => 'popover', 
-				   					'title' => 'Informacion del tema', 
-				   					'data-original-title' => 'Informacion del tema', 
+				   <?php echo $this->Html->link( '<i class="icon-briefcase"></i>', array( 'controller' => 'pages', 'action' => 'display', 'legal' ), array( 'escape' => false ) ); ?>
+				   <?php echo $this->Html->tag( 'a', '<i class="icon-info-sign"></i>',
+				   			array( 	'escape' => false,
+				   					'data-toogle' => 'popover',
+				   					'title' => 'Informacion del tema',
+				   					'data-original-title' => 'Informacion del tema',
 				   					'data-placement' => 'left',
 				   					'data-html' => 'true',
 				   					'data-trigger' => 'click',
@@ -61,7 +62,7 @@
 			   </div>
 			   <script>$(function() { $("#test").popover(); });</script>
 			</div><!-- #footer .container -->
-			
+
 		</div><!-- #main-container -->
 		<?php echo $this->element( 'sql_dump' ); ?>
 		<?php echo $this->Js->writeBuffer(); ?>

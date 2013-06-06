@@ -1,6 +1,6 @@
 <?php   $this->set( 'title_for_layout', "Registrarse" ); ?>
 <script>
-	$( function() {  
+	$( function() {
 		$("#dialogo").alert();
 	});
 </script>
@@ -15,10 +15,10 @@
 				<i>juanmartinez@<?php echo $dominio; ?></i><br /> Su contrase&ntilde;a ser&aacute;:<br />
 				<i>juanmartinez</i><br />
 				<?php echo $this->Html->link( 'Intentar esta opción', '/', array( 'class' => 'btn' ) ); ?>
-					
+
 			</center>
 		</div>
-		
+
 	<div class="span7 well">
 		<?php echo $this->Form->create('Usuario'); ?>
 		<fieldset>
@@ -38,10 +38,12 @@
 				  echo "Contraseña:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " . $this->Form->password( 'contra', array( 'label' => 'Contraseña' ) ) . "<br />";
 				  echo "Confirmar Contrase&ntilde;a:" . $this->Form->password( 'contrarep', array( 'label' => 'Contraseña' ) );
 			?>
+			<hr />
+			<p>Al presionar el botón de <b>Registrarme</b> usted acepta las <?php echo $this->Html->link( 'Condiciones del servicio', array( 'controller' => 'pages', 'action' => 'display', 'legal' ) ); ?></p>
 		</fieldset>
 		<div class="form-actions">
 			<?php echo $this->Form->end( array( 'label' => 'Registrarme', 'class' => 'btn btn-success', 'div' => false ) ); ?>&nbsp;
-			<?php echo $this->Facebook->login( array( 'label' => $this->Html->tag( 'span', 'Ingresar con facebook', array( 'class' => 'btn btn-primary' ) ), 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>&nbsp;
+			<?php //echo $this->Facebook->login( array( 'label' => $this->Html->tag( 'span', 'Ingresar con facebook', array( 'class' => 'btn btn-primary' ) ), 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>&nbsp;
 			<?php echo $this->Html->link( 'Volver', '/', array( 'class' => 'btn btn-inverted' ) ); ?>
 		</div>
 	</div>
