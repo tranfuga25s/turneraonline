@@ -5,8 +5,10 @@
 			<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
 			<li class="active"><?php echo $this->Html->link( h( $clinica['Clinica']['nombre'] ), '#' ); ?></li>
 			<li><?php echo $this->Html->link( 'Nuevo turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) ); ?></li>
+			<?php if( $loggeado ) : ?>
 			<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view' ) ); ?></li>
 			<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>
@@ -46,7 +48,7 @@
 		<h3>Especialidades Disponibles</h3>
 		<div class="btn-group">
 		<?php foreach( $clinica['Especialidades'] as $especialidad ) {
-		  echo $this->Html->link( $especialidad['Especialidad']['nombre'], array( 'controller' => 'especialidades', 'action' => 'verMedicos', $especialidad['Especialidad']['id_especialidad'] ), array( 'class' => 'btn btn-info' ) );
+		  echo $this->Html->tag( 'a', $especialidad['Especialidad']['nombre'], array( 'href' => '#', 'class' => 'btn btn-info' ) );
 		} ?>
         </div>
 		<?php endif; ?>
