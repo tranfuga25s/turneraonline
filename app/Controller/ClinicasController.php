@@ -90,8 +90,8 @@ class ClinicasController extends AppController {
 		}
 		$clinica = $this->Clinica->read( null, $id );
 		$this->loadModel( 'Medico' );
-		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'id_medico' ) );
-		$clinica['Medicos'] = $this->Medico->lista( $ids );
+		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'usuario_id' ) );
+		$clinica['Medicos'] = $this->Medico->lista( $ids, true );
 		$this->loadModel( 'Especialidad' );
 		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'especialidad_id' ) );
 		$clinica['Especialidades'] = $this->Especialidad->find( 'all', array( 'conditions' => array( 'id_especialidad' => $ids ) ) );

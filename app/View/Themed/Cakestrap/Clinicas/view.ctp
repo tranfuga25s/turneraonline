@@ -44,29 +44,25 @@
 
 		<?php if( isset( $clinica['Especialidades'] ) && !empty( $clinica['Especialidades'] ) ) : ?>
 		<h3>Especialidades Disponibles</h3>
-		<table class="table table-hover table-condensed">
-			<tbody>
-				<?php foreach( $clinica['Especialidades'] as $especialidad ) : ?>
-				<tr>
-					<td><?php echo h( $especialidad['Especialidad']['nombre'] ); ?></td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		<div class="btn-group">
+		<?php foreach( $clinica['Especialidades'] as $especialidad ) {
+		  echo $this->Html->link( $especialidad['Especialidad']['nombre'], array( 'controller' => 'especialidades', 'action' => 'verMedicos', $especialidad['Especialidad']['id_especialidad'] ), array( 'class' => 'btn btn-info' ) );
+		} ?>
+        </div>
 		<?php endif; ?>
 
 
 		<?php if( isset( $clinica['Medicos'] ) && !empty( $clinica['Medicos'] ) ) : ?>
 		<h3>M&eacute;dicos que atienden en esta cl&iacute;nica</h3>
-		<table class="table table-hover table-condensed">
-			<tbody>
-				<?php foreach( $clinica['Medicos'] as $medico ) : ?>
-				<tr>
-					<td><?php echo $this->Html->link( h( $Medico['Usuario']['razonsocial'] ), array( 'controller' => 'medicos', 'action' => 'view', $medico['Medico']['id_medico'] ) ); ?></td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		    <ul class="thumbnails">
+		<?php foreach( $clinica['Medicos'] as $id_medico => $medico ) : ?>
+
+                <li class="span3 thumbnail text-center">
+                    <?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'max-width: 92%;' ) ); ?>
+                    <?php echo $this->Html->link( $medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ) ); ?>
+                </li>
+			<?php endforeach; ?>
+            </ul>
 		<?php endif; ?>
 	</div>
 
@@ -102,3 +98,4 @@
 	</div>
 	<!-- End mapdiv -->
 </div>
+

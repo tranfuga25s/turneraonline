@@ -67,7 +67,7 @@
 			<?php
 				foreach( $clinica['Especialidades'] as $especialidad ) {
 					echo "<tr><td>";
-					echo h( $especialidad['Especialidad']['nombre'] );
+					echo $this->Html->link( $especialidad['Especialidad']['nombre'], array( 'plugin' => false, 'controller' => 'especialidades', 'action' => 'verMedicos', $especialidad['Especialidad']['id_especialidad'] ), array( 'class' => 'btn' ) );
 					echo "</tr></td>";
 				}
 			?>

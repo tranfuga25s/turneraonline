@@ -27,7 +27,7 @@ class Clinica extends AppModel {
 			)
 		),
 		'email' => array(
-			'email' => array( 
+			'email' => array(
 				'rule' => array( 'email' ),
 				'message' => 'Ingrese una dirección de correo electronica correcta.',
 				'allowEmpty' => true,
@@ -38,16 +38,19 @@ class Clinica extends AppModel {
 
 	public $hasMany = array(
 		'Consultorios' => array(
-			'class' => 'Consultorio'
+			'class' => 'Consultorio',
+			'foreignKey' => 'clinica_id'
 		),
-		'Medicos' => array( 
-			'class' => 'Medico'
+		'Medicos' => array(
+			'class' => 'Medico',
+			'foreignKey' => 'clinica_id'
 		),
 		'Secretarias' => array(
-			'class' => 'Secretaria'
+			'class' => 'Secretaria',
+			'foreignKey' => 'clinica_id'
 		)
 	);
-	
+
 	/**
 	 * Verifica si existen datos asociados
 	 */
@@ -66,10 +69,10 @@ class Clinica extends AppModel {
 		}
 		return true;
 	}
-	
+
 	/*!
 	 * Devuelve verdadero si existe una única clinica seteada en el sistema
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function unaSola() {
 		$count = $this->find( 'count' );
@@ -83,9 +86,9 @@ class Clinica extends AppModel {
 	 * Devuelve el valor de los datos de la unica clinica
 	 * @params mixed $options Opciones a pasarle al find
 	 * @return Array Datos los datos
-	 */	
+	 */
 	public function unica() {
 		return $this->find( 'first', array( 'fields' => array( 'id_clinica', 'nombre' ), 'recursive' => -1 ) );
 	}
-	
+
 }

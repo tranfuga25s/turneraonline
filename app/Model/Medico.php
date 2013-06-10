@@ -13,7 +13,7 @@ class Medico extends AppModel {
 
 	public $primaryKey = 'id_medico';
 	public $actAs = array( 'AuditLog.Auditable' );
-	
+
 	public $validate = array(
 			'usuario_id' => array(
 				'notempty' => array(
@@ -24,7 +24,7 @@ class Medico extends AppModel {
 				)
 			)
 		);
-		
+
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	public $belongsTo = array(
 		'Usuario' => array(
@@ -55,7 +55,7 @@ class Medico extends AppModel {
 		'Excepcion' => array(
 			'className' => 'Excepcion',
 			'foreignKey' => 'medico_id'
-		)	
+		)
 	);
 
 	public $hasOne = array(
@@ -69,26 +69,25 @@ class Medico extends AppModel {
 	 * Devuleve el listado de medicos como para un select
 	 */
 	public function lista( $id_filtro = null, $solo_visibles = false ) {
-		$cond = array();
+		$cond = array( 'grupo_id' => 2 );
 		if( $id_filtro != null ) {
-			$cond = array_merge( array( 'id_usuario' => $id_filtro ), $cond );
+			$cond['id_usuario'] = $id_filtro;
 		}
 		if( $solo_visibles ) {
-			$ids = $this->find( 'list', array( 'conditions' => array( 'visible' => true ), 'fields' => array( 'id_medico' ) ) );
+			$ids = $this->find( 'list', array( 'conditions' => array( 'visible' => 1 ), 'fields' => array( 'usuario_id' ) ) );
 			if( $id_filtro != null ) {
-				$cond = array_merge( $cond, array( 'id_usuario' => array_intersect( $ids, $id_filtro ) ) );
+				$cond['id_usuario'] = array_intersect( $ids, $id_filtro );
 			} else {
-				$cond = array_merge( $cond, array( 'id_usuario' => $ids ) );
+				$cond['id_usuario'] = $ids;
 			}
 		}
-		$conds = array_merge( array( 'grupo_id' => 2 ), $cond );
 		return $this->Usuario->find( 'list',
-			array( 'conditions' => $conds, 'fields' => array( 'id_usuario', 'razonsocial' )
+			array( 'conditions' => $cond, 'fields' => array( 'id_usuario', 'razonsocial' )
 		) );
 
 	}
 
-	/** 
+	/**
 	 * Muestra la lista de medicos que tienen la propiedad de visible seteada como verdadera.
 	 * Si se pasa como parametro algún ID de medico especifico, se mostrará solo la información de ese médico, sin importar si se encuentra visible o no.
 	 * El formato de devolución es un array con [$id_medico] => $razonsocial
@@ -120,7 +119,7 @@ class Medico extends AppModel {
 		foreach( $lista as $id_med => $id_us ) {
 			if( array_key_exists( $id_us, $lusuario ) ) {
 				$lista[$id_med]= $lusuario[$id_us];
-			}   
+			}
 		}
 		return $lista;
 	}
@@ -140,11 +139,11 @@ class Medico extends AppModel {
 		// Disponibilidad
 		$this->Disponibilidad->deleteAll( array( 'medico_id' => $id_medico ) );
 		// Excepcion
-		
+
 		// Finalmente elimino el medico
 		return $this->delete( $id_medico );
 	}
-	
+
 	/*!
 	 * Devuelve el listado de medicos publicados según una clínica
 	 * @param integer $id_clinica Identificador de la clinica
@@ -155,7 +154,7 @@ class Medico extends AppModel {
 		foreach( $lista as $id_med => $id_us ) {
 			if( array_key_exists( $id_us, $lusuario ) ) {
 				$lista[$id_med]= $lusuario[$id_us];
-			}   
+			}
 		}
 		return $lista;
 	}
