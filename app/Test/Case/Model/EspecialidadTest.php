@@ -23,6 +23,7 @@ class EspecialidadTestCase extends CakeTestCase {
 		parent::setUp();
 
 		$this->Especialidad = ClassRegistry::init('Especialidad');
+        $this->Medico = ClassRegistry::init('Medico');
 	}
 
     /**
@@ -32,8 +33,24 @@ class EspecialidadTestCase extends CakeTestCase {
      */
 	public function tearDown() {
 		unset($this->Especialidad);
+        unset($this->Medico);
 
 		parent::tearDown();
 	}
 
+
+    /**
+     * Probar de eliminar una especialidad que está vinculada con un médico
+     */
+    public function testEliminaction() {
+
+        $ids_medicos = $this->Medico->find( 'list', array( 'fields' => array( 'especialidad_id' ) ) );
+        $id_especialidad = array_pop( $ids_medicos );
+
+        $this->assertNotEqual( $id_especialidad,       0, "No se pudo seleccionar una especialidad - cero"        );
+        $this->assertNotEqual( $id_especialidad,    null, "No se pudo seleciconar una especialidad - null"        );
+        $this->assertNotEqual( $id_especialidad, array(), "No se pudo seleccionar una especialidad - array vacio" );
+
+        $this->assertNotEqual( $this->Especialidad->delete( $id_especialidad ), true, "La especialidad no debe ser eliminada!" );
+    }
 }
