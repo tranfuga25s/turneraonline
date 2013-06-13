@@ -95,7 +95,18 @@ class UsuarioTestCase extends CakeTestCase {
 	 }
 
      /**
-      * Prueba el cambio de contraseña de un usuario
+      * Prueba el cambio de grupo del usuario cuando es una secretaria
       */
+     public function testCambioUsuarioSecretaria() {
+        $this->assertEqual( true, false, "Metodo no implementado" );
+     }
+
+     /**
+      * Prueba el cambio de grupo del usuario cuando es un medico
+      */
+     public function testCambioUsuarioMedico() {
+        $this->assertEqual( true, false, "Metodo no implementado" );
+     }
+
 
 }
