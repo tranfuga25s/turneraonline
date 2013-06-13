@@ -13,7 +13,7 @@ class AllTests extends PHPUnit_Framework_TestSuite {
 		$suite = new PHPUnit_Framework_TestSuite('All Tests');
         $path = APP_TEST_CASES . DS;
         $suite->addTestFile( $path.'Controller'.DS.'ControllersTest.php' );
-        //$suite->addTestFile( $path.'Model'.DS.'AllModelsTest.php' );
+        $suite->addTestFile( $path.'Model'.DS.'AllModelsTest.php' );
         //$suite->addTestFile( $path.'View'.DS.'AllViewsTest.php');
 		return $suite;
 	}
