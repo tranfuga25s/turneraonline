@@ -98,14 +98,30 @@ class UsuarioTestCase extends CakeTestCase {
       * Prueba el cambio de grupo del usuario cuando es una secretaria
       */
      public function testCambioUsuarioSecretaria() {
-        $this->assertEqual( true, false, "Metodo no implementado" );
+        $this->Secretaria = ClassRegistry::init( 'Secretaria' );
+        $temp = $this->Secretaria->find( 'first', array( 'fields' => array( 'usuario_id' ), 'recursive' => -1 ) );
+        $id_usuario = $temp['Secretaria']['usuario_id'];
+        unset($temp);
+        $this->Usuario->recursive = -1;
+        $data = $this->Usuario->read( null, $id_usuario );
+        $data['Usuario']['grupo_id'] = 4;
+        $this->assertEqual( $this->Usuario->save( $data ), false, "El usuario no se debería de poder modificar si está asociado con una secretaria" );
+        unset($this->Secretaria);
      }
 
      /**
       * Prueba el cambio de grupo del usuario cuando es un medico
       */
      public function testCambioUsuarioMedico() {
-        $this->assertEqual( true, false, "Metodo no implementado" );
+        $this->Medico = ClassRegistry::init( 'Medico' );
+        $temp = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ), 'recursive' => -1 ) );
+        $id_usuario = $temp['Medico']['usuario_id'];
+        unset($temp);
+        $this->Usuario->recursive = -1;
+        $data = $this->Usuario->read( null, $id_usuario );
+        $data['Usuario']['grupo_id'] = 4;
+        $this->assertEqual( $this->Usuario->save( $data ), false, "El usuario no se debería de poder modificar si está asociado con un médico" );
+        unset($this->Medico);
      }
 
 
