@@ -1,6 +1,7 @@
 <?php
 /* Usuario Test cases generated on: 2012-01-12 11:36:19 : 1326378979*/
-App::uses('Usuario', 'Model');
+App::uses( 'Usuario', 'Model' );
+App::uses( 'AuthComponent', 'Controller/Component' );
 
 /**
  * Usuario Test Case
@@ -18,10 +19,14 @@ class UsuarioTestCase extends CakeTestCase {
 							 'app.secretaria',
 							 'app.especialidad',
 							 'app.clinica',
-							 'app.obras_sociales',
+							 'app.obra_social',
 							 'app.grupo',
 							 'app.turno',
-							 'app.consultorio');
+							 'app.consultorio',
+                             'app.disponibilidad',
+                             'app.excepcion');
+
+    public $components = array( 'Auth' );
 
 	/**
 	 * setUp method

@@ -13,4 +13,6 @@ class ObraSocialFixture extends CakeTestFixture {
 	 * @var array
 	 */
 	public $import = array( 'table' => 'obras_sociales', 'records' => true );
+
+    public $table = 'test_obras_sociales';
 }
