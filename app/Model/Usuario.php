@@ -14,6 +14,13 @@ class Usuario extends AppModel {
 
 	public $belongsTo = array( 'ObraSocial', 'Grupo' );
 
+    public $hasOne = array(
+        'Medico',
+        'Secretaria'
+    );
+
+    public $hasMany = array( 'Turno' );
+
 	public $validate = array(
 		'email' => array(
 			'email' => array(
@@ -121,5 +128,26 @@ class Usuario extends AppModel {
 	public function eliminarPorEmail( $email ) {
 		return $this->deleteAll( array( 'email' => $email ) );
 	}
+
+    /**
+     * Verificaciones de eliminación de usuarios
+     * @ref test
+     */
+    public function beforeDelete( $cascade ) {
+        // Verifico que no esté asociado con algún médico
+        $cmedico = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
+        if( intval( $cmedico ) > 0 ) {
+            return false;
+        }
+        $csecretaria = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
+        if( intval( $csecretaria ) > 0 ) {
+            return false;
+        }
+        $cturnos = $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $this->id ) ) );
+        if( intval( $cturnos ) > 0 ) {
+            return false;
+        }
+        return true;
+    }
 
 }

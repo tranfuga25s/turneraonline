@@ -5,7 +5,6 @@ App::uses( 'AuthComponent', 'Controller/Component' );
 
 /**
  * Usuario Test Case
- *
  */
 class UsuarioTestCase extends CakeTestCase {
 
@@ -14,17 +13,12 @@ class UsuarioTestCase extends CakeTestCase {
 	 *
 	 * @var array
 	 */
-	public $fixtures = array('app.usuario',
-							 'app.medico',
-							 'app.secretaria',
-							 'app.especialidad',
-							 'app.clinica',
-							 'app.obra_social',
-							 'app.grupo',
-							 'app.turno',
-							 'app.consultorio',
-                             'app.disponibilidad',
-                             'app.excepcion');
+	public $fixtures = array('app.usuario',     'app.medico',
+							 'app.secretaria',  'app.especialidad',
+							 'app.clinica',     'app.obra_social',
+							 'app.grupo',       'app.turno',
+							 'app.consultorio', 'app.disponibilidad',
+                             'app.excepcion' );
 
     public $components = array( 'Auth' );
 
