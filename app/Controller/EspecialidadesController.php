@@ -9,12 +9,12 @@ class EspecialidadesController extends AppController {
  	 var $uses = 'Especialidad';
 
 	public function beforeFilter() {
-		$this->Auth->allow( 'especialidadesInicio' );
+		$this->Auth->allow( 'especialidadesInicio', 'view' );
 		$this->layout = 'administracion';
 		AppController::beforeFilter();
 	}
 
-	
+
 	public function isAuthorized( $usuario = null, $request = null ) {
 		if( ! parent::isAuthorized( $usuario, $request ) ) { return false; }
 		switch( $usuario['grupo_id'] ) {
@@ -60,18 +60,18 @@ class EspecialidadesController extends AppController {
 		$this->set( 'especialidades', $this->paginate() );
 	}
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @param string $id
+     * @return void
+     */
 	public function view($id = null) {
-		$this->Especialidade->id = $id;
+		$this->Especialidad->id = $id;
 		if (!$this->Especialidad->exists()) {
 			throw new NotFoundException( 'Especialidad invalida' );
 		}
-		$this->set('especialidade', $this->Especialidade->read(null, $id));
+		$this->set( 'especialidad', $this->Especialidad->read( null, $id ) );
 	}
 
 
