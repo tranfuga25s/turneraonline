@@ -124,4 +124,18 @@ class UsuarioTestCase extends CakeTestCase {
      }
 
 
+    /**
+     * Verifico que funcione correctamente el verificador de correo electrónico
+     */
+     public function testVerificarSiExiste() {
+         $this->assertEqual( true, false, "Método no implementado todavía" );
+     }
+
+     /**
+      * Verificación del generador de contraseñas
+      */
+     public function testGenerarNuevaContraseña() {
+         $this->assertEqual( true, false, "Método no implementado todavía" );
+     }
+
 }

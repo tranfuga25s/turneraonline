@@ -76,7 +76,11 @@ class Usuario extends AppModel {
 		)
 	);
 
-	// Esta funcion encripta las contraseñas antes de guardarlas en la base de datos
+	/**
+     * Esta funcion encripta las contraseñas antes de guardarlas en la base de datos
+     *  y
+     * Verifica que al cambiar de grupo no se esté cambiando a un medico o una secretaria
+     */
 	function beforeSave($options = array()) {
 		if( isset( $this->data['Usuario']['contra'] ) ) {
 			$this->data['Usuario']['contra'] = AuthComponent::password( $this->data['Usuario']['contra'] );
