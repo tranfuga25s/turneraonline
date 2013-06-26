@@ -30,6 +30,8 @@ class UsuarioTestCase extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->Usuario = ClassRegistry::init('Usuario');
+        Configure::write( 'Turnera.grupos.0', 2 );
+        Configure::write( 'Turnera.grupos.1', 3 );
 	}
 
 	/**
@@ -103,7 +105,8 @@ class UsuarioTestCase extends CakeTestCase {
         unset($temp);
         $this->Usuario->recursive = -1;
         $data = $this->Usuario->read( null, $id_usuario );
-        $data['Usuario']['grupo_id'] = 4;
+        $data['Usuario']['id_usuario'] = $id_usuario;
+        $data['Usuario']['grupo_id'] = 3;
         $this->assertEqual( $this->Usuario->save( $data ), false, "El usuario no se debería de poder modificar si está asociado con una secretaria" );
         unset($this->Secretaria);
      }
