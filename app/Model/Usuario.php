@@ -85,6 +85,13 @@ class Usuario extends AppModel {
 		if( isset( $this->data['Usuario']['contra'] ) ) {
 			$this->data['Usuario']['contra'] = AuthComponent::password( $this->data['Usuario']['contra'] );
 		}
+        $grupo = $this->read( 'grupo_id' );
+        if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
+            if( $grupo != $this->data['Usuario']['grupo_id'] ) {
+                // Verificar que esté la asociación hecha
+                return false;
+            }
+        }
 		return true;
 	}
 
