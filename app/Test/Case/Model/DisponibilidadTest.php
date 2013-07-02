@@ -15,7 +15,8 @@ class DisponibilidadTestCase extends CakeTestCase {
 	 */
 	public $fixtures = array( 'app.disponibilidad',
 							  'app.dia_disponibilidad',
-							  'app.medico' );
+							  'app.medico',
+							  'app.consultorio' );
 
 	/**
 	 * setUp method
@@ -70,10 +71,10 @@ class DisponibilidadTestCase extends CakeTestCase {
             //$this->asserEqual( $this->Disponibilidad->existe( $medico ), true, "El médico ".$medico." no posee una disponibilidad asociada" );
 
             // Verifico que tenga una duración de turno
-            $this->assertEqual( $this->testVerificarDuracionTurno( $medico ), true, "El médico ".$medico." no posee una duracion de turno asociada" );
+            $this->assertEqual( $this->verificarDuracionTurno( $medico ), true, "El médico ".$medico." no posee una duracion de turno asociada" );
 
             // Verifico que tenga un consultorio asociado
-            $this->assertEqual( $this->testVerificarConsultorioAsociado( $medico ), true, "El médico ".$medico." no posee un consultorio asociado" );
+            $this->assertEqual( $this->verificarConsultorioAsociado( $medico ), true, "El médico ".$medico." no posee un consultorio asociado" );
         }
         unset( $this->Medico );
     }
@@ -81,7 +82,7 @@ class DisponibilidadTestCase extends CakeTestCase {
     /**
      * Funcion que verifica que le medico tenga algúna duracion de turno asociada
      */
-    public function testVerificarDuracionTurno( $id_medico = null ) {
+    public function verificarDuracionTurno( $id_medico = null ) {
         $this->assertNotEqual( $id_medico, null, "Parametro del test incorrecto" );
 
         $data = $this->Disponibilidad->find( 'first', array( 'conditions' => array( 'medico_id' => $id_medico ),
@@ -91,8 +92,8 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->assertNotEqual( $data, null, "Datos nulos" );
         $this->assertNotEqual( $data, array(), "Datos vacios" );
 
-        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array[Disponibilidad]" );
-        $this->assertEqual( array_key_exists( 'duracion', $data['Disponibilidad'] ), true, "El array no trajo el campo duracion" );
+        $this->assertArrayHasKey( 'Disponibilidad', $data, "El array no trae el formato correcto" );
+        $this->assertArrayHasKey( 'duracion', $data['Disponibilidad'], "El array no trajo el campo duracion" );
         $this->assertNotEqual( $data['Disponibilidad']['duracion'], null, "El dato de duracion no puede ser nulo" );
         $this->assertNotEqual( $data['Disponibilidad']['duracion'], 0, "El dato de duracion no puede ser cero" );
 
@@ -103,7 +104,7 @@ class DisponibilidadTestCase extends CakeTestCase {
     /**
      * Funcion que verifica que el medico tenga algún consultorio asociado
      */
-    public function testVerificarConsultorioAsociado( $id_medico = null ) {
+    public function verificarConsultorioAsociado( $id_medico = null ) {
 
         $this->assertNotEqual( $id_medico, null, "Parametro del test incorrecto" );
 
@@ -114,15 +115,15 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->assertNotEqual( $data, null, "Datos nulos" );
         $this->assertNotEqual( $data, array(), "Datos vacios" );
 
-        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array[Disponibilidad]" );
-        $this->assertEqual( array_key_exists( 'consultorio_id', $data['Disponibilidad'] ), true, "El array no trajo el campo del consultorio" );
+        $this->assertArrayHasKey( 'Disponibilidad', $data, "El array no trae el formato correcto" );
+        $this->assertArrayHasKey( 'consultorio_id', $data['Disponibilidad'], "El array no trajo el campo del consultorio" );
         $this->assertNotEqual( $data['Disponibilidad']['consultorio_id'], null, "El dato de consultorio no puede ser nulo" );
         $this->assertNotEqual( $data['Disponibilidad']['consultorio_id'], 0, "El dato de consultorio no puede ser cero" );
 
         $this->Consultorio = ClassRegistry::init('Consultorio');
         $this->Consultorio->id = $data['Disponibilidad']['consultorio_id'];
         $this->Consultorio->recursive = -1;
-        $this->asserEqual( $this->Consultorio->exists(), true, "El consultorio asociado no existe" );
+        $this->assertEqual( $this->Consultorio->exists(), true, "El consultorio asociado no existe" );
         unset( $this->Consultorio );
 
         // Si llegé hasta aca está todo OK
