@@ -19,7 +19,12 @@ class Usuario extends AppModel {
         'Secretaria'
     );
 
-    public $hasMany = array( 'Turno' );
+    public $hasMany = array(
+        'Turno' => array(
+            'class' => 'Turno',
+            'foreignKey' => 'paciente_id'
+        )
+    );
 
 	public $validate = array(
 		'email' => array(
