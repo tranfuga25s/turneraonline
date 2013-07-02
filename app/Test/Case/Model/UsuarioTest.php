@@ -131,7 +131,12 @@ class UsuarioTestCase extends CakeTestCase {
      * Verifico que funcione correctamente el verificador de correo electrónico
      */
      public function testVerificarSiExiste() {
-         $this->assertEqual( true, false, "Método no implementado todavía" );
+         // Busco una direccion registrada y una inventada
+         $registrada = $this->Usuario->find( 'first', array( 'fields' => array( 'email' ), 'recursive' => -1 ) );
+         $registrada = $registrada['Usuario']['email'];
+         $inventada = 'inventadisisisima@notengoidea.com.ar';
+         $this->assertEqual( $this->Usuario->verificarSiExiste( $registrada ), true, "La direccion de correo electronica correcta falla." );
+         $this->assertEqual( $this->Usuario->verificarSiExiste( $inventada  ), false, "La direccion de correo inventada está dandose como correcta." );
      }
 
      /**
