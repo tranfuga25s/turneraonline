@@ -74,6 +74,7 @@ class DisponibilidadTestCase extends CakeTestCase {
             // Verifico que tenga un consultorio asociado
             $this->assertEqual( $this->testVerificarConsultorioAsociado( $medico ), true, "El médico ".$medico." no posee un consultorio asociado" );
         }
+        unset( $this->Medico );
     }
 
     /**
@@ -118,6 +119,7 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->Consultorio->id = $data['Disponibilidad']['consultorio_id'];
         $this->Consultorio->recursive = -1;
         $this->asserEqual( $this->Consultorio->exists(), true, "El consultorio asociado no existe" );
+        unset( $this->Consultorio );
     }
 
 
