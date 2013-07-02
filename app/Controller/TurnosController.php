@@ -260,7 +260,7 @@ class TurnosController extends AppController {
 
                     // Verificar restricción de cantidad de turnos x día.
                     if( $this->Turno->verificarTurnosEnDia( $turno['Turno']['fecha_inicio'], $id_paciente ) ) {
-                        $this->Session->setFlash( "Usted ya ha reservado un turno para este día. Solo puede reservar un turno por día" );
+                        $this->Session->incorrecto( "Usted ya ha reservado un turno para este día. Solo puede reservar un turno por día" );
                         $this->render( 'nuevo/error' );
                         return;
                     }
@@ -288,7 +288,7 @@ class TurnosController extends AppController {
 	                    $this->set( 'usuario', $usuario );
 	                    $this->set( 'error', $error );
                     } else {
-                    	$this->Session->setFlash( $error );
+                    	$this->Session->incorrecto( $error );
 						$this->render( 'nuevo/error' );
 						return;
                     }
@@ -339,7 +339,7 @@ class TurnosController extends AppController {
         $this->loadModel( 'Usuario' );
         $this->Usuario->id = $id_paciente;
         if( !$this->Usuario->exists() ) {
-            $this->Session->setFlash( 'El usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'flash/info' );
+            $this->Session->peligro( 'El usuario seleccionado no existe, por favor, ingrese sus datos para darlo de alta.', 'flash/info' );
             $this->Session->write( array( 'turno' => $this->data['Turno'] ) );
             $this->redirect( array( 'controller' => 'usuarios',
                                     'action' => 'altaTurno',
@@ -647,10 +647,10 @@ class TurnosController extends AppController {
         if ($this->request->is('post')) {
             $this->Turno->create();
             if ($this->Turno->save($this->request->data)) {
-                $this->Session->setFlash(__('The turno has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->correcto( 'El turno pudo ser agregado correctamente' );
+                $this->redirect( array( 'action' => 'index' ) );
             } else {
-                $this->Session->setFlash(__('The turno could not be saved. Please, try again.'));
+                $this->Session->error( 'El turno no pudo ser agregado. Por favor intente nuevamente.' );
             }
         }
         $pacientes = $this->Turno->Paciente->find('list');
@@ -673,10 +673,10 @@ class TurnosController extends AppController {
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Turno->save($this->request->data)) {
-                $this->Session->setFlash( 'El turno ha sido guardado' );
+                $this->Session->correcto( 'El turno ha sido guardado' );
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The turno could not be saved. Please, try again.'));
+                $this->Session->incorrecto( 'El turno no pudo ser guardado. Por favor, intente nuevamente.' );
             }
         } else {
             $this->request->data = $this->Turno->read(null, $id);
@@ -703,24 +703,24 @@ class TurnosController extends AppController {
         }
         $reservado = $this->Turno->field( 'paciente_id' );
         if( $reservado != null ) {
-            $this->Session->setFlash( 'El turno está reservado. Canceleló primero.' );
+            $this->Session->peligro( 'El turno está reservado. Canceleló primero.' );
             $this->redirect( array( 'action' => 'index' ) );
         }
         $recibido = $this->Turno->field( 'recibido' );
         if( $recibido == true ) {
-            $this->Session->setFlash( 'El turno está marcado como recibido. Canceleló primero.' );
+            $this->Session->peligro( 'El turno está marcado como recibido. Canceleló primero.' );
             $this->redirect( array( 'action' => 'index' ) );
         }
         $atendido = $this->Turno->field( 'atendido' );
         if( $atendido == true ) {
-            $this->Session->setFlash( 'El turno está atendido ya. Canceleló primero.' );
+            $this->Session->peligro( 'El turno está atendido ya. Canceleló primero.' );
             $this->redirect( array( 'action' => 'index' ) );
         }
         if ($this->Turno->delete()) {
-            $this->Session->setFlash('El turno fue eliminado correctamente');
+            $this->Session->correcto('El turno fue eliminado correctamente');
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash('El turno no pudo ser eliminado');
+        $this->Session->error('El turno no pudo ser eliminado');
         $this->redirect(array('action' => 'index'));
     }
 
