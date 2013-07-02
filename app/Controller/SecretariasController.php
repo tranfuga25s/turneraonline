@@ -233,16 +233,16 @@ class SecretariasController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Secretaria->create();
 			if ($this->Secretaria->save($this->request->data)) {
-				$this->Session->setFlash( 'La secretaria fue agregada correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'La secretaria fue agregada correctamente' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'Los datos no se pudieron guardar, intente nuevamente', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'Los datos no se pudieron guardar, intente nuevamente' );
 			}
 		}
 		$ids = $this->Secretaria->find( 'list', array( 'fields' => array( 'usuario_id' ) ) );
 		$usuarios = $this->Secretaria->Usuario->find('list', array( 'conditions' => array( 'grupo_id' => 3, 'NOT' => array( 'id_usuario' => $ids ) ), 'fields' => array( 'razonsocial' ) ) );
 		if( count( $usuarios ) <= 0 ) {
-			$this->Session->setFlash( 'No existen usuarios del grupo secretarias que no esten declarados ya como secretarias.<br />Si desea agregar una nueva secretaria, cree un nuevo usuario dentro del grupo secretarias.' , 'default', array( 'class' => 'error' ) );
+			$this->Session->peligro( 'No existen usuarios del grupo secretarias que no esten declarados ya como secretarias.<br />Si desea agregar una nueva secretaria, cree un nuevo usuario dentro del grupo secretarias.' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		$clinicas = $this->Secretaria->Clinica->find('list');
@@ -262,10 +262,10 @@ class SecretariasController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Secretaria->save($this->request->data)) {
-				$this->Session->setFlash( 'La secretaria ha sido guardada correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcta( 'La secretaria ha sido guardada correctamente' );
 				$this->redirect( array('action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'Los datos de la secretaria no pudieron ser guardados. Por favor, intente nuevamente.' , 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'Los datos de la secretaria no pudieron ser guardados. Por favor, intente nuevamente.' );
 			}
 		} else {
 			$this->request->data = $this->Secretaria->read( null, $id );
@@ -290,10 +290,10 @@ class SecretariasController extends AppController {
 			throw new NotFoundException( 'Secretaria Invalida' );
 		}
 		if ($this->Secretaria->delete()) {
-			$this->Session->setFlash( 'La secretaria fue eliminada correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'La secretaria fue eliminada correctamente' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash( 'La secretaria no fue eliminada' , 'default', array( 'class' => 'error' ) );
+		$this->Session->incorrecto( 'La secretaria no fue eliminada' );
 		$this->redirect( array( 'action' => 'index' ) );
 	}
 }
