@@ -14,7 +14,8 @@ class DisponibilidadTestCase extends CakeTestCase {
 	 * @var array
 	 */
 	public $fixtures = array( 'app.disponibilidad',
-							  'app.dia_disponibilidad' );
+							  'app.dia_disponibilidad',
+							  'app.medico' );
 
 	/**
 	 * setUp method
@@ -90,10 +91,13 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->assertNotEqual( $data, null, "Datos nulos" );
         $this->assertNotEqual( $data, array(), "Datos vacios" );
 
-        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array['Disponibilidad']" );
+        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array[Disponibilidad]" );
         $this->assertEqual( array_key_exists( 'duracion', $data['Disponibilidad'] ), true, "El array no trajo el campo duracion" );
         $this->assertNotEqual( $data['Disponibilidad']['duracion'], null, "El dato de duracion no puede ser nulo" );
         $this->assertNotEqual( $data['Disponibilidad']['duracion'], 0, "El dato de duracion no puede ser cero" );
+
+        // Si llegé hasta aca está todo OK
+        return true;
     }
 
     /**
@@ -110,7 +114,7 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->assertNotEqual( $data, null, "Datos nulos" );
         $this->assertNotEqual( $data, array(), "Datos vacios" );
 
-        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array['Disponibilidad']" );
+        $this->assertEqual( array_key_exists( 'Disponibilidad', $data ), true, "El array no trae el formato correcto $array[Disponibilidad]" );
         $this->assertEqual( array_key_exists( 'consultorio_id', $data['Disponibilidad'] ), true, "El array no trajo el campo del consultorio" );
         $this->assertNotEqual( $data['Disponibilidad']['consultorio_id'], null, "El dato de consultorio no puede ser nulo" );
         $this->assertNotEqual( $data['Disponibilidad']['consultorio_id'], 0, "El dato de consultorio no puede ser cero" );
@@ -120,6 +124,9 @@ class DisponibilidadTestCase extends CakeTestCase {
         $this->Consultorio->recursive = -1;
         $this->asserEqual( $this->Consultorio->exists(), true, "El consultorio asociado no existe" );
         unset( $this->Consultorio );
+
+        // Si llegé hasta aca está todo OK
+        return true;
     }
 
 
