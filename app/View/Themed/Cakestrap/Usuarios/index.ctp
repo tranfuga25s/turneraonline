@@ -86,8 +86,11 @@
 					    <?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obra_social', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?>
 				    </td>
 					<td>
-					    <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['telefono']; ?><br />
-					    <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['celular']; ?>
+					    <?php if( !empty( $usuario['Usuario']['telefono'] ) ) : ?>
+					       <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['telefono']; ?><br />
+					    <?php elseif( !empty( $usuario['Usuario']['celular'] ) ) : ?>
+					       <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['celular']; ?>
+					    <?php endif; ?>
 					</td>
 					<td class="actions">
 						<?php
