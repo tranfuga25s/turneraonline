@@ -614,11 +614,18 @@ class TurnosController extends AppController {
                                                                  $this->request->data['Turno']['fechaHasta']['day']; }
         }
         $this->Turno->recursive = 2;
-        $this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
+        $this->Turno->Medico->unbindModel( array( 'hasMany' => array( 'Turno', 'Excepcion' ),
+                                                  'hasOne' => array( 'Disponibilidad' ),
+                                                  'belongsTo' => array( 'Especialidad', 'Clinica' ) ) );
         $this->Turno->Paciente->virtualFields = array( 'razonsocial' => 'CONCAT( Paciente.apellido, \', \', Paciente.nombre )' );
-        $this->set('turnos', $this->paginate( 'Turno', $conditions ) );
+        $this->Turno->Paciente->unbindModel( array( 'belongsTo' => array( 'ObraSocial', 'Grupo' ),
+                                                    'hasOne' => array( 'Medico','Secretaria' ),
+                                                    'hasMany' => array( 'Turno' ) ) );
+        $this->Turno->Consultorio->unbindModel( array( 'belongsTo' => array( 'Clinica' ), 'hasMany' => array( 'Turno' ) ) );
+        $this->set( 'turnos', $this->paginate( $conditions ) );
         $this->set( 'consultorios', $this->Turno->Consultorio->find('list') );
         $this->set( 'medicos', $this->Turno->Medico->lista2() );
+        $this->set( 'usuarios', $this->Turno->Medico->Usuario->find('list') );
     }
 
     /**
