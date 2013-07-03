@@ -5,7 +5,7 @@
     <?php echo $this->Form->create( 'Turno', array( 'action' => 'sobreturno', 'class' => 'form-inline' ) );
           echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) );
           echo $this->Form->input ( 'id_turno', array( 'type' => 'hidden', 'value' => 0 ) );
-          echo $this->Form->input( 'controlador', array( 'value' => $controller, 'type' => 'hidden' ) ); ?>
+          echo $this->Form->input( 'controlador', array( 'value' => $redirect, 'type' => 'hidden' ) ); ?>
     <div class="modal-header">
         <?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) ); ?>
         <h3>Agregar sobreturno</h3>

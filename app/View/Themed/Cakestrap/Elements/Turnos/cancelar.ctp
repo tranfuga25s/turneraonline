@@ -2,8 +2,8 @@
 <!--------------------------------- CANCELAR UN TURNO ----------------------------------------------------->
 <div id="cancelarTurno"  class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="cancelarTurno" aria-hidden="true">
     <?php echo $this->Form->create( 'Turno', array( 'action' => 'cancelar', 'class' => 'form-inline' ) );
-          echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => -1 ) ); 
-          echo $this->Form->input( 'controlador', array( 'value' => $controller, 'type' => 'hidden' ) ); ?>
+          echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => -1 ) );
+          echo $this->Form->input( 'controlador', array( 'value' => $redirect, 'type' => 'hidden' ) ); ?>
     <div class="modal-header">
         <?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) ); ?>
         <h3>¿Está seguro que desea cancelar este turno?</h3>
