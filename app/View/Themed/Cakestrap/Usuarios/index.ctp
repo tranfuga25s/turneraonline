@@ -1,27 +1,12 @@
-<?php  $this->set( 'title_for_layout', "Lista de pacientes" );  ?>
+<?php
+$this->set( 'title_for_layout', "Lista de pacientes" );
+
+?>
 <script>
-
  function cambiaContra( email ) {
- 	$("#cambiarcontra").dialog({
- 		modal: true,
- 		width: 500,
- 		buttons:
- 		{
- 			"Enviar": function() {
-				$("#RecuperarEmail").val( email );
-				$("#formcontra").submit();
-				$(this).dialog('close');
- 			},
- 			"Cancelar": function() {
- 				$(this).dialog('close');
- 			}
- 		}
- 	});
+    $("#RecuperarEmail").val( email );
+ 	$("#cambiarcontra").modal();
  }
-
- $( function() {
- 	$("a", "#accion").button();
-  });
 </script>
 <div class="row-fluid">
 
@@ -52,14 +37,26 @@
 	</div>
 </div>
 
-<div title="Cambiar Contraseña" id="cambiarcontra" style="display: none;">
-	Al presiónar la opción de enviar, se le enviará una nueva contraseña de acceso al paciente.
-	Este la recibirá en su email tal cual si el la ubiese solicitado por si mismo.
-	<?php echo $this->Form->create( 'Recuperar', array( 'url' => '/usuarios/recuperarContra', 'id' => 'formcontra' ) );
-		  echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => '' ) );
-		  echo $this->Form->end();
-    ?>
+<div class="modal hide fade" id="cambiarcontra">
+  <?php echo $this->Form->create( 'Recuperar', array( 'url' => '/usuarios/recuperarContra', 'id' => 'formcontra' ) ); ?>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Cambiar/Recuperar contraseña</h3>
+  </div>
+  <div class="modal-body">
+    <p> Al presiónar la opción de enviar, se le enviará una nueva contraseña de acceso al paciente.<br />
+        Este la recibirá en su email tal cual si el la ubiese solicitado por si mismo.
+    </p>
+    <?php echo $this->Form->input( 'email', array( 'type' => 'hidden', 'value' => '' ) ); ?>
+  </div>
+  <div class="modal-footer">
+    <?php
+    echo $this->Form->button( 'Cerrar', array( 'class' => 'btn btn-inverse', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) );
+    echo $this->Form->button( $this->Html->tag( 'i', ' ', array( 'class' => 'icon-envelope' ) ).' Enviar', array( 'div' => false, 'class' => 'btn btn-primary', 'escape' => false ) ); ?>
+  </div>
+  <?php echo $this->Form->end(); ?>
 </div>
+
 <div class="row-fluid">
 	<div class="span12">
 		<h4>Listado de pacientes</h4>

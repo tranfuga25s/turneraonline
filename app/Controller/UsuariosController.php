@@ -209,7 +209,7 @@ class UsuariosController extends AppController {
 						$email->from( $de );
 						$email->send();
 						if( $this->Auth->loggedIn() ) {
-							$this->Session->setFlash( 'Se envió una nueva contraseña de ingreso al usuario' );
+							$this->Session->setFlash( 'Se envió una nueva contraseña de ingreso al usuario', 'flash/success' );
 							$this->redirect( array( 'action' => 'index' ) );
 						} else {
 							$this->Session->setFlash( 'Se ha enviado un mensaje con su nueva contraseña.<br />Por favor, revise su casilla de correo para obtener los datos y así poder ingresar al sistema.' );
