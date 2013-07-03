@@ -108,10 +108,10 @@ class EspecialidadesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Especialidad->create();
 			if ($this->Especialidad->save($this->request->data)) {
-				$this->Session->setFlash( 'La especialidad ha sido guardada correctamente', 'default', array( 'class' => 'success') );;
+				$this->Session->correcto( 'La especialidad ha sido guardada correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'La especialidad no pudo ser guardada. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'La especialidad no pudo ser guardada. Por favor, intente nuevamente.' );
 			}
 		}
 	}
@@ -129,10 +129,10 @@ class EspecialidadesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Especialidad->save($this->request->data)) {
-				$this->Session->setFlash(__('The especialidade has been saved'));
+				$this->Session->correcto( 'La especialidad ha sido editada correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'La especialidad no se pudo guardar. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'La especialidad no se pudo guardar. Por favor, intente nuevamente.' );
 			}
 		} else {
 			$this->request->data = $this->Especialidad->read(null, $id);
@@ -157,14 +157,14 @@ class EspecialidadesController extends AppController {
 		$this->loadModel( 'Medico' );
 		$cant = $this->Medico->find( 'count', array( 'conditions' => array( 'especialidad_id' => $id ) ) );
 		if( $cant > 0 ) {
-			$this->Session->setFlash( 'No se pudo eliminar la especialidad ya que hay '.$cant.' medicos que todavía estan suscriptos a ella. <br /> Cambie los medicos de especialidad e intenteló de nuevo.' , 'default', array( 'class' => 'error') );
+			$this->Session->incorrecto( 'No se pudo eliminar la especialidad ya que hay '.$cant.' medicos que todavía estan suscriptos a ella. <br /> Cambie los medicos de especialidad e intenteló de nuevo.' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Especialidad->delete()) {
-			$this->Session->setFlash( 'La especialidad fue eliminada correctamente' , 'default', array( 'class' => 'success') );
+			$this->Session->correcto( 'La especialidad fue eliminada correctamente' );
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash( "La especialidad no pudo ser eliminada", 'default', array( 'class' => 'error') );
+		$this->Session->incorrecto( "La especialidad no pudo ser eliminada" );
 		$this->redirect(array('action' => 'index'));
 	}
 }
