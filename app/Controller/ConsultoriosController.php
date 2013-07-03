@@ -99,10 +99,10 @@ class ConsultoriosController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Consultorio->create();
 			if ($this->Consultorio->save($this->request->data)) {
-				$this->Session->setFlash( 'El consultorio fue agregado correctamente', 'default', array( 'class' => 'success') );
+				$this->Session->correcto( 'El consultorio fue agregado correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'El consultario no pudo ser agregado, intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'El consultario no pudo ser agregado, intente nuevamente.' );
 			}
 		}
 		$clinicas = $this->Consultorio->Clinica->find('list');
@@ -122,10 +122,10 @@ class ConsultoriosController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Consultorio->save($this->request->data)) {
-				$this->Session->setFlash( 'El consultorio fue modificado correctamente', 'default', array( 'class' => 'success') );
+				$this->Session->correcto( 'El consultorio fue modificado correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'El consultorio no ha podido ser modificado, intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'El consultorio no ha podido ser modificado, intente nuevamente.' );
 			}
 		} else {
 			$this->request->data = $this->Consultorio->read(null, $id);
@@ -149,10 +149,10 @@ class ConsultoriosController extends AppController {
 			throw new NotFoundException( 'Consultorio invalido' );
 		}
 		if ($this->Consultorio->delete()) {
-			$this->Session->setFlash( 'Consultorio eliminado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'Consultorio eliminado correctamente' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash( 'El Consultorio no pudo ser eliminado', 'default', array( 'class' => 'error') );
+		$this->Session->incorrecto( 'El Consultorio no pudo ser eliminado' );
 		$this->redirect( array('action' => 'index' ) );
 	}
 }
