@@ -6,7 +6,7 @@ App::uses('CakeEmail', 'Network/Email');
  * Avisos Controller
  */
 class AvisosController extends AppController {
-	
+
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -21,7 +21,7 @@ class AvisosController extends AppController {
 		$d = $this->Turno->read( array( 'fecha_inicio', 'consultorio_id', 'medico_id' ) );
 		$fecha_hora = $d['Turno']['fecha_inicio'];
 		$id_consultorio = $d['Turno']['consultorio_id'];
-		
+
 		$this->loadModel( 'Medico' );
 		$this->Medico->id = $d['Turno']['medico_id'];
 		if( !$this->Medico->exists() ) {
@@ -93,7 +93,7 @@ class AvisosController extends AppController {
 		}
 		$fecha_hora = $this->Turno->read( 'fecha_inicio' );
 		$id_paciente = $this->Turno->read( 'paciente_id' );
-		
+
 		if( $id_paciente['Turno']['paciente_id'] == null )
 			return;
 
@@ -123,20 +123,20 @@ class AvisosController extends AppController {
 
 	/**
 	 * Muestra la configuración de las notificaciones del sistema
-	 * 
+	 *
 	 */
 	public function administracion_cpanel() {
 		// Verifico si está andando el sistema de avisos
-			
+
 	}
-	
+
 	/**
 	 *  Muestra la configuración y/o habilitacion del sistema de sms
 	 */
 	public function administracion_sms() {
-		
+
 	}
-	
+
 	/**
 	 * Muestra la configuración y/o habilitacion del sistema de email
 	 */
@@ -147,7 +147,7 @@ class AvisosController extends AppController {
 				'nombre' => 'Recordatorio de turno proximo',
 				'explicacion' => 'Este aviso es enviado avisando al paciente de que tiene un turno dentro de las 12 horas proximas',
 				'template' => 'nuevoTurno',
-				'Formato' => array( 
+				'Formato' => array(
 					'text' => array(
 						'nombre' => 'Solo texto',
 						'content' => 'Formato solo texto',
@@ -157,13 +157,13 @@ class AvisosController extends AppController {
 					 	'nombre' => 'Html',
 					 	'content' => 'Formato en html',
 						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
-					 ) 
+					 )
 				)
 			)
 		);
 		$this->set( 'avisos', $data );
 	}
-	
+
 	/**
 	 * Muestra la lista de notificaciones pendientes de envio
 	 */
@@ -172,8 +172,8 @@ class AvisosController extends AppController {
 		$this->set( 'pendientes', $this->paginate( array( 'fecha_envio >= NOW()' ) ) );
 		$this->set( 'vencidas', $this->paginate( array( 'fecha_envio <= NOW()' ) ) );
 	}
-	
-	/** 
+
+	/**
 	 * Función para administrar las redirecciones según sea necesario
 	 * @param string $que Que elemento configurar
 	 */
@@ -200,7 +200,7 @@ class AvisosController extends AppController {
 		$aviso['Aviso']['para'] = $destinos['Usuario'];
 		$this->set( 'aviso', $aviso );
 	}
-	
+
 	/**
 	 * Función para renderizar el formato de un aviso
 	 * @param integer $id_aviso Identificador del aviso
@@ -253,14 +253,14 @@ class AvisosController extends AppController {
 		if( !$this->Aviso->exists() ) {
 			throw new NotFoundException( 'No existe el aviso que intenta cancelar' );
 		}
-		
+
 		if( $this->Aviso->delete( $id_aviso, true ) ) {
-			$this->Session->setFlash( 'El aviso ha sido cancelado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'El aviso ha sido cancelado correctamente' );
 		} else {
-			$this->Session->setFlash( 'El aviso no pudo ser cancelado', 'default', array( 'class' => 'error' ) );
+			$this->Session->incorrecto( 'El aviso no pudo ser cancelado' );
 		}
 		$this->redirect( array( 'action' => 'pendiente' ) );
 	 }
-	 
+
 }
 
