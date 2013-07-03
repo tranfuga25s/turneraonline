@@ -517,10 +517,10 @@ class UsuariosController extends AppController {
 			$this->Usuario->create();
 			if ($this->Usuario->save($this->request->data)) {
 				$this->borrarCacheUsuarios();
-				$this->Session->setFlash('El usuario se agregó correctamente' );
+				$this->Session->correcto('El usuario se agregó correctamente' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
+				$this->Session->error( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
 
 			}
 		}
@@ -541,11 +541,11 @@ class UsuariosController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Usuario->save($this->request->data)) {
-				$this->Session->setFlash( 'Los datos del usuario se modificaron correctamente' );
+				$this->Session->correcto( 'Los datos del usuario se modificaron correctamente' );
 				$this->borrarCacheUsuarios();
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'Los datos del usuario no pudieron ser guardados correctamente. Por favor intente nuevamente.' );
+				$this->Session->incorrecto( 'Los datos del usuario no pudieron ser guardados correctamente. Por favor intente nuevamente.' );
 			}
 		} else {
 			$this->request->data = $this->Usuario->read(null, $id);
@@ -570,25 +570,25 @@ class UsuariosController extends AppController {
 		}
 		$this->loadModel( 'Turno' );
 		if( $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
 			$this->redirect( array( 'action' => 'index'  ) );
 		}
 		$this->loadModel( 'Medico' );
 		if( $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		$this->loadModel( 'Secretaria' );
 		if( $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $this->Usuario->delete() ) {
 			$this->borrarCacheUsuarios();
-			$this->Session->setFlash( 'El Usuario ha sido eliminado correctamente' );
+			$this->Session->correcto( 'El Usuario ha sido eliminado correctamente' );
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash( __('Usuario was not deleted') );
+		$this->Session->incorrecto( 'El Usuario no fue eliminado' );
 		$this->redirect(array('action' => 'index'));
 	}
 
@@ -599,13 +599,13 @@ class UsuariosController extends AppController {
 	public function administracion_cambiarContra( $id_usuario = null ) {
 		if( $this->request->is( 'post' ) ) {
 			if( $this->request->data['Usuario']['contra'] != $this->request->data['Usuario']['recontra'] ) {
-				$this->Session->setFlash( "Las contraseñas no coinciden." );
+				$this->Session->incorrecto( "Las contraseñas no coinciden." );
 			} else {
 				if( $this->Usuario->save( $this->request->data, false ) ) {
-					$this->Session->setFlash( "Contraseña cambiada correctamente", 'default', array( 'class' => 'success' ) );
+					$this->Session->correcto( "Contraseña cambiada correctamente", 'default', array( 'class' => 'success' ) );
 					$this->redirect( array( 'action' => 'index' ) );
 				} else {
-					$this->Session->setFlash( "No se pudo cambiar la contraseña", 'default', array( 'class' => 'error' ) );
+					$this->Session->incorrecto( "No se pudo cambiar la contraseña", 'default', array( 'class' => 'error' ) );
 					pr( $this->Usuario->invalidFields() );
 				}
 			}
