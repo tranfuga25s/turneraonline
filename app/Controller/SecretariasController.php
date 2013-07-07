@@ -130,6 +130,11 @@ class SecretariasController extends AppController {
 			$ids = array();
 			$ids[] = $id_turno;
 			if( count( $ids ) > 0 ) {
+			     if( array_key_exists( 0, $ids ) ) {
+                    $ids = $ids[0];
+                } else {
+                    die( 'Que rayos estamos recibiendo de parametros para cancelar?'.print_r( $ids, true ) );
+                }
 			   	$correcto = $incorrecto = array();
 			   	foreach( $ids as $id ) {
 			   		$aviso = $this->Turno->reservado( $id );
