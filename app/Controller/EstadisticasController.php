@@ -24,6 +24,18 @@ class EstadisticasController extends AppController {
 		);
 	}
 
+    public function index() {
+        $this->layout = 'default';
+        $this->set( 'acciones',
+            array( array( 'accion' => 'usuariosDeclarados'              , 'titulo' => "Cantidad de usuarios según tipo" ),
+                   array( 'accion' => 'usuariosActivos'                 , 'titulo' => "Cantidad de usuarios activos en el último mes" ),
+                   array( 'accion' => 'turnosGuardadosFuturos'          , 'titulo' => "Proporcion de turnos historicos y a futuro" ),
+                   array( 'accion' => 'turnosFuturoReserva'             , 'titulo' => "Proporcion de turnos a futuro libres y reservados" ),
+                  /* array( 'accion' => 'turnosReservaSecretariaUsuarios'   , 'titulo' => "Cantidad de turnos reservados por secretarias y por pacientes" )*/
+            )
+        );
+    }
+
 	/*
 	 * Devuelve la cantidad de usuarios declarados según su tipo
 	 */

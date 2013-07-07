@@ -31,7 +31,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 <table border="0">
  <tbody>
   <tr>
-   <td width="50%">	
+   <td width="50%">
 	<div class="titulo1">¿Que es este sitio?</div>
 	<br />
 	En este sitio se encuentra una demostración del sistema de turnos que tenemos para ofrecerle!.<br /><br />
@@ -53,7 +53,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Sanatorios y/o Hospitales</div>', array( 'controller' => 'pages/clientes/hospital'     ), array( 'escape' => false ) ); ?></div>
 	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Dentistas</div>'                , array( 'controller' => 'pages/clientes/dentista'     ), array( 'escape' => false ) ); ?></div>
 	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Salones de Belleza</div>'       , array( 'controller' => 'pages/clientes/belleza'      ), array( 'escape' => false ) ); ?></div>
-	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>        
+	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de F&uacute;tbol</div>' , array( 'controller' => 'pages/clientes/futbol'       ), array( 'escape' => false ) ); ?></div>
 	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Canchas de Tenis</div>'         , array( 'controller' => 'pages/clientes/tenis'        ), array( 'escape' => false ) ); ?></div>
 	        <div class="simpleSlide-slide" rel="usuarios"><?php echo $this->Html->link( '<div class="flotatipo">'.$this->Html->image( 'cabecera.png' ).'<br />Hoteles Alojamiento</div>'      , array( 'controller' => 'pages/clientes/hotel'        ), array( 'escape' => false ) ); ?></div>
 	    </div>
@@ -119,11 +119,13 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 				<li><?php echo $this->Html->link( 'Turnos del día', array( 'controller' => 'secretarias', 'action' => 'turnos' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Resumen Diario', array( 'controller' => 'secretarias', 'action' => 'resumen' ) ); ?></li>
+				<li><?php echo $this->Html->link( 'Estadisticas', array( 'controller' => 'estadisticas', 'action' => 'index' ) ); ?></li>
 
 	<?php 	} else if( $usuarioactual['grupo_id'] == 2 ) { // MEDICOS ?>
 				<li><?php echo $this->Html->link( 'Turnos del día', array( 'controller' => 'medicos', 'action' => 'turnos' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Disponibilidad', array( 'controller' => 'medicos', 'action' => 'disponibilidad' ) ); ?></li>
-				<li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>				
+				<li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
+				<li><?php echo $this->Html->link( 'Estadisticas', array( 'controller' => 'estadisticas', 'action' => 'index' ) ); ?></li>
 
 	<?php 	} else if( $usuarioactual['grupo_id'] == 1 ) { // ADMINISTRADORES ?>
 				<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ) ); ?></li>
@@ -133,7 +135,7 @@ $this->Html->script( 'simpleSlide.min', array( 'inline' => false ) );
 				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
 			</ul>
 		</div>
-		
+
 	<?php } ?>
 		</center>
    </td>

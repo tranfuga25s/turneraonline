@@ -72,14 +72,17 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Turnos del día', array( 'controller' => 'secretarias', 'action' => 'turnos' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-th-list"></i> Resumen Diario', array( 'controller' => 'secretarias', 'action' => 'resumen' ), array( 'escape' => false )  ); ?></li>
+                            <li><?php echo $this->Html->link( '<i class="icon-tasks"></i> Estadisticas', array( 'controller' => 'estadisticas', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
 
 				<?php 	} else if( $usuarioactual['grupo_id'] == 2 ) { // MEDICOS ?>
 							<li><?php echo $this->Html->link( '<i class="icon-list-alt"></i> Turnos del día', array( 'controller' => 'medicos', 'action' => 'turnos' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-calendar"></i> Disponibilidad', array( 'controller' => 'medicos', 'action' => 'disponibilidad' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( '<i class="icon-user"></i> Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
+							<li><?php echo $this->Html->link( '<i class="icon-tasks"></i> Estadisticas', array( 'controller' => 'estadisticas', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
 
 				<?php 	} else if( $usuarioactual['grupo_id'] == 1 ) { // ADMINISTRADORES ?>
 							<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view', $usuarioactual['id_usuario'] ) ); ?></li>
+                            <li><?php echo $this->Html->link( '<i class="icon-tasks"></i> Estadisticas', array( 'controller' => 'estadisticas', 'action' => 'index' ), array( 'escape' => false )  ); ?></li>
 							<li><?php echo $this->Html->link( 'Administración', '/administracion/usuarios/cpanel' ); ?></li>
 
 				<?php 	} ?>
