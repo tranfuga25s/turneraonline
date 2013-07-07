@@ -25,7 +25,20 @@ class Disponibilidad extends AppModel {
 			'foreignKey' => 'medico_id'
 		)
 	);
-	
+
+    /**
+     * Evita que el sistema elimine una disponibilidad si existe el médico asociado
+     * @param cascade Eliminar datos relacionados en cascada
+     */
+    public function beforeDelete( $cascade = true ) {
+        $id_medico = $this->field( 'medico_id' );
+        $this->Medico->id = $id_medico;
+        if( $this->Medico->exists() ) {
+            return false;
+        }
+        return true;
+    }
+
    /*!
     * Verifica la existencia de disponibildiades en el mismo consultorio en los horarios especificados
     * @param id_medico Medico que reservará la disponibildiad
@@ -36,11 +49,11 @@ class Disponibilidad extends AppModel {
     * @param hit Hora de inicio del turno tarde
     * @param hft Hora de fin del turno tarde
     */
-	public function verificar( $id_medico, $id_consultorio, $dia, $hi, $hf, $hit, $hft ) 
+	public function verificar( $id_medico, $id_consultorio, $dia, $hi, $hf, $hit, $hft )
 	{
 		// Busco los medicos que atienden en ese consultorio
 		$disp = $this->find( 'list', array( 'conditions' => array(
-												'medico_id !=' => $id_medico, 
+												'medico_id !=' => $id_medico,
 												'consultorio_id' => $id_consultorio ),
 											 'fields' => array( 'id_disponibilidad' ) ) );
 		if( count( $disp ) ) {

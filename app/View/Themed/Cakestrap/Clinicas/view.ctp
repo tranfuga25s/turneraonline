@@ -5,8 +5,10 @@
 			<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
 			<li class="active"><?php echo $this->Html->link( h( $clinica['Clinica']['nombre'] ), '#' ); ?></li>
 			<li><?php echo $this->Html->link( 'Nuevo turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) ); ?></li>
+			<?php if( $loggeado ) : ?>
 			<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view' ) ); ?></li>
 			<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>
@@ -32,7 +34,7 @@
 					<td>Tel&eacute;fono</td>
 					<td><?php echo h($clinica['Clinica']['telefono']); ?>&nbsp;</td>
 				</tr>
-				<?php } 
+				<?php }
 				if( !empty( $clinica['Clinica']['email'] ) )  {?>
 				<tr>
 					<td>Email:</td>
@@ -41,41 +43,42 @@
 				<?php } ?>
 			</tbody>
 		</table>
-		
+
 		<?php if( isset( $clinica['Especialidades'] ) && !empty( $clinica['Especialidades'] ) ) : ?>
 		<h3>Especialidades Disponibles</h3>
-		<table class="table table-hover table-condensed">
-			<tbody>
-				<?php foreach( $clinica['Especialidades'] as $especialidad ) : ?>
-				<tr>
-					<td><?php echo h( $especialidad['Especialidad']['nombre'] ); ?></td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		<div class="btn-group">
+		<?php foreach( $clinica['Especialidades'] as $especialidad ) {
+		  echo $this->Html->tag( 'a', $especialidad['Especialidad']['nombre'], array( 'href' => '#', 'class' => 'btn btn-info' ) );
+		} ?>
+        </div>
 		<?php endif; ?>
-		
-		
+
+
 		<?php if( isset( $clinica['Medicos'] ) && !empty( $clinica['Medicos'] ) ) : ?>
 		<h3>M&eacute;dicos que atienden en esta cl&iacute;nica</h3>
-		<table class="table table-hover table-condensed">
-			<tbody>
-				<?php foreach( $clinica['Medicos'] as $medico ) : ?>
-				<tr>
-					<td><?php echo $this->Html->link( h( $Medico['Usuario']['razonsocial'] ), array( 'controller' => 'medicos', 'action' => 'view', $medico['Medico']['id_medico'] ) ); ?></td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		    <ul class="thumbnails">
+		<?php foreach( $clinica['Medicos'] as $id_medico => $medico ) : ?>
+
+                <li class="span3 thumbnail text-center">
+                    <?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'max-width: 92%;' ) ); ?>
+                    <?php echo $this->Html->link( $medico, array( 'controller' => 'medicos', 'action' => 'view', $id_medico ) ); ?>
+                </li>
+			<?php endforeach; ?>
+            </ul>
 		<?php endif; ?>
 	</div>
 
-	<!-- MAP DIV -->	
+	<!-- MAP DIV -->
 	<div class="span6">
 		<?php
 		// init map (prints container)
-		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true, "autoCenter" => true ) );
-		 
+		echo $this->GoogleMapV3->map(
+          array( 'div' =>
+              array( 'height'=>'400',
+                     'width'=>'100%' ),
+              "autoScript" => true,
+              "zoom" => intval( $clinica['Clinica']['zoom']  ) )
+        );
 		// add markers
 		$options = array(
 		    'lat' => $clinica['Clinica']['lat'],
@@ -88,13 +91,13 @@
 		    		.$clinica['Clinica']['telefono'].'<br />'
 		    		.'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
 		);
-		
+
 		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
-		 
+
 		// print js
 		echo $this->GoogleMapV3->script();
 	?>
 	</div>
 	<!-- End mapdiv -->
 </div>
-<?php //pr( $clinica ); ?>
+

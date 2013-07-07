@@ -1,6 +1,7 @@
 <?php
 App::uses('Controller', 'Controller');
 App::uses('Folder', 'Utility');
+App::uses('MissingParameterException', 'Error' );
 /**
  * Application Controller
  *
@@ -20,17 +21,17 @@ class AppController extends Controller {
 				)
 			),
 			'authError'      => 'Debe ingresar como usuario para poder utilizar esta funcionalidad',
-			'loginAction'    => array( 'controller' => 'usuarios', 'action' => 'ingresar' ),
-			'logoutRedirect' => array( 'controller' => 'pages'   , 'action' => 'display', 'homeVenta', 'administracion' => false ),
-			'loginRedirect'  => array( 'controller' => 'usuarios', 'action' => 'view'    ),
-			'authorize'      => array( 'Controller' )
+			'loginAction'    => array( 'controller' => 'usuarios', 'action' => 'ingresar', 'administracion' => false ),
+            'logoutRedirect' => array( 'controller' => 'pages'   , 'action' => 'display', 'homeVenta', 'administracion' => false ),
+            'loginRedirect'  => array( 'controller' => 'usuarios', 'action' => 'view'    ),
+            'authorize'      => array( 'Controller' )
 		),
 		'Session',
 		'PaginationRecall',
 		'DebugKit.Toolbar',
-		'Facebook.Connect' => array( 'model' => 'Usuario' )
+		/*'Facebook.Connect' => array( 'model' => 'Usuario' )*/
 	);
-	
+
 	public $helpers = array( 'Facebook.Facebook' );
 	public $theme = "Cakestrap";
 
@@ -52,11 +53,11 @@ class AppController extends Controller {
 		}
 		// Cargo la configuración
 		Configure::load( '', 'Turnera' );
-		$this->set( 'facebook', $this->Connect->user() );
+		/*$this->set( 'facebook', $this->Connect->user() );*/
 	}
 
 	public function isAuthorized() { return true; }
-	
+
 	public function beforeFacebookSave(){
 		$data = $this->Connect->user();
 		$this->Connect->authUser['Usuario']['email'] = $data['email'];
@@ -67,7 +68,7 @@ class AppController extends Controller {
 		}
 		$this->Connect->authUser['Usuario']['apellido'] = $data['last_name'];
 		if( $data['gender'] == 'male' ){
-			$this->Connect->authUser['Usuario']['sexo'] = 'm';	
+			$this->Connect->authUser['Usuario']['sexo'] = 'm';
 		} else {
 			$this->Connect->authUser['Usuario']['sexo'] = 'f';
 		}
@@ -77,5 +78,5 @@ class AppController extends Controller {
 		$this->Connect->authUser['Usuario']['obra_social_id'] = null;
 	    return true; //Must return true or will not save.
 	}
-	
+
 }

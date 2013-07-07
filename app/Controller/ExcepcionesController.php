@@ -39,10 +39,10 @@ class ExcepcionesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Excepcione->create();
 			if ($this->Excepcione->save($this->request->data)) {
-				$this->Session->setFlash(__('The excepcione has been saved'));
+				$this->Session->correcto(__('The excepcione has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The excepcione could not be saved. Please, try again.'));
+				$this->Session->incorrecto(__('The excepcione could not be saved. Please, try again.'));
 			}
 		}
 		$medicos = $this->Excepcione->Medico->find('list');
@@ -62,10 +62,10 @@ class ExcepcionesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Excepcione->save($this->request->data)) {
-				$this->Session->setFlash(__('The excepcione has been saved'));
+				$this->Session->correcto(__('The excepcione has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The excepcione could not be saved. Please, try again.'));
+				$this->Session->incorrecto(__('The excepcione could not be saved. Please, try again.'));
 			}
 		} else {
 			$this->request->data = $this->Excepcione->read(null, $id);
@@ -89,10 +89,10 @@ class ExcepcionesController extends AppController {
 			throw new NotFoundException(__('Invalid excepcione'));
 		}
 		if ($this->Excepcione->delete()) {
-			$this->Session->setFlash(__('Excepcione deleted'));
+			$this->Session->correcto(__('Excepcione deleted'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Excepcione was not deleted'));
+		$this->Session->incorrecto(__('Excepcione was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

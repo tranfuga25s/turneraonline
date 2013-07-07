@@ -3,8 +3,9 @@
 <!---------------------------------- SOBRETURNO ------------------------------------------------------------>
 <div id="sobreturno" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sobreturno" aria-hidden="true">
     <?php echo $this->Form->create( 'Turno', array( 'action' => 'sobreturno', 'class' => 'form-inline' ) );
-          echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); 
-          echo $this->Form->input( 'controlador', array( 'value' => $controller, 'type' => 'hidden' ) ); ?>
+          echo $this->Form->input ( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) );
+          echo $this->Form->input ( 'id_turno', array( 'type' => 'hidden', 'value' => 0 ) );
+          echo $this->Form->input( 'controlador', array( 'value' => $redirect, 'type' => 'hidden' ) ); ?>
     <div class="modal-header">
         <?php echo $this->Form->button( 'x', array( 'class' => 'close', 'data-dismiss' => 'modal', 'aria-hidden' => "true" ) ); ?>
         <h3>Agregar sobreturno</h3>
@@ -30,13 +31,14 @@ function sobreturno( medico, turno, hora, min ) {
  $("#TurnoSpaciente").typeahead({
     source: '.$this->requestAction(  array( 'controller' => 'usuarios', 'action' => 'pacientes.json' ) ).',
     items: 4 // Cantidad de elementos a mostrar en el dialogo
-  }); 
- $("#TurnoIdMedico").clone().attr( "value", turno ).attr( "name", "data[Medico][id_turno]" ).appendTo("#TurnoSobreturnoForm");
+  });
+
+ $("#TurnoIdTurno").attr( "value", turno  ).appendTo("#TurnoSobreturnoForm");
  $("#TurnoIdMedico").attr( "value", medico ).appendTo("#TurnoSobreturnoForm");
- 
+
  $("#TurnoMin").val( min );
  $("#TurnoHora").val( hora );
- 
+
  $("#sobreturno").modal();
 }
 '); ?>

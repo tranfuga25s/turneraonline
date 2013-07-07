@@ -71,7 +71,7 @@ class MedicosController extends AppController {
 		if( $this->request->isPost() ) {
 			$this->request->data = $this->request->data['medicos'];
 			// Busco la fecha e que me pasaron
-			if( isset( $this->data['accion'] ) ) {
+			if( isset( $this->data['accion'] ) && $this->data['accion'] != '' ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
 				if( $this->request->data['accion'] == 'ayer' ) {
@@ -157,8 +157,11 @@ class MedicosController extends AppController {
 				$f2->add( new DateInterval("P1D" ) );
 				$this->loadModel( 'Turno' );
 				$id_usuario = $this->Auth->user( 'id_usuario' );
-				$t = $this->Medico->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ), 'fields' => array( 'id_medico' ) ) );
+				$t = $this->Medico->find( 'first', array( 'conditions' => array( 'usuario_id' => $id_usuario ),
+				                                          'fields' => array( 'id_medico' ),
+				                                          'recursive' => -1 ) );
 				$id_medico = $t['Medico']['id_medico'];
+                unset( $t );
 				if( $this->request->data['Medico']['que'] == 'dia' ) {
 					$ids[] = $this->Turno->find( 'list', array( 'conditions' =>
 													 array( 'medico_id' => $id_medico,
@@ -187,6 +190,11 @@ class MedicosController extends AppController {
 			}
 			// Eliminación
 			if( count( $ids ) > 0 ) {
+			    if( array_key_exists( 0, $ids ) ) {
+                    $ids = $ids[0];
+                } else {
+                    die( 'Que rayos estamos recibiendo de parametros para cancelar?'.print_r( $ids, true ) );
+                }
 			   	$correcto = $incorrecto = array();
 			   	foreach( $ids as $id ) {
 			   		if( !is_array( $id ) ) {
@@ -211,7 +219,7 @@ class MedicosController extends AppController {
 				}
 				$this->Session->setFlash($mensaje);
 		   } else {
-		   		$this->Session->setFlash( "No se canceló ningún turno", 'flash/error', array( 'class' => 'error' ) );
+		   		$this->Session->setFlash( "No se canceló ningún turno", 'flash/error' );
 		   }
 		} else if( $this->request->data['Medico']['quien'] == "p" ) {
 			$this->Turno->id = $id_turno;
@@ -220,17 +228,17 @@ class MedicosController extends AppController {
 				$this->Turno->set( 'atendido', false );
 				$this->Turno->set( 'recibido', false );
 				if( $this->Turno->save() ) {
-					$this->Session->setFlash( 'Turno liberado correctamente' , 'flash/success', array( 'class' => 'success' ) );
+					$this->Session->setFlash( 'Turno liberado correctamente' , 'flash/success' );
 				} else {
-					$this->Session->setFlash( 'El turno no se pudo liberar', 'flash/error', array( 'class' => 'error' ) );
+					$this->Session->setFlash( 'El turno no se pudo liberar', 'flash/error' );
 				}
 			} else {
-				$this->Session->setFlash( 'El turno no existe!', 'flash/error', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'El turno no existe!', 'flash/error' );
 			}
 		} else {
 			pr( $this->request->data );
 			die();
-			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'flash/error', array( 'class' => 'error' ) );
+			$this->Session->setFlash( 'No se supo quien canceló el turno, por lo tanto se conservó intacto', 'flash/error' );
 		}
 	    $this->redirect( array( 'action' => 'turnos' ) );
 	}
@@ -299,10 +307,10 @@ class MedicosController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Medico->create();
 			if ($this->Medico->save($this->request->data)) {
-				$this->Session->setFlash( 'Se ha dado de alta el medico correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'Se ha dado de alta el medico correctamente' );
 				$this->redirect( array( 'action' => 'disponibilidad', $this->Medico->id ) );
 			} else {
-				$this->Session->setFlash( 'No se pudo dar de alta el medico. Por favor, intente nuevamente.', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'No se pudo dar de alta el medico. Por favor, intente nuevamente.' );
 			}
 		}
 		// Selecciono solo los usuarios que son del grupo de medicos
@@ -326,10 +334,10 @@ class MedicosController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Medico->save($this->request->data)) {
-				$this->Session->setFlash( 'Datos editados correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'Datos editados correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'No se pudieron guardar los datos del médico', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'No se pudieron guardar los datos del médico' );
 			}
 		} else {
 			$this->request->data = $this->Medico->read(null, $id);
@@ -346,9 +354,9 @@ class MedicosController extends AppController {
 			throw new NotFoundException( 'El medico elegido no existe!' );
 		}
 		if( $this->Medico->saveField( 'visible', true ) ) {
-			$this->Session->setFlash( 'Medico pasado a visible correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'Medico pasado a visible correctamente');
 		} else {
-			$this->Session->setFlash( 'El médico no se pudo poner como visible', 'default', array( 'class' => 'error' ) );
+			$this->Session->incorrecto( 'El médico no se pudo poner como visible' );
 		}
 		$this->redirect( array( 'action' => 'index' ) );
 	}
@@ -359,9 +367,9 @@ class MedicosController extends AppController {
 			throw new NotFoundException( 'El medico elegido no existe!' );
 		}
 		if( $this->Medico->saveField( 'visible', false ) ) {
-			$this->Session->setFlash( 'Medico pasado a invisible correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'Medico pasado a invisible correctamente' );
 		} else {
-			$this->Session->setFlash( 'El médico no se pudo poner como invisible', 'default', array( 'class' => 'error' ) );
+			$this->Session->incorrecto( 'El médico no se pudo poner como invisible' );
 		}
 		$this->redirect( array( 'action' => 'index' ) );
 	}
@@ -381,10 +389,10 @@ class MedicosController extends AppController {
 		}
 		// Verificar que no posea turnos asociados
 		if ($this->Medico->eliminar() ) {
-			$this->Session->setFlash( 'El médico fue eliminado correctamente.', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'El médico fue eliminado correctamente.'  );
 			$this->redirect( array( 'action' => 'index' ) );
 		} else {
-			$this->Session->setFlash( 'El médico no pudo ser eliminado', 'default', array( 'class' => 'error' ) );
+			$this->Session->incorrecto( 'El médico no pudo ser eliminado' );
 		}
 		$this->redirect( array( 'action' => 'index' ) );
 	}
@@ -407,7 +415,7 @@ class MedicosController extends AppController {
 				throw new NotFoundException( 'El medico no existe en la base de datos' );
 			}
 			if( $this->request->data['Medico']['duracion'] == 0 ) {
-				$this->Session->setFlash( 'La duración del turno no puede ser cero', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'La duración del turno no puede ser cero' );
 			} else {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
@@ -437,7 +445,7 @@ class MedicosController extends AppController {
 				}
 				if( $mensaje_flash != '' ) {
 					$id_medico = $this->request->data['Medico']['id_medico'];
-					$this->Session->setFlash( $mensaje_flash );
+					$this->Session->peligro( $mensaje_flash );
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
@@ -481,10 +489,10 @@ class MedicosController extends AppController {
 						// Busco cuantos turnos no coinciden y redirecciono si es necesario - devuleve un array con los ids que nocoinciden
 						$acambiar = $this->Medico->Turno->generarTurnos( $this->request->data );
 						if( count( $acambiar ) <= 0 ) {
-							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos', 'default', array( 'class' => 'success' ) );
+							$this->Session->correcto( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
 							$this->redirect( array( 'action' => 'index' ) );
 						} else {
-							$this->Session->setFlash( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.', 'default', array( 'class' => 'error' ) );
+							$this->Session->peligro( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.' );
 							$this->loadModel( 'Turno' );
 							$this->Turno->Paciente->virtualFields = array( 'razon_social' => 'CONCAT( Paciente.apellido, \',\', Paciente.nombre )' );
 							$this->set( 'turnos', $this->Turno->find( 'all', array( 'conditions' => array( 'id_turno' => $acambiar ) ) ) );
@@ -575,7 +583,7 @@ class MedicosController extends AppController {
 				throw new NotFoundException( 'El medico no existe en la base de datos' );
 			}
 			if( $this->request->data['Medico']['duracion'] == 0 ) {
-				$this->Session->setFlash( 'La duración del turno no puede ser cero' );
+				$this->Session->incorrecto( 'La duración del turno no puede ser cero' );
 			} else {
 				$mensaje_flash = '';
 				foreach( $dias as $dia ) {
@@ -605,7 +613,7 @@ class MedicosController extends AppController {
 				}
 				if( $mensaje_flash != '' ) {
 					$id_medico = $this->request->data['Medico']['id_medico'];
-					$this->Session->setFlash( $mensaje_flash );
+					$this->Session->incorrecto( $mensaje_flash );
 				} else {
 						// Inicio el guardado de los datos
 						$this->Medico->unbindModel( array( 'hasMany' => array( 'Turno' ) ) );
@@ -649,10 +657,10 @@ class MedicosController extends AppController {
 						// Busco cuantos turnos no coinciden y redirecciono si es necesario - devuleve un array con los ids que nocoinciden
 						$acambiar = $this->Medico->Turno->generarTurnos( $this->request->data );
 						if( count( $acambiar ) <= 0 ) {
-							$this->Session->setFlash( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
+							$this->Session->correcto( 'Disponibilidad guardada correctamente y re generados todos los turnos' );
 							$this->redirect( '/' );
 						} else {
-							$this->Session->setFlash( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.' );
+							$this->Session->peligro( 'Estos turnos han sido sacados del horario en que atiende. <br /> Reajustelos o cancelelos.' );
 							$this->loadModel( 'Turno' );
 							$this->Turno->Paciente->virtualFields = array( 'razon_social' => 'CONCAT( Paciente.apellido, \',\', Paciente.nombre )' );
 							$this->set( 'turnos', $this->Turno->find( 'all', array( 'conditions' => array( 'id_turno' => $acambiar ) ) ) );

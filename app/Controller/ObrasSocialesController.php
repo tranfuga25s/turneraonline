@@ -2,10 +2,10 @@
 App::uses( 'AppController', 'Controller' );
 App::uses( 'Folder'       , 'Utility'    );
 App::uses( 'File'         , 'Utility'    );
-/** 
+/**
  * ObrasSociales Controller
  *
- * 
+ *
  */
 class ObrasSocialesController extends AppController {
 
@@ -24,12 +24,12 @@ class ObrasSocialesController extends AppController {
 		$this->Auth->allow( array( 'index', 'view' ) );
 		AppController::beforeFilter();
 	}
-	
+
    /**
     * Función llamada para autorizar el uso de un método específico
     * @param $usario Usuario actual
     * @return bool Verdadero si tiene permisos o falso en caso contrario
-    */	
+    */
 	public function isAuthorized( $usuario = null ) {
 		switch( $usuario['grupo_id'] ) {
 			case 1: // Administradores
@@ -70,7 +70,7 @@ class ObrasSocialesController extends AppController {
 
 	/**
 	 * view method
-	 * 
+	 *
 	 * @param string $id Identificador de la obra social
 	 * @return void
 	 */
@@ -118,10 +118,10 @@ class ObrasSocialesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ObraSocial->create();
 			if ($this->ObraSocial->save($this->request->data)) {
-				$this->Session->setFlash( 'La nueva obra social ha sido guardada correctamente.', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'La nueva obra social ha sido guardada correctamente.' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'La obra social no pudo ser guardada. Verifique los datos ingresados e intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'La obra social no pudo ser guardada. Verifique los datos ingresados e intente nuevamente.' );
 			}
 		}
 	}
@@ -140,10 +140,10 @@ class ObrasSocialesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ObraSocial->save($this->request->data)) {
-				$this->Session->setFlash( 'La obra social ha sido modificada correctamente.', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'La obra social ha sido modificada correctamente.' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'Los datos no pudieron ser modificados. Intente nuevamente', 'default', array( 'class' => 'error') );
+				$this->Session->correcto( 'Los datos no pudieron ser modificados. Intente nuevamente' );
 			}
 		} else {
 			$this->request->data = $this->ObraSocial->read(null, $id);
@@ -167,14 +167,14 @@ class ObrasSocialesController extends AppController {
 		}
 		$this->loadModel( 'Usuario' );
 		if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "Existe algún paciente con esta obra social. No se eliminará", 'default', array( 'class' => 'error') );
+			$this->Session->peligro( "Existe algún paciente con esta obra social. No se eliminará" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->ObraSocial->delete()) {
-			$this->Session->setFlash( 'Se eliminó correctamente la obra social', 'default', array( 'class' => 'success' ));
+			$this->Session->correcto( 'Se eliminó correctamente la obra social' );
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash( 'La obra social no se pudo eliminar', 'default', array( 'class' => 'error') );
-		$this->redirect(array('action' => 'index'));
+		$this->Session->incorrecto( 'La obra social no se pudo eliminar' );
+		$this->redirect( array( 'action' => 'index' ) );
 	}
 }

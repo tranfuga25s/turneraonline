@@ -14,6 +14,18 @@ class Usuario extends AppModel {
 
 	public $belongsTo = array( 'ObraSocial', 'Grupo' );
 
+    public $hasOne = array(
+        'Medico',
+        'Secretaria'
+    );
+
+    public $hasMany = array(
+        'Turno' => array(
+            'class' => 'Turno',
+            'foreignKey' => 'paciente_id'
+        )
+    );
+
 	public $validate = array(
 		'email' => array(
 			'email' => array(
@@ -69,11 +81,19 @@ class Usuario extends AppModel {
 		)
 	);
 
-	// Esta funcion encripta las contraseñas antes de guardarlas en la base de datos
+	/**
+     * Esta funcion encripta las contraseñas antes de guardarlas en la base de datos
+     *  y
+     * Verifica que al cambiar de grupo no se esté cambiando a un medico o una secretaria
+     */
 	function beforeSave($options = array()) {
 		if( isset( $this->data['Usuario']['contra'] ) ) {
 			$this->data['Usuario']['contra'] = AuthComponent::password( $this->data['Usuario']['contra'] );
 		}
+        $grupo = $this->field( 'grupo_id' );
+        if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
+            if( $grupo != $this->data['Usuario']['grupo_id'] ) { return false; }
+        }
 		return true;
 	}
 
@@ -121,5 +141,26 @@ class Usuario extends AppModel {
 	public function eliminarPorEmail( $email ) {
 		return $this->deleteAll( array( 'email' => $email ) );
 	}
+
+    /**
+     * Verificaciones de eliminación de usuarios
+     * @ref test
+     */
+    public function beforeDelete( $cascade ) {
+        // Verifico que no esté asociado con algún médico
+        $cmedico = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
+        if( intval( $cmedico ) > 0 ) {
+            return false;
+        }
+        $csecretaria = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
+        if( intval( $csecretaria ) > 0 ) {
+            return false;
+        }
+        $cturnos = $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $this->id ) ) );
+        if( intval( $cturnos ) > 0 ) {
+            return false;
+        }
+        return true;
+    }
 
 }

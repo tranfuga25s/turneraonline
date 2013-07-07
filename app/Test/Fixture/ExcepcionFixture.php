@@ -5,13 +5,15 @@
  * ExcepcioneFixture
  *
  */
-class ExcepcioneFixture extends CakeTestFixture {
+class ExcepcionFixture extends CakeTestFixture {
 
-/**
- * Fields
- *
- * @var array
- */
+    public $table = 'test_excepciones';
+
+    /**
+     * Fields
+     *
+     * @var array
+     */
 	public $fields = array(
 		'id_excepcion' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 20, 'key' => 'primary', 'collate' => NULL, 'comment' => ''),
 		'medico_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 20, 'collate' => NULL, 'comment' => ''),
@@ -21,11 +23,11 @@ class ExcepcioneFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'InnoDB')
 	);
 
-/**
- * Records
- *
- * @var array
- */
+    /**
+     * Records
+     *
+     * @var array
+     */
 	public $records = array(
 		array(
 			'id_excepcion' => 1,

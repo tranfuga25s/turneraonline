@@ -18,7 +18,7 @@ function cambiarDia() {
 }
 
 function cancelarTurnos( que ) {
-    $("#MedicoIdMedico").clone().attr( 'value', que ).attr( 'name', 'data[Medico][que]' ).appendTo( "#cancelar2");
+    $("#Que").val( que );
     $("#cancelar2").submit();
 }
 
@@ -55,7 +55,7 @@ function mostrarCancelarTurnos() {
 
 <div id="seldia" style="display:none;" class="alert alert-info">
    <button type="button" class="close" data-dismiss="seldia">&times;</button>
-   <?php echo $this->Form->create( $modelo, array( 'action' => 'turnos', 'class' => 'form-inline' ) ); ?>
+   <?php echo $this->Form->create( null, array( 'action' => 'turnos', 'class' => 'form-inline' ) ); ?>
    <fieldset>
         Elija el día que desea:
         <?php echo $this->Form->input( 'id_medico', array( 'type' => 'hidden', 'value' => 0 ) ); ?>
@@ -90,9 +90,10 @@ echo $this->element( 'Turnos/sobreturno'  , array( 'redirect' => $modelo ) );
 <!--------------------------------- CANCELAR ---------------------------------------------------------------->
 <div id="cancelar" style="display:none" class="alert alert-info">
     <button type="button" class="close" data-dismiss="seldia">&times;</button>
-    <?php echo $this->Form->create( $modelo, array( 'action' => 'cancelar', 'id' => 'cancelar2' ) );
+    <?php echo $this->Form->create( null, array( 'action' => 'cancelar', 'id' => 'cancelar2' ) );
           echo $this->Form->input( 'quien', array( 'type' => 'hidden', 'value' => 'm' ) );
-          echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => -1 ) ); // Para evitar problemas luego  ?>
+          echo $this->Form->input( 'id_turno', array( 'type' => 'hidden', 'value' => -1 ) ); // Para evitar problemas luego
+          echo $this->Form->input( 'que', array( 'type' => 'hidden', 'value' => -1, 'id' => 'Que' ) );  ?>
     Seleccione por favor que desea cancelar:
     <div class="btn-group">
         <?php echo $this->Html->tag( 'a', 'Todos los turnos hasta el final del día', array( 'class' => 'btn btn-danger', 'onclick' => 'cancelarTurnos( \'dia\' )' ) );

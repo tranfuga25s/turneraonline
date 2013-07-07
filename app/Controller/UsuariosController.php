@@ -8,29 +8,20 @@ App::uses('Folder', 'Utility');
  * @property Usuario $Usuario
  */
 class UsuariosController extends AppController {
-	
+
 	public $components = array( 'RequestHandler' );
 
 	public function beforeFilter() {
+	    parent::beforeFilter();
 		// Defino que acciones son publicas
-		$this->Auth->allow( array( 	'ingresar', 
-						'administracion_ingresar',
+		$this->Auth->allow( array( 	'ingresar',
+						'administracion_ingresaradmin',
 						'administracion_salir',
 						'salir',
 						'recuperarContra',
 						'registrarse',
 						'cancelar',
 						'eliminarUsuario' ) );
-		if( $this->request->administracion == "administracion" ) {
-			$this->layout = 'administracion';
-		}
-		// coloco los datos del usuario
-		$adentro = $this->Auth->loggedIn();
-		$this->set( 'loggeado', $adentro );
-		if( $adentro ) {
-			$this->set( 'usuarioactual', $this->Auth->user() );
-		}
-		Configure::load( '', 'Turnera' );
 	}
 
 	public function isAuthorized( $usuario = null ) {
@@ -94,12 +85,12 @@ class UsuariosController extends AppController {
 			$term = $this->request->query['query'];
 			$ret = Cache::read( 'pacientes-'.$term );
 			if( $ret == false ) {
-				$data = $this->Usuario->find( 'all', 
-					array(  'fields' => array( 'razonsocial', 'id_usuario' ), 
+				$data = $this->Usuario->find( 'all',
+					array(  'fields' => array( 'razonsocial', 'id_usuario' ),
 							'conditions' => array( 'razonsocial LIKE ' => "%".$term."%" ),
 							'order' => array( 'razonsocial' ) ) );
 				$ret = array();
-				foreach( $data as $d ) { 
+				foreach( $data as $d ) {
 					$ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
@@ -111,7 +102,7 @@ class UsuariosController extends AppController {
 			if( $ret == false ) {
 				$data = $this->Usuario->find( 'all', array(  'fields' => array( 'razonsocial', 'id_usuario', 'nombre', 'apellido' ), 'order' => array( 'razonsocial' ) ) );
 				$ret = array();
-				foreach( $data as $d ) { 
+				foreach( $data as $d ) {
 				    $ret[] = $d['Usuario']['id_usuario'].' - '.$d['Usuario']['razonsocial'];
 				}
 				$ret = json_encode( $ret );
@@ -128,23 +119,19 @@ class UsuariosController extends AppController {
     	$cond = array();
     	if( $this->request->isPost() ) {
     		if( !empty( $this->request->data['Usuario']['texto'] ) ) {
-    			$cond = array_merge( $cond, array( 'OR' => 
+    			$cond = array_merge( $cond, array( 'OR' =>
     							array( '`Usuario`.`nombre` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%',
     							       '`Usuario`.`apellido` LIKE' => '%'.$this->request->data['Usuario']['texto'].'%' ) ) );
 				$this->set( 'texto',  $this->request->data['Usuario']['texto'] );
     		}
-			if( !empty(  $this->request->data['Usuario']['grupo_id'] )  ) {
-				$cond = array_merge( $cond, array( 'grupo_id' => $this->request->data['Usuario']['grupo_id'] ) );
-				$this->set( 'grupo_id',  $this->request->data['Usuario']['grupo_id'] );
-			}
+			$cond['grupo_id'] = 4;
 			if( !empty(  $this->request->data['Usuario']['obra_social'] ) ) {
 				$cond = array_merge( $cond, array( 'obra_social_id' => $this->request->data['Usuario']['obra_social'] ) );
 				$this->set( 'obra_social',  $this->request->data['Usuario']['obra_social'] );
 			}
     	}
     	$this->set( 'usuarios', $this->paginate( 'Usuario', $cond ) );
-		$this->set( 'grupos', $this->Usuario->Grupo->find( 'list' ) );
-		$this->set( 'obrassociales', $this->Usuario->ObraSocial->find( 'list' ) );    	
+		$this->set( 'obrassociales', $this->Usuario->ObraSocial->find( 'list' ) );
     }
 
    /*!
@@ -172,14 +159,14 @@ class UsuariosController extends AppController {
 	 *
 	 * @return void
 	 */
-	public function administracion_ingresar() {
+	public function administracion_ingresaradmin() {
 		$this->layout='adminlogin';
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				return $this->redirect( '/administracion/usuarios/cpanel' );
 			} else {
-				//echo AuthComponent::password( $this->request->data['Usuario']['contra'] );
-				$this->Session->setFlash( 'El email ingresado o la contraseña son incorrectas', 'default', array(), 'auth');
+				echo AuthComponent::password( $this->request->data['Usuario']['contra'] );
+				$this->Session->setFlash( 'El email ingresado o la contraseña son incorrectas', 'default', array( 'class' => 'error' ), 'auth');
 			}
 		}
 	}
@@ -222,8 +209,8 @@ class UsuariosController extends AppController {
 						$email->from( $de );
 						$email->send();
 						if( $this->Auth->loggedIn() ) {
-							$this->Session->setFlash( 'Se envió una nueva contraseña de ingreso al usuario' );
-							$this->redirect( array( 'action' => 'index' ) );	
+							$this->Session->setFlash( 'Se envió una nueva contraseña de ingreso al usuario', 'flash/success' );
+							$this->redirect( array( 'action' => 'index' ) );
 						} else {
 							$this->Session->setFlash( 'Se ha enviado un mensaje con su nueva contraseña.<br />Por favor, revise su casilla de correo para obtener los datos y así poder ingresar al sistema.' );
 							$this->redirect( array( 'action' => 'ingresar' ) );
@@ -236,7 +223,7 @@ class UsuariosController extends AppController {
 				$this->Session->setFlash( 'Por favor, ingrese una dirección de correo electronico para solicitar su nueva contraseña.');
 			}
 		}
-		$this->set( 'dominio', $_SERVER['SERVER_NAME'] ); 
+		$this->set( 'dominio', $_SERVER['SERVER_NAME'] );
 	}
 
 	/**
@@ -323,7 +310,7 @@ class UsuariosController extends AppController {
 					}
 				}
 			}
-		} 		
+		}
 	}
 
 
@@ -353,7 +340,7 @@ class UsuariosController extends AppController {
 
 	/*!
 	 * Metodo par ver los datos por medio del medico
-	 * 
+	 *
 	 * @param int $id
 	 * @return void
 	 */
@@ -373,7 +360,7 @@ class UsuariosController extends AppController {
 
 	/*!
 	 * Metodo par ver los datos por medio del medico
-	 * 
+	 *
 	 * @param int $id
 	 * @return void
 	 */
@@ -530,10 +517,10 @@ class UsuariosController extends AppController {
 			$this->Usuario->create();
 			if ($this->Usuario->save($this->request->data)) {
 				$this->borrarCacheUsuarios();
-				$this->Session->setFlash('El usuario se agregó correctamente' );
+				$this->Session->correcto('El usuario se agregó correctamente' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
+				$this->Session->error( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
 
 			}
 		}
@@ -554,11 +541,11 @@ class UsuariosController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Usuario->save($this->request->data)) {
-				$this->Session->setFlash( 'Los datos del usuario se modificaron correctamente' );
+				$this->Session->correcto( 'Los datos del usuario se modificaron correctamente' );
 				$this->borrarCacheUsuarios();
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'Los datos del usuario no pudieron ser guardados correctamente. Por favor intente nuevamente.' );
+				$this->Session->incorrecto( 'Los datos del usuario no pudieron ser guardados correctamente. Por favor intente nuevamente.' );
 			}
 		} else {
 			$this->request->data = $this->Usuario->read(null, $id);
@@ -583,25 +570,25 @@ class UsuariosController extends AppController {
 		}
 		$this->loadModel( 'Turno' );
 		if( $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene turnos asociados todavía." );
 			$this->redirect( array( 'action' => 'index'  ) );
 		}
 		$this->loadModel( 'Medico' );
 		if( $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene un medico asociado" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		$this->loadModel( 'Secretaria' );
 		if( $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $id ) ) ) > 0 ) {
-			$this->Session->setFlash( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
+			$this->Session->incorrecto( "No se pudo eliminar el usuario solicitado. \n <b>Razón:</b> El usuario tiene una secretaria asociada" );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $this->Usuario->delete() ) {
 			$this->borrarCacheUsuarios();
-			$this->Session->setFlash( 'El Usuario ha sido eliminado correctamente' );
+			$this->Session->correcto( 'El Usuario ha sido eliminado correctamente' );
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash( __('Usuario was not deleted') );
+		$this->Session->incorrecto( 'El Usuario no fue eliminado' );
 		$this->redirect(array('action' => 'index'));
 	}
 
@@ -612,13 +599,13 @@ class UsuariosController extends AppController {
 	public function administracion_cambiarContra( $id_usuario = null ) {
 		if( $this->request->is( 'post' ) ) {
 			if( $this->request->data['Usuario']['contra'] != $this->request->data['Usuario']['recontra'] ) {
-				$this->Session->setFlash( "Las contraseñas no coinciden." );
+				$this->Session->incorrecto( "Las contraseñas no coinciden." );
 			} else {
 				if( $this->Usuario->save( $this->request->data, false ) ) {
-					$this->Session->setFlash( "Contraseña cambiada correctamente" );
+					$this->Session->correcto( "Contraseña cambiada correctamente", 'default', array( 'class' => 'success' ) );
 					$this->redirect( array( 'action' => 'index' ) );
 				} else {
-					$this->Session->setFlash( "No se pudo cambiar la contraseña" );
+					$this->Session->incorrecto( "No se pudo cambiar la contraseña", 'default', array( 'class' => 'error' ) );
 					pr( $this->Usuario->invalidFields() );
 				}
 			}
@@ -629,12 +616,15 @@ class UsuariosController extends AppController {
 		}
 		$this->set( 'data', $this->Usuario->read() );
 	}
-	
+
    /**
     * Funcion pra dar de alta cuando se intenta reservar un turno
     * @param integer $id_turno Identificador del turno
-    */	
-	public function altaTurno( $id_turno = null, $id_medico = null, $secretaria = true, $nombre = null, $accion = null ) {
+    * @param integer $id_medico Identificador del médico
+    * @param string $nombre Nombre del nuevo paciente
+    * @param string $accion Accion del controlador Turnos para redirigir
+    */
+	public function altaTurno( $id_turno = null, $id_medico = null, $nombre = null, $accion = null ) {
 		if( $this->request->isPost() ) {
 			if( $this->Usuario->verificarSiExiste( $this->request->data['Usuario']['email'] ) ) {
 				$this->Session->setFlash( 'El email proporcionado ya está registrado en el sistema.');
@@ -642,35 +632,14 @@ class UsuariosController extends AppController {
 				$this->Usuario->create();
 				if ( $this->Usuario->save( $this->request->data ) ) {
 					$this->borrarCacheUsuarios();
-					$this->Session->setFlash('El usuario se agregó correctamente' );
-					$id_turno = $this->request->data['Usuario']['id_turno'];
-					$id_medico = $this->request->data['Usuario']['id_medico'];
-					$id_usuario = $this->Usuario->id;
-					$this->request->data['Usuario'] = array_merge( $this->request->data['Usuario'], array( 'id' => $id_usuario ) );
-					$de = Configure::read( 'Turnera.email_notificaciones' );
-					if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }
-					// Crear email de bienvenida!
-					$email = new CakeEmail();
-					$email->template( 'bienvenida', 'usuario' )
-					->emailFormat( 'both' )
-					->from( $de )
-					->to( $this->request->data['Usuario']['email'] )
-					->viewVars( array( 'usuario' => $this->request->data['Usuario'] ) )
-					->subject( 'Bienvenido al sistema de turnos' )
-					->send();
-					if( $secretaria ) {
-						$this->redirect( array( 'controller' => 'secretarias', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) ); 
-					} else {
-						$this->redirect( array( 'controller' => 'medicos', 'action' => $accion, $id_turno, $id_usuario, $id_medico ) );
-					}
+					$this->Session->setFlash( 'El usuario se agregó correctamente', 'flash/success' );
+					$this->enviarBienvenida( $this->Usuario->id );
+					$this->redirect( array( 'controller' => 'turnos', 'action' => $accion, $this->Usuario->id ) );
 				} else {
-					$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.' );
+					$this->Session->setFlash( 'Los datos del usuario no se pudieron guardar. Por favor, intentelo nuevamente.', 'flash/error' );
 				}
 			}
-		}	
-		$this->set( 'id_turno', $id_turno );
-		$this->set( 'id_medico', $id_medico );
-		$this->set( 'secretaria', $secretaria );
+		}
 		$this->set( 'nombre', $nombre );
 		$this->set( 'dominio', $_SERVER['SERVER_NAME'] );
 		$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
@@ -689,7 +658,7 @@ class UsuariosController extends AppController {
 
     /**
 	 * Muestra el listado de turnos del paciente para el médico
-	 * 
+	 *
 	 * @param usuario_id integer Identificación del usuario buscado
 	 * @throws NotFoundException Si el usuario no existe
 	 */
@@ -702,4 +671,31 @@ class UsuariosController extends AppController {
 		$this->set( 'usuario', $this->Usuario->read() );
 		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
+
+    /**
+     * Funcion utilizada para enviar el email de bienvenida al usuario nuevo
+     */
+    private function enviarBienvenida( $id_usuario = null ) {
+
+        $this->Usuario->id = $id_usuario;
+        if( !$this->Usuario->exists() ) {
+            throw new NotFoundException( 'El usuario '.$id_usuario.' no existe' );
+        }
+
+        // Preparo los datos para la bienvenida
+        $usuario = $this->Usuario->read( null, $id_usuario );
+
+        $de = Configure::read( 'Turnera.email_notificaciones' );
+        if( empty( $de )  ) { $de = 'info@alejandrotalin.com.ar'; }
+
+        // Crear email de bienvenida!
+        $email = new CakeEmail();
+        $email->template( 'bienvenida', 'usuario' )
+              ->emailFormat( 'both' )
+              ->from( $de )
+              ->to( $this->request->data['Usuario']['email'] )
+              ->viewVars( array( 'usuario' => $usuario ) )
+              ->subject( 'Bienvenido a nuestro sistema de turnos online' )
+              ->send();
+    }
 }

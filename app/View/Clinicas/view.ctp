@@ -18,7 +18,7 @@
 			<?php echo $this->Html->link( h($clinica['Clinica']['email']), h($clinica['Clinica']['email']) ); ?>
 			&nbsp;
 		</dd>
-		<?php } 
+		<?php }
 		if( !empty( $clinica['Clinica']['telefono'] ) )  {?>
 		<dt>Tel&eacute;fono:</dt>
 		<dd>
@@ -67,7 +67,7 @@
 			<?php
 				foreach( $clinica['Especialidades'] as $especialidad ) {
 					echo "<tr><td>";
-					echo h( $especialidad['Especialidad']['nombre'] );
+					echo $this->Html->link( $especialidad['Especialidad']['nombre'], array( 'plugin' => false, 'controller' => 'especialidades', 'action' => 'verMedicos', $especialidad['Especialidad']['id_especialidad'] ), array( 'class' => 'btn' ) );
 					echo "</tr></td>";
 				}
 			?>
@@ -82,8 +82,15 @@
 	<div class="titulo2">Ubicacion</div>
 	<?php
 		// init map (prints container)
-		echo $this->GoogleMapV3->map( array( 'div' => array( 'height'=>'400', 'width'=>'100%' ), "autoScript" => true, "autoCenter" => true ) );
-		 
+		echo $this->GoogleMapV3->map(
+		  array( 'div' =>
+		      array( 'height'=>'400',
+		             'width'=>'100%' ),
+		      "autoScript" => true,
+		      "autoCenter" => true,
+		      "zoom" => $clinica['Clinica']['zoom'] )
+        );
+
 		// add markers
 		$options = array(
 		    'lat' => $clinica['Clinica']['lat'],
@@ -96,9 +103,9 @@
 		    		.$clinica['Clinica']['telefono'].'<br />'
 		    		.'<a href="mailto:'.$clinica['Clinica']['email'].'">'.$clinica['Clinica']['email'].'</a>'
 		);
-		
+
 		$this->GoogleMapV3->addMarker($options); // Agrego el marcador
-		 
+
 		// print js
 		echo $this->GoogleMapV3->script();
 	?>

@@ -364,7 +364,7 @@ class GoogleMapV3Helper extends AppHelper {
 	public function map($options = array()) {
 		$this->reset();
 		$this->_currentOptions = Set::merge($this->_currentOptions, $options);
-		$this->_currentOptions['map'] = array_merge($this->_currentOptions['map'], array('zoom'=>$this->_currentOptions['zoom'], 'lat' => $this->_currentOptions['lat'], 'lng' => $this->_currentOptions['lng'], 'type' => $this->_currentOptions['type']), $options);
+        $this->_currentOptions['map'] = array_merge($this->_currentOptions['map'], array('zoom'=>$this->_currentOptions['zoom'], 'lat' => $this->_currentOptions['lat'], 'lng' => $this->_currentOptions['lng'], 'type' => $this->_currentOptions['type']), $options);
 		if (!$this->_currentOptions['map']['lat'] || !$this->_currentOptions['map']['lng']) {
 			$this->_currentOptions['map']['lat'] = $this->_currentOptions['map']['defaultLat'];
 			$this->_currentOptions['map']['lng'] = $this->_currentOptions['map']['defaultLng'];
@@ -973,7 +973,8 @@ var iconShape = {
 	 * 2010-12-17 ms
 	 */
 	protected function _mapOptions() {
-		$options = array_merge($this->_currentOptions, $this->_currentOptions['map']);
+
+		$options = array_merge($this->_currentOptions['map'],$this->_currentOptions);
 
 		$mapOptions = array_intersect_key($options, array(
 			'streetViewControl' => null,

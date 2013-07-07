@@ -60,10 +60,10 @@ class GruposController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Grupo->create();
 			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash( 'El grupo ha sido guardado correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'El grupo ha sido guardado correctamente' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'El grupo no pudo ser guardado correctamente', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'El grupo no pudo ser guardado correctamente' );
 			}
 		}
 	}
@@ -80,10 +80,10 @@ class GruposController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Grupo->save($this->request->data)) {
-				$this->Session->setFlash( 'El grupo fue modificado correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'El grupo fue modificado correctamente' );
 				$this->redirect( array( 'action' => 'index' ) );
 			} else {
-				$this->Session->setFlash( 'El grupo no pudo ser guardado', 'default', array( 'class' => 'error' ) );
+				$this->Session->incorrecto( 'El grupo no pudo ser guardado' );
 			}
 		} else {
 			$this->request->data = $this->Grupo->read( null, $id );
@@ -104,14 +104,14 @@ class GruposController extends AppController {
 			throw new NotFoundException( 'Grupo invalido' );
 		}
 		if( $this->Grupo->tieneUsuariosAsociados() ) {
-			$this->Session->setFlash( $this->Session->flash().'<br />. El grupo no se puede eliminar. Existen usuarios que pertenecen a este grupo todavía.', 'default', array( 'class' => 'success' ) );
+			$this->Session->peligro( $this->Session->flash().'<br />. El grupo no se puede eliminar. Existen usuarios que pertenecen a este grupo todavía.' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Grupo->delete()) {
-			$this->Session->setFlash( 'Grupo eliminado correctamente', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'Grupo eliminado correctamente' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash( 'El Grupo no pudo ser eliminado', 'default', array( 'class' => 'error' ) );
+		$this->Session->incorrecto( 'El Grupo no pudo ser eliminado' );
 		$this->redirect( array( 'action' => 'index' ) );
 	}
 

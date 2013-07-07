@@ -90,8 +90,8 @@ class ClinicasController extends AppController {
 		}
 		$clinica = $this->Clinica->read( null, $id );
 		$this->loadModel( 'Medico' );
-		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'id_medico' ) );
-		$clinica['Medicos'] = $this->Medico->lista( $ids );
+		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'usuario_id' ) );
+		$clinica['Medicos'] = $this->Medico->lista( $ids, true );
 		$this->loadModel( 'Especialidad' );
 		$ids = $this->Medico->find( 'list', array( 'conditions' => array( 'clinica_id' => $id ), 'fields' => 'especialidad_id' ) );
 		$clinica['Especialidades'] = $this->Especialidad->find( 'all', array( 'conditions' => array( 'id_especialidad' => $ids ) ) );
@@ -134,10 +134,10 @@ class ClinicasController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Clinica->create();
 			if ($this->Clinica->save($this->request->data)) {
-				$this->Session->setFlash( 'La clinica ha sido agregada correctamente', 'default', array( 'class' => 'success' ) );
+				$this->Session->correcto( 'La clinica ha sido agregada correctamente' );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'No se pudo guardar la clinica. Por favor, intente nuevamente.', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'No se pudo guardar la clinica. Por favor, intente nuevamente.' );
 			}
 		}
 	}
@@ -158,7 +158,7 @@ class ClinicasController extends AppController {
 				$this->Session->setFlash( 'Clinica guardada correctamente', 'default', array( 'class' => 'success' ) );
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash( 'No se puede guardar los datos editados. Por favor, intente nuevamente', 'default', array( 'class' => 'error') );
+				$this->Session->incorrecto( 'No se puede guardar los datos editados. Por favor, intente nuevamente' );
 			}
 		} else {
 			$this->request->data = $this->Clinica->read(null, $id);
@@ -184,18 +184,18 @@ class ClinicasController extends AppController {
 		$this->loadModel( 'Consultorio' );
 		$cant_con = $this->Consultorio->find( 'count', array( 'conditions' => array( 'clinica_id' => $id ) ) );
 		if( $cant_med > 0 ) {
-			$this->Session->setFlash("Existen medicos asociados a esta clinica. No se podrá eliminar." );
+			$this->Session->peligro("Existen medicos asociados a esta clinica. No se podrá eliminar." );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if( $cant_con > 0 ) {
-			$this->Session->setFlash( "Existen consultorios asociados a esta clinica. No se podrá eliminar.", 'default', array( 'class' => 'error') );
+			$this->Session->peligro( "Existen consultorios asociados a esta clinica. No se podrá eliminar." );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 		if ($this->Clinica->delete()) {
-			$this->Session->setFlash( 'Clinica eliminada', 'default', array( 'class' => 'success' ) );
+			$this->Session->correcto( 'Clinica eliminada' );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		$this->Session->setFlash( 'No se pudo eliminar la clinica.', 'default', array( 'class' => 'error') );
+		$this->Session->incorrecto( 'No se pudo eliminar la clinica.' );
 		$this->redirect( array( 'action' => 'index' ) );
 	}
 }
