@@ -7,6 +7,8 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class AvisosController extends AppController {
 
+    public $components = array( 'Waltook.Sms' );
+
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -134,34 +136,13 @@ class AvisosController extends AppController {
 	 *  Muestra la configuración y/o habilitacion del sistema de sms
 	 */
 	public function administracion_sms() {
+        // Configuración de los mensajes para sms
+        // Agregar visión de creditos
 
-	}
 
-	/**
-	 * Muestra la configuración y/o habilitacion del sistema de email
-	 */
-	public function administracion_email() {
-		// Cargo los templates disponibles
-		$data = array(
-			'nuevoTurno' => array(
-				'nombre' => 'Recordatorio de turno proximo',
-				'explicacion' => 'Este aviso es enviado avisando al paciente de que tiene un turno dentro de las 12 horas proximas',
-				'template' => 'nuevoTurno',
-				'Formato' => array(
-					'text' => array(
-						'nombre' => 'Solo texto',
-						'content' => 'Formato solo texto',
-						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
-					 ),
-					 'html' => array(
-					 	'nombre' => 'Html',
-					 	'content' => 'Formato en html',
-						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
-					 )
-				)
-			)
-		);
-		$this->set( 'avisos', $data );
+        $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
+
+
 	}
 
 	/**
@@ -261,6 +242,20 @@ class AvisosController extends AppController {
 		}
 		$this->redirect( array( 'action' => 'pendiente' ) );
 	 }
+
+     /**
+      * Funcion que habilita el servicio de sms
+      */
+     public function administracion_habilitarSms() {
+         /// @TODO Ver como saber si el servicio está habilitado
+
+         // Si el servicio no está habilitado el servicio muestro el descargo.
+         if( $this->Sms->habilitado() ) {
+
+         } else {
+             $this->render( 'Waltook.descargo' );
+         }
+     }
 
 }
 

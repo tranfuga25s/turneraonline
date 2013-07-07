@@ -50,7 +50,7 @@ $this->set( 'title_for_layout', "Notificaciones" );
 				<td>Email</td>
 				<td><?php echo $this->Html->image( 'test-pass-icon.png', array( 'El envío de mensajes por email está activo' ) ); ?></td>
 				<td class="acciones">
-					<?php //echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'email' ) ); ?>
+					<!-- <?php echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'email' ) ); ?> -->
 				</td>
 			</tr>
 			<tr>
@@ -60,8 +60,8 @@ $this->set( 'title_for_layout', "Notificaciones" );
 					El servicio no se encuentra habilitado
 				</td>
 				<td class="acciones">
-					<?php echo $this->Html->link( 'Habilitar', array( 'action' => 'test' ) ); ?>
-					<?php //echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'elemento' => 'sms' ) ); ?>
+					<?php echo $this->Html->link( 'Habilitar', array( 'action' => 'habilitarSms' ) ); ?>
+					<?php echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'sms' ) ); ?>
 				</td>
 			</tr>
 		</tbody>
