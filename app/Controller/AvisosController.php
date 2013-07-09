@@ -137,12 +137,11 @@ class AvisosController extends AppController {
 	 */
 	public function administracion_sms() {
         // Configuración de los mensajes para sms
+        $this->set( 'num_cliente', $this->Sms->getClientId() );
+        $this->set( 'clave', $this->Sms->getKey() );
+
         // Agregar visión de creditos
-
-
         $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
-
-
 	}
 
 	/**
@@ -247,14 +246,12 @@ class AvisosController extends AppController {
       * Funcion que habilita el servicio de sms
       */
      public function administracion_habilitarSms() {
-         /// @TODO Ver como saber si el servicio está habilitado
-
          // Si el servicio no está habilitado el servicio muestro el descargo.
-         if( $this->Sms->habilitado() ) {
-
-         } else {
-             $this->render( 'Waltook.descargo' );
+         if( !$this->Sms->habilitado() ) {
+             return $this->render( 'Waltook.descargo' );
          }
+         // El servicio ya está habilitado, lo envío a la pagina de configuración
+         $this->redirect( array( 'action' => 'sms' ) );
      }
 
 }
