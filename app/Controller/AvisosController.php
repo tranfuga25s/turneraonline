@@ -129,7 +129,7 @@ class AvisosController extends AppController {
 	 */
 	public function administracion_cpanel() {
 		// Verifico si está andando el sistema de avisos
-
+        $this->set( 'sms_habilitado', $this->Sms->habilitado() );
 	}
 
 	/**
