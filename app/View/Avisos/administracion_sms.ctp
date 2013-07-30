@@ -1,6 +1,5 @@
 <?php
 $this->set( 'title_for_layout', "Configuración de envio de sms" );
-
 ?>
 <div id="acciones">
     <?php echo $this->Html->link( 'Volver', array( 'action' => 'cpanel' ) ); ?>
@@ -14,11 +13,11 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
                 <th>&nbsp;</th>
                 <th>Cantidad</th>
                 <tr>
-                    <td>Mensajes para enviar:</td>
+                    <td style="text-align: right;">Mensajes para enviar:</td>
                     <td><?php echo $saldo['salida']; ?> mensajes</td>
                 </tr>
                 <tr>
-                    <td>Mensajes a recibir:</td>
+                    <td style="text-align: right;">Mensajes a recibir:</td>
                     <td><?php echo $saldo['entrada']; ?> mensajes</td>
                 </tr>
             </tbody>
@@ -30,24 +29,20 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
     <fieldset>
         <legend><h2>Configuración</h2></legend>
         <label>Numero de cliente Waltook: </label> <?php echo $num_cliente; ?><br />
-        <label>Codigo de encriptacion(key): </label> <?php echo $clave; ?><br /><br />
+        <label>Codigo de encriptacion(key): </label> <?php echo $clave; ?><br />
+        <label>Codigo de respuesta: </label> <?php echo $codigo_respuesta; ?><br />
     </fieldset>
 </div>
 
 <br />
 
-<script>
-$(function(){ $(".boton").button(); });
-
-function cargarSms() {
-
-}
+<?php echo $this->Js->buffer( '$(".boton").button();' ); ?>
 </script>
 
-<div style="float: left; clear: both;">
+<div style="float: left; clear: both; width: 100%;">
     <fieldset>
         <legend><h2>Mensajes recibidos</h2></legend>
-        <p>Usted tiene <span id="cantidad_sms">N</span> mensajes recibidos</p><br />
+        <p>Usted tiene <?php echo count( $mensajes ); ?> mensajes recibidos</p><br />
         <table>
             <tbody>
                 <th>Teléfono</th>
@@ -55,19 +50,21 @@ function cargarSms() {
                 <th>Mensaje</th>
                 <th>Paciente</th>
                 <th>Acciones</th>
+                <?php foreach( $mensajes as $mensaje ): ?>
                 <tr>
-                    <td>2314243452</td>
-                    <td>fechahora</td>
-                    <td>dadisadpioasdpoiadspoiadspoiasdpioasdpoiadsipoasdipodasoipasdpioadsipoasdipoads</td>
-                    <td>Paciente, Paciente</td>
+                    <td><?php echo $mensaje['Sms']['uid']; ?></td>
+                    <td><?php echo h( $mensaje['Sms']['fechahora'] ); ?></td>
+                    <td><?php echo $mensaje['Sms']['texto']; ?></td>
+                    <td><?php echo $mensaje['Paciente']['razonsocial']; ?></td>
                     <td>
-                        <?php echo $this->Html->tag( 'a', 'Leer', array( 'class' => 'boton' ) ); ?>
-                        <?php echo $this->Html->tag( 'a', 'Eliminar', array( 'class' => 'boton' ) ); ?>
+                        <?php //echo $this->Html->tag( 'a', 'Eliminar', array( 'class' => 'boton' ) ); ?>
                     </td>
                 </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
     </fieldset>
 
 </div>
+<?php echo $this->Js->writeBuffer(); ?>

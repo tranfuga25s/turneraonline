@@ -8,7 +8,7 @@ App::uses('CakeEmail', 'Network/Email');
 class AvisosController extends AppController {
 
     public $components = array( 'Waltook.Sms' );
-
+    
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -139,9 +139,16 @@ class AvisosController extends AppController {
         // Configuración de los mensajes para sms
         $this->set( 'num_cliente', $this->Sms->getClientId() );
         $this->set( 'clave', $this->Sms->getKey() );
+        $this->set( 'codigo_respuesta', $this->Sms->getRequestCode() );
 
         // Agregar visión de creditos
         $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
+        $mensajes = $this->Sms->obtenerListaMensajes();
+        $this->loadModel( 'Usuario' );
+        foreach( $mensajes as &$mensaje ) {
+            $mensaje['Paciente']['razonsocial'] = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
+        }
+        $this->set( 'mensajes', $mensajes );
 	}
 
 	/**
