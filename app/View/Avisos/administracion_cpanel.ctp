@@ -58,14 +58,13 @@ $this->set( 'title_for_layout', "Notificaciones" );
 				<td>
 				    <?php
 				    if( $sms_habilitado ) {
-                      echo $this->Html->image( 'test-fail-pass.png', array( 'alt' => 'El servicio no se encuentra habilitado' ) );
+                      echo $this->Html->image( 'test-pass-icon.png', array( 'alt' => 'El servicio se encuentra habilitado' ) );
                       echo $this->Html->tag( 'span', ' El servicio se encuentra habilitado' );				        
 				    } else {
 				      echo $this->Html->image( 'test-fail-icon.png', array( 'alt' => 'El servicio no se encuentra habilitado' ) );
                       echo $this->Html->tag( 'span', ' El servicio no se encuentra habilitado' );   
 				    }
-					  ?>
-					
+				   ?>
 				</td>
 				<td class="acciones">
 					<?php
