@@ -7,8 +7,17 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class AvisosController extends AppController {
 
-    public $components = array( 'Waltook.Sms' );
-    
+    public $components = array( 'Waltook.Sms','RequestHandler' );
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow( array( 'recibir' ) );
+    }
+
+    public function recibir() {
+        $mensaje = $this->Sms->recibir();
+    }
+
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
