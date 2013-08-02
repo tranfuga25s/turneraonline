@@ -11,6 +11,24 @@ class AvisoFixture extends CakeTestFixture {
      * @var array
      */
 	public $import = array('model' => 'Aviso');
+    
+    /**
+     * Inicailización de datos dinamicos
+     */
+    public function init() {
+        $this->records[] = array(
+                'id_aviso' => 1,
+                'fecha_envio' => date( 'Y-m-d H:i:s' ),
+                'template' => 'nuevoTurno',
+                'layout' => 'usuario',
+                'formato' => 'both',
+                'to' => 'vanesa.apablaza@gmail.com',
+                'from' => 'test@alejandrotanin.com.ar',
+                'subject' => 'Turno proximo',
+                'metodo' => 'email'
+        );
+        parent::init();
+    }
 
     /**
      * Records
