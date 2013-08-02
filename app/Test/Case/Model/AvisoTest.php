@@ -40,6 +40,16 @@ class AvisoTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
+    /**
+     * testExisteCampoSMS method
+     *
+     * @return void
+     */
+    public function testExisteCampoSMS() {
+        $this->assertArrayHasKey( 'metodo', $this->Aviso->_schema, 'No se detectó el campo de metodo de envío' );
+    }
+
+
 	/**
 	 * testExistePendiente method
 	 *
@@ -54,16 +64,14 @@ class AvisoTest extends CakeTestCase {
 	 *
 	 * @return void
 	 */
-	public function testBuscarSiguiente() {
-	}
+	public function testBuscarSiguiente() {}
 
 	/**
 	 * testCambiarHorasTurno method
 	 *
 	 * @return void
 	 */
-	public function testCambiarHorasTurno() {
-	}
+	public function testCambiarHorasTurno() {}
 
 	/**
 	 * testCancelarAvisoNuevoTurno method
