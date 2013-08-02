@@ -379,18 +379,14 @@ class MedicosController extends AppController {
 	 * @param string $id
 	 * @return void
 	 */
-	public function administracion_delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
+	public function administracion_delete( $id = null ) {
 		$this->Medico->id = $id;
 		if ( !$this->Medico->exists() ) {
 			throw new NotFoundException( 'El médico no existe!' );
 		}
 		// Verificar que no posea turnos asociados
-		if ($this->Medico->eliminar() ) {
+		if ($this->Medico->eliminar( $id ) ) {
 			$this->Session->correcto( 'El médico fue eliminado correctamente.'  );
-			$this->redirect( array( 'action' => 'index' ) );
 		} else {
 			$this->Session->incorrecto( 'El médico no pudo ser eliminado' );
 		}
