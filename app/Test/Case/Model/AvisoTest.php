@@ -49,7 +49,6 @@ class AvisoTest extends CakeTestCase {
         $this->assertArrayHasKey( 'metodo', $this->Aviso->_schema, 'No se detectó el campo de metodo de envío' );
     }
 
-
 	/**
 	 * testExistePendiente method
 	 *
@@ -70,7 +69,7 @@ class AvisoTest extends CakeTestCase {
         $this->assertArrayHasKey( 'Aviso', $proximo, 'Los datos traidos no poseen el array Aviso' );
         $this->assertArrayHasKey( 'id_aviso', $proximo, 'Los datos traidos no possen el campo Aviso.id_aviso' );
         $this->assertEqual( 1, $proximo['Aviso']['id_aviso'], 'El dato traido es incorrecto' );
-	}
+	}    
 
 	/**
 	 * testCambiarHorasTurno method
@@ -87,5 +86,5 @@ class AvisoTest extends CakeTestCase {
 	public function testCancelarAvisoNuevoTurno() {
 	}
 
-
+    
 }
