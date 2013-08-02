@@ -20,7 +20,8 @@ class Medico extends AppModel {
 					'rule' => array('notempty'),
 					'message' => 'Por favor, ingrese un usuario para asociar al medico.',
 					'allowEmpty' => false,
-					'required' => true
+					'required' => true,
+					'on' => 'create'
 				)
 			)
 		);
