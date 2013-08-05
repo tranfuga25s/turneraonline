@@ -3,6 +3,7 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
 ?>
 <div id="acciones">
     <?php echo $this->Html->link( 'Volver', array( 'action' => 'cpanel' ) ); ?>
+    <?php echo $this->Html->link( 'Dar de baja', array( 'action' => 'cpanel' ) ); ?>
 </div>
 <br />
 <div style="width: 48%; float: left;">
@@ -65,6 +66,10 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
         </table>
 
     </fieldset>
-
 </div>
+
+<div style="float: left; clear: both; width: 100%;">
+    <?php echo $this->element( 'Gestotux.ConteoSms' ); ?>
+</div>
+
 <?php echo $this->Js->writeBuffer(); ?>

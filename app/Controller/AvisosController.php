@@ -157,7 +157,7 @@ class AvisosController extends AppController {
         foreach( $mensajes as &$mensaje ) {
             $mensaje['Paciente']['razonsocial'] = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
         }
-        $this->set( 'mensajes', $mensajes );
+        $this->set( 'mensajes', $mensajes );        
 	}
 
 	/**
