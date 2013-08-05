@@ -65,6 +65,10 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
         </table>
 
     </fieldset>
-
 </div>
+
+<div style="float: left; clear: both; width: 100%;">
+    <?php echo $this->element( 'Gestotux.ConteoSms' ); ?>
+</div>
+
 <?php echo $this->Js->writeBuffer(); ?>
