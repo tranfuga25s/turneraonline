@@ -43,6 +43,7 @@ class UsuariosController extends AppController {
 					case 'add':
 					case 'delete':
 					case 'historico':
+                    case 'dashboard':
 					{ return true; break; }
 				}
 				// no pongo break para que acredite las acciones de menos prioridad
@@ -71,12 +72,31 @@ class UsuariosController extends AppController {
 	public function ingresar() {
 		if ($this->request->is('post')) {
 			if ( $this->Auth->login() ) {
-				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
+			    return $this->redirect( array( 'action' => 'dashboard' ) );
+				//return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
 			} else {
 				$this->Session->setFlash( "El email ingresado o la contraseña son incorrectas", 'default', array(), 'auth');
 			}
 		}
 	}
+
+    public function dashboard() {
+        // Veo que dashboard mostrar según el grupo
+        switch( $this->Auth->user( 'grupo_id' ) ) {
+            case 1:
+            {  return $this->render( 'dashboard/admin' );      }
+            case 2:
+            {  return $this->render( 'dashboard/medico' );     }
+            case 3:
+            {  return $this->render( 'dashboard/secretaria' ); }                
+            case 4:
+            default:
+            {
+                return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'home_venta' ) );
+            }
+        }
+        
+    }
 
 	public function pacientes() {
 		$this->layout = 'ajax';
