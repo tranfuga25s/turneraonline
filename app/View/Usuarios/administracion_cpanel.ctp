@@ -67,6 +67,11 @@
                 .'<span>Mi cuenta</span>',
                 array( 'plugin' => 'gestotux', 'controller' => 'gestotux', 'action' => 'index' ),
                 array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Ver cuenta corriente' ) ); ?></li>
+   <li><?php echo $this->Html->link(
+                $this->Html->image( 'assets/icons/7_48x48.png' )
+                .'<span>Paginas estaticas</span>',
+                array( 'plugin' => false, 'controller' => 'pages', 'action' => 'index' ),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Editar paginas estáticas' ) ); ?></li>                 
 </ul>
 <h2>Configuraci&oacute;n</h2>
 <ul class="dash">
