@@ -1,5 +1,5 @@
 <?php echo $this->Html->css( 'dashboard' ); ?>
-<table border="0" class="table table-hover table-bordered">
+<table border="0" class="table table-bordered">
     <tbody>
         <tr>
             <td colspan="2" class="calendario-titulo"><center>Fecha</center></td>
