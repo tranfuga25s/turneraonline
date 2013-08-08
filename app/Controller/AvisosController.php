@@ -252,10 +252,16 @@ class AvisosController extends AppController {
      /**
       * Funcion que habilita el servicio de sms
       */
-     public function administracion_habilitarSms() {
+     public function administracion_habilitar_sms() {
          // Si el servicio no está habilitado el servicio muestro el descargo.
+         if( $this->request->isPost() ) {
+             // Veo que haya contestado correctamente la habilitacion
+             if( $this->request->data['habilitar']['acepta'] == 1 ) {
+                 // Habilito el servicio
+             }
+         }
          if( !$this->Sms->habilitado() ) {
-             return $this->render( 'Waltook.descargo' );
+             return $this->render( 'descargo' );
          }
          // El servicio ya está habilitado, lo envío a la pagina de configuración
          $this->redirect( array( 'action' => 'sms' ) );
