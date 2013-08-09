@@ -258,6 +258,16 @@ class AvisosController extends AppController {
              // Veo que haya contestado correctamente la habilitacion
              if( $this->request->data['habilitar']['acepta'] == 1 ) {
                  // Habilito el servicio
+                 $key = $this->request->data['habilitar']['key'];
+                 $cliente_id = $this->request->data['habilitar']['id_cliente'];
+                 $method = 'GET';
+                 $codigo = $this->request->data['habilitar']['codigo'];
+                 if( $this->Sms->configurarServicio( $cliente_id, $key, $method, $codigo ) ) {
+                     $this->Session->correcto( 'El servicio ha sido configurado correctamente' );
+                     $this->redirect( array( 'action' => 'sms' ) );
+                 } else {
+                     $this->Session->incorrecto( 'No se pudo configurar el servicio' );
+                 }
              }
          }
          if( !$this->Sms->habilitado() ) {

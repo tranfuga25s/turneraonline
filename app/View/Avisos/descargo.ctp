@@ -7,8 +7,15 @@ Por favor, lea y acepte los siguientes términos y condiciones:<br /><br />
     <legend><h2>Condiciones para el uso del servicio</h2></legend>
     bla bla bla
 </fieldset>
-<?php
-echo $this->Form->create( 'habilitar', array( 'url' => Router::url( array( 'action' => 'habilitarSms' ) ) ) );
-echo $this->Form->input( 'acepta', array( 'type' => 'checkbox', 'label' => 'Acepto las condiciones arriba mencionadas' ) );
-echo $this->FOrm->submit( 'Habilitar' );
-?>
+<?php echo $this->Form->create( 'habilitar', array( 'url' => Router::url( array( 'action' => 'habilitarSms' ) ) ) ); ?>
+<fieldset>
+    <legend>Configurar Servicio</legend>
+    <p>Por favor, ingrese los datos que le provee el servicio waltook desde el panel de control en la sección de API a continuación:</p>
+    <?php
+    echo $this->Form->input( 'id_cliente', array( 'type' => 'text', 'label' => 'Número de cliente Waltook' ) );
+    echo $this->Form->input( 'key', array( 'type' => 'text', 'label' => 'Clave de encriptación' ) );
+    echo $this->Form->input( 'codigo', array( 'type' => 'text', 'label' => 'Código de identificacion' ) );
+    echo $this->Form->input( 'acepta', array( 'type' => 'checkbox', 'label' => 'Acepto las condiciones arriba mencionadas' ) );
+    echo $this->Form->submit( 'Habilitar' );
+    ?>    
+</fieldset>
