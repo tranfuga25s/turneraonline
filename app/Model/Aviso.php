@@ -9,26 +9,42 @@ class Aviso extends AppModel {
 	public $primaryKey = 'id_aviso';
 	public $displayField = 'subject';
 
-	public $hasMany = array( 
-		'VariableAviso' => array( 
+	public $hasMany = array(
+		'VariableAviso' => array(
 			'class' => 'VariableAviso',
 			'dependent' => true
-		 ) 
+		 )
 	);
 
    /*!
     * Función que revisa si existe algún aviso pendiente a enviar.
     */
-	public function existePendiente() {
+	public function existePendiente( $min_inicio = 0 ) {
+	    /// Colocar la comparación entre el minuto:00 y minuto+4:59
+        $inicio = new DateTime( 'now' );
+        $inicio->setTime( $inicio->format( 'H' ), $min_inicio, 0 );
+        $fin = clone $inicio;
+        $fin->add( new DateInterval( "P4M59S" ) );
 		$d = $this->find( 'count',
 				array( 'conditions' =>
-					array( 'DATE( fecha_envio)  <=' => date( 'Y-m-d', time() ), 'TIME( fecha_envio ) <= ' =>  date( 'H:i:s', time() ) ),
+					array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ),
 					'recursive' => -1,
 					'limit' => 1
 					)
 				);
 		if( $d > 0 ) { return true; } else { return false; }
 	}
+
+    public function pendientes( $min_inicio = 0 ) {
+        /// Colocar la comparación entre el minuto:00 y minuto+4:59
+        $inicio = new DateTime( 'now' );
+        $inicio->setTime( $inicio->format( 'H' ), $min_inicio, 0 );
+        $fin = clone $inicio;
+        $fin->add( new DateInterval( "P4M59S" ) );
+        return $this->find( 'all', array( 'conditions' => array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ) ) );
+    }
+
+
 
 	/*!
 	 * Devuelve el primer registro de los datos guardados en envios.
@@ -41,7 +57,7 @@ class Aviso extends AppModel {
 			die( "Error al intentar recuperar el registro del aviso" );
 		}
 	}
-	
+
 	/*!
 	 * Cambia la cantidad de horas antes de un aviso.
 	 * @param id_turno integer Identificador del turno.
@@ -66,15 +82,15 @@ class Aviso extends AppModel {
 		}
 	    return false;
 	}
-	
+
 	/*!
 	 * Cancela el aviso para el turno pasado como parametro
 	 * @param id_turno integer Identificador del turno.
 	 */
 	public function cancelarAvisoNuevoTurno( $id_turno ) {
 		// Busco a que ID corresponde este turno.
-		$ret = $this->VariableAviso->find( 'first', array( 'conditions' => array( 'modelo' => 'Turno', 
-		                                                                          'id' => $id_turno ), 
+		$ret = $this->VariableAviso->find( 'first', array( 'conditions' => array( 'modelo' => 'Turno',
+		                                                                          'id' => $id_turno ),
 		                                                   'fields' => array( 'aviso_id' ) ) );
         if( $ret != array() ) {
     		$this->id = $ret['VariableAviso']['aviso_id'];

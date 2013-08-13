@@ -7,7 +7,9 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class AvisosController extends AppController {
 
-    public $components = array( 'Waltook.Sms','RequestHandler' );
+    public $components = array( 'Waltook.Sms' );
+
+    private $avisos_disponibles = array( 'nuevoTurno', 'turnoCancelado' );
 
     public function beforeFilter() {
         parent::beforeFilter();
@@ -65,13 +67,14 @@ class AvisosController extends AppController {
 		}
 		// Guardo el email
 		$datos = array(	'Aviso' =>
-				 array( 'fecha_envio' => $fechahora->format( 'Y-m-d H:i:s' ),
-					'template' => 'nuevoTurno',
-					'layout' => 'usuario',
-					'formato' => 'both',
-					'to' => $email['Usuario']['email'],
-					'subject' => 'Turno proximo',
-					'from' => $email_de ) );
+    				 array( 'fecha_envio' => $fechahora->format( 'Y-m-d H:i:s' ),
+        					'template' => 'nuevoTurno',
+        					'layout' => 'usuario',
+        					'formato' => 'both',
+        					'to' => $email['Usuario']['email'],
+        					'subject' => 'Turno proximo',
+        					'from' => $email_de )
+        );
 		if( $this->Aviso->save( $datos ) ) {
 			$d = array(
 				array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
@@ -157,7 +160,7 @@ class AvisosController extends AppController {
         foreach( $mensajes as &$mensaje ) {
             $mensaje['Paciente']['razonsocial'] = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
         }
-        $this->set( 'mensajes', $mensajes );        
+        $this->set( 'mensajes', $mensajes );
 	}
 
 	/**
