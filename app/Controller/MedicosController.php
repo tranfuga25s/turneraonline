@@ -330,18 +330,17 @@ class MedicosController extends AppController {
 	public function administracion_edit($id = null) {
 		$this->Medico->id = $id;
 		if (!$this->Medico->exists()) {
-			throw new NotFoundException(__('Invalid medico'));
+			throw new NotFoundException( 'Médico Inválido' );
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Medico->save($this->request->data)) {
+			if ($this->Medico->save( $this->request->data ) ) {
 				$this->Session->correcto( 'Datos editados correctamente' );
-				$this->redirect(array('action' => 'index'));
+				$this->redirect( array( 'action' => 'index' ) );
 			} else {
 				$this->Session->incorrecto( 'No se pudieron guardar los datos del médico' );
 			}
-		} else {
-			$this->request->data = $this->Medico->read(null, $id);
-		}
+		} 
+	    $this->request->data = $this->Medico->read(null, $id);
 		$usuarios = $this->Medico->Usuario->find('list');
 		$especialidades = $this->Medico->Especialidad->find('list');
 		$clinicas = $this->Medico->Clinica->find('list');
@@ -379,18 +378,14 @@ class MedicosController extends AppController {
 	 * @param string $id
 	 * @return void
 	 */
-	public function administracion_delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
+	public function administracion_delete( $id = null ) {
 		$this->Medico->id = $id;
 		if ( !$this->Medico->exists() ) {
 			throw new NotFoundException( 'El médico no existe!' );
 		}
 		// Verificar que no posea turnos asociados
-		if ($this->Medico->eliminar() ) {
+		if ($this->Medico->eliminar( $id ) ) {
 			$this->Session->correcto( 'El médico fue eliminado correctamente.'  );
-			$this->redirect( array( 'action' => 'index' ) );
 		} else {
 			$this->Session->incorrecto( 'El médico no pudo ser eliminado' );
 		}
