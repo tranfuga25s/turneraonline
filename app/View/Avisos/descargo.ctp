@@ -5,9 +5,12 @@ $this->set( 'title_for_layout', "Licencia de Uso del sistema Waltook" );
 Por favor, lea y acepte los siguientes términos y condiciones:<br /><br />
 <fieldset>
     <legend><h2>Condiciones para el uso del servicio</h2></legend>
-    bla bla bla
+    Por favor, tenga en cuenta que las condiciones de uso son las siguientes respecto al servicio utilizado:
+    <?php echo $this->Html->link( 'Condiciones y Terminos', 'http://www.waltook.com/terminos' ); ?><br />
+    <br />
+    <p>La integración del servicio de este sistema con el sistema de waltook se encuentra</p>
 </fieldset>
-<?php echo $this->Form->create( 'habilitar', array( 'url' => Router::url( array( 'action' => 'habilitarSms' ) ) ) ); ?>
+<?php echo $this->Form->create( 'habilitar', array( 'url' => Router::url( array( 'action' => 'habilitar_sms' ) ) ) ); ?>
 <fieldset>
     <legend>Configurar Servicio</legend>
     <p>Por favor, ingrese los datos que le provee el servicio waltook desde el panel de control en la sección de API a continuación:</p>
