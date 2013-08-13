@@ -71,7 +71,7 @@ $this->set( 'title_for_layout', "Notificaciones" );
 					if( $sms_habilitado ) {
                         echo $this->Html->link( 'Configurar', array( 'action' => 'configurar', 'sms' ) );					    
 					} else {
-					    echo $this->Html->link( 'Habilitar', array( 'action' => 'habilitarSms' ) );    
+					    echo $this->Html->link( 'Habilitar', array( 'action' => 'habilitar_sms' ) );    
 					}
 					?>
 				</td>
