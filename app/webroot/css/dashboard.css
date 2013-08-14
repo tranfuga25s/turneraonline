@@ -21,3 +21,13 @@
     font-size: 20px;
     text-align: center;
 }
+
+.tam-icono-dashboard > img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.tam-icono-dashboard {
+    min-height: 150px;
+    min-width: 150px;
+}
