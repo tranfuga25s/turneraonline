@@ -63,7 +63,7 @@ $this->set( 'title_for_layout', "Inicio" );
                                 '<br />Mis datos',
                                 array( 'class' => "thumbnail span2 text-center tam-icono-dashboard" )
                             ),
-                            array( 'controller' => 'usuario', 'action' => 'view' ),
+                            array( 'controller' => 'usuarios', 'action' => 'view' ),
                             array( 'escape' => false ) ); ?>
                 <?php echo $this->Html->link(
                             $this->Html->tag( 'div',
