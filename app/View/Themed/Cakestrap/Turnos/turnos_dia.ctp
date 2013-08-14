@@ -37,7 +37,7 @@ function mostrarCancelarTurnos() {
     <div class="navbar">
         <div class="navbar-inner">
             <ul class="nav">
-                <li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
+                <li><?php echo $this->Html->link( 'Inicio', array( 'controller' => 'usuarios', 'action' => 'dashboard' ) ); ?></li>
                 <li><?php echo $this->Html->tag( 'a', 'Cambiar día', array( 'id' => 'cambiarDia', 'onclick' => 'cambiarDia()' ) ); ?></li>
                 <?php if( $hoy ): ?>
                 <li><?php echo $this->Html->tag( 'a', 'Cancelar turnos', array( 'onclick' => 'mostrarCancelarTurnos()' ) ); ?></li>

@@ -13,7 +13,7 @@ $this->set( 'title_for_layout', "Lista de pacientes" );
 	<div class="navbar">
 		<div class="navbar-inner">
 			<ul class="nav">
-				<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
+				<li><?php echo $this->Html->link( 'Inicio', array( 'controller' => 'usuarios', 'action' => 'dashboard' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Filtrar'       , '#', array( 'onclick' => '$("#dfiltro").slideDown();' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
 			</ul>
