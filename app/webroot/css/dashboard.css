@@ -16,18 +16,24 @@
 }
 
 .calendario-titulo {
-    background-color: lightblue;
+    background-color: #ADD8E6;
     color: white;
     font-size: 20px;
     text-align: center;
 }
 
 .tam-icono-dashboard > img {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 95px;
+    max-height: 95px;
 }
 
 .tam-icono-dashboard {
-    min-height: 150px;
-    min-width: 150px;
+    max-width: 130px;
+    margin-right: 5px;
+    margin-bottom: 15px;
+    min-height: 95px!important;
+}
+
+.tam-icono-dashboard:hover {
+    background-color: #F5F5F5;
 }
