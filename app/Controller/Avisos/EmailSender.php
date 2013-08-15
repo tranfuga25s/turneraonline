@@ -1,5 +1,6 @@
 <?php
 App::uses( 'AppController', 'Controller' );
+App::uses( 'Avisos/AvisoAppSender','Controller' );
 
 class EmailSender extends AppController implements AvisoAppSender {
 
@@ -25,6 +26,7 @@ class EmailSender extends AppController implements AvisoAppSender {
     }
 
     public function renderizarAviso( $id_aviso = null ) {
+        $this->Aviso = new Aviso();
         $this->Aviso->id = $id_aviso;
         if( !$this->Aviso->exists() ) {
             throw new NotFoundExpception( 'No se encontró el aviso buscado' );
@@ -56,6 +58,7 @@ class EmailSender extends AppController implements AvisoAppSender {
     }
 
     public function enviar( $id_aviso = null ) {
+        $this->Aviso = new Aviso();
         $this->Aviso->id = $id_aviso;
         if( !$this->Aviso->exists() ) {
             throw new NotFoundException( 'No se encontró el aviso a enviar' );
@@ -80,6 +83,7 @@ class EmailSender extends AppController implements AvisoAppSender {
         $demail['Aviso']['datos'] = $datos;
         if( $registrar == true ) {
             $this->log( 'error-avisos', pr( $datos ) );
+            return false;
         } else {
             $email = new CakeEmail();
             $email->template( $demail['Aviso']['template'], $demail['Aviso']['layout'] )
@@ -87,10 +91,9 @@ class EmailSender extends AppController implements AvisoAppSender {
             ->from( $demail['Aviso']['from'] )
             ->to( $demail['Aviso']['to'] )
             ->subject( $demail['Aviso']['subject'] )
-            ->viewVars( $demail['Aviso']['datos'] )
-            ->send();
+            ->viewVars( $demail['Aviso']['datos'] );
+            return $email->send();
         }
-        $this->Aviso->delete( $demail['Aviso']['id_aviso'] );
 
     }
 

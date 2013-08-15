@@ -1,51 +1,51 @@
 <?php
 
 App::uses('CakeEmail', 'Network/Email');
+App::import( 'Controller/Avisos', 'AvisoAppSender' );
+App::import( 'Controller/Avisos', 'EmailSender');
+App::import( 'Controller/Avisos', 'SmsSender' );
 
 class AvisosShell extends AppShell {
 
 	var $uses = array( 'Aviso' );
+    
+    private $sms_sender = null;
+    private $email_sender = null;
 
 	public function verificarEnvio() {
 		// Busco si existe algun email para saber si tengo que enviarlo.
-		$min_inicio = date( 'i' );
-		if( $this->Aviso->existePendiente( $min_inicio ) ) {
-			echo "No hay avisos pendientes.\n";
+		$min_inicio = intval( date( 'i' ) );
+		/*if( !$this->Aviso->existePendiente( $min_inicio ) ) {
+			$this->out( "No hay avisos pendientes." );
 			return;
-		}
-        foreach( $this->Aviso->pendientes( $min_inicio ) as $demail ) {
-
-            /// @TODO Verificar envios de sms
-    		if( empty( $demail ) ) { return; }
-    		$datos = array();
-    		$registrar = false;
-    		foreach( $demail['VariableAviso'] as $v ) {
-    			App::import( 'Model', $v['modelo'] );
-    			$this->$v['modelo'] = new $v['modelo']();
-    			$this->$v['modelo']->id = $v['id'];
-    			if( !$this->$v['modelo']->exists() ) {
-    				$this->log( 'error-avisos', "El indicador del modelo ".$v['modelo']." no es valido. No se eliminará el aviso y se lo dejará registrado aquí." );
-    				$registrar = true;
-    			}
-    			$this->$v['modelo']->recursive = -1;
-    			$datos[ $v['nombre'] ] = $this->$v['modelo']->read();
-    		}
-    		$datos['email_de'] = Configure::read( 'Turnera.email' );
-    		unset( $demail['VariablesAviso'] );
-    		$demail['Aviso']['datos'] = $datos;
-    		if( $registrar == true ) {
-    			$this->log( 'error-avisos', pr( $datos ) );
-    		} else {
-    			$email = new CakeEmail();
-    			$email->template( $demail['Aviso']['template'], $demail['Aviso']['layout'] )
-    			->emailFormat( $demail['Aviso']['formato'] )
-    			->from( $demail['Aviso']['from'] )
-    			->to( $demail['Aviso']['to'] )
-    			->subject( $demail['Aviso']['subject'] )
-    			->viewVars( $demail['Aviso']['datos'] )
-    			->send();
-    		}
-    		$this->Aviso->delete( $demail['Aviso']['id_aviso'] );
+		} else {
+		    $this->out( "Existen avisos pendientes" ) ;
+		}*/
+        $avisos = $this->Aviso->pendientes( $min_inicio );
+        /*if( count( $avisos ) <= 0 ) {
+            $this->out( "Listado de avisos vacío" );
+            return;
+        }*/
+        $this->email_sender = new EmailSender();
+        $this->sms_sender = new SmsSender();
+        foreach( $avisos as $aviso ) {
+            $this->out( 'Enviando aviso '.$aviso['Aviso']['id_aviso'] );
+            $enviado = false;
+            $aviso['Aviso']['metodo'] = 'sms';
+            // Veo que tipo es
+            if( $aviso['Aviso']['metodo'] == 'email' ) {
+                $this->out( "Enviando mediante email" );
+                $enviado = $this->email_sender->enviar( $aviso['Aviso']['id_aviso'] );
+            } else if( $aviso['Aviso']['metodo'] == 'sms' ){
+                $enviado = $this->sms_sender->enviar( $aviso['Aviso']['id_aviso'] );                
+            } else {
+                $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
+            }
+            if( $enviado ) {
+                $this->Aviso->delete( $aviso['Aviso']['id_aviso'] );
+            } else {
+                $this->out( 'El aviso '.$aviso['Aviso']['id_aviso']." no pudo ser enviado" );
+            }
        }
 	}
 }

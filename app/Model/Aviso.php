@@ -24,7 +24,7 @@ class Aviso extends AppModel {
         $inicio = new DateTime( 'now' );
         $inicio->setTime( $inicio->format( 'H' ), $min_inicio, 0 );
         $fin = clone $inicio;
-        $fin->add( new DateInterval( "P4M59S" ) );
+        $fin->add( new DateInterval( 'PT4M59S' ) );
 		$d = $this->find( 'count',
 				array( 'conditions' =>
 					array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ),
@@ -40,8 +40,10 @@ class Aviso extends AppModel {
         $inicio = new DateTime( 'now' );
         $inicio->setTime( $inicio->format( 'H' ), $min_inicio, 0 );
         $fin = clone $inicio;
-        $fin->add( new DateInterval( "P4M59S" ) );
-        return $this->find( 'all', array( 'conditions' => array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ) ) );
+        $fin->add( new DateInterval( "PT4M59S" ) );
+        return $this->find( 'all', array( /*'conditions' => array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ), */
+                                            'fields' => array( 'id_aviso', 'metodo' ),
+                                            'recursive' => -1 ) );
     }
 
 
