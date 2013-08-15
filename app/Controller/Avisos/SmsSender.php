@@ -1,5 +1,5 @@
 <?php
-App::uses( 'Sms', 'Waltook.Component' );
+App::uses( 'SmsComponent', 'Waltook.Controller/Component' );
 
 class SmsSender implements AvisoAppSender {
 
@@ -24,6 +24,10 @@ class SmsSender implements AvisoAppSender {
 
     public function verAvisosDisponibles() {
         return array_keys( $disponibles );
+    }
+    
+    public function disponible( $aviso = null ) {
+        return array_key_exists( $aviso, $this->disponibles );
     }
 
     public function renderizarAviso( $id_aviso = null ) {
@@ -64,10 +68,10 @@ class SmsSender implements AvisoAppSender {
             throw new NotFoundException( "El aviso solicitado no existe!" );
         }
         $aviso = $this->Aviso->read();
-        $this->Sms = new SmsComponent();
+        $this->Sms = new SmsComponent( new ComponentCollection() );
         if( $this->Sms->habilitado() ) {
             
-            $num_telefono = $aviso['to'];
+            $num_telefono = $aviso['Aviso']['to'];
             $datos = array();
             foreach( $aviso['VariableAviso'] as $v ) {
                 $this->loadModel( $v['modelo'] );

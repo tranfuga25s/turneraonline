@@ -24,6 +24,10 @@ class EmailSender extends AppController implements AvisoAppSender {
     public function verAvisosDisponibles() {
         return array_keys( $disponibles );
     }
+    
+    public function disponible( $aviso = null ) {
+        return array_key_exists( $aviso, $this->disponibles );
+    }
 
     public function renderizarAviso( $id_aviso = null ) {
         $this->Aviso = new Aviso();

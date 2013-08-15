@@ -42,7 +42,7 @@ class Aviso extends AppModel {
         $fin = clone $inicio;
         $fin->add( new DateInterval( "PT4M59S" ) );
         return $this->find( 'all', array( /*'conditions' => array( 'fecha_envio <= ' => $fin->format( 'Y-m-d H:i:s' ), 'fecha_envio >= ' =>  $inicio->format( 'Y-m-d H:i:s' ) ), */
-                                            'fields' => array( 'id_aviso', 'metodo' ),
+                                            'fields' => array( 'id_aviso', 'metodo', 'template' ),
                                             'recursive' => -1 ) );
     }
 

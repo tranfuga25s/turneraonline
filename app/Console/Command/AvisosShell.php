@@ -34,10 +34,13 @@ class AvisosShell extends AppShell {
             $aviso['Aviso']['metodo'] = 'sms';
             // Veo que tipo es
             if( $aviso['Aviso']['metodo'] == 'email' ) {
-                $this->out( "Enviando mediante email" );
-                $enviado = $this->email_sender->enviar( $aviso['Aviso']['id_aviso'] );
+                if( $this->email_sender->disponible( $aviso['Aviso']['template'] ) ) {
+                    $enviado = $this->email_sender->enviar( $aviso['Aviso']['id_aviso'] );
+                }
             } else if( $aviso['Aviso']['metodo'] == 'sms' ){
-                $enviado = $this->sms_sender->enviar( $aviso['Aviso']['id_aviso'] );                
+                if( $this->sms_sender->disponible( $aviso['Aviso']['template'] ) ) {
+                    $enviado = $this->sms_sender->enviar( $aviso['Aviso']['id_aviso'] );                    
+                }
             } else {
                 $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
             }
