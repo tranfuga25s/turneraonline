@@ -7,6 +7,33 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class AvisosController extends AppController {
 
+    public $components = array( 'Waltook.Sms' );
+
+    public function isAuthorized( $usuario = null ) {
+        switch( $usuario['grupo_id'] ) {
+            case 1: // Administradores
+            {
+                return true;
+                break;
+            }
+            case 2: // Medicos
+            case 3: // Secretarias
+            {
+                switch( $this->request->params['action'] ) {
+                    case 'administracion_view':
+                    case 'administracion_edit':
+                    case 'index':
+                    { return true; break; }
+                }
+                // saco el break y el default para que autorize a los permisos de el usuario normal
+            }
+            case 4: // Usuario normal
+            default:
+            { break; }
+        }
+        return false;
+    }
+
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
 
 		if( $id_turno == null ) { $id_turno = $this->request->params['named']['id_turno']; }
@@ -262,5 +289,25 @@ class AvisosController extends AppController {
 		$this->redirect( array( 'action' => 'pendiente' ) );
 	 }
 
+    /*!
+     * Funcion llamada desde el dashboard de medicos y/o secretarias
+     */
+    public function index() {
+        // La verificación de que usuario puede entrar está echa antes
+        $this->set( 'horas_email', Configure::read( 'Turnera.notificaciones.horas_proximo' ) );
+        if( $this->Sms->habilitado() ) {
+            $this->set( 'sms_habilitado', true );
+            $this->loadModel( 'Gestotux.ConteoSms' );
+            $estado = array(
+                'enviados' => $this->ConteoSms->cantidadEnviada(),
+                'recibidos' => $this->ConteoSms->cantidadRecibida(),
+                'costo' => $this->ConteoSms->costoMensaje()
+            );
+            $this->set( 'estado_sms', $estado );
+        } else {
+            $this->set( 'sms_habilitado', false );
+        }
+
+    }
 }
 
