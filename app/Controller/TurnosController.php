@@ -831,9 +831,9 @@ class TurnosController extends AppController {
         $id_usuario = intval( $this->Auth->user( 'id_usuario' ) );
         $condiciones = null;
         if( $grupo == 3 ) { // Secretaria
-            
+           /// @TODO Ver que condiciones irian aqui
         } else if( $grupo == 2 ) { // Medico
-
+           /// @TODO Ver que condiciones irian aqui
         }
         return array(
             'recibidos'  => $this->Turno->cantidadDiaRecibidos(),
