@@ -49,14 +49,15 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'MyISAM')
 	);
 	public $avisos = array(
-		'id_aviso' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
-		'fecha_envio' => array('type' => 'datetime', 'null' => false, 'default' => null),
-		'template' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'layout' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'formato' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'to' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'from' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'subject' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'id_aviso' => array( 'type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
+		'fecha_envio' => array( 'type' => 'datetime', 'null' => false, 'default' => null),
+		'template' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'layout' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'formato' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'metodo' => array( 'type' => 'string', 'null' => false, 'default' => 'email', 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'to' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'from' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'subject' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id_aviso', 'unique' => 1)
 		),
@@ -197,6 +198,7 @@ class AppSchema extends CakeSchema {
 		'contra' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
 		'grupo_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'facebook_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20),
+		'sexo' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8' ),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id_usuario', 'unique' => 1)
 		),

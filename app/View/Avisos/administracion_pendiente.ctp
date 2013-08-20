@@ -12,12 +12,14 @@ $this->set( 'title_for_layout', "Notificaciones pendientes" );
 		<tbody>
 			<th>#Aviso</th>
 			<th>Tipo</th>
+			<th>Metodo</th>
 			<th>Fecha/Hora envio</th>
 			<th>Acciones</th>
 		<?php foreach( $pendientes as $pendiente ) : ?>
 			<tr>
 				<td>#<?php echo $pendiente['Aviso']['id_aviso']; ?></td>
 				<td><?php echo $pendiente['Aviso']['template']; ?></td>
+				<td><?php echo $pendiente['Aviso']['metodo']; ?></td>
 				<td><?php echo $this->Time->nice( $pendiente['Aviso']['fecha_envio'] ); ?></td>
 				<td class="acciones">
 					<?php echo $this->Html->link( 'Ver', array( 'action' => 'view', $pendiente['Aviso']['id_aviso'] ) ); ?>
@@ -42,12 +44,14 @@ $this->set( 'title_for_layout', "Notificaciones pendientes" );
 		<tbody>
 			<th>#Aviso</th>
 			<th>Tipo</th>
+			<th>Metodo</th>
 			<th>Fecha/Hora envio</th>
 			<th>Acciones</th>
 		<?php foreach( $vencidas as $pendiente ) : ?>
 			<tr>
 				<td>#<?php echo $pendiente['Aviso']['id_aviso']; ?></td>
 				<td><?php echo $pendiente['Aviso']['template']; ?></td>
+                <td><?php echo $pendiente['Aviso']['metodo']; ?></td>				
 				<td><?php echo $this->Time->nice( $pendiente['Aviso']['fecha_envio'] ); ?></td>
 				<td class="acciones">
 					<?php echo $this->Html->link( 'Ver', array( 'action' => 'view', $pendiente['Aviso']['id_aviso'] ) ); ?>

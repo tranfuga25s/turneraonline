@@ -145,5 +145,16 @@ class UsuarioTestCase extends CakeTestCase {
      public function testGenerarNuevaContraseña() {
          $this->assertEqual( true, false, "Método no implementado todavía" );
      }
+     
+     /**
+      * Testear que la funcion siempre devuelva una cadena, con algun usuario conocido su razonsocial
+      * Si se pasa cualquier banana o un numero inexistente, se deberá retornar una cadena vacía.
+      * Si el numero de telefono pasado no corresponde exactamente deberá ser capaz de identificarlo.
+      */
+     public function testGetUsuarioPorTelefono() {
+         $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( null ), "", "El método debería de devolver una cadena vacía si se pasa un parametro nulo" );
+         $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( "" ), "", "El método debería de devolver una cadena vacía si se pasa una cadena vacía" );
+         $this->assertEqual( false, true, "Faltan implementaciones!" );
+     }
 
 }

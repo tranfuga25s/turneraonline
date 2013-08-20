@@ -2,7 +2,7 @@
 /**
  * This file is loaded automatically by the app/webroot/index.php file after core.php
  *
- * This file should load/create any application wide configuration settings, such as 
+ * This file should load/create any application wide configuration settings, such as
  * Caching, Logging, loading additional configuration files.
  *
  * You should also use this file to include any files that provide global functions/constants
@@ -71,6 +71,7 @@ CakePlugin::load( 'Acl', array( 'bootstrap' => true ) );
 CakePlugin::load( 'Gestotux', array( 'bootstrap' => true ) );
 CakePlugin::load( 'Facebook' );
 CakePlugin::load( 'DebugKit' );
+CakePlugin::load( 'Waltook', array( 'bootstrap' => true ) );
 App::uses( 'IniReader', 'Configure' );
 Configure::config( 'Turnera', new IniReader( ROOT.DS.APP_DIR.DS.'Config'.DS.'turnos' ) );
 

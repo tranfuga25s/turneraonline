@@ -162,5 +162,28 @@ class Usuario extends AppModel {
         }
         return true;
     }
+    
+    /**
+     * Obtiene los datos de un usuario si existe a partir del número de teléfono.
+     * @param $tel mixed Numero de telefono a buscar
+     * @return Cadena vacía si no existe el usuario o la razón social
+     */
+     public function getUsuarioPorTelefono( $tel = null ) {
+         if( is_null( $tel ) ) {
+             return "";
+         }
+         $data = $this->find( 'first',
+            array(
+                'conditions' => array( 'OR' => array( 'telefono' => $tel, 'celular' => $tel ) ),
+                'fields' => array( 'razonsocial' ),
+                'recursive' => -1
+            ) 
+         );
+         if( count( $data ) > 0 ) {
+             return $data['Usuario']['razonsocial'];
+         } else {
+             return "";
+         }
+     }
 
 }

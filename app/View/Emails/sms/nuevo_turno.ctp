@@ -1,0 +1,2 @@
+Usted tiene un turno el día <?php echo date( 'd/m/Y', strtotime( $turno['Turno']['fecha_inicio'] ) ); ?>  a las <?php echo date( 'H:i', strtotime( $turno['Turno']['fecha_inicio'] ) ); ?> 
+con el medico <?php echo $medico['Usuario']['razonsocial']; ?> en <?php echo $clinica['Clinica']['nombre']; ?>.
