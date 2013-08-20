@@ -16,6 +16,8 @@ class EmailSender extends AppController implements AvisoAppSender {
             'formato' => 'both'
         )
     );
+    
+    public function loadHelpers() {}
 
     public function habilitado() {
         return true;
@@ -58,7 +60,8 @@ class EmailSender extends AppController implements AvisoAppSender {
           $this->set( $k, $d );
         }
         $this->layout = 'Emails/'.$demail['Aviso']['formato'].'/'.$demail['Aviso']['layout'];
-        return $this->render( '../Emails/'.$demail['Aviso']['formato'].'/'.Inflector::underscore( $demail['Aviso']['template'] ) );
+        $vista = new View( $this );
+        return $vista->render( '../Emails/'.$demail['Aviso']['formato'].'/'.Inflector::underscore( $demail['Aviso']['template'] ) );
     }
 
     public function enviar( $id_aviso = null ) {

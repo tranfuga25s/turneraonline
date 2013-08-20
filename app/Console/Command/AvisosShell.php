@@ -51,5 +51,32 @@ class AvisosShell extends AppShell {
             }
        }
 	}
+	
+	public function renderizarAviso( $id_aviso = 42 ) {
+	    $this->out( "Buscando aviso ".$id_aviso );
+	    $this->Aviso->id = intval( $id_aviso );
+        if( !$this->Aviso->exists() ) {
+            $this->out( 'El aviso no existe!' );
+            return;
+        }
+        $aviso = $this->Aviso->read();
+        $this->email_sender = new EmailSender();
+        $this->sms_sender = new SmsSender();
+        $enviado = false;
+        $aviso['Aviso']['metodo'] = 'sms';
+        // Veo que tipo es
+        if( $aviso['Aviso']['metodo'] == 'email' ) {
+            if( $this->email_sender->disponible( $aviso['Aviso']['template'] ) ) {
+                $enviado = $this->email_sender->renderizarAviso( $aviso['Aviso']['id_aviso'] );
+            }
+        } else if( $aviso['Aviso']['metodo'] == 'sms' ){
+            if( $this->sms_sender->disponible( $aviso['Aviso']['template'] ) ) {
+                $enviado = $this->sms_sender->renderizarAviso( $aviso['Aviso']['id_aviso'] );                    
+            }
+        } else {
+            $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
+        }
+        $this->out( $enviado );
+	}
 }
 ?>
