@@ -9,12 +9,12 @@ class SmsSender extends AvisosController implements AvisoAppSender {
             'template' => 'nuevoTurno',
             'layout' => 'usuario',
             'formato' => 'both'
-        )/*,
+        ),
         'turnoCancelado' => array(
             'template' => 'turnoCancelado',
             'layout' => 'usuario',
             'formato' => 'both'
-        )*/
+        )
     );
     
     

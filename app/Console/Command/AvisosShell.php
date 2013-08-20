@@ -53,7 +53,7 @@ class AvisosShell extends AppShell {
        }
 	}
 	
-	public function renderizarAviso( $id_aviso = 43 ) {
+	public function renderizarAviso( $id_aviso = null ) {
 	    $this->out( "Buscando aviso ".$id_aviso );
 	    $this->Aviso->id = intval( $id_aviso );
         if( !$this->Aviso->exists() ) {
