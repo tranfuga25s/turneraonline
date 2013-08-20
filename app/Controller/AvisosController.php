@@ -96,7 +96,7 @@ class AvisosController extends AppController {
 		}
         // Guardo los datos del sms si tiene celular activado
         if( !is_null( $celular ) || !empty( $celular ) ) {
-            $this->Aviso->create(); // Evita que se sobreescriban los datos
+            $this->Aviso->create(); // Evita que se sobreescriban los datos del aviso por email
             $datos['Aviso']['to'] = $celular;
             $datos['Aviso']['metodo'] = 'sms';
             // Calculo la hora de envio
