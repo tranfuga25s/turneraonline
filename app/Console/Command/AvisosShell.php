@@ -15,17 +15,17 @@ class AvisosShell extends AppShell {
 	public function verificarEnvio() {
 		// Busco si existe algun email para saber si tengo que enviarlo.
 		$min_inicio = intval( date( 'i' ) );
-		/*if( !$this->Aviso->existePendiente( $min_inicio ) ) {
+		if( !$this->Aviso->existePendiente( $min_inicio ) ) {
 			$this->out( "No hay avisos pendientes." );
 			return;
 		} else {
 		    $this->out( "Existen avisos pendientes" ) ;
-		}*/
+		}
         $avisos = $this->Aviso->pendientes( $min_inicio );
-        /*if( count( $avisos ) <= 0 ) {
+        if( count( $avisos ) <= 0 ) {
             $this->out( "Listado de avisos vacío" );
             return;
-        }*/
+        }
         $this->email_sender = new EmailSender();
         $this->sms_sender = new SmsSender();
         foreach( $avisos as $aviso ) {
@@ -45,7 +45,7 @@ class AvisosShell extends AppShell {
                 $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
             }
             if( $enviado ) {
-                //$this->Aviso->delete( $aviso['Aviso']['id_aviso'] );
+                $this->Aviso->delete( $aviso['Aviso']['id_aviso'] );
                 $this->out( 'El aviso '.$aviso['Aviso']['id_aviso']." pudo ser enviado" );
             } else {
                 $this->out( 'El aviso '.$aviso['Aviso']['id_aviso']." no pudo ser enviado" );
@@ -64,7 +64,6 @@ class AvisosShell extends AppShell {
         $this->email_sender = new EmailSender();
         $this->sms_sender = new SmsSender();
         $enviado = false;
-        $aviso['Aviso']['metodo'] = 'sms';
         // Veo que tipo es
         if( $aviso['Aviso']['metodo'] == 'email' ) {
             if( $this->email_sender->disponible( $aviso['Aviso']['template'] ) ) {
