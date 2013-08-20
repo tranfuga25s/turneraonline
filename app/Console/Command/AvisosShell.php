@@ -45,14 +45,15 @@ class AvisosShell extends AppShell {
                 $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
             }
             if( $enviado ) {
-                $this->Aviso->delete( $aviso['Aviso']['id_aviso'] );
+                //$this->Aviso->delete( $aviso['Aviso']['id_aviso'] );
+                $this->out( 'El aviso '.$aviso['Aviso']['id_aviso']." pudo ser enviado" );
             } else {
                 $this->out( 'El aviso '.$aviso['Aviso']['id_aviso']." no pudo ser enviado" );
             }
        }
 	}
 	
-	public function renderizarAviso( $id_aviso = 42 ) {
+	public function renderizarAviso( $id_aviso = 43 ) {
 	    $this->out( "Buscando aviso ".$id_aviso );
 	    $this->Aviso->id = intval( $id_aviso );
         if( !$this->Aviso->exists() ) {

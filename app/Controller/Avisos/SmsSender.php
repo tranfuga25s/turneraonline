@@ -9,12 +9,12 @@ class SmsSender extends AvisosController implements AvisoAppSender {
             'template' => 'nuevoTurno',
             'layout' => 'usuario',
             'formato' => 'both'
-        ),
+        )/*,
         'turnoCancelado' => array(
             'template' => 'turnoCancelado',
             'layout' => 'usuario',
             'formato' => 'both'
-        )
+        )*/
     );
     
     
@@ -42,6 +42,8 @@ class SmsSender extends AvisosController implements AvisoAppSender {
             throw new NotFoundException( "El aviso solicitado no existe!" );
         }
         $aviso = $this->Aviso->read();
+        
+        $vista = new View();
         $datos = array();
         foreach( $aviso['VariableAviso'] as $v ) {
             $this->loadModel( $v['modelo'] );
@@ -57,17 +59,15 @@ class SmsSender extends AvisosController implements AvisoAppSender {
         $aviso['Aviso']['datos'] = $datos;
 
         foreach( $aviso['Aviso']['datos'] as $k=>$d ) {
-          $this->set( $k, $d );
+          $vista->set( $k, $d );
         }
-        debug( $aviso );
         $this->layout = 'Emails'.DS.'sms'.DS.$aviso['Aviso']['layout'];
-        $vista = new View();
-        $salida = $vista->render( '..'.DS.'Emails'.DS.'sms'.DS.Inflector::underscore( $aviso['Aviso']['template'] ) );
+        $texto = $vista->render( '..'.DS.'Emails'.DS.'sms'.DS.Inflector::underscore( $aviso['Aviso']['template'] ), $this->layout );
         if( count( $texto ) > $this->_limite_caracteres ) {
             // Corto el texto
             $texto = String::truncate( $text0, $this->_limite_caracteres );    
         }
-        return $salida;
+        return $texto;
     }
 
     public function enviar( $id_aviso = null ) {
