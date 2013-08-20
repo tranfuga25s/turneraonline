@@ -8,7 +8,7 @@ App::import( 'Controller/Avisos', 'SmsSender' );
 class AvisosShell extends AppShell {
 
 	var $uses = array( 'Aviso' );
-    
+
     private $sms_sender = null;
     private $email_sender = null;
 
@@ -39,7 +39,7 @@ class AvisosShell extends AppShell {
                 }
             } else if( $aviso['Aviso']['metodo'] == 'sms' ){
                 if( $this->sms_sender->disponible( $aviso['Aviso']['template'] ) ) {
-                    $enviado = $this->sms_sender->enviar( $aviso['Aviso']['id_aviso'] );                    
+                    $enviado = $this->sms_sender->enviar( $aviso['Aviso']['id_aviso'] );
                 }
             } else {
                 $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
@@ -52,7 +52,7 @@ class AvisosShell extends AppShell {
             }
        }
 	}
-	
+
 	public function renderizarAviso( $id_aviso = null ) {
 	    $this->out( "Buscando aviso ".$id_aviso );
 	    $this->Aviso->id = intval( $id_aviso );
@@ -71,7 +71,7 @@ class AvisosShell extends AppShell {
             }
         } else if( $aviso['Aviso']['metodo'] == 'sms' ){
             if( $this->sms_sender->disponible( $aviso['Aviso']['template'] ) ) {
-                $enviado = $this->sms_sender->renderizarAviso( $aviso['Aviso']['id_aviso'] );                    
+                $enviado = $this->sms_sender->renderizarAviso( $aviso['Aviso']['id_aviso'] );
             }
         } else {
             $this->out( 'Formato desconocido: '.$aviso['Aviso']['metodo'] );
