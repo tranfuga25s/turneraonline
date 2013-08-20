@@ -9,27 +9,7 @@ $this->set( 'title_for_layout', "Inicio" );
 
         <div class="row-fluid">
             <div class="span2"><?php echo $this->element( 'dashboard/calendario'); ?></div>
-            <div class="span5">
-                <table class="table table-hover table-bordered">
-                    <tbody>
-                        <th colspan="4" class="calendario-titulo">Cantidad de turnos para hoy</th>
-                        <tr>
-                            <td><b>Reservados:</b></td>
-                            <td>N</td>
-
-                            <td><b>Libres:</b></td>
-                            <td>N</td>
-                        </tr>
-                        <tr>
-                            <td><b>Recibidos:</b></td>
-                            <td>N</td>
-                            <td><b>Atendidos:</b></td>
-                            <td>N</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
+            <div class="span5"><?php echo $this->element( 'dashboard/estadoTurnos' ); ?></div>
         </div>
         <div class="row-fluid">
             <div class="thumbnails">

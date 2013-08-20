@@ -33,6 +33,7 @@ class TurnosController extends AppController {
                     case 'sobreturno':
                     case 'cancelar':
                     case 'reservarTurno':
+                    case 'estadoTurnos':
                     {
                         return true; break;
                     }
@@ -818,6 +819,29 @@ class TurnosController extends AppController {
 		$this->set( 'turnos', $this->paginate() );
 	}
 
+    /*!
+     * Busca el estado de los turnos para el usuario que lo está llamando
+     */
+    public function estadoTurnos()  {
+        $grupo = $this->Auth->user( 'grupo_id' );
+        if( $grupo == 4 ) {
+            throw new UnauthorizedException( 'El usuario no puede ver esto' );
+        }
+        // Busco si es medico o secretaria
+        $id_usuario = intval( $this->Auth->user( 'id_usuario' ) );
+        $condiciones = null;
+        if( $grupo == 3 ) { // Secretaria
+            
+        } else if( $grupo == 2 ) { // Medico
+
+        }
+        return array(
+            'recibidos'  => $this->Turno->cantidadDiaRecibidos(),
+            'atendidos'  => $this->Turno->cantidadDiaAtendidos(),
+            'libres'     => $this->Turno->cantidadDiaLibres(),
+            'reservados' => $this->Turno->cantidadDiaReservados()
+        );
+    }
 
 
 }
