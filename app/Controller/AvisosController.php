@@ -54,6 +54,8 @@ class AvisosController extends AppController {
 			return;
 		}
 		$email = $this->Usuario->read( 'email' );
+        $celular = $this->Usuario->read( 'celular' );
+        $celular = $celular['Usuario']['celular'];
 
 		// Calculo la hora de envio
 		$cant_horas = Configure::read( 'Turnera.notificaciones.horas_proximo' );
@@ -73,7 +75,8 @@ class AvisosController extends AppController {
         					'formato' => 'both',
         					'to' => $email['Usuario']['email'],
         					'subject' => 'Turno proximo',
-        					'from' => $email_de )
+        					'from' => $email_de,
+        					'metodo' => 'email' )
         );
 		if( $this->Aviso->save( $datos ) ) {
 			$d = array(
@@ -89,6 +92,38 @@ class AvisosController extends AppController {
 				$this->VariableAviso->save( $dato );
 			}
 		}
+        // Guardo los datos del sms si tiene celular activado
+        if( !is_null( $celular ) || !empty( $celular ) ) {
+            $datos['Aviso']['to'] = $celular;
+            $datos['Aviso']['metodo'] = 'sms';
+            // Calculo la hora de envio
+            $cant_horas = Configure::read( 'Turnera.notificaciones.minutos_proximo_sms' );
+            $de_sms = Configure::read( 'Turnera.celular' );
+            $fechahora = new DateTime( $d['Turno']['fecha_inicio'] );
+            if( is_array( $cant_horas ) ) {
+                $fechahora->sub( new DateInterval( "PT".$cant_horas[0]."H" ) );
+                $aviso['Aviso']['from'] = $de_sms[0];
+                $aviso['Aviso']['fecha_hora'] = $fechahora->format( "Y/m/d H:i:s" );
+            } else {
+                $fechahora->sub( new DateInterval( "PT".$cant_horas."H" ) );
+                $aviso['Aviso']['from'] = $de_sms;
+                $aviso['Aviso']['fecha_hora'] = $fechahora->format( "Y/m/d H:i:s" );
+            }
+            if( $this->Aviso->save( $datos ) ) {
+                $d = array(
+                    array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Usuario'    , 'id' => $id_paciente   , 'nombre' => 'usuario'    , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Consultorio', 'id' => $id_consultorio, 'nombre' => 'consultorio', 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Clinica'    , 'id' => $id_clinica    , 'nombre' => 'clinica'    , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Usuario'    , 'id' => $id_medico     , 'nombre' => 'medico'     , 'aviso_id' => $this->Aviso->id )
+                );
+                $this->loadModel( 'VariableAviso' );
+                foreach( $d as $dato ) {
+                    $this->VariableAviso->create();
+                    $this->VariableAviso->save( $dato );
+                }
+            }
+        }
 		$this->autoRender = false;
 		return "";
 	}
@@ -114,6 +149,8 @@ class AvisosController extends AppController {
 		$this->loadModel( 'Usuario' );
 		$this->Usuario->id = $id_paciente['Turno']['paciente_id'];
 		$email = $this->Usuario->read( 'email' );
+        $celular = $this->Usuario->read( 'celular' );
+        $celular = $celular['Usuario']['celular'];
 
 		$email_de = Configure::read( 'Turnera.email' );
 		if( is_array( $email_de ) ) { $email_de = $email_de[0]; }
@@ -125,12 +162,19 @@ class AvisosController extends AppController {
 					'formato' => 'both',
 					'from' => $email_de,
 					'subject' => 'Su turno fue cancelado!',
-					'to' => $email['Usuario']['email'] ),
+					'to' => $email['Usuario']['email'],
+					'metodo' => 'email' ),
 				'VariablesAviso' => array(
 					0 => array( 'modelo' => 'Turno', 'id' => $id_turno, 'nombre' => 'turno' ),
 					1 => array( 'modelo' => 'Usuario', 'id' => $id_paciente['Turno']['id_usuario'], 'nombre' => 'usuario' ) )
 				);
 		$this->Aviso->saveAssociated( $datos );
+        if( !is_null( $celular ) || !empty($celular ) ) {
+            $datos['Aviso']['fecha_envio'] = date( 'Y-m-d g:i:s' );
+            $datos['Aviso']['metodo'] = 'sms';
+            $datos['Aviso']['to'] = $celular;
+            $this->Aviso->saveAssociated( $datos );
+        }
 		$this->autoRender = false;
 		return "";
 	}
