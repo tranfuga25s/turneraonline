@@ -62,9 +62,9 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'turnera',
-		'password' => 'turnera',
+		'host' => 'sigis2.intranet.unl',
+		'login' => 'webunl',
+		'password' => 'webunl',
 		'database' => 'turnera',
 		'prefix' => '',
 		'encoding' => 'utf8'

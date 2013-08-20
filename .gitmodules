@@ -19,3 +19,9 @@
 [submodule "app/Plugin/ContextHelp"]
 	path = app/Plugin/ContextHelp
 	url = git@github.com:tranfuga25s/cakephp-contexthelp.git
+[submodule "app/Plugin/Gestotux"]
+	path = app/Plugin/Gestotux
+	url = git@github.com:tranfuga25s/cakephp-gestotux.git
+[submodule "app/Plugin/Facebook"]
+	path = app/Plugin/Facebook
+	url = https://github.com/webtechnick/CakePHP-Facebook-Plugin.git

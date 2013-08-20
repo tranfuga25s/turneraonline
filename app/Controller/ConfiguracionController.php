@@ -32,10 +32,12 @@ class ConfiguracionController extends AppController {
 				Configure::write( 'Turnera.dias_turnos', $dias );
 				Configure::write( 'Turnera.notificaciones.horas_proximo', $horas );
 				Configure::write( 'Turnera.email_notificaciones', $email );
+                Configure::write( 'Turnera.notificaciones.minutos_proximo_sms', $minutos );
 				$cadena =  "[Turnera]\n";
 				$cadena .= "dias_turnos = ".$dias."\n";
 				$cadena .= "notificaciones.turno_proximo = on\n";
 				$cadena .= "notificaciones.horas_proximo = ".$horas."\n";
+                $cadena .= "notificaciones.minutos_proximo_sms".$minutos."\n";
 				$cadena .= "notificaciones.cancelacion = on\n";
 				$cadena .= "email = ".$email."\n";
 

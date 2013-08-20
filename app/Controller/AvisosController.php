@@ -32,6 +32,18 @@ class AvisosController extends AppController {
             { break; }
         }
         return false;
+        
+    }
+    
+    private $avisos_disponibles = array( 'nuevoTurno', 'turnoCancelado' );
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow( array( 'recibir' ) );
+    }
+
+    public function recibir() {
+        $mensaje = $this->Sms->recibir();
     }
 
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
@@ -68,6 +80,8 @@ class AvisosController extends AppController {
 			return;
 		}
 		$email = $this->Usuario->read( 'email' );
+        $celular = $this->Usuario->read( 'celular' );
+        $celular = $celular['Usuario']['celular'];
 
 		// Calculo la hora de envio
 		$cant_horas = Configure::read( 'Turnera.notificaciones.horas_proximo' );
@@ -81,13 +95,15 @@ class AvisosController extends AppController {
 		}
 		// Guardo el email
 		$datos = array(	'Aviso' =>
-				 array( 'fecha_envio' => $fechahora->format( 'Y-m-d H:i:s' ),
-					'template' => 'nuevoTurno',
-					'layout' => 'usuario',
-					'formato' => 'both',
-					'to' => $email['Usuario']['email'],
-					'subject' => 'Turno proximo',
-					'from' => $email_de ) );
+    				 array( 'fecha_envio' => $fechahora->format( 'Y-m-d H:i:s' ),
+        					'template' => 'nuevoTurno',
+        					'layout' => 'usuario',
+        					'formato' => 'both',
+        					'to' => $email['Usuario']['email'],
+        					'subject' => 'Turno proximo',
+        					'from' => $email_de,
+        					'metodo' => 'email' )
+        );
 		if( $this->Aviso->save( $datos ) ) {
 			$d = array(
 				array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
@@ -102,6 +118,38 @@ class AvisosController extends AppController {
 				$this->VariableAviso->save( $dato );
 			}
 		}
+        // Guardo los datos del sms si tiene celular activado
+        if( !is_null( $celular ) || !empty( $celular ) ) {
+            $datos['Aviso']['to'] = $celular;
+            $datos['Aviso']['metodo'] = 'sms';
+            // Calculo la hora de envio
+            $cant_horas = Configure::read( 'Turnera.notificaciones.minutos_proximo_sms' );
+            $de_sms = Configure::read( 'Turnera.celular' );
+            $fechahora = new DateTime( $d['Turno']['fecha_inicio'] );
+            if( is_array( $cant_horas ) ) {
+                $fechahora->sub( new DateInterval( "PT".$cant_horas[0]."H" ) );
+                $aviso['Aviso']['from'] = $de_sms[0];
+                $aviso['Aviso']['fecha_hora'] = $fechahora->format( "Y/m/d H:i:s" );
+            } else {
+                $fechahora->sub( new DateInterval( "PT".$cant_horas."H" ) );
+                $aviso['Aviso']['from'] = $de_sms;
+                $aviso['Aviso']['fecha_hora'] = $fechahora->format( "Y/m/d H:i:s" );
+            }
+            if( $this->Aviso->save( $datos ) ) {
+                $d = array(
+                    array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Usuario'    , 'id' => $id_paciente   , 'nombre' => 'usuario'    , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Consultorio', 'id' => $id_consultorio, 'nombre' => 'consultorio', 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Clinica'    , 'id' => $id_clinica    , 'nombre' => 'clinica'    , 'aviso_id' => $this->Aviso->id ),
+                    array( 'modelo' => 'Usuario'    , 'id' => $id_medico     , 'nombre' => 'medico'     , 'aviso_id' => $this->Aviso->id )
+                );
+                $this->loadModel( 'VariableAviso' );
+                foreach( $d as $dato ) {
+                    $this->VariableAviso->create();
+                    $this->VariableAviso->save( $dato );
+                }
+            }
+        }
 		$this->autoRender = false;
 		return "";
 	}
@@ -127,6 +175,8 @@ class AvisosController extends AppController {
 		$this->loadModel( 'Usuario' );
 		$this->Usuario->id = $id_paciente['Turno']['paciente_id'];
 		$email = $this->Usuario->read( 'email' );
+        $celular = $this->Usuario->read( 'celular' );
+        $celular = $celular['Usuario']['celular'];
 
 		$email_de = Configure::read( 'Turnera.email' );
 		if( is_array( $email_de ) ) { $email_de = $email_de[0]; }
@@ -138,12 +188,19 @@ class AvisosController extends AppController {
 					'formato' => 'both',
 					'from' => $email_de,
 					'subject' => 'Su turno fue cancelado!',
-					'to' => $email['Usuario']['email'] ),
+					'to' => $email['Usuario']['email'],
+					'metodo' => 'email' ),
 				'VariablesAviso' => array(
 					0 => array( 'modelo' => 'Turno', 'id' => $id_turno, 'nombre' => 'turno' ),
 					1 => array( 'modelo' => 'Usuario', 'id' => $id_paciente['Turno']['id_usuario'], 'nombre' => 'usuario' ) )
 				);
 		$this->Aviso->saveAssociated( $datos );
+        if( !is_null( $celular ) || !empty($celular ) ) {
+            $datos['Aviso']['fecha_envio'] = date( 'Y-m-d g:i:s' );
+            $datos['Aviso']['metodo'] = 'sms';
+            $datos['Aviso']['to'] = $celular;
+            $this->Aviso->saveAssociated( $datos );
+        }
 		$this->autoRender = false;
 		return "";
 	}
@@ -154,41 +211,26 @@ class AvisosController extends AppController {
 	 */
 	public function administracion_cpanel() {
 		// Verifico si está andando el sistema de avisos
-
+        $this->set( 'sms_habilitado', $this->Sms->habilitado() );
 	}
 
 	/**
 	 *  Muestra la configuración y/o habilitacion del sistema de sms
 	 */
 	public function administracion_sms() {
+        // Configuración de los mensajes para sms
+        $this->set( 'num_cliente', $this->Sms->getClientId() );
+        $this->set( 'clave', $this->Sms->getKey() );
+        $this->set( 'codigo_respuesta', $this->Sms->getRequestCode() );
 
-	}
-
-	/**
-	 * Muestra la configuración y/o habilitacion del sistema de email
-	 */
-	public function administracion_email() {
-		// Cargo los templates disponibles
-		$data = array(
-			'nuevoTurno' => array(
-				'nombre' => 'Recordatorio de turno proximo',
-				'explicacion' => 'Este aviso es enviado avisando al paciente de que tiene un turno dentro de las 12 horas proximas',
-				'template' => 'nuevoTurno',
-				'Formato' => array(
-					'text' => array(
-						'nombre' => 'Solo texto',
-						'content' => 'Formato solo texto',
-						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
-					 ),
-					 'html' => array(
-					 	'nombre' => 'Html',
-					 	'content' => 'Formato en html',
-						'campos' => 'Para reemplazar por los datos actuales utilice {nombre}'
-					 )
-				)
-			)
-		);
-		$this->set( 'avisos', $data );
+        // Agregar visión de creditos
+        $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
+        $mensajes = $this->Sms->obtenerListaMensajes();
+        $this->loadModel( 'Usuario' );
+        foreach( $mensajes as &$mensaje ) {
+            $mensaje['Paciente']['razonsocial'] = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
+        }
+        $this->set( 'mensajes', $mensajes );
 	}
 
 	/**
@@ -309,5 +351,35 @@ class AvisosController extends AppController {
         }
 
     }
+
+
+     /**
+      * Funcion que habilita el servicio de sms
+      */
+     public function administracion_habilitar_sms() {
+         // Si el servicio no está habilitado el servicio muestro el descargo.
+         if( $this->request->isPost() ) {
+             // Veo que haya contestado correctamente la habilitacion
+             if( $this->request->data['habilitar']['acepta'] == 1 ) {
+                 // Habilito el servicio
+                 $key = $this->request->data['habilitar']['key'];
+                 $cliente_id = $this->request->data['habilitar']['id_cliente'];
+                 $method = 'GET';
+                 $codigo = $this->request->data['habilitar']['codigo'];
+                 if( $this->Sms->configurarServicio( $cliente_id, $key, $method, $codigo ) ) {
+                     $this->Session->correcto( 'El servicio ha sido configurado correctamente' );
+                     $this->redirect( array( 'action' => 'sms' ) );
+                 } else {
+                     $this->Session->incorrecto( 'No se pudo configurar el servicio' );
+                 }
+             }
+         }
+         if( !$this->Sms->habilitado() ) {
+             return $this->render( 'descargo' );
+         }
+         // El servicio ya está habilitado, lo envío a la pagina de configuración
+         $this->redirect( array( 'action' => 'sms' ) );
+     }
+
 }
 

@@ -1,0 +1,2 @@
+Su turno ha sido cancelado! Fecha: <?php echo date( 'd/m/Y H:i', strtotime( $turno['Turno']['fecha_inicio'] ) ); ?> con <?php echo $medico['Usuario']['razonsocial']; ?>.
+<?php echo $clinica['Clinica']['nombre']; ?>.
