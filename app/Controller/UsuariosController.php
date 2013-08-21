@@ -335,6 +335,7 @@ class UsuariosController extends AppController {
 		} else if( $usuario['Usuario']['celular'] == '' ) {
 			$this->Session->setFlash( 'Por favor, ingrese un número de celular para que pueda recibir notificaciones por mensaje de texto', 'flash/info' );
 		}
+        $this->Usuario->recursive = 1;
 		$this->set( 'usuario', $this->Usuario->read( null, $id ) );
 	}
 
