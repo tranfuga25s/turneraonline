@@ -2,7 +2,7 @@
 <div class="row-fluid">
 
 	<?php echo $this->element( 'menu/usuario', array( 'usuario' => $this->request->data ) ); ?>
-		
+
 	<div class="span10 well">
 		<?php echo $this->Form->create('Usuario'); ?>
 		<fieldset>
@@ -18,9 +18,8 @@
 				  echo $this->Form->input( 'obra_social_id', array( 'options' => $obras_sociales, 'empty' => 'Ninguna' ) );
 				  echo $this->Form->input( 'notificaciones' );
 				  echo $this->Form->hidden( 'grupo_id', array( 'value' => 4 ) );
-				  echo "<small>Si elije esta opci&oacute;n recibirá un email antes de cada turno y un aviso cuando un turno sea cancelado</small><br /><br />";
-				  echo "Contraseña:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " . $this->Form->password( 'contra', array( 'label' => 'Contraseña' ) ) . "<br />";
-				  echo "Confirmar Contrase&ntilde;a:" . $this->Form->password( 'contrarep', array( 'label' => 'Contraseña' ) );
+				  echo "<small>Si elije esta opci&oacute;n recibirá un email antes de cada turno y un aviso cuando un turno sea cancelado</small><br />".
+				       "<small>Si ingresa un numero de celular, recibirá un sms avisando el turno proximamente.</small><br />";
 			?>
 		</fieldset>
 		<div class="form-actions">
