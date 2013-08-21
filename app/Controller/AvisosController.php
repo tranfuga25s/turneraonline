@@ -105,7 +105,7 @@ class AvisosController extends AppController {
         					'metodo' => 'email' )
         );
 		if( $this->Aviso->save( $datos ) ) {
-			$d = array(
+			$datas = array(
 				array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
 				array( 'modelo' => 'Usuario'    , 'id' => $id_paciente   , 'nombre' => 'usuario'    , 'aviso_id' => $this->Aviso->id ),
 				array( 'modelo' => 'Consultorio', 'id' => $id_consultorio, 'nombre' => 'consultorio', 'aviso_id' => $this->Aviso->id ),
@@ -113,13 +113,16 @@ class AvisosController extends AppController {
 				array( 'modelo' => 'Usuario'    , 'id' => $id_medico     , 'nombre' => 'medico'     , 'aviso_id' => $this->Aviso->id )
 			);
 			$this->loadModel( 'VariableAviso' );
-			foreach( $d as $dato ) {
+			foreach( $datas as $dato ) {
 				$this->VariableAviso->create();
 				$this->VariableAviso->save( $dato );
 			}
+		} else {
+		    die( "No se pudo guardar el email!" );
 		}
         // Guardo los datos del sms si tiene celular activado
         if( !is_null( $celular ) || !empty( $celular ) ) {
+            $this->Aviso->create(); // Evita que se sobreescriban los datos del aviso por email
             $datos['Aviso']['to'] = $celular;
             $datos['Aviso']['metodo'] = 'sms';
             // Calculo la hora de envio
@@ -136,7 +139,7 @@ class AvisosController extends AppController {
                 $aviso['Aviso']['fecha_hora'] = $fechahora->format( "Y/m/d H:i:s" );
             }
             if( $this->Aviso->save( $datos ) ) {
-                $d = array(
+                $datas = array(
                     array( 'modelo' => 'Turno'      , 'id' => $id_turno      , 'nombre' => 'turno'      , 'aviso_id' => $this->Aviso->id ),
                     array( 'modelo' => 'Usuario'    , 'id' => $id_paciente   , 'nombre' => 'usuario'    , 'aviso_id' => $this->Aviso->id ),
                     array( 'modelo' => 'Consultorio', 'id' => $id_consultorio, 'nombre' => 'consultorio', 'aviso_id' => $this->Aviso->id ),
@@ -144,7 +147,7 @@ class AvisosController extends AppController {
                     array( 'modelo' => 'Usuario'    , 'id' => $id_medico     , 'nombre' => 'medico'     , 'aviso_id' => $this->Aviso->id )
                 );
                 $this->loadModel( 'VariableAviso' );
-                foreach( $d as $dato ) {
+                foreach( $datas as $dato ) {
                     $this->VariableAviso->create();
                     $this->VariableAviso->save( $dato );
                 }
@@ -297,17 +300,19 @@ class AvisosController extends AppController {
 		$datos['email_de'] = Configure::read( 'Turnera.email' );
 		unset( $demail['VariablesAviso'] );
 		$demail['Aviso']['datos'] = $datos;
+        foreach( $demail['Aviso']['datos'] as $k=>$d ) {
+            $this->set( $k, $d );
+        }
 
 		// Busco la vista a renderizar
 		if( $formato == 'email' ) {
 			$demail['Aviso']['formato'] = 'html';
-			foreach( $demail['Aviso']['datos'] as $k=>$d ) {
-				$this->set( $k, $d );
-			}
 			$this->layout = 'Emails/'.$demail['Aviso']['formato'].'/'.$demail['Aviso']['layout'];
 			return $this->render( '../Emails/'.$demail['Aviso']['formato'].'/'.Inflector::underscore( $demail['Aviso']['template'] ) );
 		} else if( $formato == 'sms' ) {
-			return "Todavía no se encuentra disponible esta característica";
+            $this->layout = 'Emails/sms/'.$demail['Aviso']['layout'];
+            return $this->render( '../Emails/sms/'.Inflector::underscore( $demail['Aviso']['template'] ) );
+
 		} else {
 			throw new NotFoundException( 'No se encontró el formato de renderizado: '.$formato );
 		}
