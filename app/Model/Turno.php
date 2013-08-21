@@ -558,5 +558,55 @@ class Turno extends AppModel {
    									  'recursive' => -1,
    									  'order' => array( 'fecha_inicio' => 'desc' ) ) );
    }
+   
+   /*!
+    * Fucion de dashboard
+    * BUsca la cantidad de turnos para el día actual
+    */
+   public function cantidadDiaRecibidos( $condiciones = null ) {
+       $condiciones = array_merge( $condiciones, 
+                                   array( '`Turno`.`recibido`' => true, 
+                                          'DATE( `Turno`.`fecha_inicio` ) >= ' => date( 'Y-m-d' ),
+                                          'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
+   }
+   
+   /*!
+    * Fucion de dashboard
+    * BUsca la cantidad de turnos para el día actual
+    */
+   public function cantidadDiaAtendidos( $condiciones = null ) {
+       $condiciones = array_merge( $condiciones, 
+                                   array( '`Turno`.`atendido`' => true, 
+                                          'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
+                                          'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
+   }
+   
+   /*!
+    * Fucion de dashboard
+    * BUsca la cantidad de turnos para el día actual
+    */
+   public function cantidadDiaLibres( $condiciones = null ) {
+       $condiciones = array_merge( $condiciones, 
+                                   array( '`Turno`.`paciente_id`' => null, 
+                                          'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ), 
+                                          'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
+   }
+   
+   /*!
+    * Fucion de dashboard
+    * BUsca la cantidad de turnos para el día actual
+    */
+   public function cantidadDiaReservados( $condiciones = null ) { 
+       $condiciones = array_merge( $condiciones, 
+                                   array( '`Turno`.`recibido`' => false, 
+                                          '`Turno`.`atendido`' => false, 
+                                           'NOT' => array( '`Turno`.`paciente_id`' => null ),
+                                           'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
+                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
+   }
 
 }
