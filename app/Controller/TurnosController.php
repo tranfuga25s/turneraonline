@@ -833,13 +833,16 @@ class TurnosController extends AppController {
         if( $grupo == 3 ) { // Secretaria
            /// @TODO Ver que condiciones irian aqui
         } else if( $grupo == 2 ) { // Medico
-           /// @TODO Ver que condiciones irian aqui
+           // Veo que día y medico va en las condiciones
+           $this->Turno->Medico->recursive = -1;
+           $id_medico = $this->Turno->Medico->findByUsuarioId( $id_usuario, array( 'id_medico' ) );
+           $condiciones['medico_id'] = $id_medico['Medico']['id_medico'];
         }
         return array(
-            'recibidos'  => $this->Turno->cantidadDiaRecibidos(),
-            'atendidos'  => $this->Turno->cantidadDiaAtendidos(),
-            'libres'     => $this->Turno->cantidadDiaLibres(),
-            'reservados' => $this->Turno->cantidadDiaReservados()
+            'recibidos'  => $this->Turno->cantidadDiaRecibidos( $condiciones ),
+            'atendidos'  => $this->Turno->cantidadDiaAtendidos( $condiciones ),
+            'libres'     => $this->Turno->cantidadDiaLibres( $condiciones ),
+            'reservados' => $this->Turno->cantidadDiaReservados(  $condiciones )
         );
     }
 
