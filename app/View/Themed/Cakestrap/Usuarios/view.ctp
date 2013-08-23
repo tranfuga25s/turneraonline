@@ -55,7 +55,20 @@
 							<span class="icon-ban-circle"></span>Deshabilitadas
 						<?php  }  ?></td>
 				</tr>
-				
+                <tr>
+                    <td>Usuario de facebook:</td>
+                    <td>
+                        <?php if( isset( $facebook ) || !is_null( $usuario['Usuario']['facebook_id'] ) ) : ?>
+                            <?php debug( $facebook ); ?>
+                            Asociado con: <?php echo $this->Facebook->picture( $usuario['Usuario']['facebook_id'] ); ?>
+                            <?php echo $this->Html->link( 'Quitar Asociacion', array( 'action' => 'desasociarFacebook', $usuario['Usuario']['id_usuario'] ), array( 'class' => 'btn btn-small btn-info' ) ); ?>
+                        <?php else : ?>
+                            No asociado a ningún perfil de facebook.
+                            <?php echo $this->Html->link( 'Asociar a un perfil', array( 'action' => 'desasociarFacebook', $usuario['Usuario']['id_usuario'] ), array( 'class' => 'btn btn-small btn-info' ) ); ?>
+                        <?php endif; ?>
+                    </td>                                   
+                </tr>
+			
 			</tbody>
 		</table>
 

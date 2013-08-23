@@ -57,7 +57,7 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 			</div>
 			<?php echo $this->Form->end(); ?>
 		</fieldset>
-		<!-- <?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?> -->
+		<?php echo $this->Facebook->login( array( 'label' => 'Ingresar con facebook', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'view' ) ) ); ?>
 	<?php } else { ?>
 		<fieldset>
 			<legend>Bienvenido <?php if( $loggeado ) { echo ", ". $usuarioactual['nombre'] . " " . $usuarioactual['apellido']; } ?> !</legend>
@@ -87,7 +87,8 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 
 				<?php 	} ?>
 							<li class="divider"></li>
-							<li><?php echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>
+							<li><?php //echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>
+							<?php echo '<i class="icon-off"></i> '.$this->Facebook->logout( array( 'label' => 'Salir', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'salir' ) ) ); ?>
 			</ul>
 	<?php } ?>
 	</div>

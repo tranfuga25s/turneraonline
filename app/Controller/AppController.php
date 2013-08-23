@@ -29,7 +29,7 @@ class AppController extends Controller {
 		'Session',
 		'PaginationRecall',
 		'DebugKit.Toolbar',
-		/*'Facebook.Connect' => array( 'model' => 'Usuario' )*/
+		'Facebook.Connect' => array( 'model' => 'Usuario' )
 	);
 
 	public $helpers = array( 'Facebook.Facebook' );
@@ -53,7 +53,7 @@ class AppController extends Controller {
 		}
 		// Cargo la configuración
 		Configure::load( '', 'Turnera' );
-		/*$this->set( 'facebook', $this->Connect->user() );*/
+		$this->set( 'facebook', $this->Connect->user() );
 	}
 
 	public function isAuthorized() { return true; }

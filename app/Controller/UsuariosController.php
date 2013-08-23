@@ -177,10 +177,14 @@ class UsuariosController extends AppController {
 	 * @return void
 	 */
 	public function administracion_salir() {
+	    // Evita el problema del loggeo por facebook
+	    $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
 	public function salir() {
+	    // Evita el problema del loggeo por facebook
+	    $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
