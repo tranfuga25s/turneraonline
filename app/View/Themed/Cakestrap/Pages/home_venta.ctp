@@ -87,8 +87,13 @@ $this->set( 'title_for_layout', "Sistema de turnos on-line :: Inicio" ); ?>
 
 				<?php 	} ?>
 							<li class="divider"></li>
-							<li><?php //echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) ); ?></li>
-							<?php echo '<i class="icon-off"></i> '.$this->Facebook->logout( array( 'label' => 'Salir', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'salir' ) ) ); ?>
+							<li><?php
+							 if( is_null( $usuarioactual['facebook_id'] ) ) : 
+							     echo $this->Html->link( '<i class="icon-off"></i> Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ), array( 'escape' => false ) );
+							 else : 
+							     echo '<i class="icon-off"></i> '.$this->Facebook->logout( array( 'label' => 'Salir', 'redirect' => array( 'controller' => 'usuarios', 'action' => 'salir' ) ) );
+                            endif; ?>
+							</li>
 			</ul>
 	<?php } ?>
 	</div>
