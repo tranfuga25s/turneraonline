@@ -9,7 +9,7 @@ App::uses('Folder', 'Utility');
  */
 class UsuariosController extends AppController {
 
-	public $components = array( 'RequestHandler' );
+	public $components = array( 'RequestHandler', 'Facebook.Connect' );
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
@@ -53,6 +53,7 @@ class UsuariosController extends AppController {
 					case 'view':
 					case 'edit':
 					case 'cambiarContra':
+                    case 'desasociarFacebook':
 					{ return true; break; }
 					default:
 					{ return false; break; }
@@ -676,6 +677,21 @@ class UsuariosController extends AppController {
 		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
 
+    public function desasociarFacebook( $id_usuario = null ) {
+        // Elimino la asociación del usuario y elimino los datos de la sesión
+        $this->Usuario->id = $this->Auth->user( 'id_usuario' );
+        if( !$this->Usuario->exists() ) {
+            throw new NotFoundException( "El usuario solicitado no existe!" );
+        }
+        if( !$this->Usuario->saveField( 'facebook_id', null ) ) {
+            $this->Session->incorrecto( "No se pudo sacar la asociación!" );
+        } else {
+            $this->Session->correcto( "Cuenta desvinculada. Recuerde que deberá eliminar la aplicación desde las preferencias de facebook." );
+            $this->Session->delete('FB');
+        }
+        $this->redirect( array( 'action' => 'view' ) );
+    }
+
     /**
      * Funcion utilizada para enviar el email de bienvenida al usuario nuevo
      */
@@ -702,4 +718,6 @@ class UsuariosController extends AppController {
               ->subject( 'Bienvenido a nuestro sistema de turnos online' )
               ->send();
     }
+
+
 }
