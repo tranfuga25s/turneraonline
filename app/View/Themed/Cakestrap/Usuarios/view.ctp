@@ -86,7 +86,7 @@
                 <tr>
                     <td>Usuario de facebook:</td>
                     <td>
-                        <?php if( isset( $facebook ) || !is_null( $usuario['Usuario']['facebook_id'] ) ) : ?>
+                        <?php if( !is_null( $usuario['Usuario']['facebook_id'] ) && isset( $facebook ) ) : ?>
                             <?php //debug( $facebook ); ?>
                             <div class="thumbnail span3 text-center">
                                 <?php echo $this->Facebook->picture( $usuario['Usuario']['facebook_id'] ); ?>
