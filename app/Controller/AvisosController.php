@@ -56,6 +56,8 @@ class AvisosController extends AppController {
 		$email = $this->Usuario->read( 'email' );
         $celular = $this->Usuario->read( 'celular' );
         $celular = $celular['Usuario']['celular'];
+        $face = $this->Usuario->read( 'facebook_id' );
+        $face = $face['Usuario']['facebook_id'];
 
 		// Calculo la hora de envio
 		$cant_horas = Configure::read( 'Turnera.notificaciones.horas_proximo' );
@@ -95,7 +97,7 @@ class AvisosController extends AppController {
 		    die( "No se pudo guardar el email!" );
 		}
         // Guardo los datos del sms si tiene celular activado
-        if( !is_null( $celular ) || !empty( $celular ) ) {
+        if( !is_null( $celular ) && !empty( $celular ) && $celular != 0 ) {
             $this->Aviso->create(); // Evita que se sobreescriban los datos del aviso por email
             $datos['Aviso']['to'] = $celular;
             $datos['Aviso']['metodo'] = 'sms';
