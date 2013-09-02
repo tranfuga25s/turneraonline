@@ -32,7 +32,7 @@ class DiaTurnoRecallComponent extends Component {
 	parent::__construct( $collection, $settings );
   }
 
-  function startup( &$controller ) {
+  function startup( Controller $controller ) {
     $this->Controller = & $controller;
 
 	if( !$this->Session->check( $this->sessionvar."dia" ) ) {
@@ -46,7 +46,7 @@ class DiaTurnoRecallComponent extends Component {
 
   }
 
-  function beforeRender( &$controller ) {
+  function beforeRender( Controller $controller ) {
 	$controller->set( 'fechas', $this->dia."/".$this->mes."/".$this->ano );
 	$controller->set( 'dia', $this->dia );
 	$controller->set( 'mes', $this->mes-1 ); // Lista de meses base 0
