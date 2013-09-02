@@ -38,7 +38,7 @@ $this->set( 'title_for_layout', "Avisos" );
                     <?php endif; ?>
                     los avisos por sms.<br />
                     <?php if( $sms_habilitado ) : ?>
-                    Los avisos por email se envían <span class="badge badge-info">NN</span> horas antes del turno.
+                    Los avisos por email se envían <span class="badge badge-info"><?php echo $minutos_sms; ?></span> minutos antes del turno.
                     <?php endif; ?>
                 </div>
             </div>

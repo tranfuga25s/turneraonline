@@ -32,9 +32,9 @@ class AvisosController extends AppController {
             { break; }
         }
         return false;
-        
+
     }
-    
+
     private $avisos_disponibles = array( 'nuevoTurno', 'turnoCancelado' );
 
     public function beforeFilter() {
@@ -344,6 +344,7 @@ class AvisosController extends AppController {
     public function index() {
         // La verificación de que usuario puede entrar está echa antes
         $this->set( 'horas_email', Configure::read( 'Turnera.notificaciones.horas_proximo' ) );
+        $this->set( 'minutos_sms', Configure::read( 'Turnera.notificaciones.minutos_proximo_sms' ) );
         if( $this->Sms->habilitado() ) {
             $this->set( 'sms_habilitado', true );
             $this->loadModel( 'Gestotux.ConteoSms' );
