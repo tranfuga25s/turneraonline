@@ -146,7 +146,7 @@ class Usuario extends AppModel {
      * Verificaciones de eliminación de usuarios
      * @ref test
      */
-    public function beforeDelete( $cascade ) {
+    public function beforeDelete( $cascade = true ) {
         // Verifico que no esté asociado con algún médico
         $cmedico = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
         if( intval( $cmedico ) > 0 ) {
@@ -162,7 +162,7 @@ class Usuario extends AppModel {
         }
         return true;
     }
-    
+
     /**
      * Obtiene los datos de un usuario si existe a partir del número de teléfono.
      * @param $tel mixed Numero de telefono a buscar
@@ -177,7 +177,7 @@ class Usuario extends AppModel {
                 'conditions' => array( 'OR' => array( 'telefono' => $tel, 'celular' => $tel ) ),
                 'fields' => array( 'razonsocial' ),
                 'recursive' => -1
-            ) 
+            )
          );
          if( count( $data ) > 0 ) {
              return $data['Usuario']['razonsocial'];
