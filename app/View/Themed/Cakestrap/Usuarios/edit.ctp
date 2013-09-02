@@ -18,7 +18,9 @@
 				  echo $this->Form->input( 'obra_social_id', array( 'options' => $obras_sociales, 'empty' => 'Ninguna' ) );
 				  echo $this->Form->input( 'notificaciones' );
 				  echo $this->Form->hidden( 'grupo_id', array( 'value' => 4 ) );
-				  echo "<small>Si elije esta opci&oacute;n recibirá un email antes de cada turno y un aviso cuando un turno sea cancelado</small><br /><br />";
+				  echo "<small>Si elije esta opci&oacute;n recibirá un email antes de cada turno y un aviso cuando un turno sea cancelado</small><br />".
+				       "<small>Si ingresa un numero de celular, recibirá un sms avisando el turno proximamente.</small><br />".
+                       "<small>Si tiene su cuenta de facebook asociada, recibira mensajes cuando se acerque un turno</small>";
 			?>
 		</fieldset>
 		<div class="form-actions">
