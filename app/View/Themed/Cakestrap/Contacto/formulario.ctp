@@ -2,13 +2,13 @@
 $this->set( 'title_for_layout', "Contactese con nosotros" );
 ?>
 <div class="row-fluid">
-	<div class="span12 well">
+	<div class="span9 well">
 		<fieldset>
 			<legend>Dirección de contacto</legend>
-		
+
 			<ul class="thumbnails">
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Vanesa Apablaza<br />
 						<a id="btelvane" href="#" onclick="$('#telvane').slideDown(); $('#btelvane').hide();">Ver Tel&eacute;fono</a>
@@ -17,7 +17,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 					</address>
 				</li>
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Daniel Sequeira<br />
 						<span id="teldani" style="display: none;">(+54) 342 5128211</span>
@@ -26,7 +26,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 					</address>
 				</li>
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Juan Pablo Vidocevich<br />
 						<span id="teljuampi" style="display: none;">(+54) 342 5134148  </span>
@@ -35,7 +35,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 					</address>
 				</li>
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Fernando Liernur<br />
 						<span id="telfer" style="display: none;">(+54) 342 154293436</span>
@@ -44,7 +44,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 					</address>
 				</li>
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;' ) ); ?>
 					<address>
 						Melisa Fontanessi<br />
 						<span id="telmeli" style="display: none;">(+54) 342 154293436</span>
@@ -53,7 +53,7 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 					</address>
 				</li>
 				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail' ) ); ?>
+					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Esteban Zeller<br />
 						<span id="teleste" style="display: none;">(+54) 342 154293436</span>
@@ -63,6 +63,10 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 				</li>
 			</ul>
 		</fieldset>
+	</div>
+
+	<div class="span3 well">
+	    <script type="text/javascript" src="http://v2.envialosimple.com/form/show/AdministratorID/31149/FormID/1/format/widget"></script>
 	</div>
 </div>
 
@@ -76,10 +80,10 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 			echo $this->Form->input( 'nombre', array( 'label' => "Su nombre" ) );
 			echo $this->Form->input( 'email', array( 'label' => "Su e-mail" ) );
 			echo $this->Form->input( 'texto', array( 'label' => "Texto del mensaje:", 'type' => 'textarea' ) );
-			echo $this->Form->end( array( 'label' => 'Enviar', 'div' => array( 'class' => 'form-actions' ), 'class' => 'btn btn-primary' ) ); ?>	
+			echo $this->Form->end( array( 'label' => 'Enviar', 'div' => array( 'class' => 'form-actions' ), 'class' => 'btn btn-primary' ) ); ?>
 		</fieldset>
 	</div>
-	
+
 	<div class="span7">
 		<h4>Recomendanos en facebook o ingresa tu comentario</h4>
 		<?php echo $this->Facebook->recommendations(); ?>
