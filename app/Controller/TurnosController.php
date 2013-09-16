@@ -834,10 +834,11 @@ class TurnosController extends AppController {
             // veo que medicos maneja
             $this->loadModel( 'Secretaria' );
             $this->Secretaria->recursive = -1;
-            $id_clinica = $this->Secretaria->findByUsuarioId( $id_usuario, array( 'id_clinica' ) );
+            $id_clinica = $this->Secretaria->findByUsuarioId( $id_usuario, array( 'clinica_id' ) );
+            $id_clinica = $id_clinica['Secretaria']['clinica_id'];
             $this->Turno->Medico->recursive = -1;
             $medicos = $this->Turno->Medico->findAllByClinicaId( $id_clinica, array( 'id_medico' ) );
-            $condiciones['medico_id'] = Set::classicExtract( $medicos, '{n}.Medico.id_medico' );                   
+            $condiciones['medico_id'] = Set::classicExtract( $medicos, '{n}.Medico.id_medico' );
         } else if( $grupo == 2 ) { // Medico
            // Veo que día y medico va en las condiciones
            $this->Turno->Medico->recursive = -1;
