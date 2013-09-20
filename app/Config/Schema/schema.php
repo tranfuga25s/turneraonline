@@ -5,7 +5,80 @@ class AppSchema extends CakeSchema {
 		return true;
 	}
 
-	public function after($event = array()) {
+	public function after( $event = array() ) {
+	    $db->cacheSources = false;
+        if (isset($event['create'])) {
+            switch ($event['create']) {
+                case "users":
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('User');
+                    $user->saveMany(array(
+                        array('User' =>
+                            array('id_usuario' => 1,
+                                  'email' => 'paciente@turnera.com',
+                                  'nombre' => 'Paciente',
+                                  'apellido' => 'Paciente',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'paciente',
+                                  'grupo_id' => 4,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 2,
+                                  'email' => 'secretaria@turnera.com',
+                                  'nombre' => 'Secretaria',
+                                  'apellido' => 'Secretaria',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'secretaria',
+                                  'grupo_id' => 3,
+                                  'facebook_id' => null,
+                                  'sexo' => 'f',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 3,
+                                  'email' => 'medico@turnera.com',
+                                  'nombre' => 'Medico',
+                                  'apellido' => 'Medico',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'medico',
+                                  'grupo_id' => 2,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 4,
+                                  'email' => 'admin@turnera.com',
+                                  'nombre' => 'Administrador',
+                                  'apellido' => 'Administrador',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'admin',
+                                  'grupo_id' => 1,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        )
+                      )
+                   );
+                   break;
+            }
+        }
+
 	}
 
 	public $acos = array(
