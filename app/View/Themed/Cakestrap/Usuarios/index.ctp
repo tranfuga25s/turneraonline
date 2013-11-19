@@ -1,12 +1,9 @@
-<?php
-$this->set( 'title_for_layout', "Lista de pacientes" );
-
-?>
-<script>
- function cambiaContra( email ) {
-    $("#RecuperarEmail").val( email );
- 	$("#cambiarcontra").modal();
- }
+<?php $this->set( 'title_for_layout', "Lista de pacientes" ); ?>
+<script type="text/javascript" language="JavaScript">
+function cambiaContra( email ) {
+  $("#RecuperarEmail").val( email );
+  $("#cambiarcontra").modal();
+}
 </script>
 <div class="row-fluid">
 
@@ -80,7 +77,7 @@ $this->set( 'title_for_layout', "Lista de pacientes" );
                         <i class="icon-envelope"></i><?php echo $this->Html->link( $usuario['Usuario']['email'], 'mailto:'.$usuario['Usuario']['email']  ); ?>
                     </td>
 					<td>
-					    <?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obra_social', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?>
+					    <?php echo $this->Html->link( h( $usuario['ObraSocial']['nombre'] ), array( 'controller' => 'obras_sociales', 'action' => 'view', $usuario['ObraSocial']['id_obra_social'] ) ); ?>
 				    </td>
 					<td>
 					    <?php if( !empty( $usuario['Usuario']['telefono'] ) ) : ?>
