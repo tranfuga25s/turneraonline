@@ -138,26 +138,10 @@ class AppSchema extends CakeSchema {
                     App::uses('ClassRegistry', 'Utility');
                     $user = ClassRegistry::init('Grupo');
                     $user->saveMany(array(
-                        array('Grupo' =>
-                            array( 'id_grupo' => 1,
-                                   'nombre' => 'Administradores'
-                             )
-                        ),
-                        array('Grupo' =>
-                            array( 'id_grupo' => 2,
-                                   'nombre' => 'Medicos'
-                             )
-                        ),
-                        array('Grupo' =>
-                            array( 'id_grupo' => 3,
-                                   'nombre' => 'Secretarias'
-                             )
-                        ),
-                        array('Grupo' =>
-                            array( 'id_grupo' => 4,
-                                   'nombre' => 'Pacientes'
-                             )
-                        )                        
+                        array('Grupo' => array( 'id_grupo' => 1, 'nombre' => 'Administradores' ) ),
+                        array('Grupo' => array( 'id_grupo' => 2, 'nombre' => 'Medicos'         ) ),
+                        array('Grupo' => array( 'id_grupo' => 3, 'nombre' => 'Secretarias'     ) ),
+                        array('Grupo' => array( 'id_grupo' => 4, 'nombre' => 'Pacientes'       ) )                        
                     ) );
                     break;
                 }                          
