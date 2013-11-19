@@ -85,8 +85,13 @@ $this->set( 'title_for_layout', "Lista de pacientes" );
 					<td>
 					    <?php if( !empty( $usuario['Usuario']['telefono'] ) ) : ?>
 					       <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['telefono']; ?><br />
-					    <?php elseif( !empty( $usuario['Usuario']['celular'] ) ) : ?>
+					    <?php else : ?>
+					        &nbsp;
+					    <?php endif; ?>
+					    <?php if( !empty( $usuario['Usuario']['celular'] ) ) : ?>
 					       <i class="icon-circle-arrow-right"></i><?php echo $usuario['Usuario']['celular']; ?>
+					    <?php else : ?>
+					        &nbsp;
 					    <?php endif; ?>
 					</td>
 					<td class="actions">
