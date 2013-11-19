@@ -13,12 +13,16 @@ $data = $this->requestAction( array( 'controller' => 'turnos', 'action' => 'esta
     <?php foreach( $consultorios as $consultorio ) :
 
     $sumatoria = intval( $data['reservados'] ) + intval( $data['libres'] ) + intval( $data['recibidos'] ) + intval( $data['atendidos'] );
-    $porcentajes = array(
-        'reservados' => ( intval( $data['reservados'] ) * 100 ) / $sumatoria,
-        'libres'     => ( intval( $data['libres']     ) * 100 ) / $sumatoria,
-        'recibidos'  => ( intval( $data['recibidos']  ) * 100 ) / $sumatoria,
-        'atendidos'  => ( intval( $data['atendidos']  ) * 100 ) / $sumatoria
-    );
+    if( $sumatoria == 0 ) {
+        $porcentajes = array( 'reservados' => 0, 'libres' => 0, 'recibidos' => 0, 'atendidos' => 0 );
+    } else {
+        $porcentajes = array(
+            'reservados' => ( intval( $data['reservados'] ) * 100 ) / $sumatoria,
+            'libres'     => ( intval( $data['libres']     ) * 100 ) / $sumatoria,
+            'recibidos'  => ( intval( $data['recibidos']  ) * 100 ) / $sumatoria,
+            'atendidos'  => ( intval( $data['atendidos']  ) * 100 ) / $sumatoria
+        );
+    }
     ?>
     <div class="tab-pane" id="consultorio<?php echo $consultorio['Consultorio']['id_consultorio']; ?>">
         <table class="table table-hover table-bordered">
