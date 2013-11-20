@@ -145,7 +145,7 @@ class UsuarioTestCase extends CakeTestCase {
      public function testGenerarNuevaContraseña() {
          $this->assertEqual( true, false, "Método no implementado todavía" );
      }
-     
+
      /**
       * Testear que la funcion siempre devuelva una cadena, con algun usuario conocido su razonsocial
       * Si se pasa cualquier banana o un numero inexistente, se deberá retornar una cadena vacía.
@@ -157,4 +157,10 @@ class UsuarioTestCase extends CakeTestCase {
          $this->assertEqual( false, true, "Faltan implementaciones!" );
      }
 
+     /**
+      *
+      */
+    public function testEliminacionUltimoAdmin() {
+        $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario" );
+    }
 }
