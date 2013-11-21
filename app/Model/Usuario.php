@@ -90,9 +90,26 @@ class Usuario extends AppModel {
 		if( isset( $this->data['Usuario']['contra'] ) ) {
 			$this->data['Usuario']['contra'] = AuthComponent::password( $this->data['Usuario']['contra'] );
 		}
-        $grupo = $this->field( 'grupo_id' );
+
+        $grupo = intval( $this->field( 'grupo_id' ) );
+
+        // Miro si el grupo de origen pertenece al grupo de medicos o secretarias
         if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
-            if( $grupo != $this->data['Usuario']['grupo_id'] ) { return false; }
+
+             // Verifico que exista la relación en la tabla de medicos
+             if( $grupo == 2 ) {
+                 $conteo = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                 if( intval( $conteo ) > 0 ) {
+                     return false;
+                 }
+             // Verifico que exista la relación en la tabla de secretaria
+             } else if( $grupo == 3 ) {
+                 $conteo = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                 if( intval( $conteo ) > 0 ) {
+                     return false;
+                 }
+             }
+             return false;
         }
 		return true;
 	}
@@ -178,7 +195,7 @@ class Usuario extends AppModel {
      * @return Cadena vacía si no existe el usuario o la razón social
      */
      public function getUsuarioPorTelefono( $tel = null ) {
-         if( is_null( $tel ) ) {
+         if( is_null( $tel ) || empty( $tel ) ) {
              return "";
          }
          $data = $this->find( 'first',
