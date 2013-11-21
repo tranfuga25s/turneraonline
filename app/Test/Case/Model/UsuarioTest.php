@@ -109,7 +109,7 @@ class UsuarioTestCase extends CakeTestCase {
         $data['Usuario']['id_usuario'] = $id_usuario;
         $data['Usuario']['grupo_id'] = 3;
         $return_value = $this->Usuario->save( $data );
-        $this->assertEqual( $return_value, false, "El usuario no se debería de poder modificar si está asociado con una secretaria" );
+        $this->assertEqual( $return_value, false, "El grupo del usuario no se debería de poder modificar si está asociado con una secretaria" );
         unset($this->Secretaria);
      }
 
@@ -125,7 +125,8 @@ class UsuarioTestCase extends CakeTestCase {
         $this->Usuario->recursive = -1;
         $data = $this->Usuario->read( null, $id_usuario );
         $data['Usuario']['grupo_id'] = 4;
-        $this->assertEqual( $this->Usuario->save( $data ), false, "El usuario no se debería de poder modificar si está asociado con un médico" );
+        $return_value = $this->Usuario->save( $data );
+        $this->assertEqual( $return_value, false, "El grupo del usuario no se debería de poder modificar si está asociado con un médico\n".print_r( $return_value, true ) );
         unset($this->Medico);
      }
 
