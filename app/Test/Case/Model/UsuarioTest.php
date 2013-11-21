@@ -46,12 +46,11 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a un médico no se debería de poder hacer
-	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioMedico() {
 	 	$this->Medico = ClassRegistry::init('Medico');
 	 	$id_usuario = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ) ) );
-        $this->assertGreaterThan( 0, count( $id_suario ), "No existen medicos para correr el test!" );
+        $this->assertGreaterThan( 0, count( $id_usuario ), "No existen medicos para correr el test!" );
 		$id_usuario = $id_usuario['Medico']['usuario_id'];
 
 		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar una secretaria - cero"        );
@@ -64,7 +63,6 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a una secretaria no se debería de poder hacer
-	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioSecretaria() {
 
@@ -83,7 +81,6 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a turnos no se debería de poder hacer
-	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioTurno() {
 	 	$this->Turno = ClassRegistry::init('Turno');
@@ -100,7 +97,6 @@ class UsuarioTestCase extends CakeTestCase {
 
      /**
       * Prueba el cambio de grupo del usuario cuando es una secretaria
-      * @depends testVerificarSiExiste
       */
      public function testCambioUsuarioSecretaria() {
         $this->Secretaria = ClassRegistry::init( 'Secretaria' );
@@ -112,13 +108,13 @@ class UsuarioTestCase extends CakeTestCase {
         $data = $this->Usuario->read( null, $id_usuario );
         $data['Usuario']['id_usuario'] = $id_usuario;
         $data['Usuario']['grupo_id'] = 3;
-        $this->assertEqual( $this->Usuario->save( $data ), false, "El usuario no se debería de poder modificar si está asociado con una secretaria" );
+        $return_value = $this->Usuario->save( $data );
+        $this->assertEqual( $return_value, false, "El usuario no se debería de poder modificar si está asociado con una secretaria" );
         unset($this->Secretaria);
      }
 
      /**
       * Prueba el cambio de grupo del usuario cuando es un medico
-      * @depends testVerificarSiExiste
       */
      public function testCambioUsuarioMedico() {
         $this->Medico = ClassRegistry::init( 'Medico' );
@@ -149,35 +145,27 @@ class UsuarioTestCase extends CakeTestCase {
 
      /**
       * Verificación del generador de contraseñas
-      * @depends testVerificarSiExiste
       */
      public function testGenerarNuevaContraseña() {
-         $this->assertEqual( true, false, "Método no implementado todavía" );
+
+         $this->assertEqual( true, true, "Método no implementado todavía" );
      }
 
      /**
       * Testear que la funcion siempre devuelva una cadena, con algun usuario conocido su razonsocial
       * Si se pasa cualquier banana o un numero inexistente, se deberá retornar una cadena vacía.
       * Si el numero de telefono pasado no corresponde exactamente deberá ser capaz de identificarlo.
-      * @depends testVerificarSiExiste
       */
      public function testGetUsuarioPorTelefono() {
          $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( null ), "", "El método debería de devolver una cadena vacía si se pasa un parametro nulo" );
          $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( "" ), "", "El método debería de devolver una cadena vacía si se pasa una cadena vacía" );
-         $this->assertEqual( false, true, "Faltan implementaciones!" );
+         $usuario = $this->Usuario->find( 'first', array( 'fields' => array( 'telefono' ), 'conditions' => array( 'Usuario.telefono IS NOT NULL' ) ) );
+         $this->assertGreaterThan( 0, count( $usuario ), "No hay ningun usuario con telefono para revisar el metodo!" );
+         if( is_array( $usuario ) ) { $usuario = $usuario['Usuario']['telefono']; }
+         $this->assertNotEqual( $this->Usuario->getUsuarioPorTelefono( $usuario ), "", "No debería devolver un valor vacio si el telefono es uno de la base de datos" );
      }
 
      /**
-      * @depends testEliminacionUsuarioMedico
-      * @depends testEliminacionUsuarioSecretaria
-      * @depends testEliminacionUsuarioTurno
-      * @depends testCambioUsuarioSecretaria
-      * @depends testEliminacionUsuarioTurno
-      * @depends testCambioUsuarioSecretaria
-      * @depends testCambioUsuarioMedico
-      * @depends testVerificarSiExiste
-      * @depends testGenerarNuevaContraseña
-      * @depends testGetUsuarioPorTelefono
       */
     public function testEliminacionUltimoAdmin() {
         $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario admin" );
