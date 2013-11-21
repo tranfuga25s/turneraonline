@@ -97,24 +97,6 @@ class Usuario extends AppModel {
 		return true;
 	}
 
-    /*!
-     * Verifica si el usuario que estamos eliminando es el ultimo administrador.
-     * Si lo es, no permite la eliminacion.
-     */
-    public function beforeDelete( boolean $cascade = true ) {
-        $grupo = $this->field( 'grupo_id', array( 'id_usuario' => $this->id ) );
-        if( is_array( $grupo ) ) { $grupo = $grupo['Usuario']['grupo_id']; }
-        if( $grupo == 1 ) { // Veo si es el administrador
-            $conteo = $this->find( 'count', array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) );
-            if( $conteo > 0 ) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
 	/*!
 	 * @fn verificarSiExiste( $email )
 	 * Verifica que exista el email en la lista de usuarios.
@@ -177,6 +159,15 @@ class Usuario extends AppModel {
         $cturnos = $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $this->id ) ) );
         if( intval( $cturnos ) > 0 ) {
             return false;
+        }
+        // Verifico que no sea el ultimo administrador
+        $grupo = $this->field( 'grupo_id', array( 'id_usuario' => $this->id ) );
+        if( is_array( $grupo ) ) { $grupo = $grupo['Usuario']['grupo_id']; }
+        if( $grupo == 1 ) { // Veo si es el administrador
+            $conteo = $this->find( 'count', array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) );
+            if( $conteo == 0 ) {
+                return false;
+            }
         }
         return true;
     }

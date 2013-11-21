@@ -46,11 +46,12 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a un médico no se debería de poder hacer
-	 *
+	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioMedico() {
 	 	$this->Medico = ClassRegistry::init('Medico');
 	 	$id_usuario = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ) ) );
+        $this->assertGreaterThan( 0, count( $id_suario ), "No existen medicos para correr el test!" );
 		$id_usuario = $id_usuario['Medico']['usuario_id'];
 
 		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar una secretaria - cero"        );
@@ -63,12 +64,13 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a una secretaria no se debería de poder hacer
-	 *
+	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioSecretaria() {
 
 	 	$this->Secretaria = ClassRegistry::init('Secretaria');
 	 	$id_usuario = $this->Secretaria->find( 'first', array( 'fields' => array( 'usuario_id' ) ) );
+        $this->assertGreaterThan( 0, count( $id_usuario ), "No existen secretarias para correr el test!" );
 		$id_usuario = $id_usuario['Secretaria']['usuario_id'];
 
 		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar una secretaria - cero"        );
@@ -81,26 +83,29 @@ class UsuarioTestCase extends CakeTestCase {
 
 	/**
 	 * Prueba la condición de que si se elimina un usuario con datos asociados a turnos no se debería de poder hacer
-	 *
+	 * @depends testVerificarSiExiste
 	 */
 	 public function testEliminacionUsuarioTurno() {
 	 	$this->Turno = ClassRegistry::init('Turno');
 	 	$id_usuario = $this->Turno->find( 'first', array( 'fields' => array( 'paciente_id' ), 'conditions' => array( 'paciente_id IS NOT NULL' ) ) );
-		$id_usuario = $id_usuario['Turno']['paciente_id'];
-		$this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar un paciente - cero"        );
-		$this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar un paciente - null"        );
-		$this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar un paciente - array vacio" );
+        $this->assertGreaterThan( 0, count( $id_usuario ), "No existen datos para hacer la prueba - verifique el fixture" );
+        $id_usuario = $id_usuario['Turno']['paciente_id'];
+        $this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar un paciente - cero"        );
+        $this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar un paciente - null"        );
+        $this->assertNotEqual( $id_usuario, array(), "No se pudo seleccionar un paciente - array vacio" );
 
-		$this->assertNotEqual( $this->Usuario->delete( $id_usuario ), true, "Un usuario linkeado con un turno no debe ser eliminado!" );
+        $this->assertNotEqual( $this->Usuario->delete( $id_usuario ), true, "Un usuario linkeado con un turno no debe ser eliminado!" );
 		unset($this->Turno);
 	 }
 
      /**
       * Prueba el cambio de grupo del usuario cuando es una secretaria
+      * @depends testVerificarSiExiste
       */
      public function testCambioUsuarioSecretaria() {
         $this->Secretaria = ClassRegistry::init( 'Secretaria' );
         $temp = $this->Secretaria->find( 'first', array( 'fields' => array( 'usuario_id' ), 'recursive' => -1 ) );
+        $this->assertGreaterThan( 0, count( $temp ), "No existen secretarias para correr el test!" );
         $id_usuario = $temp['Secretaria']['usuario_id'];
         unset($temp);
         $this->Usuario->recursive = -1;
@@ -113,10 +118,12 @@ class UsuarioTestCase extends CakeTestCase {
 
      /**
       * Prueba el cambio de grupo del usuario cuando es un medico
+      * @depends testVerificarSiExiste
       */
      public function testCambioUsuarioMedico() {
         $this->Medico = ClassRegistry::init( 'Medico' );
         $temp = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ), 'recursive' => -1 ) );
+        $this->assertGreaterThan( 0, count( $temp ), "No existen medicos para correr el test!" );
         $id_usuario = $temp['Medico']['usuario_id'];
         unset($temp);
         $this->Usuario->recursive = -1;
@@ -133,6 +140,7 @@ class UsuarioTestCase extends CakeTestCase {
      public function testVerificarSiExiste() {
          // Busco una direccion registrada y una inventada
          $registrada = $this->Usuario->find( 'first', array( 'fields' => array( 'email' ), 'recursive' => -1 ) );
+         $this->assertGreaterThan( 0, count( $registrada ), "No existen usuarios para comprobar la función con direcciones existentes!" );
          $registrada = $registrada['Usuario']['email'];
          $inventada = 'inventadisisisima@notengoidea.com.ar';
          $this->assertEqual( $this->Usuario->verificarSiExiste( $registrada ), true, "La direccion de correo electronica correcta falla." );
@@ -141,6 +149,7 @@ class UsuarioTestCase extends CakeTestCase {
 
      /**
       * Verificación del generador de contraseñas
+      * @depends testVerificarSiExiste
       */
      public function testGenerarNuevaContraseña() {
          $this->assertEqual( true, false, "Método no implementado todavía" );
@@ -150,6 +159,7 @@ class UsuarioTestCase extends CakeTestCase {
       * Testear que la funcion siempre devuelva una cadena, con algun usuario conocido su razonsocial
       * Si se pasa cualquier banana o un numero inexistente, se deberá retornar una cadena vacía.
       * Si el numero de telefono pasado no corresponde exactamente deberá ser capaz de identificarlo.
+      * @depends testVerificarSiExiste
       */
      public function testGetUsuarioPorTelefono() {
          $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( null ), "", "El método debería de devolver una cadena vacía si se pasa un parametro nulo" );
@@ -158,9 +168,18 @@ class UsuarioTestCase extends CakeTestCase {
      }
 
      /**
-      *
+      * @depends testEliminacionUsuarioMedico
+      * @depends testEliminacionUsuarioSecretaria
+      * @depends testEliminacionUsuarioTurno
+      * @depends testCambioUsuarioSecretaria
+      * @depends testEliminacionUsuarioTurno
+      * @depends testCambioUsuarioSecretaria
+      * @depends testCambioUsuarioMedico
+      * @depends testVerificarSiExiste
+      * @depends testGenerarNuevaContraseña
+      * @depends testGetUsuarioPorTelefono
       */
     public function testEliminacionUltimoAdmin() {
-        $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario" );
+        $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario admin" );
     }
 }
