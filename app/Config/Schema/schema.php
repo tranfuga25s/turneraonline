@@ -5,49 +5,151 @@ class AppSchema extends CakeSchema {
 		return true;
 	}
 
-	public function after($event = array()) {
+	public function after( $event = array() ) {
+	    $db->cacheSources = false;
+        if (isset($event['create'])) {
+            switch ($event['create']) {
+                case "users": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('User');
+                    $user->saveMany(array(
+                        array('User' =>
+                            array('id_usuario' => 1,
+                                  'email' => 'paciente@turnera.com',
+                                  'nombre' => 'Paciente',
+                                  'apellido' => 'Paciente',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'paciente',
+                                  'grupo_id' => 4,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 2,
+                                  'email' => 'secretaria@turnera.com',
+                                  'nombre' => 'Secretaria',
+                                  'apellido' => 'Secretaria',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'secretaria',
+                                  'grupo_id' => 3,
+                                  'facebook_id' => null,
+                                  'sexo' => 'f',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 3,
+                                  'email' => 'medico@turnera.com',
+                                  'nombre' => 'Medico',
+                                  'apellido' => 'Medico',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'medico',
+                                  'grupo_id' => 2,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        ),
+                        array('User' =>
+                            array('id_usuario' => 4,
+                                  'email' => 'admin@turnera.com',
+                                  'nombre' => 'Administrador',
+                                  'apellido' => 'Administrador',
+                                  'telefono' => '',
+                                  'celular' => '',
+                                  'obra_social_id' => 0,
+                                  'notificaciones' => true,
+                                  'contra' => 'admin',
+                                  'grupo_id' => 1,
+                                  'facebook_id' => null,
+                                  'sexo' => 'm',
+                             )
+                        )
+                      )
+                   );
+                   break;
+                }
+                case "clinicas": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('Clinica');
+                    $user->saveMany(array(
+                        array('Clinica' =>
+                            array( 'id_clinica' => 1,
+                                   'nombre' => 'Clinica de prueba',
+                                   'direccion' => 'Dirección de prueba',
+                                   'telefono' => 034526763,
+                                   'email' => 'clinicaprueba@turnossantafe.com.ar',
+                                   'logo' => 'logo.png'
+                             )
+                        )
+                    ) );
+                    break;
+                }
+                case "secretaria": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('Secretaria');
+                    $user->saveMany(array(
+                        array('Secretaria' =>
+                            array( 'id_secretaria' => 1,
+                                   'usuario_id' => 2,
+                                   'clinica_id' => 1,
+                                   'resumen' => true
+                             )
+                        )
+                    ) );
+                    break;
+                }
+                case "medicos": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('Medico');
+                    $user->saveMany(array(
+                        array('Medico' =>
+                            array( 'id_medico' => 1,
+                                   'usuario_id' => 3,
+                                   'especialidad_id' => 1,
+                                   'clinica_id' => 1,
+                                   'visible' => true
+                             )
+                        )
+                    ) );
+                    break;
+                }
+                case "especialidades": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('Especialidad');
+                    $user->saveMany(array(
+                        array('Especialidad' =>
+                            array( 'id_especialidad' => 1,
+                                   'nombre' => 'Ginecología'
+                             )
+                        )
+                    ) );
+                    break;
+                }
+                case "grupos": {
+                    App::uses('ClassRegistry', 'Utility');
+                    $user = ClassRegistry::init('Grupo');
+                    $user->saveMany(array(
+                        array('Grupo' => array( 'id_grupo' => 1, 'nombre' => 'Administradores' ) ),
+                        array('Grupo' => array( 'id_grupo' => 2, 'nombre' => 'Medicos'         ) ),
+                        array('Grupo' => array( 'id_grupo' => 3, 'nombre' => 'Secretarias'     ) ),
+                        array('Grupo' => array( 'id_grupo' => 4, 'nombre' => 'Pacientes'       ) )                        
+                    ) );
+                    break;
+                }                          
+            }
+        }
+
 	}
 
-	public $acos = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'foreign_key' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'alias' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'lft' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'rght' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'MyISAM')
-	);
-	public $aros = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'foreign_key' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'alias' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'lft' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'rght' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 10),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'MyISAM')
-	);
-	public $aros_acos = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
-		'aro_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
-		'aco_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
-		'_create' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'_read' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'_update' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'_delete' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 2, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'ARO_ACO_KEY' => array('column' => array('aro_id', 'aco_id'), 'unique' => 1)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'MyISAM')
-	);
 	public $avisos = array(
 		'id_aviso' => array( 'type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
 		'fecha_envio' => array( 'type' => 'datetime', 'null' => false, 'default' => null),
