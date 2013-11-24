@@ -85,7 +85,7 @@ class UsuarioTestCase extends CakeTestCase {
 	 public function testEliminacionUsuarioTurno() {
 	 	$this->Turno = ClassRegistry::init('Turno');
 	 	$id_usuario = $this->Turno->find( 'first', array( 'fields' => array( 'paciente_id' ), 'conditions' => array( 'paciente_id IS NOT NULL' ) ) );
-        $this->assertGreaterThan( 0, count( $id_usuario ), "No existen datos para hacer la prueba - verifique el fixture" );
+        $this->assertGreaterThan( 0, count( $id_usuario ), "No existen datos de turnos para hacer la prueba - verifique el fixture" );
         $id_usuario = $id_usuario['Turno']['paciente_id'];
         $this->assertNotEqual( $id_usuario,       0, "No se pudo seleccionar un paciente - cero"        );
         $this->assertNotEqual( $id_usuario,    null, "No se pudo seleciconar un paciente - null"        );
@@ -148,8 +148,15 @@ class UsuarioTestCase extends CakeTestCase {
       * Verificación del generador de contraseñas
       */
      public function testGenerarNuevaContraseña() {
-
-         $this->assertEqual( true, true, "Método no implementado todavía" );
+         $usuario = $this->Usuario->find( 'first', array( 'fields' => array( 'email', 'id_usuario' ), 'recursive' => -1 ) );
+         $this->assertGreaterThan( 0, count( $usuario ), "No existen usuarios para intentar el cambio de contraseña" );
+         $this->assertArrayHasKey( 'Usuario', $usuario, "Array no conforme a estandares" );
+         $this->assertArrayHasKey( 'email', $usuario['Usuario'], "El usuario seleccionado no posee campo de email" );
+         $this->assertEqual( false, $this->Usuario->generarNuevaContraseñarray(), "La funcion no devuelve falso si no se le pasan parametros" );
+         $nueva_contra = '';
+         $this->assertNotEqual( false, $this->Usuario->generarNuevaContraseñarray( $usuario['Usuario']['email'], $nueva_contra ), "No se generó una nueva contraseña con campos validos" );
+         $this->assertNotEmpty( $nueva_contra, "La contraseña pasada como parametro no puede estar nula" );
+         /// @TODO: Verificar generación del HASH en test de nueva contraseña para verificar seteo correcto.
      }
 
      /**
