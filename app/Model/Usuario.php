@@ -93,23 +93,27 @@ class Usuario extends AppModel {
 
         $grupo = intval( $this->field( 'grupo_id' ) );
 
-        // Miro si el grupo de origen pertenece al grupo de medicos o secretarias
-        if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
+        // Si llamamos al eliminar desde la consola de reinicialización estas propiedades no están guardadas
+        if( count( Configure::read( 'Turnera.grupos' ) ) > 0 ) {
 
-             // Verifico que exista la relación en la tabla de medicos
-             if( $grupo == 2 ) {
-                 $conteo = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
-                 if( intval( $conteo ) > 0 ) {
-                     return false;
+            // Miro si el grupo de origen pertenece al grupo de medicos o secretarias
+            if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
+
+                 // Verifico que exista la relación en la tabla de medicos
+                 if( $grupo == 2 ) {
+                     $conteo = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                     if( intval( $conteo ) > 0 ) {
+                         return false;
+                     }
+                 // Verifico que exista la relación en la tabla de secretaria
+                 } else if( $grupo == 3 ) {
+                     $conteo = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                     if( intval( $conteo ) > 0 ) {
+                         return false;
+                     }
                  }
-             // Verifico que exista la relación en la tabla de secretaria
-             } else if( $grupo == 3 ) {
-                 $conteo = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
-                 if( intval( $conteo ) > 0 ) {
-                     return false;
-                 }
-             }
-             return false;
+                 return false;
+            }
         }
 		return true;
 	}

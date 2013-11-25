@@ -89,14 +89,18 @@ class UsuariosController extends AppController {
             case 2:
             {  return $this->render( 'dashboard/medico' );     }
             case 3:
-            {  return $this->render( 'dashboard/secretaria' ); }                
+            {
+                $this->loadModel( 'Consultorio' );
+                $this->set( 'consultorios', $this->Consultorio->find( 'all', array( 'fields' => array( 'id_consultorio', 'nombre' ), 'recursive' => -1 ) ) );
+                return $this->render( 'dashboard/secretaria' );
+            }
             case 4:
             default:
             {
                 return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'home_venta' ) );
             }
         }
-        
+
     }
 
 	public function pacientes() {
