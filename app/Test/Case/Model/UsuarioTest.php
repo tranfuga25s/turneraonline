@@ -178,4 +178,8 @@ class UsuarioTestCase extends CakeTestCase {
     public function testEliminacionUltimoAdmin() {
         $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario admin" );
     }
+
+    public function testEliminacionPorEmail() {
+        $this->assertEquap( true, false, "Falta implementacion de test de eliminar por email" );
+    }
 }

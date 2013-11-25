@@ -45,9 +45,10 @@ class TurnoTestCase extends CakeTestCase {
 		$r = $this->Turno->find( 'all',
 						array( 'conditions' =>
 							array( '`Turno`.`paciente_id` IS NOT NULL',
-							       'fecha_fin >= NOW()' ),
+							       '`Turno`.`fecha_fin` >= NOW()' ),
 							   'recursive' => -1 )
         );
+        debug( $r );
 
 		$t = array( 0 => array( 'Turno' => array( 'id_turno' => 3, 'paciente_id' => 1, 'medico_id' => 1, 'fecha_inicio' => '2012-09-16 12:03:30', 'fecha_fin' => '2012-09-16 12:03:40', 'consultorio_id' => 1,	'recibido' => false, 'atendido' => false, 'cancelado' => false ) ) );
 
