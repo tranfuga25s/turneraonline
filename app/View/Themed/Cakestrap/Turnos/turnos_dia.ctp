@@ -53,7 +53,7 @@ function mostrarCancelarTurnos() {
 
 </div>
 
-<div id="seldia" style="display:none;" class="alert alert-info">
+<div id="seldia" style="display: none;" class="alert alert-info">
    <button type="button" class="close" data-dismiss="seldia">&times;</button>
    <?php echo $this->Form->create( null, array( 'action' => 'turnos', 'class' => 'form-inline' ) ); ?>
    <fieldset>
@@ -67,7 +67,7 @@ function mostrarCancelarTurnos() {
             <?php echo $this->Form->end( array( 'label' => "Cambiar", 'div' => false, 'class' => 'btn btn-success' ) ); ?>
             &nbsp;
             <div class="btn-group">
-                <?php  echo $this->Html->tag( 'a', 'Dia >', array( 'class' => 'btn','onclick' => '$("#'.$modelo.'Accion").val( "manana" ); $("#'.$modelo.'TurnosForm").submit();') );?>
+                <?php  echo $this->Html->tag( 'a', 'Dia >>', array( 'class' => 'btn','onclick' => '$("#'.$modelo.'Accion").val( "manana" ); $("#'.$modelo.'TurnosForm").submit();') );?>
                 <?php  echo $this->Html->tag( 'a', 'Sem >>', array( 'class' => 'btn','onclick' => '$("#'.$modelo.'Accion").val( "sem" ); $("#'.$modelo.'TurnosForm").submit();' ) );?>
                 <?php  echo $this->Html->tag( 'a', 'Mes >>', array( 'class' => 'btn', 'onclick' => '$("#'.$modelo.'Accion").val( "mes"  ); $("#'.$modelo.'TurnosForm").submit();') );?>
             </div>

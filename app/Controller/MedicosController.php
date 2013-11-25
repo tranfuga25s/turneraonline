@@ -69,8 +69,12 @@ class MedicosController extends AppController {
 		$id_medico = $t['Medico']['id_medico'];
 
 		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['medicos'];
-			// Busco la fecha e que me pasaron
+		    if( key_exists( 'Medico', $this->request->data ) ) {
+		        $this->request->data = $this->request->data['Medico'];
+		    } else {
+			    $this->request->data = $this->request->data['medicos'];
+            }
+            // Busco la fecha e que me pasaron
 			if( isset( $this->data['accion'] ) && $this->data['accion'] != '' ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano(), $this->DiaTurnoRecall->mes(), $this->DiaTurnoRecall->dia() );
 				$t2 = clone $t;
@@ -339,7 +343,7 @@ class MedicosController extends AppController {
 			} else {
 				$this->Session->incorrecto( 'No se pudieron guardar los datos del médico' );
 			}
-		} 
+		}
 	    $this->request->data = $this->Medico->read(null, $id);
 		$usuarios = $this->Medico->Usuario->find('list');
 		$especialidades = $this->Medico->Especialidad->find('list');

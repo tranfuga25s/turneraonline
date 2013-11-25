@@ -55,7 +55,11 @@ class SecretariasController extends AppController {
 		$consultorios = $this->Consultorio->find( 'list', array( 'conditions' => array( 'clinica_id' => $clinicas ), 'fields' => array( 'id_consultorio' ) ) );
 
 		if( $this->request->isPost() ) {
-			$this->request->data = $this->request->data['secretarias'];
+		    if( key_exists( 'Secretaria', $this->request->data ) ) {
+    		    $this->request->data = $this->request->data['Secretaria'];
+		    } else {
+		        $this->request->data = $this->request->data['secretarias'];
+		    }
 			// Busco la fecha e que me pasaron
 			if( isset( $this->request->data['accion'] ) && $this->request->data['accion'] != '' ) {
 				$t = new DateTime('now'); $t->setDate( $this->DiaTurnoRecall->ano, $this->DiaTurnoRecall->mes, $this->DiaTurnoRecall->dia );

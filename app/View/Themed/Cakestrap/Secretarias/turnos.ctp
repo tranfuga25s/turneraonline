@@ -1,5 +1,5 @@
 <?php
-$this->set( 'modelo', 'secretarias' );
+$this->set( 'modelo', 'Secretaria' );
 $this->extend( '/Turnos/turnos_dia' );
 echo $this->Html->script( 'jquery.cookie', array( 'inline' => false ) );
 ?>
