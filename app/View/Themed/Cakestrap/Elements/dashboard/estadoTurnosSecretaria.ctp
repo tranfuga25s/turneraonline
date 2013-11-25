@@ -1,11 +1,12 @@
 <?php
 $data = $this->requestAction( array( 'controller' => 'turnos', 'action' => 'estadoTurnos' ) );
-
 ?>
 
 <ul class="nav nav-tabs" id="tabConsultorios">
     <?php foreach( $consultorios as $consultorio ) : ?>
-    <li><a href="#consultorio<?php echo $consultorio['Consultorio']['id_consultorio']; ?>"><?php $consultorio['Consultorio']['nombre']; ?></a></li>
+    <li>
+        <a data-toggle="tab" href="#consultorio<?php echo $consultorio['Consultorio']['id_consultorio']; ?>"><?php echo $consultorio['Consultorio']['nombre']; ?></a>
+    </li>
     <?php endforeach; ?>
 </ul>
 
@@ -28,6 +29,7 @@ $data = $this->requestAction( array( 'controller' => 'turnos', 'action' => 'esta
         <table class="table table-hover table-bordered">
             <tbody>
                 <th colspan="4" class="calendario-titulo">Cantidad de turnos para hoy</th>
+                <tr><td colspan="4" style="text-align: center;"><?php echo $consultorio['Consultorio']['nombre']; ?></td></tr>
                 <tr>
                     <td><b>Reservados:</b></td>
                     <td><span class="label label-info"><?php echo $data['reservados']; ?></span></td>
@@ -56,3 +58,4 @@ $data = $this->requestAction( array( 'controller' => 'turnos', 'action' => 'esta
     </div>
     <?php endforeach; ?>
 </div>
+<?php $this->Js->buffer( '$("#tabConsultorios a:first").tab("show");' ); ?>
