@@ -16,16 +16,16 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 }
 ?>
 <div class="row-fluid">
-	
+
 	<div class="navbar">
 		<div class="navbar-inner">
 			<ul class="nav">
-				<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
+				<li><?php echo $this->Html->link( 'Inicio', array( 'controller' => 'usuarios', 'action' => 'dashboard' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Turnos del día', array( 'action' => 'turnos' ) ); ?></li>
 				<li><?php echo $this->Html->link( 'Pacientes', array( 'controller' => 'usuarios', 'action' => 'index' ) ); ?></li>
-				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li> 
+				<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
 			</ul>
-		</div>	
+		</div>
 	</div>
 
 	<div class="span12">
@@ -35,16 +35,16 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 		      echo $this->Form->input( 'disponibilidad_id', array( 'type' => 'hidden', 'value' => $medico['Disponibilidad']['Disponibilidad']['id_disponibilidad'] ) ); ?>
 		<fieldset>
 			<legend>Disponibilidad horaria de <?php echo $medico['Usuario']['razonsocial']; ?></legend>
-			
+
 			<fieldset>
 				<legend>Datos Generales</legend>
 				<?php echo $this->Form->input( 'duracion', array( 'before' => 'Duraci&oacute;n del turno:', 'after' => 'minutos', 'value' => $medico['Disponibilidad']['Disponibilidad']['duracion'], 'label' => false ) ); ?>
-				<?php echo $this->Form->input( 'consultorio', array( 'before' => 'Atiende en:', 'options' => $consultorios, 'selected' => $medico['Disponibilidad']['Disponibilidad']['consultorio_id'], 'label' => false ) ); ?>					
+				<?php echo $this->Form->input( 'consultorio', array( 'before' => 'Atiende en:', 'options' => $consultorios, 'selected' => $medico['Disponibilidad']['Disponibilidad']['consultorio_id'], 'label' => false ) ); ?>
 			</fieldset>
-			
+
 			<fieldset>
 				<legend>Horario Semanal</legend>
-				<?php 
+				<?php
 					unset( $medico['Usuario'] );
 					$dias = array( 0 => 'domingo', 1 => 'lunes', 2 => 'martes', 3 => 'miercoles',  4 => 'jueves', 5 => 'viernes',  6 => 'sabado'  );
 				?>
@@ -63,7 +63,7 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 							<th style="vertical-align: middle; text-align: center;">Fin</th>
 						</tr>
 						<?php foreach( $dias as $dia ) : ?>
-							<?php 
+							<?php
 							if( isset( $medico['Disponibilidad']['DiaDisponibilidad'][$dia] ) ) {
 								$datosdia = $medico['Disponibilidad']['DiaDisponibilidad'][$dia];
 							} else {
@@ -102,12 +102,12 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 					</tbody>
 				</table>
 				<div class="form-actions">
-					<?php echo $this->Html->tag( 'a', 'Guardar', 
+					<?php echo $this->Html->tag( 'a', 'Guardar',
 						array( 'onclick' => "$('#confirmacion').modal()", 'id' => "boton", 'class' => 'btn btn-success' ) ); ?>
 				</div>
 			</fieldset>
 		</fieldset>
-		<?php echo $this->Form->end(); ?>		
+		<?php echo $this->Form->end(); ?>
 	</div>
 
 
@@ -132,7 +132,7 @@ if( $medico['Disponibilidad']['Disponibilidad']['duracion'] == null ) {
 		<?php echo $this->Form->button( 'Cerrar', array( 'class' => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => true, 'div' => false ) ); ?>
 		<?php echo $this->Form->button( 'Cambiar Horario', array( 'class' => "btn btn-primary", 'div' => false, 'onclick' => "$('#MedicoDisponibilidadForm').submit();" ) ); ?>
   	</div>
-</div> 
+</div>
 
 
 <script type="text/javascript" language="JavaScript">

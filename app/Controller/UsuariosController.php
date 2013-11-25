@@ -9,7 +9,7 @@ App::uses('Folder', 'Utility');
  */
 class UsuariosController extends AppController {
 
-	public $components = array( 'RequestHandler' );
+	public $components = array( 'RequestHandler', 'Facebook.Connect' );
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
@@ -43,6 +43,7 @@ class UsuariosController extends AppController {
 					case 'add':
 					case 'delete':
 					case 'historico':
+                    case 'dashboard':
 					{ return true; break; }
 				}
 				// no pongo break para que acredite las acciones de menos prioridad
@@ -53,6 +54,7 @@ class UsuariosController extends AppController {
 					case 'view':
 					case 'edit':
 					case 'cambiarContra':
+                    case 'desasociarFacebook':
 					{ return true; break; }
 					default:
 					{ return false; break; }
@@ -71,12 +73,31 @@ class UsuariosController extends AppController {
 	public function ingresar() {
 		if ($this->request->is('post')) {
 			if ( $this->Auth->login() ) {
-				return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
+			    return $this->redirect( array( 'action' => 'dashboard' ) );
+				//return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'homeVenta' ) );
 			} else {
 				$this->Session->setFlash( "El email ingresado o la contraseña son incorrectas", 'default', array(), 'auth');
 			}
 		}
 	}
+
+    public function dashboard() {
+        // Veo que dashboard mostrar según el grupo
+        switch( $this->Auth->user( 'grupo_id' ) ) {
+            case 1:
+            {  return $this->render( 'dashboard/admin' );      }
+            case 2:
+            {  return $this->render( 'dashboard/medico' );     }
+            case 3:
+            {  return $this->render( 'dashboard/secretaria' ); }                
+            case 4:
+            default:
+            {
+                return $this->redirect( array( 'controller' => 'pages', 'action' => 'display', 'home_venta' ) );
+            }
+        }
+        
+    }
 
 	public function pacientes() {
 		$this->layout = 'ajax';
@@ -177,10 +198,14 @@ class UsuariosController extends AppController {
 	 * @return void
 	 */
 	public function administracion_salir() {
+	    // Evita el problema del loggeo por facebook
+	    $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
 	public function salir() {
+	    // Evita el problema del loggeo por facebook
+	    $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
@@ -335,6 +360,7 @@ class UsuariosController extends AppController {
 		} else if( $usuario['Usuario']['celular'] == '' ) {
 			$this->Session->setFlash( 'Por favor, ingrese un número de celular para que pueda recibir notificaciones por mensaje de texto', 'flash/info' );
 		}
+        $this->Usuario->recursive = 1;
 		$this->set( 'usuario', $this->Usuario->read( null, $id ) );
 	}
 
@@ -672,6 +698,21 @@ class UsuariosController extends AppController {
 		$this->set( 'turnos', $this->Turnos->buscarHistoricoUsuario( $usuario_id ) );
 	}
 
+    public function desasociarFacebook( $id_usuario = null ) {
+        // Elimino la asociación del usuario y elimino los datos de la sesión
+        $this->Usuario->id = $this->Auth->user( 'id_usuario' );
+        if( !$this->Usuario->exists() ) {
+            throw new NotFoundException( "El usuario solicitado no existe!" );
+        }
+        if( !$this->Usuario->saveField( 'facebook_id', null ) ) {
+            $this->Session->incorrecto( "No se pudo sacar la asociación!" );
+        } else {
+            $this->Session->correcto( "Cuenta desvinculada. Recuerde que deberá eliminar la aplicación desde las preferencias de facebook." );
+            $this->Session->delete('FB');
+        }
+        $this->redirect( array( 'action' => 'view' ) );
+    }
+
     /**
      * Funcion utilizada para enviar el email de bienvenida al usuario nuevo
      */
@@ -698,4 +739,6 @@ class UsuariosController extends AppController {
               ->subject( 'Bienvenido a nuestro sistema de turnos online' )
               ->send();
     }
+
+
 }

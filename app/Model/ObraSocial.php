@@ -11,31 +11,31 @@ class ObraSocial extends AppModel {
     * @property string $useTable
     */
 	public $useTable = 'obras_sociales';
-	
+
    /**
     * Clave primaria
     * @property string $primaryKey
     */
 	public $primaryKey = 'id_obra_social';
-	
+
    /**
     * Campo a mostrar
     * @property string $displatField
     */
 	public $displayField = 'nombre';
-	
+
 	public $actAs = array( 'AuditLog.Auditable' );
-	
+
    /**
     * Ubicación de la carepta donde se guardaran los logos de las obras sociales
     * app/webroot/img/obra_social/
     * @property mixed $ubicacion_logos
     */
 	public $ubicacion_logos = 'obra_social/';
-	
+
    /**
     * Relaciones -> Usuarios <-> Obra social
-    */	
+    */
     public $hasMany = array(
     	'Usuarios' => array(
     		'className' => 'Usuarios',
@@ -43,7 +43,7 @@ class ObraSocial extends AppModel {
     		'dependent' => false
 		)
 	);
-	
+
 	public $validate = array(
 		'nombre' => array(
 			'notempty' => array(
@@ -63,12 +63,12 @@ class ObraSocial extends AppModel {
 			)
 		)
 	);
-	
+
    /**
     * Funcion que busca obras sociales similares
     * @param $valor Valor a buscar
     * @return bool Verdadero si existe algún valor similar
-    */	
+    */
 	public function buscarRepetido( $valor ) {
 		if( $this->id != null ) {
 			$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'], $this->primaryKey => '!= '.$this->id ) ) );
@@ -81,12 +81,12 @@ class ObraSocial extends AppModel {
 			return false;
 		}
 	}
-	
+
    /**
     * Funcion para manejar los archivos de logos
     * @return bool Verdadero si salió todo bien
     */
-	public function beforeSave() {
+	public function beforeSave( $cascade = true ) {
 		// Subo el archivo de logotipo si existe
 		if( is_array( $this->data['ObraSocial']['logo'] ) )  { // Acaba de subir el archivo
 			// Lo muevo a la posición de los logos de obra social.
@@ -100,10 +100,10 @@ class ObraSocial extends AppModel {
 				return true;
 			} else {
 				die( 'Error al copiar el archivo a su ubicación final' );
-			}	
+			}
 		}
 	}
-	
+
    /**
     * Funcion para manejar la eliminación de archivos
     * @return bool Verdadero si se puede eliminar
@@ -113,11 +113,11 @@ class ObraSocial extends AppModel {
 	    if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $this->id ) ) ) > 0 ) {
 	    	$this->validationErrors[] = 'Existen usuarios con esta obra social agregada';
 	    	return false;
-	    } 
+	    }
 	    // Si se puede eliminar busco el archivo y lo elimino
 	    $logo = $this->field( 'logo' );
 		unlink( WWW_ROOT.'img'.DS.$logo );
-		return true;	    
-    } 
- 
+		return true;
+    }
+
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Pagination Recall CakePHP Component
  * Copyright (c) 2008 Matt Curry
@@ -9,14 +9,14 @@
  * @license     MIT
  *
  */
- 
+
  App::uses( 'Component', 'Controller' );
 
 class PaginationRecallComponent extends Component {
   var $components = array('Session');
   var $Controller = null;
 
-  function startup( &$controller ) {
+  function startup( Controller $controller ) {
     $this->Controller = & $controller;
 
     $options = $this->Controller->request->params['named'];
@@ -24,19 +24,19 @@ class PaginationRecallComponent extends Component {
     $vars = array('page', 'sort', 'direction');
     $keys = array_keys($options);
     $count = count($keys);
-    
+
     for ($i = 0; $i < $count; $i++) {
       if (!in_array($keys[$i], $vars)) {
         unset($options[$keys[$i]]);
       }
     }
-    
+
     //save the options into the session
     if ($options) {
       if ($this->Session->check("Pagination.".$this->Controller->modelClass.".options")) {
         $options = array_merge($this->Session->read("Pagination.".$this->Controller->modelClass.".options"), $options);
       }
-      
+
       $this->Session->write("Pagination.".$this->Controller->modelClass.".options", $options);
     }
 

@@ -1,6 +1,10 @@
 <div id="acciones" class="span2">
 	<ul class="nav nav-tabs nav-stacked">
+	    <?php if( $usuarioactual['grupo_id'] < 4  ) : ?>
+	    <li><?php echo $this->Html->link( '<i class="icon-home"></i> Inicio', array( 'controller' => 'usuarios', 'action' => 'dashboard' ), array( 'escape' => false ) ); ?></li>
+	    <?php else : ?>
 		<li><?php echo $this->Html->link( '<i class="icon-home"></i> Inicio', '/', array( 'escape' => false ) ); ?></li>
+		<?php endif; ?>
 		<li><?php echo $this->Html->link( '<i class="icon-pencil"></i> Editar mis datos', array('controller' => 'usuarios', 'action' => 'edit', $usuarioactual['id_usuario']), array( 'escape' => false ) ); ?></li>
 		<li><?php echo $this->Html->link( '<i class="icon-asterisk"></i> Cambiar contraseña', array('controller' => 'usuarios', 'action' => 'cambiarContra', $usuarioactual['id_usuario']), array( 'escape' => false ) ); ?></li>
 		<li><?php echo $this->Html->link( '<i class="icon-eye-open"></i> Ver Obras sociales', array('controller' => 'obras_sociales', 'action' => 'index'), array( 'escape' => false ) ); ?></li>

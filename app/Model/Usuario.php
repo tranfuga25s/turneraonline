@@ -90,9 +90,26 @@ class Usuario extends AppModel {
 		if( isset( $this->data['Usuario']['contra'] ) ) {
 			$this->data['Usuario']['contra'] = AuthComponent::password( $this->data['Usuario']['contra'] );
 		}
-        $grupo = $this->field( 'grupo_id' );
+
+        $grupo = intval( $this->field( 'grupo_id' ) );
+
+        // Miro si el grupo de origen pertenece al grupo de medicos o secretarias
         if( in_array( $grupo, Configure::read( 'Turnera.grupos' ) ) ) {
-            if( $grupo != $this->data['Usuario']['grupo_id'] ) { return false; }
+
+             // Verifico que exista la relación en la tabla de medicos
+             if( $grupo == 2 ) {
+                 $conteo = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                 if( intval( $conteo ) > 0 ) {
+                     return false;
+                 }
+             // Verifico que exista la relación en la tabla de secretaria
+             } else if( $grupo == 3 ) {
+                 $conteo = $this->Secretaria->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->data['Usuario']['id_usuario'] ) ) );
+                 if( intval( $conteo ) > 0 ) {
+                     return false;
+                 }
+             }
+             return false;
         }
 		return true;
 	}
@@ -116,14 +133,14 @@ class Usuario extends AppModel {
 	 * Genera una nueva contraseña para el usuario, la coloca en la variable $contra y la asigna al email pasado como referencia.
 	 * @return Verdadero si el email está dado de alta en el sistema
 	 */
-	public function generarNuevaContraseñarray( $email = null, $contra = null ) {
+	public function generarNuevaContraseñarray( $email = null, &$contra = null ) {
 		$str = "ABCDE2FGHIJKLM4NOPQRSTUVWXY2Zabcdefghij5klmnopqrstu2vwxyz1234567890";
 		$contra = "";
 		for( $i=0; $i<8; $i++ ) {
 			$contra .= substr($str, rand(0,64), 1 );
 		}
 		$id = $this->find( 'first', array( 'conditions' => array( 'email' => $email ), 'fields' => 'id_usuario' ) );
-		if( $id['Usuario']['id_usuario'] != 0 ) {
+		if( count( $id ) > 0 && $id['Usuario']['id_usuario'] != 0 ) {
 			$this->id = $id['Usuario']['id_usuario'];
 			if( !$this->saveField( 'contra', $contra ) ) {
 				return false;
@@ -132,8 +149,7 @@ class Usuario extends AppModel {
 			}
 		} else {
 			// No debería de llegar aqui
-			echo "El id del usuario no fue encontrado buscando x email. error de logica";
-			exit();
+			return false;
 		}
 		return $contra;
 	}
@@ -146,7 +162,7 @@ class Usuario extends AppModel {
      * Verificaciones de eliminación de usuarios
      * @ref test
      */
-    public function beforeDelete( $cascade ) {
+    public function beforeDelete( $cascade = true ) {
         // Verifico que no esté asociado con algún médico
         $cmedico = $this->Medico->find( 'count', array( 'conditions' => array( 'usuario_id' => $this->id ) ) );
         if( intval( $cmedico ) > 0 ) {
@@ -160,16 +176,25 @@ class Usuario extends AppModel {
         if( intval( $cturnos ) > 0 ) {
             return false;
         }
+        // Verifico que no sea el ultimo administrador
+        $grupo = $this->field( 'grupo_id', array( 'id_usuario' => $this->id ) );
+        if( is_array( $grupo ) ) { $grupo = $grupo['Usuario']['grupo_id']; }
+        if( $grupo == 1 ) { // Veo si es el administrador
+            $conteo = $this->find( 'count', array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) );
+            if( $conteo == 0 ) {
+                return false;
+            }
+        }
         return true;
     }
-    
+
     /**
      * Obtiene los datos de un usuario si existe a partir del número de teléfono.
      * @param $tel mixed Numero de telefono a buscar
      * @return Cadena vacía si no existe el usuario o la razón social
      */
      public function getUsuarioPorTelefono( $tel = null ) {
-         if( is_null( $tel ) ) {
+         if( is_null( $tel ) || empty( $tel ) ) {
              return "";
          }
          $data = $this->find( 'first',
@@ -177,7 +202,7 @@ class Usuario extends AppModel {
                 'conditions' => array( 'OR' => array( 'telefono' => $tel, 'celular' => $tel ) ),
                 'fields' => array( 'razonsocial' ),
                 'recursive' => -1
-            ) 
+            )
          );
          if( count( $data ) > 0 ) {
              return $data['Usuario']['razonsocial'];

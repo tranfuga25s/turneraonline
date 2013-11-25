@@ -15,13 +15,14 @@ var id_medico = -1;
 			<li><?php echo $this->Html->link( 'Inicio', '/' ); ?></li>
 			<li class="active"><?php echo $this->Html->link( 'Nuevo turno', array( 'controller' => 'turnos', 'action' => 'nuevo' ) ); ?></li>
 			<li><?php echo $this->Html->link( 'Mis datos', array( 'controller' => 'usuarios', 'action' => 'view' ) ); ?></li>
+			<li><?php echo $this->Html->link( 'Mis turnos', array( 'controller' => 'turnos', 'action' => 'verTurnos', $usuarioactual['id_usuario'] ) ); ?></li>
 			<li><?php echo $this->Html->link( 'Salir', array( 'controller' => 'usuarios', 'action' => 'salir' ) ); ?></li>
 		</ul>
 	</div>
 </div>
 
 <div class="row-fluid">
-	
+
 	<div class="span3">
 		<table class="table table-hover table-bordered">
 			<tbody>
@@ -42,11 +43,11 @@ var id_medico = -1;
 				</tr>
 				<tr>
 					<td>Fecha:</td>
-					<td id="fecha"></td>
+					<td id="fecha">&nbsp;</td>
 				</tr>
 				<tr>
 					<td>Hora:</td>
-					<td id="hora"></td>
+					<td id="hora">&nbsp;</td>
 				</tr>
 				<tr>
 					<td>Paciente</td>
@@ -56,7 +57,7 @@ var id_medico = -1;
 		</table>
 
 	</div>
-	
+
 	<div id="cambiar" class="span9 well">
 	</div>
 
@@ -71,7 +72,7 @@ function cambiaronDatos() {
 	var id_medico = $("#medico option:selected").val();
 	var id_clinica = $("#clinica option:selected").val();
 	var id_especialidad = $("#especialidad option:selected").val();
-	
+
 	if( id_especialidad == '' ) { id_especialidad = global_especialidad; }
 	if( id_medico == '' ) { id_medico = global_medico; }
 	if( id_clinica == '' ) { id_clinica = global_clinica; }
@@ -107,7 +108,7 @@ function cambiaronDatos() {
 }
 
 function cargarCalendario( mes, ano ) {
-	
+
 	var id_medico = $("#medico option:selected").val();
 	var id_clinica = $("#clinica option:selected").val();
 	var id_especialidad = $("#especialidad option:selected").val();
@@ -116,7 +117,7 @@ function cargarCalendario( mes, ano ) {
 	if( id_medico == '' ) { id_medico = global_medico; }
 	if( id_clinica == '' ) { id_clinica = global_clinica; }
 	if( id_clinica == undefined ) { id_clinica = global_clinica; }
-	
+
 	// Pido los datos para actualizar el contenido
 	$.ajax( { async: true,
 		  data: { 'id_clinica': id_clinica,
@@ -151,7 +152,7 @@ function cargarTurnos( ano, mes, dia ) {
 
 	$("#wdatos").slideUp( 'slow' );
 	$("#wturnos").slideUp( 'slow' );
-	
+
 	$("#cargando").dialog({ modal: true });
 
 	// Pido los datos para actualizar el contenido
@@ -199,7 +200,7 @@ function cargarClinica() {
 				$("#clinica").bind( 'change', function() { cambiaronDatos(); } );*/
 			 },
 			  error: function() {
-				alert( 'No se pudo cargar los datos de las clinicas. Existió un error.\n Intente nuevamente mas tarde'); 
+				alert( 'No se pudo cargar los datos de las clinicas. Existió un error.\n Intente nuevamente mas tarde');
 			 }
 		} );
 }
@@ -227,7 +228,7 @@ function cargaInicial() {
 				$("#clinica").bind( 'change', function() { cambiaronDatos(); } );
 			 },
 			  error: function() {
-				alert( 'No se pudo cargar los datos del sistema de clinicas, medicos y especialidades. Existió un error.\n Intente nuevamente mas tarde'); 
+				alert( 'No se pudo cargar los datos del sistema de clinicas, medicos y especialidades. Existió un error.\n Intente nuevamente mas tarde');
 			 }
 		} );
 
@@ -254,7 +255,7 @@ function cargaInicial() {
 }
 
 $( function() {
-	cargaInicial();	
+	cargaInicial();
 });
 
 </script>

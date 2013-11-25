@@ -33,6 +33,7 @@ class TurnosController extends AppController {
                     case 'sobreturno':
                     case 'cancelar':
                     case 'reservarTurno':
+                    case 'estadoTurnos':
                     {
                         return true; break;
                     }
@@ -818,6 +819,39 @@ class TurnosController extends AppController {
 		$this->set( 'turnos', $this->paginate() );
 	}
 
+    /*!
+     * Busca el estado de los turnos para el usuario que lo está llamando
+     */
+    public function estadoTurnos()  {
+        $grupo = $this->Auth->user( 'grupo_id' );
+        if( $grupo == 4 ) {
+            throw new UnauthorizedException( 'El usuario no puede ver esto' );
+        }
+        // Busco si es medico o secretaria
+        $id_usuario = intval( $this->Auth->user( 'id_usuario' ) );
+        $condiciones = null;
+        if( $grupo == 3 ) { // Secretaria
+            // veo que medicos maneja
+            $this->loadModel( 'Secretaria' );
+            $this->Secretaria->recursive = -1;
+            $id_clinica = $this->Secretaria->findByUsuarioId( $id_usuario, array( 'clinica_id' ) );
+            $id_clinica = $id_clinica['Secretaria']['clinica_id'];
+            $this->Turno->Medico->recursive = -1;
+            $medicos = $this->Turno->Medico->findAllByClinicaId( $id_clinica, array( 'id_medico' ) );
+            $condiciones['medico_id'] = Set::classicExtract( $medicos, '{n}.Medico.id_medico' );
+        } else if( $grupo == 2 ) { // Medico
+           // Veo que día y medico va en las condiciones
+           $this->Turno->Medico->recursive = -1;
+           $id_medico = $this->Turno->Medico->findByUsuarioId( $id_usuario, array( 'id_medico' ) );
+           $condiciones['medico_id'] = $id_medico['Medico']['id_medico'];
+        }
+        return array(
+            'recibidos'  => $this->Turno->cantidadDiaRecibidos( $condiciones ),
+            'atendidos'  => $this->Turno->cantidadDiaAtendidos( $condiciones ),
+            'libres'     => $this->Turno->cantidadDiaLibres( $condiciones ),
+            'reservados' => $this->Turno->cantidadDiaReservados(  $condiciones )
+        );
+    }
 
 
 }

@@ -34,14 +34,14 @@ class Consultorio extends AppModel {
 			'foreignKey' => 'clinica_id',
 		)
 	);
-	
+
 	public $hasMany = array(
 		'Turno' => array(
 			'className' => 'Turno'
 		)
 	);
-	
-	public function beforeDelete() {
+
+	public function beforeDelete( $cascade = true ) {
 		$count = $this->Turno->find( 'count', array( 'conditions' => array( 'consultorio_id' => $this->id ) ) );
 		if( $count > 0 ) {
 			return false;

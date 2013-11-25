@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml"> -->
+<?php echo $this->Facebook->html(); ?>
 	<head>
 		<?php echo $this->Html->charset(); ?>
 		<title><?php echo $title_for_layout; ?> :: Turnos On-Line :: <?php echo $_SERVER['SERVER_NAME']; ?></title>
@@ -67,5 +68,5 @@
 		<?php echo $this->element( 'sql_dump' ); ?>
 		<?php echo $this->Js->writeBuffer(); ?>
 	</body>
-<?php echo $this->Facebook->init(); ?>
+    <?php echo $this->Facebook->init(); ?>
 </html>

@@ -54,7 +54,7 @@ class Clinica extends AppModel {
 	/**
 	 * Verifica si existen datos asociados
 	 */
-	public function beforeDelete() {
+	public function beforeDelete( $cascade = true ) {
 		$cantidad = $this->Medicos->find( 'count', array( 'conditions' => array( 'clinica_id' => $this->id ) ) );
 		if( $cantidad > 0 ) {
 			return false;
