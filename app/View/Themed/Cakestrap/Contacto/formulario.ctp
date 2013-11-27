@@ -7,56 +7,38 @@ $this->set( 'title_for_layout', "Contactese con nosotros" );
 			<legend>Dirección de contacto</legend>
 
 			<ul class="thumbnails">
-				<li class="span2 thumbnail text-center">
+				<li class="span3 thumbnail text-center">
 					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Vanesa Apablaza<br />
 						<a id="btelvane" href="#" onclick="$('#telvane').slideDown(); $('#btelvane').hide();">Ver Tel&eacute;fono</a>
-						<span id="telvane" style="display: none;">(+54) 342 5134148 </span><br />
+						<span id="telvane" style="display: none;">(+549) 342 5134148 </span><br />
 						Santa Fe Capital
 					</address>
 				</li>
-				<li class="span2 thumbnail text-center">
+				<li class="span3 thumbnail text-center">
 					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Daniel Sequeira<br />
-						<span id="teldani" style="display: none;">(+54) 342 5128211</span>
+						<span id="teldani" style="display: none;">(+549) 342 5128211</span>
 						<a id="bteldani"   href="#" onclick="$('#teldani').slideDown(); $('#bteldani').hide();">Ver Tel&eacute;fono</a><br />
 						Santa Fe Capital y alrededores
 					</address>
 				</li>
-				<li class="span2 thumbnail text-center">
+				<li class="span3 thumbnail text-center">
 					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
-						Juan Pablo Vidocevich<br />
-						<span id="teljuampi" style="display: none;">(+54) 342 5134148  </span>
+						Milton Martinazzo<br />
+						<span id="teljuampi" style="display: none;">(+549) 11 55801850  </span>
 						<a id="bteljuampi" href="#" onclick="$('#teljuampi').slideDown(); $('#bteljuampi').hide();">Ver Tel&eacute;fono</a><br />
-						Laguna Paiva y alrededores
+						Buenos Aires
 					</address>
 				</li>
-				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
-					<address>
-						Fernando Liernur<br />
-						<span id="telfer" style="display: none;">(+54) 342 154293436</span>
-						<a id="btelfer" href="#" onclick="$('#telfer').slideDown(); $('#btelfer').hide();">Ver Tel&eacute;fono</a><br />
-						Rosario - Santa Fe
-					</address>
-				</li>
-				<li class="span2 thumbnail text-center">
-					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;' ) ); ?>
-					<address>
-						Melisa Fontanessi<br />
-						<span id="telmeli" style="display: none;">(+54) 342 154293436</span>
-						<a id="btelmeli" href="#" onclick="$('#telmeli').slideDown(); $('#btelmeli').hide();">Ver Tel&eacute;fono</a><br />
-						Rosario - Santa Fe
-					</address>
-				</li>
-				<li class="span2 thumbnail text-center">
+				<li class="span3 thumbnail text-center">
 					<?php echo $this->Html->image( "perfil-generico.jpg", array( 'class' => 'thumbnail', 'style' => 'width: 90%;'  ) ); ?>
 					<address>
 						Esteban Zeller<br />
-						<span id="teleste" style="display: none;">(+54) 342 154293436</span>
+						<span id="teleste" style="display: none;">(+549) 342 154293436</span>
 						<a id="bteleste" href="#" onclick="$('#teleste').slideDown(); $('#bteleste').hide();">Ver Tel&eacute;fono</a><br />
 						Programador y Analista
 					</address>
