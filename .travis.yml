@@ -16,12 +16,21 @@ before_script:
   - chmod -R 777 app/tmp
   - echo "<?php
     class DATABASE_CONFIG {
+    public \$default = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'turnera',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'prefix' => '',
+      'persistent' => false,
+    );
     public \$test = array(
       'datasource' => 'Database/Mysql',
       'database' => 'turnera',
       'host' => '0.0.0.0',
       'login' => 'travis',
       'persistent' => false,
+      'prefix' => 'test_'
     );
     }" > ./app/Config/database.php
   - ./app/Console/cake schema create
