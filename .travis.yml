@@ -33,7 +33,7 @@ before_script:
       'prefix' => 'test_'
     );
     }" > ./app/Config/database.php
-  - ./app/Console/cake schema create
+  - sh -c "mysql < ./app/Config/Schema/schema.sql"
  
 script:
   - ./app/Console/cake test app AllTests --stderr
