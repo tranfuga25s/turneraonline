@@ -6,7 +6,8 @@ php:
  
 before_script:
   - sh -c "mysql -e 'CREATE DATABASE turnera;'"
-  - chmod -R 777 ./app/tmp
+  - ls -l
+  - chmod -R 777 app/tmp
   - echo "<?php
     class DATABASE_CONFIG {
     public \$test = array(
