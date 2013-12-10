@@ -1,0 +1,25 @@
+language: php
+ 
+php:
+  - 5.3
+  - 5.4
+ 
+before_script:
+  - sh -c "mysql -e 'CREATE DATABASE turnera;'"
+  - chmod -R 777 ../cakephp/app/tmp
+  - echo "<?php
+    class DATABASE_CONFIG {
+    public \$test = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'turnera',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'persistent' => false,
+    );
+    }" > ./app/Config/database.php
+ 
+script:
+  - ./app/Console/cake test AllTests --stderr
+ 
+notifications:
+  email: true
