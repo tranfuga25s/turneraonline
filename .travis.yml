@@ -6,7 +6,7 @@ php:
  
 before_script:
   - sh -c "mysql -e 'CREATE DATABASE turnera;'"
-  - chmod -R 777 ../cakephp/app/tmp
+  - chmod -R 777 ./app/tmp
   - echo "<?php
     class DATABASE_CONFIG {
     public \$test = array(
