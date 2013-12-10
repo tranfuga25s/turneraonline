@@ -211,7 +211,7 @@ class AppSchema extends CakeSchema {
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'InnoDB')
 	);
-	public $especialidades = array(
+	public $especialidad = array(
 		'id_especialidad' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'nombre' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
 		'indexes' => array(
@@ -219,7 +219,7 @@ class AppSchema extends CakeSchema {
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'InnoDB')
 	);
-	public $excepciones = array(
+	public $excepcion = array(
 		'id_excepcion' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'primary'),
 		'medico_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20),
 		'inicio' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -233,7 +233,7 @@ class AppSchema extends CakeSchema {
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish_ci', 'engine' => 'InnoDB')
 	);
-	public $grupos = array(
+	public $grupo = array(
 		'id_grupo' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'nombre' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish2_ci', 'charset' => 'utf8'),
 		'indexes' => array(
@@ -241,7 +241,7 @@ class AppSchema extends CakeSchema {
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_spanish2_ci', 'engine' => 'InnoDB')
 	);
-	public $medicos = array(
+	public $medico = array(
 		'id_medico' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'usuario_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'especialidad_id' => array('type' => 'integer', 'null' => false, 'default' => null),

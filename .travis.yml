@@ -24,6 +24,7 @@ before_script:
       'persistent' => false,
     );
     }" > ./app/Config/database.php
+  - ./app/Console/cake schema create
  
 script:
   - ./app/Console/cake test app AllTests --stderr
