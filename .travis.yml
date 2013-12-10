@@ -26,7 +26,7 @@ before_script:
     }" > ./app/Config/database.php
  
 script:
-  - ./app/Console/cake test AllTests --stderr
+  - ./app/Console/cake test app AllTests --stderr
  
 notifications:
   email: false

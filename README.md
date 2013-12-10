@@ -1,5 +1,7 @@
 # Sistema de turnos online
 
+[![Build Status](https://travis-ci.org/tranfuga25s/turneraonline.png?branch=master)](https://travis-ci.org/tranfuga25s/turneraonline)
+
 Este sistema le permite administrar una web en donde los pacientes de un medico o dentista puede obtener los turnos registrandose gratuitamente.
 
 Además puede:
