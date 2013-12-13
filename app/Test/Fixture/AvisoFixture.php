@@ -10,7 +10,7 @@ class AvisoFixture extends CakeTestFixture {
      *
      * @var array
      */
-	public $import = array('model' => 'Aviso');
+	public $import = array( 'model' => 'Aviso' );
     
     /**
      * Inicailización de datos dinamicos

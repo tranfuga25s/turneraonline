@@ -1,0 +1,42 @@
+language: php
+ 
+php:
+  - 5.3
+  - 5.4
+ 
+before_script:
+  - sh -c "mysql -e 'CREATE DATABASE turnera;'"
+  - mkdir app/tmp
+  - mkdir app/tmp/cache
+  - mkdir app/tmp/cache/models
+  - mkdir app/tmp/cache/persistent
+  - mkdir app/tmp/cache/views
+  - mkdir app/tmp/tests
+  - mkdir app/tmp/logs
+  - chmod -R 777 app/tmp
+  - echo "<?php
+    class DATABASE_CONFIG {
+    public \$default = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'turnera',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'prefix' => '',
+      'persistent' => false,
+    );
+    public \$test = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'turnera',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'persistent' => false,
+      'prefix' => 'test_'
+    );
+    }" > ./app/Config/database.php
+  - sh -c "mysql < ./app/Config/Schema/schema.sql"
+ 
+script:
+  - ./app/Console/cake test app AllTests --stderr
+ 
+notifications:
+  email: false
