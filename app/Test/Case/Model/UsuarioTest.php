@@ -180,6 +180,6 @@ class UsuarioTestCase extends CakeTestCase {
     }
 
     public function testEliminacionPorEmail() {
-        $this->assertEquap( true, false, "Falta implementacion de test de eliminar por email" );
+        $this->assertEqual( true, false, "Falta implementacion de test de eliminar por email" );
     }
 }

@@ -41,18 +41,14 @@ class TurnoTestCase extends CakeTestCase {
      * Verifica la creación de turnos al generar los turnos del día
      */
 	public function testGenerarTurnos() {
-
-		$r = $this->Turno->find( 'all',
+        // Busco si existen turnos reservados de hoy en adelante
+		$r = $this->Turno->find( 'count',
 						array( 'conditions' =>
 							array( '`Turno`.`paciente_id` IS NOT NULL',
-							       '`Turno`.`fecha_fin` >= NOW()' ),
+							       '`Turno`.`fecha_fin` >=' => date( 'Y-m-d') ),
 							   'recursive' => -1 )
         );
-        debug( $r );
-
-		$t = array( 0 => array( 'Turno' => array( 'id_turno' => 3, 'paciente_id' => 1, 'medico_id' => 1, 'fecha_inicio' => '2012-09-16 12:03:30', 'fecha_fin' => '2012-09-16 12:03:40', 'consultorio_id' => 1,	'recibido' => false, 'atendido' => false, 'cancelado' => false ) ) );
-
-		$this->assertEqual( $t, $r );
+        $this->assertEqual( $r, 0, "Existen turnos reservados en los datos. No se continuará el proceso." );
 	}
 
     /**
@@ -79,15 +75,6 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $this->Turno->anoMinimoTurno(), $ano_min, "La fecha obtenida por el modelo no coincide" );
     }
 
-    /**
-     * tearDown method
-     *
-     * @return void
-     */
-	public function tearDown() {
-		unset( $this->Turno );
-		parent::tearDown();
-	}
 
     public function testCantidadTurnos() {
         $this->assertEqual( $this->Turno->cantidadDia(), 1, "Los turnos del día de hoy deben ser cero" );
@@ -97,9 +84,9 @@ class TurnoTestCase extends CakeTestCase {
     }
 
     public function testCantidadAtendidos() {
-        $this->assertEqual( $this->Turno->cantidadDiaAntendidos(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDiaAntendidos( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDiaAntendidos( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos(), 1, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }
 
@@ -115,6 +102,27 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $this->Turno->cantidadDiaLibres( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
         $this->assertEqual( $this->Turno->cantidadDiaLibres( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
+    }
+
+    public function testCantidadReservados() {
+        $this->assertEqual( $this->Turno->cantidadDiaReservados(), 1, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+        ///@TODO Agregar restricciones extras
+    }
+
+    public function testCancelacionTurnos() {
+
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown() {
+        unset( $this->Turno );
+        parent::tearDown();
     }
 
 }

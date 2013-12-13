@@ -10,6 +10,6 @@ class VariableAvisoFixture extends CakeTestFixture {
      *
      * @var array
      */
-	public $import = array('table' => 'variable_aviso', 'records' => true);
+	public $import = array('table' => 'variables_avisos', 'records' => true);
 
 }
