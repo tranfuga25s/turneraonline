@@ -14,5 +14,20 @@ class EspecialidadFixture extends CakeTestFixture {
 	 *
 	 * @var array
 	 */
-	public $import = array( 'table' => 'especialidades', 'records' => true );
+	public $import = array( 'model' => 'Especialidad' );
+
+    /**
+     * Inicailización de datos dinamicos
+     */
+    public function init() {
+        $this->records[] = array(
+                'id_especialidad' => 1,
+                'nombre' => 'Ginecología'
+        );
+        $this->records[] = array(
+                'id_especialidad' => 2,
+                'nombre' => 'Otorrinolaringología'
+        );
+        parent::init();
+    }
 }

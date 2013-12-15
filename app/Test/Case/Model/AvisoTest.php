@@ -46,7 +46,8 @@ class AvisoTest extends CakeTestCase {
      * @return void
      */
     public function testExisteCampoMetodo() {
-        $this->assertArrayHasKey( 'metodo', $this->Aviso->_schema, 'No se detectó el campo de metodo de envío' );
+        $this->assertNotNull( $this->Aviso->schema(), "El schema del modelo no deber ser nulo" );
+        $this->assertArrayHasKey( 'metodo', $this->Aviso->schema(), 'No se detectó el campo de metodo de envío' );
     }
 
 	/**
@@ -67,9 +68,9 @@ class AvisoTest extends CakeTestCase {
 	    $this->assertEqual( $this->Aviso->existePendiente(), true, 'No se detectó correctamente el aviso pendiente' );
         $proximo = $this->Aviso->buscarSiguiente();
         $this->assertArrayHasKey( 'Aviso', $proximo, 'Los datos traidos no poseen el array Aviso' );
-        $this->assertArrayHasKey( 'id_aviso', $proximo, 'Los datos traidos no possen el campo Aviso.id_aviso' );
+        $this->assertArrayHasKey( 'id_aviso', $proximo['Aviso'], 'Los datos traidos no possen el campo Aviso.id_aviso' );
         $this->assertEqual( 1, $proximo['Aviso']['id_aviso'], 'El dato traido es incorrecto' );
-	}    
+	}
 
 	/**
 	 * testCambiarHorasTurno method
@@ -86,5 +87,5 @@ class AvisoTest extends CakeTestCase {
 	public function testCancelarAvisoNuevoTurno() {
 	}
 
-    
+
 }

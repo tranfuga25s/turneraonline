@@ -45,7 +45,7 @@ class EspecialidadTestCase extends CakeTestCase {
     public function testEliminaction() {
 
         $ids_medicos = $this->Medico->find( 'list', array( 'fields' => array( 'especialidad_id' ) ) );
-        $id_especialidad = array_pop( $ids_medicos );
+        $id_especialidad = intval( array_pop( $ids_medicos ) );
 
         $this->assertNotEqual( $id_especialidad,       0, "No se pudo seleccionar una especialidad - cero"        );
         $this->assertNotEqual( $id_especialidad,    null, "No se pudo seleciconar una especialidad - null"        );

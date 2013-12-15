@@ -11,14 +11,14 @@ class AvisoFixture extends CakeTestFixture {
      * @var array
      */
 	public $import = array( 'model' => 'Aviso' );
-    
+
     /**
      * Inicailización de datos dinamicos
      */
     public function init() {
         $this->records[] = array(
                 'id_aviso' => 1,
-                'fecha_envio' => date( 'Y-m-d H:i:s' ),
+                'fecha_envio' => date( 'Y-m-d H:i:s', mktime( date( 'H' ), 0, 0, date( 'n' ), date( 'j' ), date( 'Y' ) ) ),
                 'template' => 'nuevoTurno',
                 'layout' => 'usuario',
                 'formato' => 'both',
@@ -35,7 +35,7 @@ class AvisoFixture extends CakeTestFixture {
      *
      * @var array
      */
-	public $records = array(
+/*	public $records = array(
 		array(
 			'id_aviso' => '32',
 			'fecha_envio' => '2013-05-22 03:00:00',
@@ -135,6 +135,6 @@ class AvisoFixture extends CakeTestFixture {
 			'subject' => 'Turno proximo',
             'metodo' => 'email'
 		),
-	);
+	);*/
 
 }
