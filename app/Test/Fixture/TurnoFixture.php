@@ -128,6 +128,28 @@ class TurnoFixture extends CakeTestFixture {
 			'atendido' => 0,
 			'cancelado' => 0
 		),
+        array(
+            'id_turno' => '12',
+            'paciente_id' => 1,
+            'medico_id' => 1,
+            'fecha_inicio' => '2012-10-09 11:40:00',
+            'fecha_fin' => '2012-10-09 11:50:00',
+            'consultorio_id' => 1,
+            'recibido' => 0,
+            'atendido' => 0,
+            'cancelado' => 0
+        ),
+        array(
+            'id_turno' => '13',
+            'paciente_id' => 2,
+            'medico_id' => 1,
+            'fecha_inicio' => '2012-10-09 12:00:00',
+            'fecha_fin' => '2012-10-09 12:10:00',
+            'consultorio_id' => 1,
+            'recibido' => 0,
+            'atendido' => 0,
+            'cancelado' => 0
+        ),
 	);
 
 }
