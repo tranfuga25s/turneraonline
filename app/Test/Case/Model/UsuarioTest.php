@@ -167,19 +167,21 @@ class UsuarioTestCase extends CakeTestCase {
      public function testGetUsuarioPorTelefono() {
          $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( null ), "", "El método debería de devolver una cadena vacía si se pasa un parametro nulo" );
          $this->assertEqual( $this->Usuario->getUsuarioPorTelefono( "" ), "", "El método debería de devolver una cadena vacía si se pasa una cadena vacía" );
-         $usuario = $this->Usuario->find( 'first', array( 'fields' => array( 'telefono' ), 'conditions' => array( 'Usuario.telefono IS NOT NULL' ) ) );
-         $this->assertGreaterThan( 0, count( $usuario ), "No hay ningun usuario con telefono para revisar el metodo!" );
-         if( is_array( $usuario ) ) { $usuario = $usuario['Usuario']['telefono']; }
-         $this->assertNotEqual( $this->Usuario->getUsuarioPorTelefono( $usuario ), "", "No debería devolver un valor vacio si el telefono es uno de la base de datos" );
+         $telefono = $this->Usuario->find( 'first', array( 'fields' => array( 'telefono' ),
+                                                           'conditions' => array( 'Usuario.telefono IS NOT NULL' ),
+                                                           'recursive' => -1 ) );
+         $this->assertGreaterThan( 0, count( $telefono ), "No hay ningun usuario con telefono para revisar el metodo!" );
+         if( is_array( $telefono ) ) { $telefono = $telefono['Usuario']['telefono']; }
+         $this->assertNotEqual( $this->Usuario->getUsuarioPorTelefono( $telefono ), "", "No debería devolver un valor vacio si el telefono es uno de la base de datos" );
      }
 
      /**
       */
-    public function testEliminacionUltimoAdmin() {
+    /*public function testEliminacionUltimoAdmin() {
         $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario admin" );
     }
 
     public function testEliminacionPorEmail() {
         $this->assertEqual( true, false, "Falta implementacion de test de eliminar por email" );
-    }
+    }*/
 }

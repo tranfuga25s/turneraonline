@@ -23,7 +23,7 @@ class UsuarioFixture extends CakeTestFixture {
                 'email' => 'esteban.zeller@gmail.com',
                 'nombre' => 'Esteban Javier',
                 'apellido' => 'Zeller',
-                'telefono' => 09432049,
+                'telefono' => '09432049',
                 'celular' => 304923049,
                 'obra_social_id' => 1,
                 'notificaciones' => 1,
