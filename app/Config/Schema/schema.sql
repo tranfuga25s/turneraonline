@@ -7,8 +7,8 @@ DROP TABLE IF EXISTS `turnera`.`dia_disponibilidad`;
 DROP TABLE IF EXISTS `turnera`.`disponibilidad`;
 DROP TABLE IF EXISTS `turnera`.`especialidad`;
 DROP TABLE IF EXISTS `turnera`.`excepcion`;
-DROP TABLE IF EXISTS `turnera`.`grupo`;
-DROP TABLE IF EXISTS `turnera`.`medico`;
+DROP TABLE IF EXISTS `turnera`.`grupos`;
+DROP TABLE IF EXISTS `turnera`.`medicos`;
 DROP TABLE IF EXISTS `turnera`.`obras_sociales`;
 DROP TABLE IF EXISTS `turnera`.`secretarias`;
 DROP TABLE IF EXISTS `turnera`.`turnos`;
@@ -85,7 +85,7 @@ CREATE TABLE `turnera`.`excepcion` (
 	COLLATE=utf8_spanish_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `turnera`.`grupo` (
+CREATE TABLE `turnera`.`grupos` (
 	`id_grupo` int(11) NOT NULL AUTO_INCREMENT,
 	`nombre` text CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,	PRIMARY KEY  (`id_grupo`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_spanish2_ci,
