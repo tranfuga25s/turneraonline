@@ -7,7 +7,7 @@
  */
 class MedicoFixture extends CakeTestFixture {
 
-	public $import = array( 'table' => 'medicos' );
+	public $import = array( 'model' => 'Medico' );
 
     /**
      * Inicailización de datos dinamicos
