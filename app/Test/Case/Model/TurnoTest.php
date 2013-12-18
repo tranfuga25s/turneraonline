@@ -13,10 +13,10 @@ class TurnoTestCase extends CakeTestCase {
      *
      * @var array
      */
-	public $fixtures = array('app.turno',
-	                         'app.medico',
-	                         'app.consultorio',
-	                         'app.clinica' );
+	public $fixtures = array( 'app.clinica',
+	                          'app.consultorio',
+	                          'app.medico',
+	                          'app.turno' );
 
 
     public $fecha_buena = "2012-10-09";
@@ -76,7 +76,7 @@ class TurnoTestCase extends CakeTestCase {
     }
 
 
-    public function testCantidadTurnos() {
+   /* public function testCantidadTurnos() {
         $this->assertEqual( $this->Turno->cantidadDia(), 1, "Los turnos del día de hoy deben ser cero" );
         $this->assertEqual( $this->Turno->cantidadDia( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
         $this->assertEqual( $this->Turno->cantidadDia( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
@@ -109,10 +109,48 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
         $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
+    }*/
+
+    /*!
+     * Pruebo que genera la condiciones necesarias para generar un nuevo traslado de turno a otro horario
+     * Turnos id = 12 -> <12
+     */
+    public function testTrasladoTurno() {
+        $turno = $this->Turno->find( 'first', array( 'conditions' => array( 'id_turno' => 12 ), 'recursive' => -1 ) );
+        $this->assertArrayHasKey( 'Turno', $turno, "El turno de origen no puede ser nulo" );
+        $this->assertEqual( $turno['Turno']['id_turno'], 12, "El turno de origen es incorrecto" );
+        $id_paciente = $turno['Turno']['paciente_id'];
+
+        $this->assertEqual( $this->Turno->trasladarTurno( 12, 11 ), true, "El turno no se pudo hacer como traslado" );
+
+        $turno2 = $this->Turno->find( 'first', array( 'conditions' => array( 'id_turno' => 11 ), 'recursive' => -1 ) );
+        $this->assertArrayHasKey( 'Turno', $turno2, "El turno trasladado no tiene datos!" );
+        $this->assertEqual( $turno2['Turno']['paciente_id'], $id_paciente, "El paciente traslado no corresponde con el original" );
+
+        unset( $truno );
+        $turno = $this->Turno->find( 'first', array( 'conditions' => array( 'id_turno' => 12 ), 'recursive' => -1 ) );
+        $this->assertArrayHasKey( 'Turno', $turno, "El turno original no se pudo releer!" );
+        $this->assertEqual( $turno['Turno']['paciente_id'], null, "El turno original no tiene dato de paciente reestablecido" );
+
     }
 
-    public function testCancelacionTurnos() {
+    /*!
+     * Funcion que prueba que el sistema falla si se intenta trasladar un turno a otro ya ocupado
+     * Turnos id = 12 -> 13
+     */
+    public function testTrasladoTurnoOcupado() {
+        $turno = $this->Turno->find( 'first', array( 'conditions' => array( 'id_turno' => 12 ), 'recursive' => -1 ) );
+        $this->assertArrayHasKey( 'Turno', $turno, "El turno de origen no puede ser nulo" );
+        $this->assertEqual( $turno['Turno']['id_turno'], 12, "El turno de origen es incorrecto" );
 
+        $this->assertEqual( $this->Turno->trasladarTurno( 12, 13 ), false, "El traslado de turno a un turno ocupado no debe suceder!" );
+
+    }
+
+    public function testTrasladoTurnosNulos() {
+        $this->assertEqual( $this->Turno->trasladarTurno( 12, null ), false, "El valor devuelto debería ser falso" );
+        $this->assertEqual( $this->Turno->trasladarTurno( null, 13 ), false, "El valor devuelto debería ser falso" );
+        $this->assertEqual( $this->Turno->trasladarTurno( null, null ), false, "El valor devuelto debería ser falso" );
     }
 
     /**

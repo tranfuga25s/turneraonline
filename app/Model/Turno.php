@@ -69,7 +69,7 @@ class Turno extends AppModel {
 			$condiciones = array();
 			if( $id_clinica != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'clinica_id' => $id_clinica ) );
-			} 
+			}
 			if(  $id_especialidad != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'especialidad_id' => $id_especialidad ) );
 			}
@@ -142,7 +142,7 @@ class Turno extends AppModel {
 			$condiciones = array();
 			if( $id_clinica != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'clinica_id' => $id_clinica ) );
-			} 
+			}
 			if( $id_especialidad != 0 ) {
 				$condiciones = array_merge( $condiciones, array( 'especialidad_id' => $id_especialidad ) );
 			}
@@ -200,11 +200,11 @@ class Turno extends AppModel {
 		$this->unbindModel( array( 'belongsTo' => array( 'Paciente') ) );
 		$fecha_hoy = new DateTime();
 		$fecha_hoy->setTime( 0, 0, 0 );
-		$anteriores = $this->find( 'all', array( 'conditions' => 
+		$anteriores = $this->find( 'all', array( 'conditions' =>
 							array( 	'medico_id' => $datos['Medico']['id_medico'],
 								    'paciente_id IS NOT NULL',
 								    'fecha_inicio >=' => $fecha_hoy->format( 'Y-m-d H:i:s' )
-							) ) );			
+							) ) );
 		// Fechas utlizadas para el rango de atencion cada día
 
 		$num_dia = -1;
@@ -228,7 +228,7 @@ class Turno extends AppModel {
 				$h1 = new DateTime( 'now' );
 				$h1->setDate( $d1->format( 'Y' ), $d1->format( 'm' ), $d1->format( 'd' ) );
 				$h1->setTime( $datos[$dias[$num_dia]]['hinicio'], $datos[$dias[$num_dia]]['minicio'] );
-				$h2 = clone $h1;				
+				$h2 = clone $h1;
 				$h2->setTime( $datos[$dias[$num_dia]]['hfin'], $datos[$dias[$num_dia]]['mfin'] );
 				if( $datos[$dias[$num_dia]]['hiniciotarde'] != 0 ) {
 					$turno_tarde = true;
@@ -237,11 +237,11 @@ class Turno extends AppModel {
 					$ht1->setTime( $datos[$dias[$num_dia]]['hiniciotarde'], $datos[$dias[$num_dia]]['miniciotarde'] );
 					$ht2->setTime( $datos[$dias[$num_dia]]['hfintarde'], $datos[$dias[$num_dia]]['mfintarde'] );
 				}
-				// Realizo las comparaciones 
+				// Realizo las comparaciones
 				// d1 = hora de inicio del turno
 				// d2 = hora de fin del turno
 				// h1 = hora de inicio de atencion en el dia
-				// h2 = hora de fin de atencion en el dia 
+				// h2 = hora de fin de atencion en el dia
 				// ht1 = hora de inicio de atencion en el dia turno tarde
 				// ht2 = hora de fin de atencion en el dia turno tarde
 				if( !$turno_tarde ) {
@@ -293,7 +293,7 @@ class Turno extends AppModel {
 				default:
 				{ $num_dia = -1; break; }
 			}
-			if( $num_dia != -1 ) { 
+			if( $num_dia != -1 ) {
 				// Relleno los horarios segun corresponde
 				$fecha_inicio_dia->setTime( $datos[$dias[$num_dia]]['hinicio'], $datos[$dias[$num_dia]]['minicio'] );
 				$fecha_fin_dia->setTime( $datos[$dias[$num_dia]]['hfin'], $datos[$dias[$num_dia]]['mfin'] );
@@ -304,7 +304,7 @@ class Turno extends AppModel {
 					$fecha_fin_dia_tarde = clone $fecha_inicio_dia_tarde;
 					$fecha_fin_dia_tarde->setTime( $datos[$dias[$num_dia]]['hfintarde'], $datos[$dias[$num_dia]]['mfintarde'] );
 				}
-	
+
 				// calculo la cantidad de pasos que tengo que hacer
 				$dif = $fecha_inicio_dia->diff( $fecha_fin_dia );
 				$txd = floor( ( $dif->format( '%h' ) * 60 + $dif->format( '%i' ) ) / $datos['Medico']['duracion'] );
@@ -336,7 +336,7 @@ class Turno extends AppModel {
 							echo "Error al guardar el turno";
 						}
 					} else {
-						
+
 					}
 					$finicio->add( new DateInterval( "PT".$datos['Medico']['duracion']."M" ) );
 				} // Lista la generación de turnos turno mañana
@@ -387,7 +387,7 @@ class Turno extends AppModel {
 		if( !$this->exists() ) {
 			$mensaje = "El turno no existe";
 			return false;
-		} 
+		}
 		if( $this->field( 'paciente_id' ) != 0 ) {
 			$mensaje = "El turno ya se encuentra reservado.";
 			return false;
@@ -412,19 +412,19 @@ class Turno extends AppModel {
 				);
 		if( $d > 0 ) { return true; } else { return false; }
 	}
-	
+
 	public function turnosReservados( $id_usuario = null ) {
 		$this->unbindModel( array( 'belongsTo' => array( 'Paciente' ) ) );
 		return $this->find( 'all', array( 'conditions' => array( 'paciente_id' => $id_usuario, 'fecha_inicio >= NOW()' ), 'recursive' => 2 ) );
 	}
-	
+
 	public function turnosAnteriores( $id_usuario ) {
 	    $this->unbindModel( array( 'belongsTo' => array( 'Paciente' ) ) );
 		return $this->find( 'all', array( 'conditions' => array( 'paciente_id' => $id_usuario, 'fecha_fin < NOW()' ), 'recursive' => 2 ) );
 	}
-	
+
 	public function existe( $fecha_inicio, $hora_inicio, $hora_fin, $id_medico, $id_consultorio ) {
-		$cant = $this->find( 'count', array( 'conditions' => array( 'medico_id' => $id_medico, 
+		$cant = $this->find( 'count', array( 'conditions' => array( 'medico_id' => $id_medico,
 																	'consultorio_id' => $id_consultorio,
 																	'DATE( fecha_inicio )' => $fecha_inicio,
 																	'TIME( fecha_inicio ) >=' => $hora_inicio,
@@ -433,7 +433,7 @@ class Turno extends AppModel {
 			return true;
 		} else { return false; }
 	}
-	
+
     /**
      * Elimina los turnos relacionados con el usuario. Todos, incluso los echos ya.
      * @param $id_usuario Identificador del usuario
@@ -448,7 +448,7 @@ class Turno extends AppModel {
 		}
 	    return false;
 	}
-	
+
     /**
      * Cancela un turno y no permite utilizarlo nuevamente.
      * Desliga al paciente del turno.
@@ -456,9 +456,9 @@ class Turno extends AppModel {
      * @author Esteban Zeller
      */
 	public function cancelar( $id_turno = null ) {
-		if( $id_turno == null ) 
+		if( $id_turno == null )
 			return false;
-		
+
 		$this->id = $id_turno;
 		if( $this->saveField( 'cancelado', true ) ) {
 			if( $this->saveField( 'paciente_id', null ) ) {
@@ -473,14 +473,14 @@ class Turno extends AppModel {
      * Permite que el turno pueda estar disponible nuevamente.
      * @param $id_turno integer Identificador del turno. Sino se usara $this->id
      * @author Esteban Zeller
-     */    
+     */
     public function liberar( $id_turno = null ) {
-        if( $id_turno == null && $this->id == null ) { 
+        if( $id_turno == null && $this->id == null ) {
             return false;
         } else if( $this->id != null && $id_turno == null ) {
             $id_turno = $this->id;
         }
-        
+
         $this->id = $id_turno;
         $this->set( 'cancelado', false );
         $this->set( 'atendido', false );
@@ -498,23 +498,23 @@ class Turno extends AppModel {
     * @author Esteban Zeller
     */
    public function reservado( $id_turno = null ) {
-		if( $id_turno == null ) 
+		if( $id_turno == null )
 			return false;
-		
+
 		if( $this->field( 'paciente_id' ) != null ) {
-			return true; 
+			return true;
 		} else {
 			return false;
-		}   		
+		}
    }
 
   /*!
    * Selecciona los IDS de turno de las fechas comprendidas en los parametros para el medico seleccionado
-   * 
+   *
    */
    public function seleccionarIDS( $fini, $ffin, $id_medico ) {
-   	  $dato = $this->find( 'list', 
-   				array( 'conditions' => 
+   	  $dato = $this->find( 'list',
+   				array( 'conditions' =>
    					array( 'medico_id' => $id_medico,
    						   'DATE(fecha_inicio) >=' => $fini->format( 'Y-m-d' ),
 						   'DATE(fecha_fin) <=' => $ffin->format( 'Y-m-d' ),
@@ -527,7 +527,7 @@ class Turno extends AppModel {
 			   );
 	   return $dato;
    }
-   
+
   /*!
    * Selecciona el ID de la proximo turno que precede a la fecha y hora especificada con el medico seleccionado
    */
@@ -545,7 +545,7 @@ class Turno extends AppModel {
 						'limit' => 1
 				)
 			);
-   	
+
    }
 
   /*!
@@ -558,55 +558,123 @@ class Turno extends AppModel {
    									  'recursive' => -1,
    									  'order' => array( 'fecha_inicio' => 'desc' ) ) );
    }
-   
+
+   public function cantidadDia( $condiciones = null ) {
+       if( !is_array( $condiciones ) ) { $condiciones = array(); }
+       $condiciones = array_merge( $condiciones,
+                                   array( 'DATE( `Turno`.`fecha_inicio` ) >= ' => date( 'Y-m-d' ),
+                                          'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
+   }
+
    /*!
     * Fucion de dashboard
     * BUsca la cantidad de turnos para el día actual
     */
    public function cantidadDiaRecibidos( $condiciones = null ) {
-       $condiciones = array_merge( $condiciones, 
-                                   array( '`Turno`.`recibido`' => true, 
+       if( !is_array( $condiciones ) ) { $condiciones = array(); }
+       $condiciones = array_merge( $condiciones,
+                                   array( '`Turno`.`recibido`' => true,
                                           'DATE( `Turno`.`fecha_inicio` ) >= ' => date( 'Y-m-d' ),
                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
-   
+
    /*!
     * Fucion de dashboard
     * BUsca la cantidad de turnos para el día actual
     */
    public function cantidadDiaAtendidos( $condiciones = null ) {
-       $condiciones = array_merge( $condiciones, 
-                                   array( '`Turno`.`atendido`' => true, 
+       if( !is_array( $condiciones ) ) { $condiciones = array(); }
+       $condiciones = array_merge( $condiciones,
+                                   array( '`Turno`.`atendido`' => true,
                                           'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
-   
+
    /*!
     * Fucion de dashboard
     * BUsca la cantidad de turnos para el día actual
     */
    public function cantidadDiaLibres( $condiciones = null ) {
-       $condiciones = array_merge( $condiciones, 
-                                   array( '`Turno`.`paciente_id`' => null, 
-                                          'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ), 
+       if( !is_array( $condiciones ) ) { $condiciones = array(); }
+       $condiciones = array_merge( $condiciones,
+                                   array( '`Turno`.`paciente_id`' => null,
+                                          'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
-   
+
    /*!
     * Fucion de dashboard
     * BUsca la cantidad de turnos para el día actual
     */
-   public function cantidadDiaReservados( $condiciones = null ) { 
-       $condiciones = array_merge( $condiciones, 
-                                   array( '`Turno`.`recibido`' => false, 
-                                          '`Turno`.`atendido`' => false, 
+   public function cantidadDiaReservados( $condiciones = null ) {
+       if( !is_array( $condiciones ) ) { $condiciones = array(); }
+       $condiciones = array_merge( $condiciones,
+                                   array( '`Turno`.`recibido`' => false,
+                                          '`Turno`.`atendido`' => false,
                                            'NOT' => array( '`Turno`.`paciente_id`' => null ),
                                            'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
-                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' )
+                                         )
+                                 );
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
+
+   public function anoMaximoTurno() {
+       $data = $this->find( 'first', array( 'fields' => array( 'YEAR( fecha_inicio ) AS maximo'  ),
+                                            'recursive' => -1,
+                                            'order' => array( 'fecha_inicio' => 'desc' )
+                                          )
+       );
+       if( count( $data ) > 0 ) {
+            return intval( $data[0]['maximo'] );
+       } else {
+           return 0;
+       }
+   }
+
+   public function anoMinimoTurno() {
+       $data = $this->find( 'first', array( 'fields' => array( 'YEAR( fecha_inicio ) AS minimo'  ),
+                                            'recursive' => -1,
+                                            'order' => array( 'fecha_inicio' => 'asc' )
+                                          )
+       );
+       if( count( $data ) > 0 ) {
+            return intval( $data[0]['minimo'] );
+       } else {
+           return 0;
+       }
+   }
+
+
+    public function trasladarTurno( $id_origen = null, $id_destino = null ) {
+        if( $id_origen == null ) { return false; }
+        if( $id_destino == null ) { return false; }
+
+        // Veo que el turno de destino no esté ocupado
+        $destino = $this->find( 'first', array( 'conditions' => array( 'id_turno' => $id_destino ),
+                                                'recursive' => -1,
+                                                'fields' => array( 'paciente_id' )
+        ) );
+        if( $destino['Turno']['paciente_id'] != null ) {
+            // Esto significa que el turno de destino ya tiene un paciente!
+            return false;
+        }
+
+        $this->id = $id_origen;
+        $paciente = intval( $this->field( 'paciente_id' ) );
+        if( !$this->saveField( 'paciente_id', null ) ) {
+            return false;
+        }
+        $this->id = $id_destino;
+        if( $this->saveField( 'paciente_id', $paciente ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

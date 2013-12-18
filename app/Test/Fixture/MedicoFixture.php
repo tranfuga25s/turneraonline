@@ -7,8 +7,7 @@
  */
 class MedicoFixture extends CakeTestFixture {
 
-	public $import = array( 'modelo' => 'Medico' );
-
+	public $import = array( 'table' => 'medicos' );
 
     /**
      * Inicailización de datos dinamicos
@@ -16,15 +15,15 @@ class MedicoFixture extends CakeTestFixture {
     public function init() {
         $this->records[] = array(
                 'id_medico' => 1,
-                'id_usuario' => 1,
-                'id_especialidad' => 1,
+                'usuario_id' => 1,
+                'especialidad_id' => 1,
                 'clinica_id' => 1,
                 'visible' => 1
         );
         $this->records[] = array(
                 'id_medico' => 2,
-                'id_usuario' => 2,
-                'id_especialidad' => 2,
+                'usuario_id' => 2,
+                'especialidad_id' => 2,
                 'clinica_id' => 1,
                 'visible' => 1
         );
