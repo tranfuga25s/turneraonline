@@ -67,7 +67,7 @@ CREATE TABLE `turnera`.`disponibilidad` (
 	COLLATE=utf8_spanish_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `turnera`.`especialidad` (
+CREATE TABLE `turnera`.`especialidades` (
 	`id_especialidad` int(11) NOT NULL AUTO_INCREMENT,
 	`nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,	PRIMARY KEY  (`id_especialidad`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_spanish_ci,
