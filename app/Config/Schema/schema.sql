@@ -91,7 +91,7 @@ CREATE TABLE `turnera`.`grupo` (
 	COLLATE=utf8_spanish2_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `turnera`.`medico` (
+CREATE TABLE `turnera`.`medicos` (
 	`id_medico` int(11) NOT NULL AUTO_INCREMENT,
 	`usuario_id` int(11) NOT NULL,
 	`especialidad_id` int(11) NOT NULL,
