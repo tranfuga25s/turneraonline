@@ -1,9 +1,9 @@
 language: php
- 
+
 php:
   - 5.3
   - 5.4
- 
+
 before_script:
   - sh -c "mysql -e 'CREATE DATABASE turnera;'"
   - mkdir app/tmp
@@ -33,10 +33,10 @@ before_script:
       'prefix' => 'test_'
     );
     }" > ./app/Config/database.php
-  - sh -c "mysql < ./app/Config/Schema/schema.sql"
- 
+  - ./app/Console/cake schema create
+
 script:
   - ./app/Console/cake test app AllTests --stderr
- 
+
 notifications:
   email: false
