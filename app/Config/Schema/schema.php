@@ -1,4 +1,4 @@
-<?php 
+<?php
 class AppSchema extends CakeSchema {
 
 	public function before($event = array()) {
@@ -141,10 +141,10 @@ class AppSchema extends CakeSchema {
                         array('Grupo' => array( 'id_grupo' => 1, 'nombre' => 'Administradores' ) ),
                         array('Grupo' => array( 'id_grupo' => 2, 'nombre' => 'Medicos'         ) ),
                         array('Grupo' => array( 'id_grupo' => 3, 'nombre' => 'Secretarias'     ) ),
-                        array('Grupo' => array( 'id_grupo' => 4, 'nombre' => 'Pacientes'       ) )                        
+                        array('Grupo' => array( 'id_grupo' => 4, 'nombre' => 'Pacientes'       ) )
                     ) );
                     break;
-                }                          
+                }
             }
         }
 
@@ -172,6 +172,9 @@ class AppSchema extends CakeSchema {
 		'telefono' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'email' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
 		'logo' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
+		'lat' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8' ),
+		'lng' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8' ),
+		'zoom' => array( 'type' => 'integer', 'null' => false, 'default' => 12 ),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id_clinica', 'unique' => 1)
 		),

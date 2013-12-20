@@ -12,7 +12,8 @@ class EspecialidadTestCase extends CakeTestCase {
      *
      * @var array
      */
-	public $fixtures = array('app.especialidad');
+	public $fixtures = array( 'app.especialidad',
+                              'app.medico' );
 
     /**
      * setUp method
