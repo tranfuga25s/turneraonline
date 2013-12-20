@@ -7,5 +7,15 @@
  */
 class SecretariaFixture extends CakeTestFixture {
 
-	public $import = array( 'table' => 'secretarias', 'records' => true );
+	public $import = array( 'table' => 'secretarias' );
+
+    public function init() {
+        $this->records[] = array(
+                'id_secretaria' => 1,
+                'usuario_id' => 2,
+                'clinica_id' => 1,
+                'resumen' => true
+        );
+        parent::init();
+    }
 }

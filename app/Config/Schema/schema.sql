@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS `turnera`.`clinicas`;
 DROP TABLE IF EXISTS `turnera`.`consultorios`;
 DROP TABLE IF EXISTS `turnera`.`dia_disponibilidad`;
 DROP TABLE IF EXISTS `turnera`.`disponibilidad`;
-DROP TABLE IF EXISTS `turnera`.`especialidad`;
-DROP TABLE IF EXISTS `turnera`.`excepcion`;
+DROP TABLE IF EXISTS `turnera`.`especialidades`;
+DROP TABLE IF EXISTS `turnera`.`excepciones`;
 DROP TABLE IF EXISTS `turnera`.`grupos`;
 DROP TABLE IF EXISTS `turnera`.`medicos`;
 DROP TABLE IF EXISTS `turnera`.`obras_sociales`;
@@ -35,9 +35,12 @@ CREATE TABLE `turnera`.`clinicas` (
 	`direccion` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
 	`telefono` int(11) NOT NULL,
 	`email` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
-	`logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,	PRIMARY KEY  (`id_clinica`)) 	DEFAULT CHARSET=utf8,
-	COLLATE=utf8_spanish_ci,
-	ENGINE=InnoDB;
+	`logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+	`lat` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci DEFAULT '',
+	`lng` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci DEFAULT '',
+	`zoom` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci DEFAULT 12,
+	PRIMARY KEY  (`id_clinica`)
+	) DEFAULT CHARSET=utf8, COLLATE=utf8_spanish_ci, ENGINE=InnoDB;
 
 CREATE TABLE `turnera`.`consultorios` (
 	`id_consultorio` int(11) NOT NULL AUTO_INCREMENT,
@@ -73,7 +76,7 @@ CREATE TABLE `turnera`.`especialidades` (
 	COLLATE=utf8_spanish_ci,
 	ENGINE=InnoDB;
 
-CREATE TABLE `turnera`.`excepcion` (
+CREATE TABLE `turnera`.`excepciones` (
 	`id_excepcion` int(20) NOT NULL AUTO_INCREMENT,
 	`medico_id` int(20) NOT NULL,
 	`inicio` datetime NOT NULL,
