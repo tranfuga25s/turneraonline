@@ -10,7 +10,7 @@ class AllModelTests extends PHPUnit_Framework_TestSuite {
      * @return $suite
      */
     public static function suite() {
-        $suite = new PHPUnit_Framework_TestSuite('All Model Tests');
+        $suite = new PHPUnit_Framework_TestSuite('Test de todos los modelos');
         $path = APP_TEST_CASES . DS . 'Model' . DS;
         $suite->addTestFile( $path.'AvisoTest.php' );
         $suite->addTestFile( $path.'ClinicaTest.php' );
