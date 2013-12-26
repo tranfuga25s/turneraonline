@@ -24,6 +24,7 @@ class SecretariasController extends AppController {
 					case 'turnos':
 					case 'cancelar':
 					case 'resumen':
+                    case 'trasladar':
 					{
 						return true;
 						break;
@@ -212,6 +213,24 @@ class SecretariasController extends AppController {
 		$this->set( 'id_secretaria', $this->Secretaria->field( 'id_secretaria' ) );
 
 	 }
+
+    /*!
+     * Permite trasladar un turno hacia otro turno no reservado
+     */
+     public function trasladar( $id_turno = null, $fecha = null ) {
+        if( $this->request->is( 'post' ) ) {
+
+        }
+        $this->Turno->id = $id_turno;
+        if( !$this->Turno->exists() ) {
+            throw new NotFoundException( "No existe el turno que intenta trasladar" );
+        }
+
+        $this->set( 'turnos', $this->Turnos->encontrarTurnosTrasladar( $id_turno, $fecha ) );
+        $this->set( 'turno_original', $id_turno );
+
+     }
+
 	/**
 	 * administracion_index method
 	 *
