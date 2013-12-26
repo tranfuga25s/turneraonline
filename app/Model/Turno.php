@@ -677,4 +677,20 @@ class Turno extends AppModel {
         }
     }
 
+
+    public function buscarTurnosParaTraslado( $id_original = null ) {
+        if( $id_original == null || $id_original <= 0 ) {
+            return false;
+        }
+        $this->recursive = -1;
+        $fecha_inicio_turnos = $this->field( 'fecha_fin', array( 'id_turno' => $id_original ) );
+        return $this->find( 'all',
+            array( 'conditions' =>
+                        array( 'paciente_id IS NULL',
+                               'fecha_inicio >= ' => $fecha_inicio_turnos,
+                               'id_turno != ' => $id_original ),
+                   'recursive' => -1 )
+        );
+    }
+
 }
