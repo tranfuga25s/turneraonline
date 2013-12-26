@@ -19,8 +19,8 @@ class TurnoTestCase extends CakeTestCase {
 	                          'app.turno' );
 
 
-    public $fecha_buena = "2012-10-09";
-    public $fecha = "2000-10-09";
+    public $fecha_buena = array( 'DATE( fecha_inicio )' => "2012-10-09" );
+    public $fecha = array( 'DATE( fecha_inicio )' => "2011-10-09" );
 
     /**
      * setUp method
@@ -76,38 +76,38 @@ class TurnoTestCase extends CakeTestCase {
     }
 
 
-   /* public function testCantidadTurnos() {
-        $this->assertEqual( $this->Turno->cantidadDia(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDia( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDia( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+    public function testCantidadTurnos() {
+        $this->assertEqual( $this->Turno->cantidadDia(), 0, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDia( $this->fecha ), 0, "Los turnos del año 2000 no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDia( $this->fecha_buena ), 12, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }
 
-    public function testCantidadAtendidos() {
-        $this->assertEqual( $this->Turno->cantidadDiaAtendidos(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+    /*public function testCantidadAtendidos() {
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos(), 0, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $this->fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaAtendidos( $this->fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }
 
     public function testCantidadRecibidos() {
-        $this->assertEqual( $this->Turno->cantidadDiaRecibidos(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDiaRecibidos( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDiaRecibidos( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+        $this->assertEqual( $this->Turno->cantidadDiaRecibidos(), 0, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaRecibidos( $this->fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaRecibidos( $this->fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }
 
     public function testCantidadLibres() {
-        $this->assertEqual( $this->Turno->cantidadDiaLibres(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDiaLibres( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDiaLibres( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+        $this->assertEqual( $this->Turno->cantidadDiaLibres(), 0, "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaLibres( $this->fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaLibres( $this->fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }
 
     public function testCantidadReservados() {
-        $this->assertEqual( $this->Turno->cantidadDiaReservados(), 1, "Los turnos del día de hoy deben ser cero" );
-        $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
-        $this->assertEqual( $this->Turno->cantidadDiaReservados( $fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
+        $this->assertEqual( $this->Turno->cantidadDiaReservados(), , "Los turnos del día de hoy deben ser cero" );
+        $this->assertEqual( $this->Turno->cantidadDiaReservados( $this->fecha ), 0, "Los turnos del año pasado no deben ser distintos de 0" );
+        $this->assertEqual( $this->Turno->cantidadDiaReservados( $this->fecha_buena ), 10, "Los turnos de los datos deben ser 10" );
         ///@TODO Agregar restricciones extras
     }*/
 

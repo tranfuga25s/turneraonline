@@ -560,10 +560,12 @@ class Turno extends AppModel {
    }
 
    public function cantidadDia( $condiciones = null ) {
-       if( !is_array( $condiciones ) ) { $condiciones = array(); }
-       $condiciones = array_merge( $condiciones,
+       if( !is_array( $condiciones ) ) {
+            $condiciones = array();
+            $condiciones = array_merge( $condiciones,
                                    array( 'DATE( `Turno`.`fecha_inicio` ) >= ' => date( 'Y-m-d' ),
                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+       }
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
 
@@ -585,11 +587,14 @@ class Turno extends AppModel {
     * BUsca la cantidad de turnos para el día actual
     */
    public function cantidadDiaAtendidos( $condiciones = null ) {
-       if( !is_array( $condiciones ) ) { $condiciones = array(); }
-       $condiciones = array_merge( $condiciones,
+       if( !is_array( $condiciones ) ) {
+           $condiciones = array();
+           $condiciones = array_merge( $condiciones,
                                    array( '`Turno`.`atendido`' => true,
                                           'DATE( fecha_inicio ) >= ' => date( 'Y-m-d' ),
                                           'DATE( `Turno`.`fecha_fin` ) <= ' => date( 'Y-m-d' ) ) );
+
+       }
        return $this->find( 'count', array( 'conditions' => $condiciones, 'recursive' => -1 ) );
    }
 
