@@ -15,7 +15,9 @@
 		<h4>Listado de Obras Sociales Disponibles</h4>
 		<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
 		<ul class="media-list">
-			<?php foreach( $obrasSociales as $obraSocial ) :
+			<?php
+			if( count( $obrasSociales ) > 0 ) : 
+			foreach( $obrasSociales as $obraSocial ) :
                 if( is_null( $obraSocial['ObraSocial']['logo'] ) || $obraSocial['ObraSocial']['logo'] == '' ) { $obraSocial['ObraSocial']['logo'] = 'cabecera.png'; } ?>			<li class="media">
 				<?php echo $this->Html->link( $this->Html->image( $obraSocial['ObraSocial']['logo'], array( 'class' => 'media-object' ) ),
 													  array( 'action' => 'view', $obraSocial['ObraSocial']['id_obra_social'] ),
@@ -28,7 +30,12 @@
 			      </address>
 			    </div>
 			  </li>
-			<?php endforeach; ?>
+			<?php 
+			endforeach;
+            else :
+                echo $this->Html->tag('span', "No tenemos ningún convenio con obras sociales todavía." );
+            endif; 
+			?>
 			</ul>
 		</div>
 	</div>

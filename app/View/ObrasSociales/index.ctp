@@ -38,7 +38,10 @@
 	<div class="titulo1">Listado de Obras Sociales Disponibles</div>
 	<p>Estas son las obras sociales con las que trabajamos. Pulse sobre el logo para ver m&aacute;s datos.</p>
 	<div class="contenedor-os">
-		<?php foreach( $obrasSociales as $obraSocial ):
+		<?php
+		if( count( $obrasSociales ) > 0 ) :
+            debug( $obrasSociales ); 
+		foreach( $obrasSociales as $obraSocial ):
 			if( is_null( $obraSocial['ObraSocial']['logo'] ) ) {
 				echo $this->Html->link( 
 						'<div>'.
@@ -56,6 +59,10 @@
 					  array( 'action' => 'view', $obrasSocial['ObraSocial']['id_obra_social'] ),
 					  array( 'escape' => false ) );
 			}
-		   endforeach; ?>
+		 endforeach;
+         else :
+            echo $this->Html->tag( 'span', "Todavía no poseemos ningún acuerdo con alguna obra social" );
+         endif; 
+		 ?>
 	</div>
 </div>
