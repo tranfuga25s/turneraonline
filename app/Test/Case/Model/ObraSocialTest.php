@@ -7,31 +7,43 @@ App::uses('ObrasSociale', 'Model');
  *
  */
 class ObrasSocialeTestCase extends CakeTestCase {
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array('app.obras_sociale');
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+	public $fixtures = array('app.obra_social');
 
-/**
- * setUp method
- *
- * @return void
- */
+    /**
+     * setUp method
+     *
+     * @return void
+     */
 	public function setUp() {
 		parent::setUp();
 
-		$this->ObrasSociale = ClassRegistry::init('ObrasSociale');
+		$this->ObraSocial = ClassRegistry::init('ObraSocial');
 	}
+    
+    public function testRepetido() {
+        $obrasocial = $this->ObraSocial->find( 'first', array( 'recursive' => -1 ) );
+        $this->assertEqual( $this->ObraSocial->buscarRepetido( $obrasocial['ObraSocial'] ), true, "No funciona el repetido con formato array" );
 
-/**
- * tearDown method
- *
- * @return void
- */
+        $obrasocial['ObraSocial']['nombre'] = "test1";
+        $this->assertEqual( $this->ObraSocial->buscarRepetido( $obrasocial['ObraSocial'] ), false, "No funciona el no repetido con formato array" );
+        
+        $this->assertEqual( $this->ObraSocial->buscarRepetido( "Obra social 1" ), true, "No funciona el repetido con formato texto" );
+        
+        $this->assertEqual( $this->ObraSocial->buscarRepetido( "Test" ), false, "No funciona el no repetido con formato texto" );
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
 	public function tearDown() {
-		unset($this->ObrasSociale);
+		unset($this->ObraSocial);
 
 		parent::tearDown();
 	}
