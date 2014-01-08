@@ -78,11 +78,12 @@ $this->set( 'title_for_layout', "Avisos" );
     <?php if( $sms_habilitado ) : ?>
     <div class="span12">
         <h4>Ultimos Sms recibidos</h4>
+        <div class="btn-group">
         <?php echo $this->Html->tag( 'a', $this->Html->tag( 'span', '', array( 'class' => 'icon icon-comment') ).' Enviar SMS',
                                      array( 'class' => 'btn btn-success',
                                             'onclick' => "responderMensaje(0,'');" )
-              ); ?>
-        <table class="table table-bordered">
+              ); ?></div><br /><br />
+        <table class="table table-bordered table-striped">
             <tbody>
                 <th>Teléfono</th>
                 <th>Fecha y hora</th>
