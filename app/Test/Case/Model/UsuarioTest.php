@@ -172,7 +172,15 @@ class UsuarioTestCase extends CakeTestCase {
                                                            'recursive' => -1 ) );
          $this->assertGreaterThan( 0, count( $telefono ), "No hay ningun usuario con telefono para revisar el metodo!" );
          if( is_array( $telefono ) ) { $telefono = $telefono['Usuario']['telefono']; }
-         $this->assertNotEqual( $this->Usuario->getUsuarioPorTelefono( $telefono ), "", "No debería devolver un valor vacio si el telefono es uno de la base de datos" );
+         $devolucion = $this->Usuario->getUsuarioPorTelefono( $telefono );
+         $this->assertNotEqual( $devolucion, "", "No debería devolver un valor vacio si el telefono es uno de la base de datos" );
+         $this->assertInternalType( 'array', $devolucion, "Debería devolver un array" );
+         $this->assertGreaterThan( 0, count( $devolucion ), "Debería de contener al menos un elemento" );
+         $this->assertArrayHasKey( 'Paciente', $devolucion, "La devolucion debería de tener el array paciente" );
+         $this->assertArrayHasKey( 'id_usuario', $devolucion['Paciente'], "El elemento de deolvucion debe tener la clave id_usuario" );
+         $this->assertArrayHasKey( 'razonsocial', $devolucion['Paciente'], "El elemento de deolvucion debe tener la clave razonsocial" );
+
+
      }
 
      /**

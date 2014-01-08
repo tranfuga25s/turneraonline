@@ -354,6 +354,22 @@ class AvisosController extends AppController {
                 'costo' => $this->ConteoSms->costoMensaje()
             );
             $this->set( 'estado_sms', $estado );
+            // Configuración de los mensajes para sms
+            $this->set( 'num_cliente', $this->Sms->getClientId() );
+            $this->set( 'clave', $this->Sms->getKey() );
+            $this->set( 'codigo_respuesta', $this->Sms->getRequestCode() );
+
+            // Agregar visión de creditos
+            $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
+            $mensajes = $this->Sms->obtenerListaMensajes();
+            $this->loadModel( 'Usuario' );
+            foreach( $mensajes as &$mensaje ) {
+                $paciente = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
+                if( $paciente != "" ) {
+                    $mensaje['Paciente'] = $paciente['Paciente'];
+                }
+            }
+            $this->set( 'mensajes', $mensajes );
         } else {
             $this->set( 'sms_habilitado', false );
         }

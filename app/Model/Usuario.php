@@ -204,12 +204,17 @@ class Usuario extends AppModel {
          $data = $this->find( 'first',
             array(
                 'conditions' => array( 'OR' => array( 'telefono' => $tel, 'celular' => $tel ) ),
-                'fields' => array( 'razonsocial' ),
+                'fields' => array( 'razonsocial', 'id_usuario' ),
                 'recursive' => -1
             )
          );
          if( count( $data ) > 0 ) {
-             return $data['Usuario']['razonsocial'];
+             return array(
+                'Paciente' => array(
+                    'id_usuario' => $data['Usuario']['id_usuario'],
+                    'razonsocial' => $data['Usuario']['razonsocial']
+                 )
+             );
          } else {
              return "";
          }
