@@ -55,7 +55,7 @@ $this->set( 'title_for_layout', "Configuración de envio de sms" );
                 <tr>
                     <td><?php echo $mensaje['Sms']['uid']; ?></td>
                     <td><?php echo h( $mensaje['Sms']['fechahora'] ); ?></td>
-                    <td><?php echo $mensaje['Sms']['texto']; ?></td>
+                    <td><?php echo h( utf8_encode( $mensaje['Sms']['texto'] ) ); ?></td>
                     <td><?php echo $mensaje['Paciente']['razonsocial']; ?></td>
                     <td>
                         <?php //echo $this->Html->tag( 'a', 'Eliminar', array( 'class' => 'boton' ) ); ?>
