@@ -302,7 +302,7 @@ class AppSchema extends CakeSchema {
 		'notificaciones' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'contra' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8'),
 		'grupo_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'facebook_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 20),
+		'facebook_id' => array('type' => 'float', 'null' => false, 'default' => null, 'length' => 20),
 		'sexo' => array( 'type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_spanish_ci', 'charset' => 'utf8' ),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id_usuario', 'unique' => 1)

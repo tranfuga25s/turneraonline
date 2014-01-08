@@ -144,7 +144,7 @@ CREATE TABLE `turnera`.`usuarios` (
 	`notificaciones` tinyint(1) NOT NULL,
 	`contra` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
 	`grupo_id` int(11) NOT NULL,
-	`facebook_id` int(20) NOT NULL,
+	`facebook_id` BIGINT(20) NOT NULL DEFAULT 0,
 	`sexo` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,	PRIMARY KEY  (`id_usuario`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_spanish_ci,
 	ENGINE=InnoDB;
