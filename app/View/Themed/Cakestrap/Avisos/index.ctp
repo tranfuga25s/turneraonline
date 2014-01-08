@@ -1,5 +1,6 @@
 <?php
 $this->set( 'title_for_layout', "Avisos" );
+$this->Html->script( 'bootstrap-limit.min', array( 'inline' => false, 'plugin' => false ) );
 ?>
 <div class="row-fluid">
 
@@ -126,9 +127,23 @@ $this->set( 'title_for_layout', "Avisos" );
             <h3 id="myModalLabel">Responder mensaje</h3>
         </div>
         <div class="modal-body">
-            <?php echo $this->Form->input( 'numero', array( 'label' => 'Numero de telefono', 'div' => false ) ); ?>
-            <p>Ingrese el texto que desea responder:</p>
-            <?php echo $this->Form->input( 'texto', array( 'type' => 'textarea', 'label' => false, 'div' => false ) ); ?>
+            <?php echo $this->Form->input( 'numero', array( 'label' => 'Número de teléfono:',
+                                                            'div' => false,
+                                                            'required' => true ) ); ?>
+            <p>Ingrese el texto que desea enviar:</p>
+            <?php echo $this->Form->input( 'texto', array( 'type' => 'textarea',
+                                                           'label' => false,
+                                                           'div' => false,
+                                                           'rows' => 4,
+                                                           'cols' => 50,
+                                                           'maxLenght' => 140,
+                                                           'required' => true ) );
+                  echo $this->Html->tag( 'span',
+                                         'Quedan '.
+                                          $this->Html->tag( 'span', '140', array( 'class' => 'badge', 'id' => "AvisoContador" ) ).
+                                         ' caraceteres',
+                                         array( 'escape' => false ) );
+            ?>
         </div>
         <div class="modal-footer">
             <?php echo $this->Form->button( 'Cerrar', array( 'class' => 'btn', 'data-dismiss' => 'modal', 'aria-hidden' => true, 'div' => false ) ); ?>
@@ -139,10 +154,16 @@ $this->set( 'title_for_layout', "Avisos" );
     <?php echo $this->Html->scriptBlock('
     function responderMensaje( tid, numero ) {
         // Pongo los datos en el formulario
-      $("#AvisoTid").val( tid );
-      $("#AvisoNumero").val( numero );
-      $("#responder").modal();
+        if( tid == 0 ) {
+            $("#myModalLabel").html("Enviar Sms" );
+        }
+        $("#AvisoTid").val( tid );
+        $("#AvisoNumero").val( numero );
+        $("#responder").modal();
     }
+    ');
+    echo $this->Js->buffer('
+    $("#AvisoTexto").limit( {maxLength: 140, counter: $("#AvisoContador") });
     ');
     endif; ?>
 </div>

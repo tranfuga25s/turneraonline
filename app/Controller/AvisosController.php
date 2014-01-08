@@ -413,9 +413,13 @@ class AvisosController extends AppController {
                 throw new NotFoundException( 'Faltan parametros' );
             }
             $aviso = $this->request->data['Aviso'];
-            if( !array_key_exists( 'numero', $aviso ) ||
-                !array_key_exists( 'texto', $aviso ) ) {
-                throw new NotFoundException( 'No se setearon las variables correctamente' );
+            if( empty( $aviso['numero'] ) || floatval( $aviso['numero'] ) == 0 ) {
+                $this->Session->setFlash( 'Debe ingresar un número de teléfono', 'flash/error' );
+                return $this->redirect( array( 'action' => 'index' ) );
+            }
+            if( empty( $aviso['texto'] ) ) {
+                $this->Session->setFlash( 'Debe ingresar un texto a enviar', 'flash/error'  );
+                return $this->redirect( array( 'action' => 'index' ) );
             }
 
             if( $this->Sms->enviar( $aviso['numero'], $aviso['texto']) ) {
@@ -429,7 +433,7 @@ class AvisosController extends AppController {
             }
             return $this->redirect( array( 'action' => 'index' ) );
         } else {
-            throw new NotFoundException( 'Metodo no implementado: '.$this->request->method() );
+            throw new NotFoundException( 'Mètodo no implementado: '.$this->request->method() );
         }
     }
 
