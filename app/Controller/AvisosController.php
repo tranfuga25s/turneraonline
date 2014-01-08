@@ -23,6 +23,7 @@ class AvisosController extends AppController {
                     case 'administracion_view':
                     case 'administracion_edit':
                     case 'index':
+                    case 'enviarSms':
                     { return true; break; }
                 }
                 // saco el break y el default para que autorize a los permisos de el usuario normal
@@ -338,6 +339,35 @@ class AvisosController extends AppController {
 		$this->redirect( array( 'action' => 'pendiente' ) );
 	 }
 
+
+     /**
+      * Funcion que habilita el servicio de sms
+      */
+     public function administracion_habilitar_sms() {
+         // Si el servicio no está habilitado el servicio muestro el descargo.
+         if( $this->request->isPost() ) {
+             // Veo que haya contestado correctamente la habilitacion
+             if( $this->request->data['habilitar']['acepta'] == 1 ) {
+                 // Habilito el servicio
+                 $key = $this->request->data['habilitar']['key'];
+                 $cliente_id = $this->request->data['habilitar']['id_cliente'];
+                 $method = 'GET';
+                 $codigo = $this->request->data['habilitar']['codigo'];
+                 if( $this->Sms->configurarServicio( $cliente_id, $key, $method, $codigo ) ) {
+                     $this->Session->correcto( 'El servicio ha sido configurado correctamente' );
+                     $this->redirect( array( 'action' => 'sms' ) );
+                 } else {
+                     $this->Session->incorrecto( 'No se pudo configurar el servicio' );
+                 }
+             }
+         }
+         if( !$this->Sms->habilitado() ) {
+             return $this->render( 'descargo' );
+         }
+         // El servicio ya está habilitado, lo envío a la pagina de configuración
+         $this->redirect( array( 'action' => 'sms' ) );
+     }
+
     /*!
      * Funcion llamada desde el dashboard de medicos y/o secretarias
      */
@@ -373,37 +403,32 @@ class AvisosController extends AppController {
         } else {
             $this->set( 'sms_habilitado', false );
         }
-
     }
 
 
-     /**
-      * Funcion que habilita el servicio de sms
-      */
-     public function administracion_habilitar_sms() {
-         // Si el servicio no está habilitado el servicio muestro el descargo.
-         if( $this->request->isPost() ) {
-             // Veo que haya contestado correctamente la habilitacion
-             if( $this->request->data['habilitar']['acepta'] == 1 ) {
-                 // Habilito el servicio
-                 $key = $this->request->data['habilitar']['key'];
-                 $cliente_id = $this->request->data['habilitar']['id_cliente'];
-                 $method = 'GET';
-                 $codigo = $this->request->data['habilitar']['codigo'];
-                 if( $this->Sms->configurarServicio( $cliente_id, $key, $method, $codigo ) ) {
-                     $this->Session->correcto( 'El servicio ha sido configurado correctamente' );
-                     $this->redirect( array( 'action' => 'sms' ) );
-                 } else {
-                     $this->Session->incorrecto( 'No se pudo configurar el servicio' );
-                 }
-             }
-         }
-         if( !$this->Sms->habilitado() ) {
-             return $this->render( 'descargo' );
-         }
-         // El servicio ya está habilitado, lo envío a la pagina de configuración
-         $this->redirect( array( 'action' => 'sms' ) );
-     }
+    public function enviarSms() {
+        if( $this->request->isPost() ) {
+
+            if( !array_key_exists( 'Aviso', $this->request->data ) ) {
+                throw new NotFoundException( 'Faltan parametros' );
+            }
+            $aviso = $this->request->data['Aviso'];
+            if( !array_key_exists( 'numero', $aviso ) ||
+                !array_key_exists( 'texto', $aviso ) ) {
+                throw new NotFoundException( 'No se setearon las variables correctamente' );
+            }
+
+            if( $this->Sms->enviar( $aviso['numero'], $aviso['texto']) ) {
+                $this->Session->setFlash( 'Mensaje enviado correctamente', 'flash/success' );
+            } else {
+                $this->Session->setFlash( 'No se pudo enviar el mensaje', 'flash/error' );
+            }
+            return $this->redirect( array( 'action' => 'index' ) );
+        } else {
+            throw new NotFoundException( 'Metodo no implementado: '.$this->request->method() );
+        }
+    }
+
 
 }
 

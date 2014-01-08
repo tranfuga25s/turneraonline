@@ -114,7 +114,7 @@ $this->set( 'title_for_layout', "Avisos" );
     </div>
 
     <div id="responder" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="responder" aria-hidden="true">
-        <?php echo $this->Form->create( 'Aviso', array( 'action' => 'enviar', 'class' => 'form-inline' ) );
+        <?php echo $this->Form->create( 'Aviso', array( 'action' => 'enviarSms', 'class' => 'form-inline' ) );
               echo $this->Form->input( 'tid', array( 'type' => 'hidden', 'value' => null ) ); ?>
         <div class="modal-header">
             <?php echo $this->Form->button( 'x', array( 'class' => "close", 'data-dismiss' => "responder", 'aria-hidden' => "true" ) ); ?>
