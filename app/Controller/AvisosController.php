@@ -420,6 +420,10 @@ class AvisosController extends AppController {
 
             if( $this->Sms->enviar( $aviso['numero'], $aviso['texto']) ) {
                 $this->Session->setFlash( 'Mensaje enviado correctamente', 'flash/success' );
+                $this->loadModel( 'Gestotux.ConteoSms' );
+                if( $this->ConteoSms->agregarEnviado() ) {
+                    $this->log( 'No se pudo registrar el envío de un sms' );
+                }
             } else {
                 $this->Session->setFlash( 'No se pudo enviar el mensaje', 'flash/error' );
             }
