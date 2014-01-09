@@ -378,17 +378,13 @@ class AvisosController extends AppController {
         if( $this->Sms->habilitado() ) {
             $this->set( 'sms_habilitado', true );
             $this->loadModel( 'Gestotux.ConteoSms' );
+            $this->ConteoSms->setearCliente( intval( Configure::read( 'Gestotux.cliente' ) ) );
             $estado = array(
                 'enviados' => $this->ConteoSms->cantidadEnviada(),
                 'recibidos' => $this->ConteoSms->cantidadRecibida(),
                 'costo' => $this->ConteoSms->costoMensaje()
             );
             $this->set( 'estado_sms', $estado );
-            // Configuración de los mensajes para sms
-            $this->set( 'num_cliente', $this->Sms->getClientId() );
-            $this->set( 'clave', $this->Sms->getKey() );
-            $this->set( 'codigo_respuesta', $this->Sms->getRequestCode() );
-
             // Agregar visión de creditos
             $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
             $mensajes = $this->Sms->obtenerListaMensajes();
@@ -425,6 +421,7 @@ class AvisosController extends AppController {
             if( $this->Sms->enviar( $aviso['numero'], $aviso['texto']) ) {
                 $this->Session->setFlash( 'Mensaje enviado correctamente', 'flash/success' );
                 $this->loadModel( 'Gestotux.ConteoSms' );
+                $this->ConteoSms->setearCliente( intval( Configure::read( 'Gestotux.cliente' ) ) );
                 if( $this->ConteoSms->agregarEnviado() ) {
                     $this->log( 'No se pudo registrar el envío de un sms' );
                 }

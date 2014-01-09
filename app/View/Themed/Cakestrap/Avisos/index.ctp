@@ -47,12 +47,12 @@ $this->Html->script( 'bootstrap-limit.min', array( 'inline' => false, 'plugin' =
     </div>
 
     <div class="span4">
-        <h4>Estado del sistema en el mes xxxx</h4>
+        <h4>Estado del sistema en el mes <?php echo date( 'F Y' ); ?></h4>
         <table class="table table-bordered table-striped table-hover">
             <tbody>
                 <tr>
                     <th rowspan="2">Item</th>
-                    <th colspan="3">Estado</th>
+                    <th colspan="3" class="text-center">Estado</th>
                 </tr>
                 <tr>
                     <th>Enviados</th>
@@ -61,7 +61,7 @@ $this->Html->script( 'bootstrap-limit.min', array( 'inline' => false, 'plugin' =
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td>N</td>
+                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td><span class="badge badge-success">Gratis!</span></td>
                 </tr>
