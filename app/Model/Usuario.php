@@ -192,6 +192,7 @@ class Usuario extends AppModel {
         return true;
     }
 
+
     /**
      * Obtiene los datos de un usuario si existe a partir del número de teléfono.
      * @param $tel mixed Numero de telefono a buscar
