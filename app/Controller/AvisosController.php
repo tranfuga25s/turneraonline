@@ -45,6 +45,30 @@ class AvisosController extends AppController {
 
     public function recibir() {
         $mensaje = $this->Sms->recibir();
+
+        // Busco si corresponde a un cliente
+        $this->loadModel( 'Usuarios' );
+        $cliente = $this->Usuarios->getUsuarioPorTelefono( $mensaje['uid'] );
+
+        $alerta = "Ha recibido un mensaje de ";
+        if( $cliente != "" ) {
+            $alerta .= $cliente['Usuario']['apellido'];
+            $alerta .= ", ";
+            $alerta .= $cliente['Usuario']['nombre'];
+        } else {
+            $alerta .= "Desconocido";
+
+        }
+        $alerta .= " a las ";
+        $alerta .= $mensaje['fechahora'];
+
+        $anteriores = Cache::read( 'mensajes', 'sms' );
+        if( $anteriores == false ) { $anteriores = array(); }
+        $anteriores[] = array(
+            'Mensaje' => $mensaje,
+            'alerta' => $alerta
+        );
+        Cache::write( 'mensajes', 'sms' );
     }
 
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
