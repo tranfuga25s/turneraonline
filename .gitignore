@@ -7,3 +7,6 @@
 /dist
 .DS_Store
 /tags
+.editorconfig
+build.properties
+build.xml

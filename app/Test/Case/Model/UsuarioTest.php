@@ -179,17 +179,22 @@ class UsuarioTestCase extends CakeTestCase {
          $this->assertArrayHasKey( 'Paciente', $devolucion, "La devolucion debería de tener el array paciente" );
          $this->assertArrayHasKey( 'id_usuario', $devolucion['Paciente'], "El elemento de deolvucion debe tener la clave id_usuario" );
          $this->assertArrayHasKey( 'razonsocial', $devolucion['Paciente'], "El elemento de deolvucion debe tener la clave razonsocial" );
-
-
      }
 
-     /**
-      */
-    /*public function testEliminacionUltimoAdmin() {
-        $this->assertEqual( true, false, "Falta la eliminacion - Se eliminó el ultimo usuario admin" );
+    /**
+     * Evitar la eliminacion del ultimo admin
+     */
+    public function testEliminacionUltimoAdmin() {
+        $admin = $this->Usuario->find( 'first', array( 'conditions' => array( 'grupo_id' => 1 ), 'recursive' => -1 ) );
+        $this->assertLessThan( count( $admin ), 0, "No hay ningun administrador" );
+        $this->assertArrayHasKey( 'Usuario', $admin, "No esta seteado el elemento" );
+        $id_admin = $admin['Usuario']['id_usuario'];
+        $this->assertEqual( $this->Usuario->deleteAll( array( 'grupo_id' => 1, 'id_usuario != ' => $id_admin ) ), true, "Fallo al eliminar todos los administradores" );
+        $this->assertEqual( $this->Usuario->delete( $id_admin ), false, "No se pudo evitar la eliminacion" );
+        $this->assertEqual( $this->Usuario->find( 'count', array( 'conditions' => array( 'grupo_id' => 1 ), 'recursive' => -1 ) ), 1, "Hay mas de un administracion" );
     }
 
-    public function testEliminacionPorEmail() {
+    /*public function testEliminacionPorEmail() {
         $this->assertEqual( true, false, "Falta implementacion de test de eliminar por email" );
     }*/
 }
