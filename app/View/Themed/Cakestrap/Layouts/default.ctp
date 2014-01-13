@@ -26,18 +26,18 @@
 
 	<body>
 		<div id="main-container">
-			<div id="header" class="container">
+			<div id="header" class="container-fluid">
 				<?php echo $this->element('menu/top_menu'); ?>
 			</div><!-- #header .container -->
 
-			<div id="content" class="container">
+			<div id="content" class="container-fluid">
 
 				<?php echo $this->Session->flash(); ?>
 
 				<?php echo $this->fetch('content'); ?>
 			</div><!-- #header .container -->
 
-			<div id="footer" class="container well">
+			<div id="footer" class="container-fluid well">
 				<?php echo $_SERVER['SERVER_NAME']; ?> &copy; 2012 &nbsp;
 				<?php echo $this->Html->link(
 					$this->Html->image( 'tr.logo.png', array( 'alt' => "TR Sistemas Informaticos Integrados", 'border' => '0' ) ),
