@@ -7,8 +7,14 @@
 				<small>Sitio de demostraci&oacute;n</small>
 			</div>
 			<ul class="nav pull-right">
-				<li><?php echo $this->Html->link( $this->Html->image( 'ayuda.png' ), '/pages/ayuda', array( 'escape' => false ) ); ?></li>
-				<li><?php echo $this->Html->link( $this->Html->image( 'contacto.png' ), '/contacto/formulario', array( 'escape' => false ) ); ?></li>
+				<li><?php echo $this->Html->link(
+				                    $this->Html->image( 'ayuda.png' ),
+				                    array( 'plugin' => 'pregunta_frecuente', 'controller' => 'pregunta_frecuente' ),
+				                    array( 'escape' => false ) ); ?></li>
+				<li><?php echo $this->Html->link(
+				                    $this->Html->image( 'contacto.png' ),
+				                    '/contacto/formulario',
+				                    array( 'escape' => false ) ); ?></li>
 			</ul>
 		</div>
 	</div>
