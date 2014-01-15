@@ -72,6 +72,7 @@ CakePlugin::load( 'Gestotux', array( 'bootstrap' => true ) );
 CakePlugin::load( 'Facebook' );
 CakePlugin::load( 'DebugKit' );
 CakePlugin::load( 'Waltook', array( 'bootstrap' => true ) );
+CakePlugin::load( 'PreguntaFrecuente' );
 App::uses( 'IniReader', 'Configure' );
 Configure::config( 'Turnera', new IniReader( ROOT.DS.APP_DIR.DS.'Config'.DS.'turnos' ) );
 
