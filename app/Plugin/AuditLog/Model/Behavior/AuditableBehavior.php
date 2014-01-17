@@ -62,16 +62,16 @@ class AuditableBehavior extends ModelBehavior {
    *
    * @return  boolean
    */
-  public function beforeSave( Model $Model ) {
+  public function beforeSave( Model $Model, $options = array() ) {
     # If we're editing an existing object, save off a copy of
     # the object as it exists before any changes.
     if( !empty( $Model->id ) ) {
       $this->_original[$Model->alias] = $this->_getModelData( $Model );
     }
-    
+
     return true;
   }
-  
+
   /**
    * Executed before a delete() operation.
    *
@@ -87,7 +87,7 @@ class AuditableBehavior extends ModelBehavior {
       )
     );
     $this->_original[$Model->alias] = $original[$Model->alias];
-    
+
     return true;
   }
 
@@ -99,7 +99,7 @@ class AuditableBehavior extends ModelBehavior {
    *                    insertion. False otherwise.
    * @return  void
    */
-  public function afterSave( Model $Model, $created ) {
+  public function afterSave( Model $Model, $created , $options = array() ) {
     $audit = array( $Model->alias => $this->_getModelData( $Model ) );
     $audit[$Model->alias][$Model->primaryKey] = $Model->id;
 
@@ -113,7 +113,7 @@ class AuditableBehavior extends ModelBehavior {
     $Model->Audit->bindModel(
       array( 'hasMany' => array( 'AuditDelta' ) )
     );
-    
+
     /*
      * If a currentUser() method exists in the model class (or, of
      * course, in a superclass) the call that method to pull all user
@@ -125,14 +125,19 @@ class AuditableBehavior extends ModelBehavior {
     } else if ( $Model->hasMethod( 'current_user' ) ) {
       $source = $Model->current_user();
     }
-    
+
+    if( !is_array( $source ) ) {
+        $source = array( 'id' => $source );
+    }
+
     $data = array(
       'Audit' => array(
         'event'     => $created ? 'CREATE' : 'EDIT',
         'model'     => $Model->alias,
         'entity_id' => $Model->id,
         'json_object' => json_encode( $audit ),
-        'source_id' => isset( $source['id'] ) ? $source['id'] : null
+        'source_id' => isset( $source['id'] ) ? $source['id'] : null,
+        'description' => isset( $source['description'] ) ? $source['description'] : null,
       )
     );
 
@@ -187,7 +192,7 @@ class AuditableBehavior extends ModelBehavior {
         }
       }
     }
-    
+
     # Insert a delta record if something changed.
     if( count( $updates ) ) {
       foreach( $updates as $delta ) {
@@ -221,9 +226,9 @@ class AuditableBehavior extends ModelBehavior {
     if( isset( $this->_original ) ) {
       unset( $this->_original[$Model->alias] );
     }
-    return true;    
+    return true;
   }
-  
+
   /**
    * Executed after a model is deleted.
    *
@@ -242,7 +247,7 @@ class AuditableBehavior extends ModelBehavior {
     } else if ( $Model->hasMethod( 'current_user' ) ) {
       $source = $Model->current_user();
     }
-    
+
     $audit = array( $Model->alias => $this->_original[$Model->alias] );
     $data  = array(
       'Audit' => array(
@@ -250,10 +255,11 @@ class AuditableBehavior extends ModelBehavior {
         'model'       => $Model->alias,
         'entity_id'   => $Model->id,
         'json_object' => json_encode( $audit ),
-        'source_id'   => isset( $source['id'] ) ? $source['id'] : null
+        'source_id'   => isset( $source['id'] ) ? $source['id'] : null,
+        'description' => isset( $source['description'] ) ? $source['description'] : null,
       )
     );
-    
+
     $this->Audit = ClassRegistry::init( 'Audit' );
     $this->Audit->create();
     $this->Audit->save( $data );
@@ -287,7 +293,7 @@ class AuditableBehavior extends ModelBehavior {
     );
 
     $audit_data = array(
-      $Model->alias => $data[$Model->alias]
+      $Model->alias => isset($data[$Model->alias]) ? $data[$Model->alias] : array()
     );
 
     foreach( $this->settings[$Model->alias]['habtm'] as $habtm_model ) {

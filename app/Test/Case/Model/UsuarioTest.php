@@ -30,6 +30,7 @@ class UsuarioTestCase extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->Usuario = ClassRegistry::init('Usuario');
+        $this->Usuario->Behaviors->unload('AuditLog.Auditable');
         Configure::write( 'Turnera.grupos.0', 2 );
         Configure::write( 'Turnera.grupos.1', 3 );
 	}
@@ -192,6 +193,10 @@ class UsuarioTestCase extends CakeTestCase {
         $this->assertEqual( $this->Usuario->deleteAll( array( 'grupo_id' => 1, 'id_usuario != ' => $id_admin ) ), true, "Fallo al eliminar todos los administradores" );
         $this->assertEqual( $this->Usuario->delete( $id_admin ), false, "No se pudo evitar la eliminacion" );
         $this->assertEqual( $this->Usuario->find( 'count', array( 'conditions' => array( 'grupo_id' => 1 ), 'recursive' => -1 ) ), 1, "Hay mas de un administracion" );
+    }
+
+    public function testListado() {
+        $this->assertNotEqual( count( $this->Usuario->find('list') ), 0, "El listado debería devolver una lista" );
     }
 
     /*public function testEliminacionPorEmail() {

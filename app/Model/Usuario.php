@@ -7,8 +7,11 @@ App::uses('AppModel', 'Model');
 class Usuario extends AppModel {
 
 	public $primaryKey = 'id_usuario';
-	//public $displayField = 'razonsocial';
-	public $actAs = array( 'AuditLog.Auditable' );
+
+	public $displayField = 'nombre';
+
+	public $actsAs = array( 'AuditLog.Auditable' );
+
 	public $virtualFields = array(
 		'razonsocial' => 'CONCAT( Usuario.apellido, \', \', Usuario.nombre )' );
 
@@ -143,7 +146,7 @@ class Usuario extends AppModel {
 		for( $i=0; $i<8; $i++ ) {
 			$contra .= substr($str, rand(0,64), 1 );
 		}
-		$id = $this->find( 'first', array( 'conditions' => array( 'email' => $email ), 'fields' => 'id_usuario' ) );
+		$id = $this->find( 'first', array( 'conditions' => array( 'email' => $email ), 'fields' => 'id_usuario', 'recursive' => -1 ) );
 		if( count( $id ) > 0 && $id['Usuario']['id_usuario'] != 0 ) {
 			$this->id = $id['Usuario']['id_usuario'];
 			if( !$this->saveField( 'contra', $contra ) ) {
