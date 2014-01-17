@@ -577,11 +577,10 @@ class UsuariosController extends AppController {
 			} else {
 				$this->Session->incorrecto( 'Los datos del usuario no pudieron ser guardados correctamente. Por favor intente nuevamente.' );
 			}
-		} else {
-			$this->request->data = $this->Usuario->read(null, $id);
-			$this->set( 'grupos', $this->Usuario->Grupo->find( 'list' ) );
-			$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
 		}
+		$this->request->data = $this->Usuario->read(null, $id);
+		$this->set( 'grupos', $this->Usuario->Grupo->find( 'list' ) );
+		$this->set( 'obras_sociales', $this->Usuario->ObraSocial->find( 'list' ) );
 	}
 
 	/**

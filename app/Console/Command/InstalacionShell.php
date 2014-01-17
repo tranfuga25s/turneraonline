@@ -12,7 +12,8 @@ class InstalacionShell extends AppShell {
 	                      'Especialidad',
 	                      'Disponibilidad',
 	                      'DiaDisponibilidad',
-	                      'Turno' );
+	                      'Turno',
+	                      'Grupo' );
 
     private $clinica =  array(
         'Clinica' => array(
@@ -259,6 +260,13 @@ class InstalacionShell extends AppShell {
        )
     );
 
+    public $grupos = array(
+        0 => array( 'id_grupo' => 1, 'nombre' => 'Administradores' ),
+        1 => array( 'id_grupo' => 2, 'nombre' => 'Medicos'         ),
+        2 => array( 'id_grupo' => 3, 'nombre' => 'Secretarias'     ),
+        3 => array( 'id_grupo' => 4, 'nombre' => 'Pacientes'       )
+    );
+
     public function solo_datos() {
 
         $this->out( 'Sistema de reinistalacion de datos', 1, Shell::NORMAL  );
@@ -365,6 +373,23 @@ class InstalacionShell extends AppShell {
             $this->out( '<info>Secretarias Guardados</info>', 1, Shell::NORMAL );
         } else {
             $this->out( '<error>No se pudo guardar los Secretarias</error>', 1, Shell::QUIET );
+            $dataSource->rollback();
+            return false;
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        // configuro los grupos
+        $this->out( '<info>Reiniciando Grupos</info>', 1, Shell::NORMAL  );
+        if( $this->Grupo->deleteAll( array( '1=1' ), false, false ) ) {
+            $this->out( '<info>Grupos eliminados</info>', 1, Shell::NORMAL  );
+        } else {
+            $this->out( '<error>No se pudo eliminar los Grupos anteriores</error>', 1, Shell::QUIET );
+            $dataSource->rollback();
+            return false;
+        }
+        if( $this->Grupo->saveMany( $this->grupos, array( 'validate' => false )  ) ) {
+            $this->out( '<info>Grupos Guardados</info>', 1, Shell::NORMAL );
+        } else {
+            $this->out( '<error>No se pudo guardar los grupos</error>', 1, Shell::QUIET );
             $dataSource->rollback();
             return false;
         }

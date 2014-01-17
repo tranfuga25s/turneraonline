@@ -18,7 +18,7 @@
 		echo $this->Form->input( 'celular'       );
 		echo $this->Form->input( 'obra_social_id', array( 'options' => $obras_sociales ) );
 		echo $this->Form->input( 'notificaciones');
-		echo $this->Form->input( 'grupo_id'      );
+		echo $this->Form->input( 'grupo_id'      , array( 'options' => $grupos ) );
 		echo $this->Form->end( 'Guardar cambios' );
 ?>
 </fieldset>

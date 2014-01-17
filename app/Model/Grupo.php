@@ -6,6 +6,8 @@ App::uses('AppModel', 'Model');
  */
 class Grupo extends AppModel {
 
+    public $useTable = 'grupos';
+
 	public $primaryKey = 'id_grupo';
 
 	public $displayField = 'nombre';
