@@ -66,7 +66,8 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '00:00:00'
             )
         );
-        $this->assertEqual( $this->DiaDisponibilidad->save( $datos ), true, "horarios mañana correctos y tarde nulos - no debería de fallar" );
+        $resultado = $this->DiaDisponibilidad->save( $datos );
+        $this->assertNotEqual( $resultado, false, "horarios mañana correctos y tarde nulos - no debería de fallar" );
     }
 
     public function testHorariosTardeIncorrecto() {
@@ -95,7 +96,7 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '04:00:00'
             )
         );
-        $this->assertEqual( $this->DiaDisponibilidad->save( $datos ), true, "horarios mañana correctos y tarde correcto - no debería de fallar" );
+        $this->assertNotEqual( $this->DiaDisponibilidad->save( $datos ), false, "horarios mañana correctos y tarde correcto - no debería de fallar" );
     }
 
     public function testValidacionFormatosHoraInicio() {

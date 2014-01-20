@@ -24,7 +24,8 @@ class DiaDisponibilidad extends AppModel {
         'hora_inicio' => array(
             'formato' => array(
                 'rule' => "/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/",
-                'message' => 'Formato del campo incorrecto'
+                'message' => 'Formato del campo incorrecto',
+                'last' => true
             ),
             'horario' => array(
                 'rule' => array( 'horarioMenorQue', 'hora_fin' ),
@@ -34,31 +35,34 @@ class DiaDisponibilidad extends AppModel {
         'hora_fin' => array(
             'formato' => array(
                 'rule' => '/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/',
-                'message' => 'Formato del campo incorrecto'
+                'message' => 'Formato del campo incorrecto',
+                'last' => true
             ),
             'horario' => array(
                 'rule' => array( 'horarioMayorQue', 'hora_inicio' ),
-                'message' => "El horario de inicio debe ser mayor que el horario de fin"
+                'message' => "El horario de fin debe ser mayor que el horario de inicio"
             )
         ),
         'hora_inicio_tarde' => array(
             'formato' => array(
                 'rule' => '/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/',
-                'message' => 'Formato del campo incorrecto'
+                'message' => 'Formato del campo incorrecto',
+                'last' => true
             ),
             'horario' => array(
                 'rule' => array( 'horarioMenorQue', 'hora_fin_tarde' ),
-                'message' => "El horario de inicio debe ser menor que el horario de fin"
+                'message' => "El horario de inicio_tarde debe ser menor que el horario de fin_tarde"
             )
         ),
         'hora_fin_tarde' => array(
             'formato' => array(
                 'rule' => '/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/',
-                'message' => 'Formato del campo incorrecto'
+                'message' => 'Formato del campo incorrecto',
+                'last' => true
             ),
             'horario' => array(
                 'rule' => array( 'horarioMayorQue', 'hora_inicio_tarde' ),
-                'message' => "El horario de inicio debe ser mayor que el horario de fin"
+                'message' => "El horario de fin_tarde debe ser mayor que el horario de inicio_tarde"
             )
         )
     );
@@ -77,7 +81,6 @@ class DiaDisponibilidad extends AppModel {
             }
             $temp = split( ":", $valor );
             $fecha->setTime( $temp[0], $temp[1], $temp[2] );
-            debug( "Fecha1:".$fecha->format( 'H:i:s'));
             if( array_key_exists( $dato, $this->data[$this->name] ) ) {
                 if( $valor == "00:00:00" &&
                     $this->data[$this->name][$dato] == "00:00:00" ) {
@@ -86,9 +89,7 @@ class DiaDisponibilidad extends AppModel {
                 $fecha2 = clone $fecha;
                 $temp = split( ":", $this->data[$this->name][$dato] );
                 $fecha2->setTime( $temp[0], $temp[1], $temp[2] );
-                debug( "Fecha2:".$fecha2->format( 'H:i:s'));
-                $diferencia = $fecha->diff( $fecha2 )->format( '%s' );
-                debug( $diferencia );
+                $diferencia = $this->aSegundos( $fecha->diff( $fecha2 ) );
                 if( $diferencia > 0 ) {
                     return true;
                 }
@@ -98,7 +99,7 @@ class DiaDisponibilidad extends AppModel {
         } else {
             throw new NotImplementedException('No implementada validación sin datos en buffer' );
         }
-        debug( "Falló en ".$valor." contra ".$dato.":".$this->data[$this->name][$dato] );
+        //debug( "Falló en ".$valor." contra ".$dato.":".$this->data[$this->name][$dato] );
         return false;
     }
 
@@ -118,7 +119,7 @@ class DiaDisponibilidad extends AppModel {
                 $fecha2 = clone $fecha;
                 $temp = split( ":", $this->data[$this->name][$dato] );
                 $fecha2->setTime( $temp[0], $temp[1], $temp[2] );
-                $diferencia = $fecha->diff( $fecha2 )->format( '%s' );
+                $diferencia = $this->aSegundos( $fecha->diff( $fecha2 ) );
                 if( $diferencia < 0 ) {
                     return true;
                 }
@@ -129,6 +130,19 @@ class DiaDisponibilidad extends AppModel {
             throw new NotImplementedException('No implementada validación sin datos en buffer' );
         }
         return false;
+    }
+
+    private function aSegundos( DateInterval $diferencia ) {
+        $sumatoria = ($diferencia->y * 365 * 24 * 60 * 60) +
+               ($diferencia->m * 30 * 24 * 60 * 60) +
+               ($diferencia->d * 24 * 60 * 60) +
+               ($diferencia->h * 60 * 60) +
+               ($diferencia->i * 60) +
+               $diferencia->s;
+        if( $diferencia->invert ) {
+            $sumatoria *= -1;
+        }
+        return $sumatoria;
     }
 
 	/*!
