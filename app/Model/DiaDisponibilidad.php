@@ -23,7 +23,7 @@ class DiaDisponibilidad extends AppModel {
     public $validate = array(
         'hora_inicio' => array(
             'formato' => array(
-                'rule' => '/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/',
+                'rule' => "/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/",
                 'message' => 'Formato del campo incorrecto'
             ),
             'horario' => array(
@@ -63,6 +63,12 @@ class DiaDisponibilidad extends AppModel {
         )
     );
 
+    /*!
+     * \fn horarioMenorQue( valor, dato )
+     * Verifica que el valor pasado como 1º parametro sea menor que el contenido del campo pasado como 2º
+     * \param valor mixed Valor a comparar como mayor al contenido del segundo parametro
+     * \param dato string Nombre del campo a obtener el dato
+     */
     public function horarioMenorQue( $valor, $dato ) {
         if( !empty( $this->data ) ) {
             $fecha = new DateTime( 'now' );
@@ -71,16 +77,28 @@ class DiaDisponibilidad extends AppModel {
             }
             $temp = split( ":", $valor );
             $fecha->setTime( $temp[0], $temp[1], $temp[2] );
+            debug( "Fecha1:".$fecha->format( 'H:i:s'));
             if( array_key_exists( $dato, $this->data[$this->name] ) ) {
+                if( $valor == "00:00:00" &&
+                    $this->data[$this->name][$dato] == "00:00:00" ) {
+                        return true;
+                }
                 $fecha2 = clone $fecha;
                 $temp = split( ":", $this->data[$this->name][$dato] );
                 $fecha2->setTime( $temp[0], $temp[1], $temp[2] );
-                $diferencia = $fecha->diff( $fecha2 )->format( 's' );
-                if( $diferencia >= 0 ) {
+                debug( "Fecha2:".$fecha2->format( 'H:i:s'));
+                $diferencia = $fecha->diff( $fecha2 )->format( '%s' );
+                debug( $diferencia );
+                if( $diferencia > 0 ) {
                     return true;
                 }
+            } else {
+                throw new NotFoundException( "El parametro ".$dato." no existe en el \$this->data" );
             }
+        } else {
+            throw new NotImplementedException('No implementada validación sin datos en buffer' );
         }
+        debug( "Falló en ".$valor." contra ".$dato.":".$this->data[$this->name][$dato] );
         return false;
     }
 
@@ -93,14 +111,22 @@ class DiaDisponibilidad extends AppModel {
             $temp = split( ":", $valor );
             $fecha->setTime( $temp[0], $temp[1], $temp[2] );
             if( array_key_exists( $dato, $this->data[$this->name] ) ) {
+                if( $valor == "00:00:00" &&
+                    $this->data[$this->name][$dato] == "00:00:00" ) {
+                        return true;
+                }
                 $fecha2 = clone $fecha;
                 $temp = split( ":", $this->data[$this->name][$dato] );
                 $fecha2->setTime( $temp[0], $temp[1], $temp[2] );
-                $diferencia = $fecha->diff( $fecha2 )->format( 's' );
-                if( $diferencia <= 0 ) {
+                $diferencia = $fecha->diff( $fecha2 )->format( '%s' );
+                if( $diferencia < 0 ) {
                     return true;
                 }
+            } else {
+                throw new NotFoundException( "El parametro ".$dato." no existe en el \$this->data" );
             }
+        } else {
+            throw new NotImplementedException('No implementada validación sin datos en buffer' );
         }
         return false;
     }
