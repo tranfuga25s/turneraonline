@@ -36,4 +36,10 @@ class GrupoTestCase extends CakeTestCase {
 		parent::tearDown();
 	}
 
+    public function testDuplicado() {
+        $data = array( 'Grupo' => array( 'nombre' => 'Medicos' ) );
+        $this->assertEqual( $this->Grupo->save($data), false, "No se debería de agregar grupos repetidos" );
+        $this->arrayHasKey( 'nombre', $this->Grupo->validationErrors, "No existe la regla de validacion" );
+    }
+
 }

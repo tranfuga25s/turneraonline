@@ -19,7 +19,11 @@ class Grupo extends AppModel {
 			'notempty' => array(
 				'rule' => array('notempty'),
 				'message' => 'Por favor, ingrese un nombre para el grupo'
-			)
+			),
+			'repetido' => array(
+                'rule'    => 'isUnique',
+                'message' => 'El nombre del grupo ya existe.'
+            )
 		)
 	);
 
