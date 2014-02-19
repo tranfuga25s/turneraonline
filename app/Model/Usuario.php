@@ -187,7 +187,7 @@ class Usuario extends AppModel {
         $grupo = $this->field( 'grupo_id', array( 'id_usuario' => $this->id ) );
         if( is_array( $grupo ) ) { $grupo = $grupo['Usuario']['grupo_id']; }
         if( $grupo == 1 ) { // Veo si es el administrador
-            $conteo = $this->find( 'count', array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) );
+            $conteo = $this->find( 'count', array( 'conditions' => array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) ) );
             if( $conteo == 0 ) {
                 return false;
             }
