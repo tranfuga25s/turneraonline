@@ -34,9 +34,14 @@ before_script:
     );
     }" > ./app/Config/database.php
   - sh -c "mysql < ./app/Config/Schema/schema.sql"
+  - composer install --dev
+  - mkdir -p build/logs
 
 script:
-  - ./app/Console/cake test app AllTests --stderr
+  - ./app/Console/cake test app AllTests --stderr  --stderr --coverage-clover build/logs/clover.xml
+
+after_script:
+  - php vendor/bin/coveralls -v
 
 notifications:
   email: false
