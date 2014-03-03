@@ -16,9 +16,6 @@
 [submodule "app/Plugin/Utils"]
 	path = app/Plugin/Utils
 	url = https://github.com/CakeDC/utils.git
-[submodule "app/Plugin/ContextHelp"]
-	path = app/Plugin/ContextHelp
-	url = https://github.com/tranfuga25s/cakephp-contexthelp.git
 [submodule "app/Plugin/Gestotux"]
 	path = app/Plugin/Gestotux
 	url = https://github.com/tranfuga25s/cakephp-gestotux.git
