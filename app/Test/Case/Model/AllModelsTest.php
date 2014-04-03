@@ -19,7 +19,7 @@ class AllModelTests extends PHPUnit_Framework_TestSuite {
         $suite->addTestFile( $path.'EspecialidadTest.php' );
         //$suite->addTestFile( $path.'GrupoTest.php' );
         //$suite->addTestFile( $path.'MedicoTest.php' );
-        //$suite->addTestFile( $path.'ObraSocialTest.php' );
+        $suite->addTestFile( $path.'ObraSocialTest.php' );
         //$suite->addTestFile( $path.'SecretariaTest.php' );
         $suite->addTestFile( $path.'TurnoTest.php' );
         $suite->addTestFile( $path.'UsuarioTest.php' );
