@@ -32,6 +32,7 @@ class AllTests extends PHPUnit_Framework_TestSuite {
 			 
 				$coverageFilter = $coverage->filter();
 				$coverageFilter->addDirectoryToBlacklist( APP . DS . 'Test' );
+				$coverageFilter->addDirectoryToBlacklist( APP . DS . 'Plugin' );
 				$coverageFilter->addDirectoryToBlacklist( CORE_PATH );		
 			}
 			$this->coverageSetup = true;
