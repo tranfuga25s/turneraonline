@@ -53,6 +53,8 @@ class ObrasSocialeTestCase extends CakeTestCase {
         $id_obra_social = intval( $usuario['Usuario']['obra_social_id'] );
 
         $this->assertNotEqual( $this->ObraSocial->delete( $id_obra_social ), true, "No se puede eliminar una obra social que tiene usuarios asociados" );
+        $this->assertNotEqual( count( $this->ObraSocial->validationErrors ), 0, "No se puso el mensaje de error" );
+        $this->assertInternalType( 'string', $this->ObraSocial->validationErrors[0], "Tipo de formato del error no coincide" );
     }
 
     /**
