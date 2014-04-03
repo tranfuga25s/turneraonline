@@ -72,11 +72,11 @@ class ObraSocial extends AppModel {
 	public function buscarRepetido( $valor ) {
 		if( $this->id != null ) {
 		    if( is_array( $valor ) ) {
-    			$count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor['nombre'].'%', 
+    			$count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor['nombre'].'%',
     			                                                             $this->primaryKey => '!= '.$this->id ),
     			                                      'recursive' => -1 ) );
             } else {
-                $count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor.'%', 
+                $count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor.'%',
                                                                              $this->primaryKey => '!= '.$this->id ),
                                                       'recursive' => -1 ) );
             }
@@ -120,7 +120,7 @@ class ObraSocial extends AppModel {
     */
     public function beforeDelete( $cascade = false ) {
 	    // Veo si se puede eliminar
-	    if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $this->id ) ) ) > 0 ) {
+	    if( $this->Usuarios->find( 'count', array( 'conditions' => array( 'obra_social_id' => $this->id ) ) ) > 0 ) {
 	    	$this->validationErrors[] = 'Existen usuarios con esta obra social agregada';
 	    	return false;
 	    }
