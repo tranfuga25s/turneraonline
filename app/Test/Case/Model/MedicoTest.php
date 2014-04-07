@@ -1,5 +1,6 @@
 <?php
-/* Medico Test cases generated on: 2012-01-17 16:28:31 : 1326828511*/
+
+/* Medico Test cases generated on: 2012-01-17 16:28:31 : 1326828511 */
 App::uses('Medico', 'Model');
 
 /**
@@ -7,33 +8,43 @@ App::uses('Medico', 'Model');
  *
  */
 class MedicoTestCase extends CakeTestCase {
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array('app.medico', 'app.usuario', 'app.obra_social', 'app.grupo', 'app.usuarios', 'app.especialidad', 'app.clinica', 'app.consultorios', 'app.turno', 'app.consultorio');
 
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = array(
+        'app.medico', 
+        'app.usuario', 
+        'app.obra_social', 
+        'app.grupo', 
+        'app.especialidad', 
+        'app.clinica', 
+        'app.turno', 
+        'app.consultorio'
+    );
 
-		$this->Medico = ClassRegistry::init('Medico');
-	}
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp() {
+        parent::setUp();
 
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		unset($this->Medico);
+        $this->Medico = ClassRegistry::init('Medico');
+    }
 
-		parent::tearDown();
-	}
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown() {
+        unset($this->Medico);
+
+        parent::tearDown();
+    }
 
 }
