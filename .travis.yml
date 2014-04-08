@@ -3,6 +3,7 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
 
 before_script:
   - sh -c "mysql -e 'CREATE DATABASE turnera;'"
@@ -41,7 +42,6 @@ script:
   - ./app/Console/cake test app AllTests --stderr  --stderr --coverage-clover build/logs/clover.xml
 
 after_script:
-  - ls -1 build/logs
   - php vendor/bin/coveralls -v
 
 notifications:
