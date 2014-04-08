@@ -1,11 +1,9 @@
 <?php
-
-/* Turno Test cases generated on: 2012-01-16 12:03:30 : 1326726210 */
 App::uses('Turno', 'Model');
 
 /**
  * Turno Test Case
- *
+ * @property Turno Turno
  */
 class TurnoTestCase extends CakeTestCase {
 
@@ -33,6 +31,9 @@ class TurnoTestCase extends CakeTestCase {
         $this->Turno = ClassRegistry::init('Turno');
     }
 
+    /**
+     * 
+     */
     public function testBasico() {
         $this->assertEqual(1, 1);
     }
@@ -258,6 +259,104 @@ class TurnoTestCase extends CakeTestCase {
         );
         $this->Turno->id = intval( $libre['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->liberar( null ), true, "No se pudo liberar el turno por ID!" );
+    }
+    
+    /**
+     * Testea la funcion de turno reservado
+     */
+    public function testTurnoReservadoReservado() {
+        $reservado = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'NOT' => array( 'paciente_id' => null ),
+                                   'cancelado' => false
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $id_turno = intval( $reservado['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), true, "El turno debería de estar reservado pasando como parametro");
+        
+        $this->Turno->id = $id_turno;
+        $this->assertEqual( $this->Turno->reservado(), true, "La funcion debería de devolver falso x ID" );
+    }
+    
+    /**
+     * 
+     */
+    public function testTurnoReservadoCancelado() {
+        $reservado = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'cancelado' => true  /// @TODO: Verificar si con paciente_id != null se da el caso
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $id_turno = intval( $reservado['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
+        
+        $this->Turno->id = $id_turno;
+        $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
+    }
+    
+    /**
+     * 
+     */
+    public function testTurnoReservadoLiberado() {
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'paciente_id' => null,
+                                   'cancelado' => false
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $id_turno = intval( $libre['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver falso" );
+        
+        $this->Turno->id = $id_turno;
+        $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
+    }
+    
+    /**
+     * 
+     */
+    public function testTurnoReservadoInvalido() {
+        $id_turno = -1;
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
+        
+        $this->Turno->id = $id_turno;
+        $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
+    }
+    
+    /**
+     * 
+     */
+    public function testTurnoReservadoParametroCruzado() {
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'paciente_id' => null,
+                                   'cancelado' => false
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $id_turno = intval( $libre['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver falso" );
+        
+        $this->Turno->id = 5;
+        $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver verdadero aunque el ID sea nulo" );
+    }
+    
+    /**
+     * 
+     */
+    public function testTurnoReservadoParametroNulo() {
+        $id_turno = null;
+        $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
+        
+        $this->Turno->id = $id_turno;
+        $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
     }
 
     /**
