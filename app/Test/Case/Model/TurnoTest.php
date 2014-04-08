@@ -113,7 +113,6 @@ class TurnoTestCase extends CakeTestCase {
      * Pruebo que genera la condiciones necesarias para generar un nuevo traslado de turno a otro horario
      * Turnos id = 12 -> <12
      */
-
     public function testTrasladoTurno() {
         $turno = $this->Turno->find('first', array('conditions' => array('id_turno' => 12), 'recursive' => -1));
         $this->assertArrayHasKey('Turno', $turno, "El turno de origen no puede ser nulo");
@@ -136,7 +135,6 @@ class TurnoTestCase extends CakeTestCase {
      * Funcion que prueba que el sistema falla si se intenta trasladar un turno a otro ya ocupado
      * Turnos id = 12 -> 13
      */
-
     public function testTrasladoTurnoOcupado() {
         $turno = $this->Turno->find('first', array('conditions' => array('id_turno' => 12), 'recursive' => -1));
         $this->assertArrayHasKey('Turno', $turno, "El turno de origen no puede ser nulo");
@@ -145,6 +143,9 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual($this->Turno->trasladarTurno(12, 13), false, "El traslado de turno a un turno ocupado no debe suceder!");
     }
 
+    /**
+     * 
+     */
     public function testTrasladoTurnosNulos() {
         $this->assertEqual($this->Turno->trasladarTurno(12, null), false, "El valor devuelto debería ser falso");
         $this->assertEqual($this->Turno->trasladarTurno(null, 13), false, "El valor devuelto debería ser falso");
@@ -165,6 +166,9 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $this->Turno->reservar( $libre['Turno']['id_turno'] ), true, "No se pudo reservar el turno!" );
     }
     
+    /**
+     * 
+     */
     public function testReservaTurnosOcupado() {
         $libre = $this->Turno->find( 'first',
                             array( 'conditions' => array(
@@ -176,6 +180,9 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $this->Turno->reservar( $libre['Turno']['id_turno'] ), false, "No se pudo reservar el turno!" );
     }
 
+    /**
+     * 
+     */
     public function testReservaTurnosCancelado() {
         $libre = $this->Turno->find( 'first',
                             array( 'conditions' => array(
@@ -190,8 +197,67 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertEqual( $mensaje, "El turno se encuentra cancelado por el médico.", "Mensaje incorrecto!" );
     }
     
+    /**
+     * 
+     */
     public function testReservaTurnosInexistente() {
         $this->assertEqual( $this->Turno->reservar( null ), false, "No se debe poder reservar el turno nulo" );
+    }
+    
+    /**
+     * 
+     */
+    public function testLiberarTurnoExistente() {
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'NOT' => array( 'paciente_id' => null )
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $this->assertEqual( $this->Turno->liberar( $libre['Turno']['id_turno'] ), true, "No se pudo liberar el turno!" );
+        
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'NOT' => array( 'paciente_id' => null )
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $this->Turno->id = intval( $libre['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->liberar(), true, "No se pudo liberar el turno por ID!" );
+    }
+    
+    /**
+     * 
+     */
+    public function testLiberarTurnoIncorrecto() {
+        $this->assertNotEqual( $this->Turno->liberar( null ), true, "No debe poder liberar un turno nulo" );
+        $this->assertNotEqual( $this->Turno->liberar(), true, "No se debe poder liberar un turno nulo x ID" );
+    }
+    
+    /**
+     * 
+     */
+    public function testLiberarTurnoExistenteNoReservado() {
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'paciente_id' => null
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $this->assertEqual( $this->Turno->liberar( $libre['Turno']['id_turno'] ), true, "No se pudo liberar el turno!" );
+        
+        $libre = $this->Turno->find( 'first',
+                            array( 'conditions' => array(
+                                   'paciente_id' => null
+                            ),
+                            'recursive' => -1,
+                            'fields' => array( 'id_turno' ) )
+        );
+        $this->Turno->id = intval( $libre['Turno']['id_turno'] );
+        $this->assertEqual( $this->Turno->liberar( null ), true, "No se pudo liberar el turno por ID!" );
     }
 
     /**
