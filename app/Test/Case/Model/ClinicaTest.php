@@ -105,4 +105,18 @@ class ClinicaTestCase extends CakeTestCase {
             $this->assertEqual( $this->Clinica->unaSola(), false, "La funcion de una sola clinica debería de devolver falso ya que hay más de una clinica");
         }
     }
+
+    /**
+     * Prueba el uso de la función Clinica::unica()
+     *
+     */
+     public function testClinicaUnicaData() {
+         $this->assertEqual( $this->Clinica->unaSola(), true, "Hay mas de una clinica!" );
+         $ret = $this->Clinica->unica();
+         $this->assertInternalType( 'array', $ret, "Formato devuelto incorrecto" );
+         $this->assertArrayHasKey( 'Clinica', $ret, "No contiene la clave buscada" );
+         $ret = $ret['Clinica'];
+         $this->assertArrayHasKey( 'id_clinica', $ret, "No contiene la clave primaria" );
+         $this->assertArrayHasKey( 'nombre', $ret );
+     }
 }
