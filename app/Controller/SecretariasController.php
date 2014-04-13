@@ -24,6 +24,7 @@ class SecretariasController extends AppController {
 					case 'turnos':
 					case 'cancelar':
 					case 'resumen':
+                    case 'trasladar':
 					{
 						return true;
 						break;
@@ -212,6 +213,36 @@ class SecretariasController extends AppController {
 		$this->set( 'id_secretaria', $this->Secretaria->field( 'id_secretaria' ) );
 
 	 }
+
+    /*!
+     * Permite trasladar un turno hacia otro turno no reservado
+     */
+     public function trasladar( $id_turno = null, $fecha = null ) {
+        if( $this->request->is( 'post' ) ) {
+
+        }
+        $this->Turno->id = $id_turno;
+        if( !$this->Turno->exists() ) {
+            throw new NotFoundException( "No existe el turno que intenta trasladar" );
+        }
+        $this->set( 'turnos', $this->Turno->buscarTurnosParaTraslado( $id_turno, $fecha ) );
+        $turno_original = $this->Turno->read();
+
+        $this->loadModel( 'Medico' );
+        $this->Medico->id = $turno_original['Turno']['medico_id'];
+        $this->Medico->recursive = 1;
+        $this->Medico->unbindModel( array(
+            'hasMany' => array( 'Turno', 'Excepcion'),
+            'belongsTo' => array( 'Especialidad', 'Clinica' ),
+            'hasOne' => array( 'Disponibilidad' )
+        ));
+        $medico = $this->Medico->read();
+        $turno_original['Medico'] = $medico['Usuario'];
+        $turno_original['Medico']['id_medico'] = $medico['Medico']['id_medico'];
+        unset( $turno_original['Medico']['id_usuario'] );
+        $this->set( 'turno_original', $turno_original );
+     }
+
 	/**
 	 * administracion_index method
 	 *

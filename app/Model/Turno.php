@@ -502,7 +502,7 @@ class Turno extends AppModel {
 		if( is_null( $id_turno ) && is_null( $this->id ) ) {
 			return false;
                 } else if( ( is_null( $this->id ) || $this->id <= 0 ) && !is_null( $id_turno ) ) {
-                    $this->id = $id_turno;                    
+                    $this->id = $id_turno;
                 }
 
 		if( $this->field( 'paciente_id' ) != null ) {
@@ -679,6 +679,28 @@ class Turno extends AppModel {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Busca los turnos que tengan que ver con el turno original para trasladarlo
+     * @param integer id_original Identificador original del turno
+     * @return Falso si no se pasó un parametro válido
+     */
+    public function buscarTurnosParaTraslado( $id_original = null ) {
+        if( $id_original == null || $id_original <= 0 ) {
+            return false;
+        }
+        $this->id = $id_original;
+        $fecha_inicio_turnos = $this->field( 'fecha_fin' );
+        $id_medico = $this->field( 'medico_id' );
+        return $this->find( 'all',
+            array( 'conditions' =>
+                        array( 'paciente_id IS NULL',
+                               'fecha_inicio >= ' => $fecha_inicio_turnos,
+                               'id_turno != ' => $id_original,
+                               'medico_id' => $id_medico ),
+                   'recursive' => 1 )
+        );
     }
 
 }

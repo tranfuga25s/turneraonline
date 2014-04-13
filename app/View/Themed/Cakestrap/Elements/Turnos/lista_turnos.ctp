@@ -74,6 +74,7 @@
                                       echo $this->Html->link( $this->Html->tag( 'i', '', array( 'class' => 'icon-eye-open' ) ).' Atendido', array( 'controller' => 'turnos', 'action' => 'atendido', $turno['Turno']['id_turno'], $modelo ), array( 'class' => 'btn btn-mini btn-success', 'escape' => false  ) );
                                       echo $this->Html->tag( 'a', $this->Html->tag( 'i', '', array( 'class' => 'icon-ban-circle') ).' Cancelar', array( 'onclick' => 'cancelarTurno( '. $turno['Turno']['id_turno'].' )', 'class' => 'btn btn-mini btn-danger' ) );
                                 }
+                                echo $this->Html->link( $this->Html->tag( 'i', '', array( 'class' => 'icon-random icon-white' ) ). ' Trasladar', array( 'action' => 'trasladar', $turno['Turno']['id_turno'] ), array( 'class' => 'btn btn-mini btn-inverse', 'escape' => false ) );
                             } else {
                                 if( $turno['Turno']['cancelado'] == false ) {
                                     echo $this->Html->tag( 'a', $this->Html->tag( 'i', '', array( 'class' => 'icon-book' ) ).' Reservar', array( 'onclick' => 'reservarTurno( '.$turno['Turno']['id_turno'].', '.$turno['Turno']['medico_id'].'  )', 'class' => 'btn btn-mini', 'escape' => false ) );

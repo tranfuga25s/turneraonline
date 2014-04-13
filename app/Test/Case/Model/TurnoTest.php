@@ -15,9 +15,10 @@ class TurnoTestCase extends CakeTestCase {
     public $fixtures = array('app.clinica',
         'app.consultorio',
         'app.medico',
-        'app.turno'
+        'app.turno',
+        'app.usuario'
     );
-    
+
     public $fecha_buena = "2012-10-09";
     public $fecha = "2000-10-09";
 
@@ -32,7 +33,7 @@ class TurnoTestCase extends CakeTestCase {
     }
 
     /**
-     * 
+     *
      */
     public function testBasico() {
         $this->assertEqual(1, 1);
@@ -145,14 +146,14 @@ class TurnoTestCase extends CakeTestCase {
     }
 
     /**
-     * 
+     *
      */
     public function testTrasladoTurnosNulos() {
         $this->assertEqual($this->Turno->trasladarTurno(12, null), false, "El valor devuelto debería ser falso");
         $this->assertEqual($this->Turno->trasladarTurno(null, 13), false, "El valor devuelto debería ser falso");
         $this->assertEqual($this->Turno->trasladarTurno(null, null), false, "El valor devuelto debería ser falso");
     }
-    
+
     /**
      * Testo de reserva de turnos
      */
@@ -166,9 +167,9 @@ class TurnoTestCase extends CakeTestCase {
         );
         $this->assertEqual( $this->Turno->reservar( $libre['Turno']['id_turno'] ), true, "No se pudo reservar el turno!" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testReservaTurnosOcupado() {
         $libre = $this->Turno->find( 'first',
@@ -182,7 +183,7 @@ class TurnoTestCase extends CakeTestCase {
     }
 
     /**
-     * 
+     *
      */
     public function testReservaTurnosCancelado() {
         $libre = $this->Turno->find( 'first',
@@ -197,16 +198,16 @@ class TurnoTestCase extends CakeTestCase {
         $this->assertNotEqual( $mensaje, '', "El mensaje es incorrecto" );
         $this->assertEqual( $mensaje, "El turno se encuentra cancelado por el médico.", "Mensaje incorrecto!" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testReservaTurnosInexistente() {
         $this->assertEqual( $this->Turno->reservar( null ), false, "No se debe poder reservar el turno nulo" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testLiberarTurnoExistente() {
         $libre = $this->Turno->find( 'first',
@@ -217,7 +218,7 @@ class TurnoTestCase extends CakeTestCase {
                             'fields' => array( 'id_turno' ) )
         );
         $this->assertEqual( $this->Turno->liberar( $libre['Turno']['id_turno'] ), true, "No se pudo liberar el turno!" );
-        
+
         $libre = $this->Turno->find( 'first',
                             array( 'conditions' => array(
                                    'NOT' => array( 'paciente_id' => null )
@@ -228,17 +229,17 @@ class TurnoTestCase extends CakeTestCase {
         $this->Turno->id = intval( $libre['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->liberar(), true, "No se pudo liberar el turno por ID!" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testLiberarTurnoIncorrecto() {
         $this->assertNotEqual( $this->Turno->liberar( null ), true, "No debe poder liberar un turno nulo" );
         $this->assertNotEqual( $this->Turno->liberar(), true, "No se debe poder liberar un turno nulo x ID" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testLiberarTurnoExistenteNoReservado() {
         $libre = $this->Turno->find( 'first',
@@ -249,7 +250,7 @@ class TurnoTestCase extends CakeTestCase {
                             'fields' => array( 'id_turno' ) )
         );
         $this->assertEqual( $this->Turno->liberar( $libre['Turno']['id_turno'] ), true, "No se pudo liberar el turno!" );
-        
+
         $libre = $this->Turno->find( 'first',
                             array( 'conditions' => array(
                                    'paciente_id' => null
@@ -260,7 +261,7 @@ class TurnoTestCase extends CakeTestCase {
         $this->Turno->id = intval( $libre['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->liberar( null ), true, "No se pudo liberar el turno por ID!" );
     }
-    
+
     /**
      * Testea la funcion de turno reservado
      */
@@ -275,13 +276,13 @@ class TurnoTestCase extends CakeTestCase {
         );
         $id_turno = intval( $reservado['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->reservado( $id_turno ), true, "El turno debería de estar reservado pasando como parametro");
-        
+
         $this->Turno->id = $id_turno;
         $this->assertEqual( $this->Turno->reservado(), true, "La funcion debería de devolver falso x ID" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testTurnoReservadoCancelado() {
         $reservado = $this->Turno->find( 'first',
@@ -293,13 +294,13 @@ class TurnoTestCase extends CakeTestCase {
         );
         $id_turno = intval( $reservado['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
-        
+
         $this->Turno->id = $id_turno;
         $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testTurnoReservadoLiberado() {
         $libre = $this->Turno->find( 'first',
@@ -312,24 +313,24 @@ class TurnoTestCase extends CakeTestCase {
         );
         $id_turno = intval( $libre['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver falso" );
-        
+
         $this->Turno->id = $id_turno;
         $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testTurnoReservadoInvalido() {
         $id_turno = -1;
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
-        
+
         $this->Turno->id = $id_turno;
         $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testTurnoReservadoParametroCruzado() {
         $libre = $this->Turno->find( 'first',
@@ -342,21 +343,55 @@ class TurnoTestCase extends CakeTestCase {
         );
         $id_turno = intval( $libre['Turno']['id_turno'] );
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver falso" );
-        
+
         $this->Turno->id = 5;
         $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false, "La funcion debería devolver verdadero aunque el ID sea nulo" );
     }
-    
+
     /**
-     * 
+     *
      */
     public function testTurnoReservadoParametroNulo() {
         $id_turno = null;
         $this->assertEqual( $this->Turno->reservado( $id_turno ), false );
-        
+
         $this->Turno->id = $id_turno;
         $this->assertEqual( $this->Turno->reservado(), false, "La funcion debería de devolver falso x ID" );
+    }
+
+    /*!
+     * Busca la lista de turnos a los cuales se puede trasladar los turnos que estan luego del pasado como parametro
+     */
+    public function testTrasladoTurnosBuscarTurnos() {
+        $turno = $this->Turno->find( 'first', array( 'conditions' => array( 'paciente_id IS NOT NULL' ),
+                                                        'recursive' => -1,
+                                                        'fields' => array( 'id_turno', 'fecha_inicio', 'medico_id' ),
+                                                        'order' => array( 'id_turno' => 'asc' ) ) );
+        $this->assertArrayHasKey( 'Turno', $turno, "No se econtro un turno para hacer el test - verifique el fixture" );
+        $fecha_turno_original = $turno['Turno']['fecha_inicio'];
+        $id_turno = intval( $turno['Turno']['id_turno'] );
+        $id_medico = intval( $turno['Turno']['medico_id'] );
+
+        $this->assertNotEqual( $id_turno, 0, "El numero de turno no puede ser cero" );
+        $this->assertEqual( $this->Turno->buscarTurnosParaTraslado(), false, "El pasar sin parametros debe devolver falso" );
+        $this->assertEqual( $this->Turno->buscarTurnosParaTraslado( null ), false, "El pasar parametro nulo debe devolver falso" );
+        $this->assertEqual( $this->Turno->buscarTurnosParaTraslado( 0 ), false, "El pasar parametro cero debe devolver falso" );
+        $this->assertEqual( $this->Turno->buscarTUrnosParaTraslado( -1 ), false, "El pasar parametro negativo debe devolver falso" );
+
+        $nuevos_turnos = $this->Turno->buscarTurnosParaTraslado( $id_turno );
+        $this->assertNotEqual( count( $nuevos_turnos ), 0, "No se debería devolver array vacío - verifique el fixture" );
+        foreach( $nuevos_turnos as $key => $turno ) {
+            $this->assertArrayHasKey( 'Turno', $turno, "El array debería tener el formato cake estandar ".$key );
+            $this->assertArrayHasKey( 'fecha_inicio', $turno['Turno'], "El array debería de tener la fecha de inicio" );
+            $this->assertArrayHasKey( 'medico_id', $turno['Turno'] );
+            $this->assertEqual( intval( $turno['Turno']['medico_id'] ), $id_medico, "No coincide el identificador del medico que desea trasladar el turno" );
+            $this->assertNotEqual( $turno['Turno']['id_turno'], $id_turno, "El turno seleccionado no puede ser igual al original" );
+            $this->assertGreaterThan( $fecha_turno_original, $turno['Turno']['fecha_inicio'], "La fecha seleccionada debería de ser mayor a la del turno elegido" );
+            $this->assertArrayHasKey( 'Medico', $turno );
+            $this->assertArrayHasKey( 'Consultorio', $turno );
+        }
+
     }
 
     /**
