@@ -1,5 +1,6 @@
 <?php
 $this->set( 'title_for_layout', "Inicio" );
+$this->element( 'avisos_sms' );
 ?>
 
 <div class="row-fluid">

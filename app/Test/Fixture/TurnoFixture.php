@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TurnoFixture
  *
@@ -10,8 +11,7 @@ class TurnoFixture extends CakeTestFixture {
      *
      * @var array
      */
-	public $import = array('model' => 'Turno');
-
+    public $import = array('model' => 'Turno');
 
     public function init() {
         $this->records[] = array(
@@ -111,7 +111,7 @@ class TurnoFixture extends CakeTestFixture {
 			'consultorio_id' => '1',
 			'recibido' => 0,
 			'atendido' => 0,
-			'cancelado' => 0
+			'cancelado' => 1
 		);
 		$this->records[] = array(
 			'id_turno' => '11',

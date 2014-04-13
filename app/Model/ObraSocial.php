@@ -71,15 +71,25 @@ class ObraSocial extends AppModel {
     */
 	public function buscarRepetido( $valor ) {
 		if( $this->id != null ) {
-			$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'], $this->primaryKey => '!= '.$this->id ) ) );
+		    if( is_array( $valor ) ) {
+    			$count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor['nombre'].'%',
+    			                                                             $this->primaryKey => '!= '.$this->id ),
+    			                                      'recursive' => -1 ) );
+            } else {
+                $count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor.'%',
+                                                                             $this->primaryKey => '!= '.$this->id ),
+                                                      'recursive' => -1 ) );
+            }
 		} else {
-			$count = $this->find( 'count', array( 'conditions' => array( 'nombre' => $valor['nombre'] ) ) );
+		    if( is_array( $valor ) ) {
+    			$count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor['nombre'].'%' ),
+    			                                      'recursive' => -1 ) );
+            } else {
+                $count = $this->find( 'count', array( 'conditions' => array( '`ObraSocial`.`nombre` LIKE' => '%'.$valor.'%' ),
+                                                      'recursive' => -1 ) );
+            }
 		}
-		if( $count <= 0 ) {
-			return true;
-		} else {
-			return false;
-		}
+		if( $count > 0 ) { return true; } else { return false; }
 	}
 
    /**
@@ -110,7 +120,7 @@ class ObraSocial extends AppModel {
     */
     public function beforeDelete( $cascade = false ) {
 	    // Veo si se puede eliminar
-	    if( $this->Usuario->find( 'count', array( 'conditions' => array( 'obra_social_id' => $this->id ) ) ) > 0 ) {
+	    if( $this->Usuarios->find( 'count', array( 'conditions' => array( 'obra_social_id' => $this->id ) ) ) > 0 ) {
 	    	$this->validationErrors[] = 'Existen usuarios con esta obra social agregada';
 	    	return false;
 	    }

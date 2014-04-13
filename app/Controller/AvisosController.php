@@ -23,6 +23,7 @@ class AvisosController extends AppController {
                     case 'administracion_view':
                     case 'administracion_edit':
                     case 'index':
+                    case 'enviarSms':
                     { return true; break; }
                 }
                 // saco el break y el default para que autorize a los permisos de el usuario normal
@@ -44,6 +45,30 @@ class AvisosController extends AppController {
 
     public function recibir() {
         $mensaje = $this->Sms->recibir();
+
+        // Busco si corresponde a un cliente
+        $this->loadModel( 'Usuarios' );
+        $cliente = $this->Usuarios->getUsuarioPorTelefono( $mensaje['uid'] );
+
+        $alerta = "Ha recibido un mensaje de ";
+        if( $cliente != "" ) {
+            $alerta .= $cliente['Usuario']['apellido'];
+            $alerta .= ", ";
+            $alerta .= $cliente['Usuario']['nombre'];
+        } else {
+            $alerta .= "Desconocido";
+
+        }
+        $alerta .= " a las ";
+        $alerta .= $mensaje['fechahora'];
+
+        $anteriores = Cache::read( 'mensajes', 'sms' );
+        if( $anteriores == false ) { $anteriores = array(); }
+        $anteriores[] = array(
+            'Mensaje' => $mensaje,
+            'alerta' => $alerta
+        );
+        Cache::write( 'mensajes', 'sms' );
     }
 
 	public function agregarAvisoNuevoTurno( $id_turno = null, $id_paciente = null ) {
@@ -338,28 +363,6 @@ class AvisosController extends AppController {
 		$this->redirect( array( 'action' => 'pendiente' ) );
 	 }
 
-    /*!
-     * Funcion llamada desde el dashboard de medicos y/o secretarias
-     */
-    public function index() {
-        // La verificación de que usuario puede entrar está echa antes
-        $this->set( 'horas_email', Configure::read( 'Turnera.notificaciones.horas_proximo' ) );
-        $this->set( 'minutos_sms', Configure::read( 'Turnera.notificaciones.minutos_proximo_sms' ) );
-        if( $this->Sms->habilitado() ) {
-            $this->set( 'sms_habilitado', true );
-            $this->loadModel( 'Gestotux.ConteoSms' );
-            $estado = array(
-                'enviados' => $this->ConteoSms->cantidadEnviada(),
-                'recibidos' => $this->ConteoSms->cantidadRecibida(),
-                'costo' => $this->ConteoSms->costoMensaje()
-            );
-            $this->set( 'estado_sms', $estado );
-        } else {
-            $this->set( 'sms_habilitado', false );
-        }
-
-    }
-
 
      /**
       * Funcion que habilita el servicio de sms
@@ -388,6 +391,73 @@ class AvisosController extends AppController {
          // El servicio ya está habilitado, lo envío a la pagina de configuración
          $this->redirect( array( 'action' => 'sms' ) );
      }
+
+    /*!
+     * Funcion llamada desde el dashboard de medicos y/o secretarias
+     */
+    public function index() {
+        // La verificación de que usuario puede entrar está echa antes
+        $this->set( 'horas_email', Configure::read( 'Turnera.notificaciones.horas_proximo' ) );
+        $this->set( 'minutos_sms', Configure::read( 'Turnera.notificaciones.minutos_proximo_sms' ) );
+        if( $this->Sms->habilitado() ) {
+            $this->set( 'sms_habilitado', true );
+            $this->loadModel( 'Gestotux.ConteoSms' );
+            $this->ConteoSms->setearCliente( intval( Configure::read( 'Gestotux.cliente' ) ) );
+            $estado = array(
+                'enviados' => $this->ConteoSms->cantidadEnviada(),
+                'recibidos' => $this->ConteoSms->cantidadRecibida(),
+                'costo' => $this->ConteoSms->costoMensaje()
+            );
+            $this->set( 'estado_sms', $estado );
+            // Agregar visión de creditos
+            $this->set( 'saldo', $this->Sms->getCreditoMensajes() );
+            $mensajes = $this->Sms->obtenerListaMensajes();
+            $this->loadModel( 'Usuario' );
+            foreach( $mensajes as &$mensaje ) {
+                $paciente = $this->Usuario->getUsuarioPorTelefono( $mensaje['Sms']['uid'] );
+                if( $paciente != "" ) {
+                    $mensaje['Paciente'] = $paciente['Paciente'];
+                }
+            }
+            $this->set( 'mensajes', $mensajes );
+        } else {
+            $this->set( 'sms_habilitado', false );
+        }
+    }
+
+
+    public function enviarSms() {
+        if( $this->request->isPost() ) {
+
+            if( !array_key_exists( 'Aviso', $this->request->data ) ) {
+                throw new NotFoundException( 'Faltan parametros' );
+            }
+            $aviso = $this->request->data['Aviso'];
+            if( empty( $aviso['numero'] ) || floatval( $aviso['numero'] ) == 0 ) {
+                $this->Session->setFlash( 'Debe ingresar un número de teléfono', 'flash/error' );
+                return $this->redirect( array( 'action' => 'index' ) );
+            }
+            if( empty( $aviso['texto'] ) ) {
+                $this->Session->setFlash( 'Debe ingresar un texto a enviar', 'flash/error'  );
+                return $this->redirect( array( 'action' => 'index' ) );
+            }
+
+            if( $this->Sms->enviar( $aviso['numero'], $aviso['texto']) ) {
+                $this->Session->setFlash( 'Mensaje enviado correctamente', 'flash/success' );
+                $this->loadModel( 'Gestotux.ConteoSms' );
+                $this->ConteoSms->setearCliente( intval( Configure::read( 'Gestotux.cliente' ) ) );
+                if( $this->ConteoSms->agregarEnviado() ) {
+                    $this->log( 'No se pudo registrar el envío de un sms' );
+                }
+            } else {
+                $this->Session->setFlash( 'No se pudo enviar el mensaje', 'flash/error' );
+            }
+            return $this->redirect( array( 'action' => 'index' ) );
+        } else {
+            throw new NotFoundException( 'Mètodo no implementado: '.$this->request->method() );
+        }
+    }
+
 
 }
 

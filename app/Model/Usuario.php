@@ -7,8 +7,11 @@ App::uses('AppModel', 'Model');
 class Usuario extends AppModel {
 
 	public $primaryKey = 'id_usuario';
-	//public $displayField = 'razonsocial';
-	public $actAs = array( 'AuditLog.Auditable' );
+
+	public $displayField = 'nombre';
+
+	public $actsAs = array( 'AuditLog.Auditable' );
+
 	public $virtualFields = array(
 		'razonsocial' => 'CONCAT( Usuario.apellido, \', \', Usuario.nombre )' );
 
@@ -143,7 +146,7 @@ class Usuario extends AppModel {
 		for( $i=0; $i<8; $i++ ) {
 			$contra .= substr($str, rand(0,64), 1 );
 		}
-		$id = $this->find( 'first', array( 'conditions' => array( 'email' => $email ), 'fields' => 'id_usuario' ) );
+		$id = $this->find( 'first', array( 'conditions' => array( 'email' => $email ), 'fields' => 'id_usuario', 'recursive' => -1 ) );
 		if( count( $id ) > 0 && $id['Usuario']['id_usuario'] != 0 ) {
 			$this->id = $id['Usuario']['id_usuario'];
 			if( !$this->saveField( 'contra', $contra ) ) {
@@ -184,13 +187,14 @@ class Usuario extends AppModel {
         $grupo = $this->field( 'grupo_id', array( 'id_usuario' => $this->id ) );
         if( is_array( $grupo ) ) { $grupo = $grupo['Usuario']['grupo_id']; }
         if( $grupo == 1 ) { // Veo si es el administrador
-            $conteo = $this->find( 'count', array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) );
+            $conteo = $this->find( 'count', array( 'conditions' => array( 'grupo_id' => 1, 'NOT' => array( 'id_usuario' => $this->id ) ) ) );
             if( $conteo == 0 ) {
                 return false;
             }
         }
         return true;
     }
+
 
     /**
      * Obtiene los datos de un usuario si existe a partir del número de teléfono.
@@ -204,12 +208,17 @@ class Usuario extends AppModel {
          $data = $this->find( 'first',
             array(
                 'conditions' => array( 'OR' => array( 'telefono' => $tel, 'celular' => $tel ) ),
-                'fields' => array( 'razonsocial' ),
+                'fields' => array( 'razonsocial', 'id_usuario' ),
                 'recursive' => -1
             )
          );
          if( count( $data ) > 0 ) {
-             return $data['Usuario']['razonsocial'];
+             return array(
+                'Paciente' => array(
+                    'id_usuario' => $data['Usuario']['id_usuario'],
+                    'razonsocial' => $data['Usuario']['razonsocial']
+                 )
+             );
          } else {
              return "";
          }

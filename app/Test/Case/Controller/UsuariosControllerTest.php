@@ -15,8 +15,10 @@ class UsuariosControllerTest extends ControllerTestCase {
 	public $fixtures = array(
 		'app.usuario',
 		'app.obra_social',
-		'app.usuarios',
-		'app.grupo'
+		'app.grupo',
+		'app.medico',
+		'app.secretaria',
+		'app.turno'
 	);
 
 /**
@@ -177,14 +179,28 @@ class UsuariosControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testAdministracionAdd() {
+        $this->testAction('/administracion/usuarios/add');
+
+        $this->assertInternalType('array', $this->vars['grupos']);
+        $this->assertNotEqual( count( $this->vars['grupos'] ), 0, "Debería existir algun grupo" );
+
+        $this->assertInternalType('array', $this->vars['obras_sociales'] );
+        $this->assertNotEqual( count( $this->vars['obras_sociales'] ), 0, "Debería existir alguna obra social" );
 	}
 
-/**
- * testAdministracionEdit method
- *
- * @return void
- */
+    /**
+     * testAdministracionEdit method
+     *
+     * @return void
+     */
 	public function testAdministracionEdit() {
+	    $this->testAction('/administracion/usuarios/edit/1');
+
+        $this->assertInternalType('array', $this->vars['grupos']);
+        $this->assertNotEqual( count( $this->vars['grupos'] ), 0, "Debería existir algun grupo" );
+
+        $this->assertInternalType('array', $this->vars['obras_sociales'] );
+        $this->assertNotEqual( count( $this->vars['obras_sociales'] ), 0, "Debería existir alguna obra social" );
 	}
 
 /**

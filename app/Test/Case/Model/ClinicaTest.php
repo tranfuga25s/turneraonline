@@ -87,4 +87,36 @@ class ClinicaTestCase extends CakeTestCase {
 
 	 }
 
+     /**
+      * Prueba el uso de la función Clinica::unaSola()
+      */
+    public function testClinicaUnica() {
+        $cantidad = $this->Clinica->find( 'count' );
+        $this->assertGreaterThan( 0, $cantidad, "Deben existir al menos 1 clinica para probar la funcion" );
+        if( $cantidad == 1 ) {
+            $this->assertEqual( $this->Clinica->unaSola(), true, "La funcion de una sola clinica debería de devolver verdadero" );
+            $this->Clinica->id = 1;
+            $this->Clinica->recursive = -1;
+            $datos = $this->Clinica->read();
+            unset( $datos[$this->Clinica->alias][$this->Clinica->primaryKey] );
+            $datos[$this->Clinica->alias][$this->Clinica->displayField] .= '1';
+            $this->Clinica->create();
+            $this->assertNotEqual( $this->Clinica->save( $datos ), false, "Error al guardaro los nuevos datos" );
+            $this->assertEqual( $this->Clinica->unaSola(), false, "La funcion de una sola clinica debería de devolver falso ya que hay más de una clinica");
+        }
+    }
+
+    /**
+     * Prueba el uso de la función Clinica::unica()
+     *
+     */
+     public function testClinicaUnicaData() {
+         $this->assertEqual( $this->Clinica->unaSola(), true, "Hay mas de una clinica!" );
+         $ret = $this->Clinica->unica();
+         $this->assertInternalType( 'array', $ret, "Formato devuelto incorrecto" );
+         $this->assertArrayHasKey( 'Clinica', $ret, "No contiene la clave buscada" );
+         $ret = $ret['Clinica'];
+         $this->assertArrayHasKey( 'id_clinica', $ret, "No contiene la clave primaria" );
+         $this->assertArrayHasKey( 'nombre', $ret );
+     }
 }

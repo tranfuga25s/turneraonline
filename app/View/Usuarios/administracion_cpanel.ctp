@@ -91,3 +91,13 @@
                 '/', array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Volver al sitio', 'target' => '_blank' ) ); ?></li>
 
 </ul>
+<?php if( CakePlugin::loaded( 'PreguntaFrecuente' ) ) : ?>
+<h2>Ayuda</h2>
+<ul class="dash">
+   <li><?php echo $this->Html->link(
+                $this->Html->image( 'assets/icons/5_48x48.png' )
+                .'<span>Ayuda</span>',
+                array( 'plugin' => 'pregunta_frecuente', 'controller' => 'pregunta_frecuente'),
+                array( 'escape' => false, 'class' => 'tooltip', 'title' => 'Preguntas Frecuentes' ) ); ?></li>
+</ul>
+<?php endif; ?>

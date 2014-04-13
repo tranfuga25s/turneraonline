@@ -16,27 +16,26 @@ class TurnosControllerTest extends ControllerTestCase {
 		'app.turno',
 		'app.usuario',
 		'app.obra_social',
-		'app.usuarios',
 		'app.grupo',
 		'app.medico',
 		'app.especialidad',
 		'app.clinica',
-		'app.consultorios',
-		'app.medicos',
-		'app.secretarias',
+		'app.consultorio',
+		'app.secretaria',
 		'app.disponibilidad',
 		'app.dia_disponibilidad',
 		'app.excepcion',
 		'app.consultorio',
-		'app.avisos'
+		'app.aviso'
 	);
 
-/**
- * testVerTurnos method
- *
- * @return void
- */
+    /**
+     * testVerTurnos method
+     *
+     * @return void
+     */
 	public function testVerTurnos() {
+
 	}
 
 /**
@@ -182,5 +181,9 @@ class TurnosControllerTest extends ControllerTestCase {
  */
 	public function testAdministracionVerPorMedico() {
 	}
+
+    public function testAdministracionTrasladoTurnos() {
+
+    }
 
 }

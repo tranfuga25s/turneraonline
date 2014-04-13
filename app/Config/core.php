@@ -229,7 +229,7 @@
 	Configure::write('Acl.database', 'default');
 
 /**
- * Uncomment this line and correct your server timezone to fix 
+ * Uncomment this line and correct your server timezone to fix
  * any date & time related errors.
  */
 	date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -333,4 +333,15 @@ Cache::config('_cake_model_', array(
 	'path' => CACHE . 'models' . DS,
 	'serialize' => ($engine === 'File'),
 	'duration' => $duration
+));
+
+/**
+ * Cache para avisos de sms
+ */
+Cache::config('sms', array(
+    'engine' => $engine,
+    'prefix' => 'sms_',
+    'path' => CACHE . 'models' . DS,
+    'serialize' => ($engine === 'File'),
+    'duration' => $duration
 ));

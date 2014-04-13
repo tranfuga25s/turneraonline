@@ -493,13 +493,17 @@ class Turno extends AppModel {
     }
 
    /**
-    * Devuelve verdadero si un turno se encuentra reservado
+    * Devuelve verdadero si un turno se encuentra reservado.
+    * Si se seteo el ID como propiedad, siempre tendrá prioridad
     * @param $id_turno integer identificador del turno.
     * @author Esteban Zeller
     */
    public function reservado( $id_turno = null ) {
-		if( $id_turno == null )
+		if( is_null( $id_turno ) && is_null( $this->id ) ) {
 			return false;
+                } else if( ( is_null( $this->id ) || $this->id <= 0 ) && !is_null( $id_turno ) ) {
+                    $this->id = $id_turno;                    
+                }
 
 		if( $this->field( 'paciente_id' ) != null ) {
 			return true;
