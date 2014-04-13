@@ -56,7 +56,7 @@ class SecretariasControllerTest extends ControllerTestCase {
      */
 	public function testTrasladarErroneo() {
         // Sin ID
-        $this->testAction( '/secretarias/trasladar' );
+        $this->testAction( '/secretarias/trasladar', array( 'method' => 'GET' ) );
 	}
 
 
@@ -66,8 +66,12 @@ class SecretariasControllerTest extends ControllerTestCase {
      * @return void
      */
     public function testTrasladar() {
-        $this->testAction( '/secretarias/trasladar/13' );
+        $this->testAction( '/secretarias/trasladar/13', array( 'method' => 'GET' ) );
         $this->assertArrayHasKey( 'turno_original', $this->vars, "No existe el turno original" );
+        $this->assertArrayHasKey( 'Medico', $this->vars['turno_original'] );
+        $this->assertArrayHasKey( 'id_medico', $this->vars['turno_original']['Medico'] );
+        $this->assertArrayNotHasKey( 'id_usuario', $this->vars['turno_original']['Medico'] );
+
         $this->assertArrayHasKey( 'turnos', $this->vars, "No existe la lista de turnos" );
         foreach( $this->vars['turnos'] as $turno ) {
             $this->assertArrayHasKey( 'Turno', $turno );
