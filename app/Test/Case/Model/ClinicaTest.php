@@ -87,4 +87,22 @@ class ClinicaTestCase extends CakeTestCase {
 
 	 }
 
+     /**
+      * Prueba el uso de la función Clinica::unaSola()
+      */
+    public function testClinicaUnica() {
+        $cantidad = $this->Clinica->find( 'count' );
+        $this->assertGreaterThan( 0, $cantidad, "Deben existir al menos 1 clinica para probar la funcion" );
+        if( $cantidad == 1 ) {
+            $this->assertEqual( $this->Clinica->unaSola(), true, "La funcion de una sola clinica debería de devolver verdadero" );
+            $this->Clinica->id = 1;
+            $this->Clinica->recursive = -1;
+            $datos = $this->Clinica->read();
+            unset( $datos[$this->Clinica->alias][$this->Clinica->primaryKey] );
+            $datos[$this->Clinica->alias][$this->Clinica->displayField] .= '1';
+            $this->Clinica->create();
+            $this->assertNotEqual( $this->Clinica->save( $datos ), false, "Error al guardaro los nuevos datos" );
+            $this->assertEqual( $this->Clinica->unaSola(), false, "La funcion de una sola clinica debería de devolver falso ya que hay más de una clinica");
+        }
+    }
 }
