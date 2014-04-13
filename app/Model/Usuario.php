@@ -12,8 +12,16 @@ class Usuario extends AppModel {
 
 	public $actsAs = array( 'AuditLog.Auditable' );
 
+	public function __construct( $id, $table = 'usuario', $ds = 'default', $name = 'Usuario', $alias = 'Usuario' ) {
+	    parent::__construct( $id, $table, $ds );
+	    $this->virtualFields = array(
+	       'razonsocial' => "CONCAT( ".$this->alias.".apellido, ',', ".$this->alias.".nombre )"
+        );
+	}
+
 	public $virtualFields = array(
-		'razonsocial' => 'CONCAT( Usuario.apellido, \', \', Usuario.nombre )' );
+		'razonsocial' => 'CONCAT( Usuario.apellido, \', \', Usuario.nombre )'
+    );
 
 	public $belongsTo = array( 'ObraSocial', 'Grupo' );
 

@@ -226,7 +226,7 @@ class SecretariasController extends AppController {
             throw new NotFoundException( "No existe el turno que intenta trasladar" );
         }
 
-        $this->set( 'turnos', $this->Turnos->encontrarTurnosTrasladar( $id_turno, $fecha ) );
+        $this->set( 'turnos', $this->Turno->buscarTurnosParaTraslado( $id_turno, $fecha ) );
         $this->set( 'turno_original', $id_turno );
 
      }
