@@ -364,14 +364,14 @@ class TurnoTestCase extends CakeTestCase {
      * Busca la lista de turnos a los cuales se puede trasladar los turnos que estan luego del pasado como parametro
      */
     public function testTrasladoTurnosBuscarTurnos() {
-        $id_turno = $this->Turno->find( 'first', array( 'conditions' => array( 'paciente_id IS NOT NULL' ),
+        $turno = $this->Turno->find( 'first', array( 'conditions' => array( 'paciente_id IS NOT NULL' ),
                                                         'recursive' => -1,
                                                         'fields' => array( 'id_turno', 'fecha_inicio', 'medico_id' ),
                                                         'order' => array( 'id_turno' => 'asc' ) ) );
-        $this->assertArrayHasKey( 'Turno', $id_turno, "No se econtro un turno para hacer el test - verifique el fixture" );
-        $fecha_turno_original = $id_turno['Turno']['fecha_inicio'];
-        $id_turno = intval( $id_turno['Turno']['id_turno'] );
-        $id_medico = intval( $id_turno['Turno']['medico_id'] );
+        $this->assertArrayHasKey( 'Turno', $turno, "No se econtro un turno para hacer el test - verifique el fixture" );
+        $fecha_turno_original = $turno['Turno']['fecha_inicio'];
+        $id_turno = intval( $turno['Turno']['id_turno'] );
+        $id_medico = intval( $turno['Turno']['medico_id'] );
 
         $this->assertNotEqual( $id_turno, 0, "El numero de turno no puede ser cero" );
         $this->assertEqual( $this->Turno->buscarTurnosParaTraslado(), false, "El pasar sin parametros debe devolver falso" );
@@ -385,11 +385,11 @@ class TurnoTestCase extends CakeTestCase {
             $this->assertArrayHasKey( 'Turno', $turno, "El array debería tener el formato cake estandar ".$key );
             $this->assertArrayHasKey( 'fecha_inicio', $turno['Turno'], "El array debería de tener la fecha de inicio" );
             $this->assertArrayHasKey( 'medico_id', $turno['Turno'] );
-            $this->assertEqual( $turno['Turno']['medico_id'], $id_medico );
+            $this->assertEqual( intval( $turno['Turno']['medico_id'] ), $id_medico, "No coincide el identificador del medico que desea trasladar el turno" );
             $this->assertNotEqual( $turno['Turno']['id_turno'], $id_turno, "El turno seleccionado no puede ser igual al original" );
             $this->assertGreaterThan( $fecha_turno_original, $turno['Turno']['fecha_inicio'], "La fecha seleccionada debería de ser mayor a la del turno elegido" );
             $this->assertArrayHasKey( 'Medico', $turno );
-            $this->assertArrayHasKey( 'Clinica', $turno );
+            $this->assertArrayHasKey( 'Consultorio', $turno );
         }
 
     }
