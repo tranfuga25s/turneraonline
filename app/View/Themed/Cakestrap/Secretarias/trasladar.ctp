@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Medico</td>
-                    <td><?php echo $turno_original['Medico']['razonsocial']; ?></td>
+                    <td><?php echo h( $turno_original['Medico']['razonsocial'] ); ?></td>
                 </tr>
                 <tr>
                     <td>Consultorio</td>
