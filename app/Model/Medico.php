@@ -26,7 +26,11 @@ class Medico extends AppModel {
             )
         )
     );
-    //The Associations below have been created with all possible keys, those that are not needed can be removed
+    
+    /**
+     * Asociaciones a donde pertenece el medico
+     * @var array
+     */
     public $belongsTo = array(
         'Usuario' => array(
             'className' => 'Usuario',
@@ -58,6 +62,11 @@ class Medico extends AppModel {
               'foreignKey' => 'medico_id'
               ) */
     );
+    
+    /**
+     *
+     * @var array
+     */
     public $hasOne = array(
         'Disponibilidad' => array(
             'className' => 'Disponibilidad',
@@ -132,10 +141,12 @@ class Medico extends AppModel {
         $turnos = $this->Turno->find('list', array('conditions' => array('medico_id' => $id_medico)));
         foreach ($turnos as $turno) {
             $this->Turno->cancelar($turno);
-            $this->Turno->delete($turno);
+            if( !$this->Turno->delete($turno) ) { return false; }
         }
         // Disponibilidad
-        $this->Disponibilidad->deleteAll(array('medico_id' => $id_medico));
+        if( !$this->Disponibilidad->deleteAll( array('medico_id' => $id_medico), true ) ) {
+            return false;
+        }
         // Excepcion
         // Finalmente elimino el medico
         return $this->delete($id_medico);

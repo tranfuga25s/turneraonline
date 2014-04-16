@@ -16,7 +16,8 @@ class Disponibilidad extends AppModel {
         'DiaDisponibilidad' => array(
             'className' => 'DiaDisponibilidad',
             'foreignKey' => 'disponibilidad_id',
-            'order' => 'DiaDisponibilidad.dia ASC'
+            'order' => 'DiaDisponibilidad.dia ASC',
+            'dependent' => true
         ),
     );
     public $belongsTo = array(

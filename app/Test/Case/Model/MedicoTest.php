@@ -100,15 +100,17 @@ class MedicoTestCase extends CakeTestCase {
         $this->Medico->Disponibilidad->id = $id_disponibilidad;
         $this->assertEqual( $this->Medico->Disponibilidad->exists(), false, "La disponibilidad de médico no debería de existir" );
         
+        foreach( $ids_turnos as $id ) {
+            $this->Medico->Turno->id = $id;
+            $this->assertEqual( $this->Medico->Turno->exists(), false, "Un turno no fue eliminado" );
+        }
+        
         foreach( $ids_dia_disponibilidad as $id ) {
             $this->DiaDisponibilidad->id = $id;
             $this->assertEqual( $this->DiaDisponibilidad->exists(), false, "Un dia de especialidad no debería de existir: ".$id  );
         }
         
-        foreach( $ids_turnos as $id ) {
-            $this->Medico->Turno->id = $id;
-            $this->assertEqual( $this->Medico->Turno->exists(), false, "Un turno no fue eliminado" );
-        }
+        
     }
 
 }
