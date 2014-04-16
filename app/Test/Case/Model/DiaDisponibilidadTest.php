@@ -1,5 +1,6 @@
 <?php
-/* DiaDisponibilidad Test cases generated on: 2012-03-13 21:58:35 : 1331686715*/
+
+/* DiaDisponibilidad Test cases generated on: 2012-03-13 21:58:35 : 1331686715 */
 App::uses('DiaDisponibilidad', 'Model');
 
 /**
@@ -7,37 +8,39 @@ App::uses('DiaDisponibilidad', 'Model');
  *
  */
 class DiaDisponibilidadTestCase extends CakeTestCase {
-	/**
-	 * Fixtures
-	 *
-	 * @var array
-	 */
-	public $fixtures = array(
-	   'app.dia_disponibilidad',
-	   'app.disponibilidad');
 
-	/**
-	 * setUp method
-	 *
-	 * @return void
-	 */
-	public function setUp() {
-		parent::setUp();
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = array(
+        'app.dia_disponibilidad',
+        'app.disponibilidad'
+    );
 
-		$this->DiaDisponibilidad = ClassRegistry::init('DiaDisponibilidad');
-        $this->DiaDisponibilidad->Behaviors->disable( 'AuditLog.Auditable' );
-	}
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp() {
+        parent::setUp();
 
-	/**
-	 * tearDown method
-	 *
-	 * @return void
-	 */
-	public function tearDown() {
-		unset($this->DiaDisponibilidad);
+        $this->DiaDisponibilidad = ClassRegistry::init('DiaDisponibilidad');
+        $this->DiaDisponibilidad->Behaviors->disable('AuditLog.Auditable');
+    }
 
-		parent::tearDown();
-	}
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown() {
+        unset($this->DiaDisponibilidad);
+
+        parent::tearDown();
+    }
 
     public function testHorarios() {
         $datos = array(
@@ -50,9 +53,9 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '00:00:00'
             )
         );
-        $resultado = $this->DiaDisponibilidad->save( $datos );
-        $this->assertEqual( $resultado, false, "No se debe poder guardar un horario de inicio mayor al de fin" );
-        $this->assertArrayHasKey( 'hora_inicio', $this->DiaDisponibilidad->invalidFields() );
+        $resultado = $this->DiaDisponibilidad->save($datos);
+        $this->assertEqual($resultado, false, "No se debe poder guardar un horario de inicio mayor al de fin");
+        $this->assertArrayHasKey('hora_inicio', $this->DiaDisponibilidad->invalidFields());
     }
 
     public function testHorariosMananaCorrectos() {
@@ -66,8 +69,8 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '00:00:00'
             )
         );
-        $resultado = $this->DiaDisponibilidad->save( $datos );
-        $this->assertNotEqual( $resultado, false, "horarios mañana correctos y tarde nulos - no debería de fallar" );
+        $resultado = $this->DiaDisponibilidad->save($datos);
+        $this->assertNotEqual($resultado, false, "horarios mañana correctos y tarde nulos - no debería de fallar");
     }
 
     public function testHorariosTardeIncorrecto() {
@@ -81,8 +84,8 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '00:00:00'
             )
         );
-        $this->assertEqual( $this->DiaDisponibilidad->save( $datos ), false, "horarios mañana correctos y tarde incorrecto - debería de fallar" );
-        $this->assertArrayHasKey( 'hora_inicio_tarde', $this->DiaDisponibilidad->invalidFields(), "regla de validación incorrecta" );
+        $this->assertEqual($this->DiaDisponibilidad->save($datos), false, "horarios mañana correctos y tarde incorrecto - debería de fallar");
+        $this->assertArrayHasKey('hora_inicio_tarde', $this->DiaDisponibilidad->invalidFields(), "regla de validación incorrecta");
     }
 
     public function testHorariosTardeCorrectos() {
@@ -96,40 +99,39 @@ class DiaDisponibilidadTestCase extends CakeTestCase {
                 'hora_fin_tarde' => '04:00:00'
             )
         );
-        $this->assertNotEqual( $this->DiaDisponibilidad->save( $datos ), false, "horarios mañana correctos y tarde correcto - no debería de fallar" );
+        $this->assertNotEqual($this->DiaDisponibilidad->save($datos), false, "horarios mañana correctos y tarde correcto - no debería de fallar");
     }
 
     public function testValidacionFormatosHoraInicio() {
         $this->DiaDisponibilidad->id = 1;
-        $this->DiaDisponibilidad->set( 'hora_inicio', 'sdoidsosio' );
+        $this->DiaDisponibilidad->set('hora_inicio', 'sdoidsosio');
         $resultado = $this->DiaDisponibilidad->validates();
-        $this->assertEqual( $resultado, false, "No anduvo la regla de validacion de formato para hora_inicio" );
-        $this->assertArrayHasKey( 'hora_inicio', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto" );
+        $this->assertEqual($resultado, false, "No anduvo la regla de validacion de formato para hora_inicio");
+        $this->assertArrayHasKey('hora_inicio', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto");
     }
 
     public function testValidacionFormatosHoraFin() {
         $this->DiaDisponibilidad->id = 1;
-        $this->DiaDisponibilidad->set( 'hora_fin', 'sdoidsosio' );
+        $this->DiaDisponibilidad->set('hora_fin', 'sdoidsosio');
         $resultado = $this->DiaDisponibilidad->validates();
-        $this->assertEqual( $resultado, false, "No anduvo la regla de validacion de formato para hora_fin" );
-        $this->assertArrayHasKey( 'hora_fin', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto" );
-
+        $this->assertEqual($resultado, false, "No anduvo la regla de validacion de formato para hora_fin");
+        $this->assertArrayHasKey('hora_fin', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto");
     }
 
     public function testValidacionFormatosHoraInicioTarde() {
         $this->DiaDisponibilidad->id = 1;
-        $this->DiaDisponibilidad->set( 'hora_inicio_tarde', 'sdoidsosio' );
+        $this->DiaDisponibilidad->set('hora_inicio_tarde', 'sdoidsosio');
         $resultado = $this->DiaDisponibilidad->validates();
-        $this->assertEqual( $resultado, false, "No anduvo la regla de validacion de formato para hora_inicio_tarde" );
-        $this->assertArrayHasKey( 'hora_inicio_tarde', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto" );
+        $this->assertEqual($resultado, false, "No anduvo la regla de validacion de formato para hora_inicio_tarde");
+        $this->assertArrayHasKey('hora_inicio_tarde', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto");
     }
 
     public function testValidacionFormatosHoraFinTarde() {
         $this->DiaDisponibilidad->id = 1;
-        $this->DiaDisponibilidad->set( 'hora_fin_tarde', 'sdoidsosio' );
+        $this->DiaDisponibilidad->set('hora_fin_tarde', 'sdoidsosio');
         $resultado = $this->DiaDisponibilidad->validates();
-        $this->assertEqual( $resultado, false, "No anduvo la regla de validacion de formato para hora_fin_tarde" );
-        $this->assertArrayHasKey( 'hora_fin_tarde', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto" );
+        $this->assertEqual($resultado, false, "No anduvo la regla de validacion de formato para hora_fin_tarde");
+        $this->assertArrayHasKey('hora_fin_tarde', $this->DiaDisponibilidad->invalidFields(), "Formato incorrecto");
     }
 
 }
