@@ -26,7 +26,7 @@ class Medico extends AppModel {
             )
         )
     );
-    
+
     /**
      * Asociaciones a donde pertenece el medico
      * @var array
@@ -62,7 +62,7 @@ class Medico extends AppModel {
               'foreignKey' => 'medico_id'
               ) */
     );
-    
+
     /**
      *
      * @var array
@@ -76,22 +76,27 @@ class Medico extends AppModel {
 
     /**
      * Devuleve el listado de medicos como para un select
+     * @param integer $id_filtro Identificador del filtro que estamos buscando
+     * @param boolean $solo_visibles Muestra solo los medicos visibles
+     * @return array Lista de medicos ( ID_usuario > razonsocial )
      */
     public function lista($id_filtro = null, $solo_visibles = false) {
         $cond = array('grupo_id' => 2);
-        if ($id_filtro != null) {
+        if ( $id_filtro != null ) {
             $cond['id_usuario'] = $id_filtro;
-        }
+        } 
         if ($solo_visibles) {
             $ids = $this->find('list', array('conditions' => array('visible' => 1), 'fields' => array('usuario_id')));
-            if ($id_filtro != null) {
-                $cond['id_usuario'] = array_intersect($ids, $id_filtro);
+            if ( $id_filtro != null ) {
+                $cond['id_usuario'] = array_intersect( $ids, array( $id_filtro ) );
             } else {
                 $cond['id_usuario'] = $ids;
             }
         }
-        return $this->Usuario->find('list', array('conditions' => $cond, 'fields' => array('id_usuario', 'razonsocial')
-                ));
+        return $this->Usuario->find( 'list', 
+                    array( 'conditions' => $cond, 
+                           'fields' => array( 'id_usuario', 'razonsocial' )
+        ));
     }
 
     /**
@@ -141,10 +146,12 @@ class Medico extends AppModel {
         $turnos = $this->Turno->find('list', array('conditions' => array('medico_id' => $id_medico)));
         foreach ($turnos as $turno) {
             $this->Turno->cancelar($turno);
-            if( !$this->Turno->delete($turno) ) { return false; }
+            if (!$this->Turno->delete($turno)) {
+                return false;
+            }
         }
         // Disponibilidad
-        if( !$this->Disponibilidad->deleteAll( array('medico_id' => $id_medico), true ) ) {
+        if (!$this->Disponibilidad->deleteAll(array('medico_id' => $id_medico), true)) {
             return false;
         }
         // Excepcion

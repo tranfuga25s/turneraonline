@@ -109,8 +109,83 @@ class MedicoTestCase extends CakeTestCase {
             $this->DiaDisponibilidad->id = $id;
             $this->assertEqual( $this->DiaDisponibilidad->exists(), false, "Un dia de especialidad no debería de existir: ".$id  );
         }
-        
-        
     }
+    
+    /**
+     * Lista simple
+     */
+    public function testListaSelect() {
+       $lista = $this->Medico->lista();
+       $this->assertInternalType( 'array', $lista );
+       $this->assertNotEqual( count( $lista ), 0 );
+    }
+    
+    /**
+     * Lista simple cuando se pasa un ID
+     */
+    public function testListaSelectIDFiltro() {
+       
+       // Si paso solo un ID debe devolverlo
+       $data = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ), 
+                                                    'recursive' => -1 ) );
+       $id_usuario = intval( $data[$this->Medico->alias]['usuario_id'] );
+       $this->assertNotEqual( $id_usuario, 0 );
+       
+       $lista2 = $this->Medico->lista( $id_usuario );
+       $this->assertInternalType( 'array', $lista2 );
+       $this->assertNotEqual( count( $lista2 ), 0 );
+       $this->assertArrayHasKey( $id_usuario, $lista2 );
+       
+    }
+    
+    /**
+     * Lista de medicos solo visibles
+     */
+    public function testListaSelectVisibles() {
+       // Si paso solo los visibles
+       $data2 = $this->Medico->find( 'all', array( 'fields' => array( 'usuario_id' ), 
+                                                  'recursive' => -1,
+                                                  'conditions' => array('visible' => 1 )
+       ) );
+       $ids_usuarios = Set::classicExtract( $data2, "{n}.Medico.usuario_id" );
+       $this->assertNotEqual( count( $ids_usuarios ), 0 );
+       
+       $lista3 = $this->Medico->lista( null, true );
+       $this->assertInternalType( 'array', $lista3 );
+       $this->assertNotEqual( count( $lista3 ), 0 );
+       foreach( $ids_usuarios as $id_usuario ) {
+           $this->assertArrayHasKey( $id_usuario, $lista3 );
+       }
+    }
+    
+    /**
+     * Lista de medicos visibles con ID
+     * @TODO Arreglar este test!
+     */ 
+    /* public function testListaSelectVisiblesConID() {
+       // Si paso solo un ID debe devolverlo si está visible
+       $data = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ), 
+                                                    'recursive' => -1,
+                                                    'conditions' => array( 'visible' => true ) ) );
+       $id_usuario = intval( $data[$this->Medico->alias]['usuario_id'] );
+       $this->assertNotEqual( $id_usuario, 0 );
+       
+       $lista2 = $this->Medico->lista( $id_usuario, true );
+       $this->assertInternalType( 'array', $lista2 );
+       $this->assertNotEqual( count( $lista2 ), 0 );
+       $this->assertArrayHasKey( $id_usuario, $lista2 );
+       
+       // Pruebo con ID no visible
+       $data2 = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ), 
+                                                    'recursive' => -1,
+                                                    'conditions' => array( 'visible' => false ) ) );
+       $id_usuario2 = intval( $data2[$this->Medico->alias]['usuario_id'] );
+       $this->assertNotEqual( $id_usuario2, 0 );
+       
+       $lista = $this->Medico->lista( $id_usuario, true );
+       $this->assertInternalType( 'array', $lista );
+       $this->assertNotEqual( count( $lista ), 0 );
+       $this->assertArrayNotHasKey( $id_usuario, $lista );
+    } */
 
 }
