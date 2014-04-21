@@ -27,6 +27,13 @@ class MedicoFixture extends CakeTestFixture {
                 'clinica_id' => 1,
                 'visible' => 0
         );
+        $this->records[] = array(
+                'id_medico' => 3,
+                'usuario_id' => 4,
+                'especialidad_id' => 2,
+                'clinica_id' => 1,
+                'visible' => 1
+        );
         parent::init();
     }
 }
