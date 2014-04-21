@@ -13,6 +13,16 @@ class DisponibilidadFixture extends CakeTestFixture {
      *
      * @var array
      */
-    public $import = array('model' => 'Disponibilidad', 'records' => true);
+    public $import = array( 'model' => 'Disponibilidad' );
+
+    public function init() {
+        $this->records[] = array(
+            'id_disponibilidad' => 1,
+            'medico_id' => 3,
+            'duracion' => 20,
+            'consultorio_id' => 1
+        );
+        parent::init();
+    }
 
 }
