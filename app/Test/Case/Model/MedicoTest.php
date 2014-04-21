@@ -170,7 +170,7 @@ class MedicoTestCase extends CakeTestCase {
      * Lista de medicos visibles con ID
      * @TODO Arreglar este test!
      */
-    /* public function testListaSelectVisiblesConID() {
+     public function testListaSelectVisiblesConID() {
        // Si paso solo un ID debe devolverlo si está visible
        $data = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ),
                                                     'recursive' => -1,
@@ -182,9 +182,12 @@ class MedicoTestCase extends CakeTestCase {
        $this->assertInternalType( 'array', $lista2 );
        $this->assertNotEqual( count( $lista2 ), 0 );
        $this->assertArrayHasKey( $id_usuario, $lista2 );
-
+     }
+     
+     
+     /* public function testListaSelectInvisibleConID() {
        // Pruebo con ID no visible
-       $data2 = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ),
+       /*$data2 = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ),
                                                     'recursive' => -1,
                                                     'conditions' => array( 'visible' => false ) ) );
        $id_usuario2 = intval( $data2[$this->Medico->alias]['usuario_id'] );
@@ -192,8 +195,7 @@ class MedicoTestCase extends CakeTestCase {
 
        $lista = $this->Medico->lista( $id_usuario, true );
        $this->assertInternalType( 'array', $lista );
-       $this->assertNotEqual( count( $lista ), 0 );
-       $this->assertArrayNotHasKey( $id_usuario, $lista );
+       $this->assertEqual( count( $lista ), 0 );
     } */
 
 }
