@@ -418,7 +418,7 @@ class TurnoTestCase extends CakeTestCase {
      * 
      */
     public function testTestEliminarUsuarioInvalido() {
-        $this->assertNotEqual( $this->Turno->eliminarTurnosUsuario( null ), false );
+        $this->assertEqual( $this->Turno->eliminarTurnosUsuario( null ), false );
     }
     
     /**
