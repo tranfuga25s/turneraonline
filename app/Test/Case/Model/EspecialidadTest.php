@@ -1,5 +1,6 @@
 <?php
-/* Especialidade Test cases generated on: 2012-01-11 19:32:21 : 1326321141*/
+
+/* Especialidade Test cases generated on: 2012-01-11 19:32:21 : 1326321141 */
 App::uses('Especialidad', 'Model');
 
 /**
@@ -7,51 +8,64 @@ App::uses('Especialidad', 'Model');
  *
  */
 class EspecialidadTestCase extends CakeTestCase {
+
     /**
      * Fixtures
      *
      * @var array
      */
-	public $fixtures = array( 'app.especialidad',
-                              'app.medico' );
+    public $fixtures = array(
+        'app.especialidad',
+        'app.medico',
+        'app.clinica'
+    );
 
     /**
      * setUp method
      *
      * @return void
      */
-	public function setUp() {
-		parent::setUp();
+    public function setUp() {
+        parent::setUp();
 
-		$this->Especialidad = ClassRegistry::init('Especialidad');
+        $this->Especialidad = ClassRegistry::init('Especialidad');
         $this->Medico = ClassRegistry::init('Medico');
-	}
+    }
 
     /**
      * tearDown method
      *
      * @return void
      */
-	public function tearDown() {
-		unset($this->Especialidad);
+    public function tearDown() {
+        unset($this->Especialidad);
         unset($this->Medico);
 
-		parent::tearDown();
-	}
-
+        parent::tearDown();
+    }
 
     /**
      * Probar de eliminar una especialidad que está vinculada con un médico
      */
     public function testEliminaction() {
 
-        $ids_medicos = $this->Medico->find( 'list', array( 'fields' => array( 'especialidad_id' ) ) );
-        $id_especialidad = intval( array_pop( $ids_medicos ) );
+        $ids_medicos = $this->Medico->find('list', array('fields' => array('especialidad_id')));
+        $id_especialidad = intval(array_pop($ids_medicos));
 
-        $this->assertNotEqual( $id_especialidad,       0, "No se pudo seleccionar una especialidad - cero"        );
-        $this->assertNotEqual( $id_especialidad,    null, "No se pudo seleciconar una especialidad - null"        );
-        $this->assertNotEqual( $id_especialidad, array(), "No se pudo seleccionar una especialidad - array vacio" );
+        $this->assertNotEqual($id_especialidad, 0, "No se pudo seleccionar una especialidad - cero");
+        $this->assertNotEqual($id_especialidad, null, "No se pudo seleciconar una especialidad - null");
+        $this->assertNotEqual($id_especialidad, array(), "No se pudo seleccionar una especialidad - array vacio");
 
-        $this->assertNotEqual( $this->Especialidad->delete( $id_especialidad ), true, "La especialidad no debe ser eliminada!" );
+        $this->assertNotEqual($this->Especialidad->delete($id_especialidad), true, "La especialidad no debe ser eliminada!");
     }
+    
+    /**
+     * Testea el funcionamiento de la funcion que muestra las especialidades según la clinica elegida
+     */
+    public function testListaPorClinica() {
+        $this->assertEqual( count( $this->Especialidad->listaPorClinica( -1 ) ), 0 );
+        $this->assertEqual( count( $this->Especialidad->listaPorClinica( null ) ), 0 );
+        $this->assertNotEqual( count( $this->Especialidad->listaPorClinica( 1 ) ), 0 );
+    }
+
 }
