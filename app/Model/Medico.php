@@ -86,9 +86,14 @@ class Medico extends AppModel {
             $cond['id_usuario'] = $id_filtro;
         } 
         if ($solo_visibles) {
-            $ids = $this->find('list', array('conditions' => array('visible' => 1), 'fields' => array('usuario_id')));
+            $ids = $this->find('list', array('conditions' => array('visible' => true ), 'fields' => array( 'usuario_id' ) ) );
             if ( $id_filtro != null ) {
-                $cond['id_usuario'] = array_intersect( $ids, array( $id_filtro ) );
+                $ids_autorizados = array_intersect( $ids, array( $id_filtro ) );
+                if(array_key_exists( $id_filtro, array_flip( $ids_autorizados ) ) ) {
+                    $cond['id_usuario'] = $id_filtro;
+                } else {
+                    return array();
+                }
             } else {
                 $cond['id_usuario'] = $ids;
             }

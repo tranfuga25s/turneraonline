@@ -71,6 +71,19 @@ class UsuarioFixture extends CakeTestFixture {
             'facebook_id' => 0,
             'sexo' => 'f'
         );
+        $this->records[] = array(
+            'id_usuario' => 5,
+            'email' => 'esteban.zeller@gmail.com',
+            'nombre' => 'Estean Javier',
+            'apellido' => 'Zeler',
+            'telefono' => 0943049,
+            'celular' => 30492049,
+            'obra_social_id' => 1,
+            'notificaciones' => 1,
+            'grupo_id' => 2,
+            'facebook_id' => 0,
+            'sexo' => 'f'
+        );
         parent::init();
     }
 

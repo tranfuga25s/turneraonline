@@ -184,18 +184,20 @@ class MedicoTestCase extends CakeTestCase {
        $this->assertArrayHasKey( $id_usuario, $lista2 );
      }
      
-     
-     /* public function testListaSelectInvisibleConID() {
+     /*!
+      * 
+      */
+     public function testListaSelectInvisibleConID() {
        // Pruebo con ID no visible
-       /*$data2 = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ),
+       $data2 = $this->Medico->find( 'first', array( 'fields' => array( 'usuario_id' ),
                                                     'recursive' => -1,
                                                     'conditions' => array( 'visible' => false ) ) );
-       $id_usuario2 = intval( $data2[$this->Medico->alias]['usuario_id'] );
-       $this->assertNotEqual( $id_usuario2, 0 );
+       $id_usuario = intval( $data2[$this->Medico->alias]['usuario_id'] );
+       $this->assertNotEqual( $id_usuario, 0 );
 
        $lista = $this->Medico->lista( $id_usuario, true );
        $this->assertInternalType( 'array', $lista );
        $this->assertEqual( count( $lista ), 0 );
-    } */
+    }
 
 }
