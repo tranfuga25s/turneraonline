@@ -393,7 +393,34 @@ class TurnoTestCase extends CakeTestCase {
         }
 
     }
+    
+    /**
+     * 
+     */
+    public function testTestEliminarUsuario() {
+        $data = $this->Turno->find( 'first', array( 'conditions' => array( 'NOT' => array( 'paciente_id' => null ) ),
+                                                    'recursive' => -1,
+                                                    'fields' => array( 'paciente_id' )
+                                             )
+        );
+        $id_usuario = intval( $data[$this->Turno->alias]['paciente_id'] );
+        
+        $cantidad = $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id_usuario ) ) );
+        $this->assertNotEqual( $cantidad, 0 );
+        
+        $this->assertNotEqual( $this->Turno->eliminarTurnosUsuario( $id_usuario ), false );
+        
+        $cantidad = $this->Turno->find( 'count', array( 'conditions' => array( 'paciente_id' => $id_usuario ) ) );
+        $this->assertEqual( $cantidad, 0 );
+    }
 
+    /**
+     * 
+     */
+    public function testTestEliminarUsuarioInvalido() {
+        $this->assertNotEqual( $this->Turno->eliminarTurnosUsuario( null ), false );
+    }
+    
     /**
      * tearDown method
      *
