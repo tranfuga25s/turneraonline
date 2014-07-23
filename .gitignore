@@ -10,3 +10,4 @@
 .editorconfig
 build.properties
 build.xml
+/nbproject/private/
