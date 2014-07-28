@@ -26,6 +26,11 @@ class ObraSocial extends AppModel {
      * @property string $displatField
      */
     public $displayField = 'nombre';
+    
+    /**
+     * Auditoría del sistema
+     * @property array 
+     */
     public $actAs = array('AuditLog.Auditable');
 
     /**
@@ -45,6 +50,11 @@ class ObraSocial extends AppModel {
             'dependent' => false
         )
     );
+    
+    /**
+     *
+     * @var type 
+     */
     public $validate = array(
         'nombre' => array(
             'notempty' => array(
