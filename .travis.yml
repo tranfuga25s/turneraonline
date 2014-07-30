@@ -39,7 +39,7 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - ./app/Console/cake test app AllTests --stderr  --stderr --coverage-clover build/logs/clover.xml
+  - ./app/Console/cake test app AllTests --stderr --coverage-clover build/logs/clover.xml --include-path vendor/phpunit/phpunit
 
 after_script:
   - php vendor/bin/coveralls -v
