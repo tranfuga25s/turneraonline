@@ -1,6 +1,4 @@
 <?php
-
-/* Grupo Test cases generated on: 2012-01-16 11:22:45 : 1326723765 */
 App::uses('Grupo', 'Model');
 
 /**
@@ -60,7 +58,7 @@ class GrupoTestCase extends CakeTestCase {
         $usuario = $this->Usuario->find( 'first', array( 'fields' => array( 'grupo_id' ), 'recursive' => -1 ) );
         $this->assertArrayHasKey( 'Usuario', $usuario );
         $this->assertArrayHasKey( 'grupo_id', $usuario['Usuario'] );
-        $id_grupo = $usuario['Usuario']['grupo_id'];
+        $id_grupo = intval( $usuario['Usuario']['grupo_id'] );
         $this->assertGreaterThan( 0, $id_grupo );
         $this->Grupo->id = $id_grupo;
         $this->assertEqual( $this->Grupo->tieneUsuariosAsociados( $id_grupo ), true, "No se buscó la cantidad usuarios correctamente" );
