@@ -199,5 +199,23 @@ class MedicoTestCase extends CakeTestCase {
        $this->assertInternalType( 'array', $lista );
        $this->assertEqual( count( $lista ), 0 );
     }
+    
+    /**
+     * Testea el listado de usuarios según medico
+     */
+    public function testListaUsuarios2() {
+       $lista = $this->Medico->lista2();
+       $this->assertNotEqual( count( $lista ), 0 );
+       
+       foreach( $lista as $id_medico => $razon_social ) {
+           $this->Medico->id = $id_medico;
+           $this->assertEqual( $this->Medico->exists(), true );
+           $id_usuario = intval( $this->Medico->field( 'usuario_id' ) );
+           $this->assertNotEqual( $id_usuario, 0 );
+           $this->Medico->Usuario->id = $id_usuario;
+           $this->assertNotEqual( $this->Medico->Usuario->exists(), 0 );
+           $this->assertEqual( $this->Medico->Usuario->field( 'razonsocial' ), $razon_social );
+       }
+    }
 
 }

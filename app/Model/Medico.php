@@ -12,9 +12,23 @@ App::uses('AppModel', 'Model');
  * @property Disponibilidad $Disponibilidad
  */
 class Medico extends AppModel {
-
+    
+    /**
+     *
+     * @var string 
+     */
     public $primaryKey = 'id_medico';
+    
+    /**
+     *
+     * @var array 
+     */
     public $actAs = array('AuditLog.Auditable');
+    
+    /**
+     * Validaciones
+     * @var array 
+     */
     public $validate = array(
         'usuario_id' => array(
             'notempty' => array(

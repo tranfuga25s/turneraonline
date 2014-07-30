@@ -12,7 +12,7 @@ $this->set( 'title_for_layout', "Sistema de turnos para canchas de futbol y liga
 	border-radius: 4px;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	text-align: center;b
+	text-align: center;
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
 	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
