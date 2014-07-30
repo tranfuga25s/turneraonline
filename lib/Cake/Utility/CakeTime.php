@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Multibyte', 'I18n');
@@ -97,13 +97,12 @@ class CakeTime {
  *
  * @param string $name Variable name
  * @param mixes $value Variable value
+ * @return void
  */
 	public function __set($name, $value) {
 		switch ($name) {
 			case 'niceFormat':
 				self::${$name} = $value;
-				break;
-			default:
 				break;
 		}
 	}
@@ -249,7 +248,7 @@ class CakeTime {
  */
 	public static function convert($serverTime, $timezone) {
 		static $serverTimezone = null;
-		if (is_null($serverTimezone) || (date_default_timezone_get() !== $serverTimezone->getName())) {
+		if ($serverTimezone === null || (date_default_timezone_get() !== $serverTimezone->getName())) {
 			$serverTimezone = new DateTimeZone(date_default_timezone_get());
 		}
 		$serverOffset = $serverTimezone->getOffset(new DateTime('@' . $serverTime));
@@ -314,6 +313,11 @@ class CakeTime {
  */
 	public static function fromString($dateString, $timezone = null) {
 		if (empty($dateString)) {
+			return false;
+		}
+
+		$containsDummyDate = (is_string($dateString) && substr($dateString, 0, 10) === '0000-00-00');
+		if ($containsDummyDate) {
 			return false;
 		}
 
@@ -468,7 +472,8 @@ class CakeTime {
  */
 	public static function isToday($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('Y-m-d', $timestamp) == date('Y-m-d', time());
+		$now = self::fromString('now', $timezone);
+		return date('Y-m-d', $timestamp) == date('Y-m-d', $now);
 	}
 
 /**
@@ -481,7 +486,8 @@ class CakeTime {
  */
 	public static function isThisWeek($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('W o', $timestamp) == date('W o', time());
+		$now = self::fromString('now', $timezone);
+		return date('W o', $timestamp) == date('W o', $now);
 	}
 
 /**
@@ -494,7 +500,8 @@ class CakeTime {
  */
 	public static function isThisMonth($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('m Y', $timestamp) == date('m Y', time());
+		$now = self::fromString('now', $timezone);
+		return date('m Y', $timestamp) == date('m Y', $now);
 	}
 
 /**
@@ -507,7 +514,8 @@ class CakeTime {
  */
 	public static function isThisYear($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('Y', $timestamp) == date('Y', time());
+		$now = self::fromString('now', $timezone);
+		return date('Y', $timestamp) == date('Y', $now);
 	}
 
 /**
@@ -521,7 +529,8 @@ class CakeTime {
  */
 	public static function wasYesterday($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('Y-m-d', $timestamp) == date('Y-m-d', strtotime('yesterday'));
+		$yesterday = self::fromString('yesterday', $timezone);
+		return date('Y-m-d', $timestamp) == date('Y-m-d', $yesterday);
 	}
 
 /**
@@ -534,7 +543,8 @@ class CakeTime {
  */
 	public static function isTomorrow($dateString, $timezone = null) {
 		$timestamp = self::fromString($dateString, $timezone);
-		return date('Y-m-d', $timestamp) == date('Y-m-d', strtotime('tomorrow'));
+		$tomorrow = self::fromString('tomorrow', $timezone);
+		return date('Y-m-d', $timestamp) == date('Y-m-d', $tomorrow);
 	}
 
 /**
@@ -637,7 +647,7 @@ class CakeTime {
 	public static function toRSS($dateString, $timezone = null) {
 		$date = self::fromString($dateString, $timezone);
 
-		if (is_null($timezone)) {
+		if ($timezone === null) {
 			return date("r", $date);
 		}
 
@@ -815,48 +825,76 @@ class CakeTime {
 			return __d('cake', 'on %s', date($format, $inSeconds));
 		}
 
-		$f = $accuracy['second'];
+		$fWord = $accuracy['second'];
 		if ($years > 0) {
-			$f = $accuracy['year'];
+			$fWord = $accuracy['year'];
 		} elseif (abs($months) > 0) {
-			$f = $accuracy['month'];
+			$fWord = $accuracy['month'];
 		} elseif (abs($weeks) > 0) {
-			$f = $accuracy['week'];
+			$fWord = $accuracy['week'];
 		} elseif (abs($days) > 0) {
-			$f = $accuracy['day'];
+			$fWord = $accuracy['day'];
 		} elseif (abs($hours) > 0) {
-			$f = $accuracy['hour'];
+			$fWord = $accuracy['hour'];
 		} elseif (abs($minutes) > 0) {
-			$f = $accuracy['minute'];
+			$fWord = $accuracy['minute'];
 		}
 
-		$f = str_replace(array('year', 'month', 'week', 'day', 'hour', 'minute', 'second'), array(1, 2, 3, 4, 5, 6, 7), $f);
+		$fNum = str_replace(array('year', 'month', 'week', 'day', 'hour', 'minute', 'second'), array(1, 2, 3, 4, 5, 6, 7), $fWord);
 
 		$relativeDate = '';
-		if ($f >= 1 && $years > 0) {
+		if ($fNum >= 1 && $years > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d year', '%d years', $years, $years);
 		}
-		if ($f >= 2 && $months > 0) {
+		if ($fNum >= 2 && $months > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d month', '%d months', $months, $months);
 		}
-		if ($f >= 3 && $weeks > 0) {
+		if ($fNum >= 3 && $weeks > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d week', '%d weeks', $weeks, $weeks);
 		}
-		if ($f >= 4 && $days > 0) {
+		if ($fNum >= 4 && $days > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d day', '%d days', $days, $days);
 		}
-		if ($f >= 5 && $hours > 0) {
+		if ($fNum >= 5 && $hours > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d hour', '%d hours', $hours, $hours);
 		}
-		if ($f >= 6 && $minutes > 0) {
+		if ($fNum >= 6 && $minutes > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d minute', '%d minutes', $minutes, $minutes);
 		}
-		if ($f >= 7 && $seconds > 0) {
+		if ($fNum >= 7 && $seconds > 0) {
 			$relativeDate .= ($relativeDate ? ', ' : '') . __dn('cake', '%d second', '%d seconds', $seconds, $seconds);
 		}
 
+		$aboutAgo = array(
+			'second' => __d('cake', 'about a second ago'),
+			'minute' => __d('cake', 'about a minute ago'),
+			'hour' => __d('cake', 'about an hour ago'),
+			'day' => __d('cake', 'about a day ago'),
+			'week' => __d('cake', 'about a week ago'),
+			'year' => __d('cake', 'about a year ago')
+		);
+
+		$aboutIn = array(
+			'second' => __d('cake', 'in about a second'),
+			'minute' => __d('cake', 'in about a minute'),
+			'hour' => __d('cake', 'in about an hour'),
+			'day' => __d('cake', 'in about a day'),
+			'week' => __d('cake', 'in about a week'),
+			'year' => __d('cake', 'in about a year')
+		);
+
+		// When time has passed
 		if (!$backwards) {
-			return __d('cake', '%s ago', $relativeDate);
+			if ($relativeDate) {
+				return __d('cake', '%s ago', $relativeDate);
+			}
+
+			return $aboutAgo[$fWord];
+		}
+
+		// When time is to come
+		if (!$relativeDate) {
+			return $aboutIn[$fWord];
 		}
 
 		return $relativeDate;
@@ -880,8 +918,9 @@ class CakeTime {
 
 		$date = self::fromString($dateString, $timezone);
 		$interval = self::fromString('-' . $timeInterval);
+		$now = self::fromString('now', $timezone);
 
-		return $date >= $interval && $date <= time();
+		return $date >= $interval && $date <= $now;
 	}
 
 /**
@@ -902,8 +941,9 @@ class CakeTime {
 
 		$date = self::fromString($dateString, $timezone);
 		$interval = self::fromString('+' . $timeInterval);
+		$now = self::fromString('now', $timezone);
 
-		return $date <= $interval && $date >= time();
+		return $date <= $interval && $date >= $now;
 	}
 
 /**

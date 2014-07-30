@@ -16,12 +16,11 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html
  * @package       Cake.Test.Case.Utility
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       Open Group Test Suite License (http://www.opensource.org/licenses/opengroup.php)
+ * @license       http://www.opensource.org/licenses/opengroup.php Open Group Test Suite License
  */
 
 /**
  * Included libraries.
- *
  */
 App::uses('Inflector', 'Utility');
 
@@ -110,6 +109,14 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEquals(Inflector::singularize('foes'), 'foe');
 		$this->assertEquals(Inflector::singularize('databases'), 'database');
 		$this->assertEquals(Inflector::singularize('cookies'), 'cookie');
+		$this->assertEquals(Inflector::singularize('thieves'), 'thief');
+		$this->assertEquals(Inflector::singularize('potatoes'), 'potato');
+		$this->assertEquals(Inflector::singularize('heroes'), 'hero');
+		$this->assertEquals(Inflector::singularize('buffalos'), 'buffalo');
+		$this->assertEquals(Inflector::singularize('babies'), 'baby');
+		$this->assertEquals(Inflector::singularize('teeth'), 'tooth');
+		$this->assertEquals(Inflector::singularize('geese'), 'goose');
+		$this->assertEquals(Inflector::singularize('feet'), 'foot');
 
 		$this->assertEquals(Inflector::singularize(''), '');
 	}
@@ -162,6 +169,14 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEquals(Inflector::pluralize('roof'), 'roofs');
 		$this->assertEquals(Inflector::pluralize('foe'), 'foes');
 		$this->assertEquals(Inflector::pluralize('cookie'), 'cookies');
+		$this->assertEquals(Inflector::pluralize('wolf'), 'wolves');
+		$this->assertEquals(Inflector::pluralize('thief'), 'thieves');
+		$this->assertEquals(Inflector::pluralize('potato'), 'potatoes');
+		$this->assertEquals(Inflector::pluralize('hero'), 'heroes');
+		$this->assertEquals(Inflector::pluralize('buffalo'), 'buffalo');
+		$this->assertEquals(Inflector::pluralize('tooth'), 'teeth');
+		$this->assertEquals(Inflector::pluralize('goose'), 'geese');
+		$this->assertEquals(Inflector::pluralize('foot'), 'feet');
 		$this->assertEquals(Inflector::pluralize(''), '');
 	}
 

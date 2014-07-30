@@ -15,7 +15,7 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('View', 'View');
@@ -24,7 +24,6 @@ App::uses('Controller', 'Controller');
 App::uses('CacheHelper', 'View/Helper');
 App::uses('HtmlHelper', 'View/Helper');
 App::uses('ErrorHandler', 'Error');
-
 
 /**
  * ViewPostsController class
@@ -36,7 +35,7 @@ class ViewPostsController extends Controller {
 /**
  * name property
  *
- * @var string 'Posts'
+ * @var string
  */
 	public $name = 'Posts';
 
@@ -79,13 +78,6 @@ class ViewPostsController extends Controller {
  */
 class ThemePostsController extends Controller {
 
-/**
- * name property
- *
- * @var string 'ThemePosts'
- */
-	public $name = 'ThemePosts';
-
 	public $theme = null;
 
 /**
@@ -114,7 +106,7 @@ class TestThemeView extends View {
  *
  * @param string $name
  * @param array $params
- * @return void
+ * @return string The given name
  */
 	public function renderElement($name, $params = array()) {
 		return $name;
@@ -123,8 +115,8 @@ class TestThemeView extends View {
 /**
  * getViewFileName method
  *
- * @param string $name
- * @return void
+ * @param string $name Controller action to find template filename for
+ * @return string Template filename
  */
 	public function getViewFileName($name = null) {
 		return $this->_getViewFileName($name);
@@ -133,8 +125,8 @@ class TestThemeView extends View {
 /**
  * getLayoutFileName method
  *
- * @param string $name
- * @return void
+ * @param string $name The name of the layout to find.
+ * @return string Filename for layout file (.ctp).
  */
 	public function getLayoutFileName($name = null) {
 		return $this->_getLayoutFileName($name);
@@ -152,8 +144,8 @@ class TestView extends View {
 /**
  * getViewFileName method
  *
- * @param string $name
- * @return void
+ * @param string $name Controller action to find template filename for
+ * @return string Template filename
  */
 	public function getViewFileName($name = null) {
 		return $this->_getViewFileName($name);
@@ -162,8 +154,8 @@ class TestView extends View {
 /**
  * getLayoutFileName method
  *
- * @param string $name
- * @return void
+ * @param string $name The name of the layout to find.
+ * @return string Filename for layout file (.ctp).
  */
 	public function getLayoutFileName($name = null) {
 		return $this->_getLayoutFileName($name);
@@ -172,9 +164,9 @@ class TestView extends View {
 /**
  * paths method
  *
- * @param string $plugin
- * @param boolean $cached
- * @return void
+ * @param string $plugin Optional plugin name to scan for view files.
+ * @param boolean $cached Set to true to force a refresh of view paths.
+ * @return array paths
  */
 	public function paths($plugin = null, $cached = true) {
 		return $this->_paths($plugin, $cached);
@@ -201,13 +193,14 @@ class TestAfterHelper extends Helper {
 /**
  * property property
  *
- * @var string ''
+ * @var string
  */
 	public $property = '';
 
 /**
  * beforeLayout method
  *
+ * @param string $viewFile
  * @return void
  */
 	public function beforeLayout($viewFile) {
@@ -217,6 +210,7 @@ class TestAfterHelper extends Helper {
 /**
  * afterLayout method
  *
+ * @param string $layoutFile
  * @return void
  */
 	public function afterLayout($layoutFile) {
@@ -224,7 +218,6 @@ class TestAfterHelper extends Helper {
 	}
 
 }
-
 
 /**
  * ViewTest class
@@ -537,7 +530,7 @@ class ViewTest extends CakeTestCase {
 
 		$View = new TestView($this->Controller);
 		ob_start();
-		$result = $View->getViewFileName('does_not_exist');
+		$View->getViewFileName('does_not_exist');
 
 		$this->ThemeController->plugin = null;
 		$this->ThemeController->name = 'Pages';
@@ -565,8 +558,8 @@ class ViewTest extends CakeTestCase {
 
 		$View = new TestView($this->Controller);
 		ob_start();
-		$result = $View->getLayoutFileName();
-		$expected = ob_get_clean();
+		$View->getLayoutFileName();
+		ob_get_clean();
 
 		$this->ThemeController->plugin = null;
 		$this->ThemeController->name = 'Posts';
@@ -575,7 +568,7 @@ class ViewTest extends CakeTestCase {
 		$this->ThemeController->theme = 'my_theme';
 
 		$View = new TestThemeView($this->ThemeController);
-		$result = $View->getLayoutFileName();
+		$View->getLayoutFileName();
 	}
 
 /**
@@ -770,7 +763,7 @@ class ViewTest extends CakeTestCase {
 		$result = Cache::read('element__test_element_cache_callbacks_param_foo', 'test_view');
 		$this->assertEquals($expected, $result);
 
-		$result = $View->element('test_element', array(
+		$View->element('test_element', array(
 			'param' => 'one',
 			'foo' => 'two'
 		), array(
@@ -780,7 +773,7 @@ class ViewTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$View->elementCache = 'default';
-		$result = $View->element('test_element', array(
+		$View->element('test_element', array(
 			'param' => 'one',
 			'foo' => 'two'
 		), array(
@@ -1316,6 +1309,17 @@ class ViewTest extends CakeTestCase {
 		$this->View->assign('test', 'Block content');
 		$result = $this->View->fetch('test');
 		$this->assertEquals('Block content', $result);
+	}
+
+/**
+ * Test resetting a block's content.
+ *
+ * @return void
+ */
+	public function testBlockReset() {
+		$this->View->assign('test', '');
+		$result = $this->View->fetch('test', 'This should not be returned');
+		$this->assertSame('', $result);
 	}
 
 /**

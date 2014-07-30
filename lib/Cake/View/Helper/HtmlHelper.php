@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 0.9.1
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppHelper', 'View/Helper');
@@ -98,8 +98,8 @@ class HtmlHelper extends AppHelper {
 		'ol' => '<ol%s>%s</ol>',
 		'li' => '<li%s>%s</li>',
 		'error' => '<div%s>%s</div>',
-		'javascriptblock' => '<script type="text/javascript"%s>%s</script>',
-		'javascriptstart' => '<script type="text/javascript">',
+		'javascriptblock' => '<script%s>%s</script>',
+		'javascriptstart' => '<script>',
 		'javascriptlink' => '<script type="text/javascript" src="%s"%s></script>',
 		'javascriptend' => '</script>'
 	);
@@ -289,9 +289,8 @@ class HtmlHelper extends AppHelper {
 
 		if (empty($options['block'])) {
 			return $out;
-		} else {
-			$this->_View->append($options['block'], $out);
 		}
+		$this->_View->append($options['block'], $out);
 	}
 
 /**
@@ -451,9 +450,8 @@ class HtmlHelper extends AppHelper {
 
 		if (empty($options['block'])) {
 			return $out;
-		} else {
-			$this->_View->append($options['block'], $out);
 		}
+		$this->_View->append($options['block'], $out);
 	}
 
 /**
@@ -560,7 +558,7 @@ class HtmlHelper extends AppHelper {
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::scriptBlock
  */
 	public function scriptBlock($script, $options = array()) {
-		$options += array('safe' => true, 'inline' => true);
+		$options += array('type' => 'text/javascript', 'safe' => true, 'inline' => true);
 		if ($options['safe']) {
 			$script = "\n" . '//<![CDATA[' . "\n" . $script . "\n" . '//]]>' . "\n";
 		}
@@ -674,9 +672,8 @@ class HtmlHelper extends AppHelper {
 				}
 			}
 			return implode($separator, $out);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 /**
@@ -896,6 +893,9 @@ class HtmlHelper extends AppHelper {
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::tag
  */
 	public function tag($name, $text = null, $options = array()) {
+		if (empty($name)) {
+			return $text;
+		}
 		if (is_array($options) && isset($options['escape']) && $options['escape']) {
 			$text = h($text);
 			unset($options['escape']);
@@ -1024,7 +1024,7 @@ class HtmlHelper extends AppHelper {
  * - `tag` Type of media element to generate, either "audio" or "video".
  * 	If tag is not provided it's guessed based on file's mime type.
  * - `text` Text to include inside the audio/video tag
- * - `pathPrefix` Path prefix to use for relative urls, defaults to 'files/'
+ * - `pathPrefix` Path prefix to use for relative URLs, defaults to 'files/'
  * - `fullBase` If provided the src attribute will get a full address including domain name
  *
  * @param string|array $path Path to the video file, relative to the webroot/{$options['pathPrefix']} directory.

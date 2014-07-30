@@ -11,7 +11,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 2.2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('String', 'Utility');
@@ -54,7 +54,6 @@ class Hash {
 			} else {
 				return null;
 			}
-
 		}
 		return $data;
 	}
@@ -170,7 +169,7 @@ class Hash {
  */
 	protected static function _matches(array $data, $selector) {
 		preg_match_all(
-			'/(\[ (?<attr>[^=><!]+?) (\s* (?<op>[><!]?[=]|[><]) \s* (?<val>(?:\/.*?\/ | [^\]]+)) )? \])/x',
+			'/(\[ (?P<attr>[^=><!]+?) (\s* (?P<op>[><!]?[=]|[><]) \s* (?P<val>(?:\/.*?\/ | [^\]]+)) )? \])/x',
 			$selector,
 			$conditions,
 			PREG_SET_ORDER
@@ -817,7 +816,7 @@ class Hash {
 		$stack = array();
 		foreach ($data as $k => $r) {
 			$id = $k;
-			if (!is_null($key)) {
+			if ($key !== null) {
 				$id = $key;
 			}
 			if (is_array($r) && !empty($r)) {

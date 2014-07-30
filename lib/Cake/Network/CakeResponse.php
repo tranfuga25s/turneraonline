@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Network
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('File', 'Utility');
@@ -346,6 +346,13 @@ class CakeResponse {
 	protected $_file = null;
 
 /**
+ * File range. Used for requesting ranges of files.
+ *
+ * @var array
+ */
+	protected $_fileRange = null;
+
+/**
  * The charset the response body is encoded with
  *
  * @var string
@@ -413,8 +420,8 @@ class CakeResponse {
 			$this->_sendHeader($header, $value);
 		}
 		if ($this->_file) {
-			$this->_sendFile($this->_file);
-			$this->_file = null;
+			$this->_sendFile($this->_file, $this->_fileRange);
+			$this->_file = $this->_fileRange = null;
 		} else {
 			$this->_sendContent($this->_body);
 		}
@@ -507,7 +514,7 @@ class CakeResponse {
  */
 	protected function _sendHeader($name, $value = null) {
 		if (!headers_sent()) {
-			if (is_null($value)) {
+			if ($value === null) {
 				header($name);
 			} else {
 				header("{$name}: {$value}");
@@ -553,7 +560,7 @@ class CakeResponse {
  * @return array list of headers to be sent
  */
 	public function header($header = null, $value = null) {
-		if (is_null($header)) {
+		if ($header === null) {
 			return $this->_headers;
 		}
 		if (is_array($header)) {
@@ -567,7 +574,7 @@ class CakeResponse {
 			return $this->_headers;
 		}
 
-		if (!is_null($value)) {
+		if ($value !== null) {
 			$this->_headers[$header] = $value;
 			return $this->_headers;
 		}
@@ -585,7 +592,7 @@ class CakeResponse {
  * @return string current message buffer if $content param is passed as null
  */
 	public function body($content = null) {
-		if (is_null($content)) {
+		if ($content === null) {
 			return $this->_body;
 		}
 		return $this->_body = $content;
@@ -600,7 +607,7 @@ class CakeResponse {
  * @throws CakeException When an unknown status code is reached.
  */
 	public function statusCode($code = null) {
-		if (is_null($code)) {
+		if ($code === null) {
 			return $this->_status;
 		}
 		if (!isset($this->_statusCodes[$code])) {
@@ -669,7 +676,7 @@ class CakeResponse {
  * @return mixed current content type or false if supplied an invalid content type
  */
 	public function type($contentType = null) {
-		if (is_null($contentType)) {
+		if ($contentType === null) {
 			return $this->_contentType;
 		}
 		if (is_array($contentType)) {
@@ -734,7 +741,7 @@ class CakeResponse {
  * @return string current charset
  */
 	public function charset($charset = null) {
-		if (is_null($charset)) {
+		if ($charset === null) {
 			return $this->_charset;
 		}
 		return $this->_charset = $charset;
@@ -778,9 +785,9 @@ class CakeResponse {
  * This method controls the `public` or `private` directive in the Cache-Control
  * header
  *
- * @param boolean $public  if set to true, the Cache-Control header will be set as public
- * if set to false, the response will be set to private
- * if no value is provided, it will return whether the response is sharable or not
+ * @param boolean $public If set to true, the Cache-Control header will be set as public
+ *   if set to false, the response will be set to private
+ *   if no value is provided, it will return whether the response is sharable or not
  * @param integer $time time in seconds after which the response should no longer be considered fresh
  * @return boolean
  */
@@ -858,7 +865,7 @@ class CakeResponse {
  * If called with no parameters, this function will return whether must-revalidate is present.
  *
  * @param integer $seconds if null, the method will return the current
- * must-revalidate value
+ *   must-revalidate value
  * @return boolean
  */
 	public function mustRevalidate($enable = null) {
@@ -968,7 +975,7 @@ class CakeResponse {
  * value is returned
  *
  * @param string|array $cacheVariances a single Vary string or a array
- * containing the list for variances.
+ *   containing the list for variances.
  * @return array
  */
 	public function vary($cacheVariances = null) {
@@ -1000,7 +1007,7 @@ class CakeResponse {
  *
  * @param string $hash the unique has that identifies this response
  * @param boolean $weak whether the response is semantically the same as
- * other with the same hash or not
+ *   other with the same hash or not
  * @return string
  */
 	public function etag($tag = null, $weak = false) {
@@ -1206,13 +1213,18 @@ class CakeResponse {
 	}
 
 /**
- * Setup for display or download the given file
+ * Setup for display or download the given file.
+ *
+ * If $_SERVER['HTTP_RANGE'] is set a slice of the file will be
+ * returned instead of the entire file.
+ *
+ * ### Options keys
+ *
+ * - name: Alternate download name
+ * - download: If `true` sets download header and forces file to be downloaded rather than displayed in browser
  *
  * @param string $path Path to file
- * @param array $options Options
- *	### Options keys
- *	- name: Alternate download name
- *	- download: If `true` sets download header and forces file to be downloaded rather than displayed in browser
+ * @param array $options Options See above.
  * @return void
  * @throws NotFoundException
  */
@@ -1236,7 +1248,7 @@ class CakeResponse {
 
 		$extension = strtolower($file->ext());
 		$download = $options['download'];
-		if ((!$extension || $this->type($extension) === false) && is_null($download)) {
+		if ((!$extension || $this->type($extension) === false) && $download === null) {
 			$download = true;
 		}
 
@@ -1253,7 +1265,7 @@ class CakeResponse {
 			if (!empty($contentType)) {
 				$this->type($contentType);
 			}
-			if (is_null($options['name'])) {
+			if ($options['name'] === null) {
 				$name = $file->name;
 			} else {
 				$name = $options['name'];
@@ -1263,19 +1275,7 @@ class CakeResponse {
 
 			$httpRange = env('HTTP_RANGE');
 			if (isset($httpRange)) {
-				list(, $range) = explode('=', $httpRange);
-
-				$size = $fileSize - 1;
-				$length = $fileSize - $range;
-
-				$this->header(array(
-					'Content-Length' => $length,
-					'Content-Range' => 'bytes ' . $range . $size . '/' . $fileSize
-				));
-
-				$this->statusCode(206);
-				$file->open('rb', true);
-				$file->offset($range);
+				$this->_fileRange($file, $httpRange);
 			} else {
 				$this->header('Content-Length', $fileSize);
 			}
@@ -1283,26 +1283,85 @@ class CakeResponse {
 			$this->header('Content-Length', $fileSize);
 		}
 		$this->_clearBuffer();
-
 		$this->_file = $file;
+	}
+
+/**
+ * Apply a file range to a file and set the end offset.
+ *
+ * If an invalid range is requested a 416 Status code will be used
+ * in the response.
+ *
+ * @param File $file The file to set a range on.
+ * @param string $httpRange The range to use.
+ * @return void
+ */
+	protected function _fileRange($file, $httpRange) {
+		list(, $range) = explode('=', $httpRange);
+		list($start, $end) = explode('-', $range);
+
+		$fileSize = $file->size();
+		$lastByte = $fileSize - 1;
+
+		if ($start === '') {
+			$start = $fileSize - $end;
+			$end = $lastByte;
+		}
+		if ($end === '') {
+			$end = $lastByte;
+		}
+
+		if ($start > $end || $end > $lastByte || $start > $lastByte) {
+			$this->statusCode(416);
+			$this->header(array(
+				'Content-Range' => 'bytes 0-' . $lastByte . '/' . $fileSize
+			));
+			return;
+		}
+
+		$this->header(array(
+			'Content-Length' => $end - $start + 1,
+			'Content-Range' => 'bytes ' . $start . '-' . $end . '/' . $fileSize
+		));
+
+		$this->statusCode(206);
+		$this->_fileRange = array($start, $end);
 	}
 
 /**
  * Reads out a file, and echos the content to the client.
  *
  * @param File $file File object
+ * @param array $range The range to read out of the file.
  * @return boolean True is whole file is echoed successfully or false if client connection is lost in between
  */
-	protected function _sendFile($file) {
+	protected function _sendFile($file, $range) {
 		$compress = $this->outputCompressed();
 		$file->open('rb');
+
+		$end = $start = false;
+		if ($range) {
+			list($start, $end) = $range;
+		}
+		if ($start !== false) {
+			$file->offset($start);
+		}
+
+		$bufferSize = 8192;
+		set_time_limit(0);
 		while (!feof($file->handle)) {
 			if (!$this->_isActive()) {
 				$file->close();
 				return false;
 			}
-			set_time_limit(0);
-			echo fread($file->handle, 8192);
+			$offset = $file->offset();
+			if ($end && $offset >= $end) {
+				break;
+			}
+			if ($end && $offset + $bufferSize >= $end) {
+				$bufferSize = $end - $offset + 1;
+			}
+			echo fread($file->handle, $bufferSize);
 			if (!$compress) {
 				$this->_flushBuffer();
 			}

@@ -18,7 +18,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('JsBaseEngineHelper', 'View/Helper');
@@ -212,17 +212,17 @@ class PrototypeEngineHelper extends JsBaseEngineHelper {
 			case 'hide':
 			case 'show':
 				$effect = $this->selection . '.' . $name . '();';
-			break;
+				break;
 			case 'slideIn':
 			case 'slideOut':
 				$name = ($name === 'slideIn') ? 'slideDown' : 'slideUp';
 				$effect = 'Effect.' . $name . '(' . $this->selection . $optionString . ');';
-			break;
+				break;
 			case 'fadeIn':
 			case 'fadeOut':
 				$name = ($name === 'fadeIn') ? 'appear' : 'fade';
 				$effect = $this->selection . '.' . $name . '(' . substr($optionString, 2) . ');';
-			break;
+				break;
 		}
 		return $effect;
 	}

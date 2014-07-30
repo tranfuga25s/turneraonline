@@ -15,8 +15,9 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Model.Datasource.Database
  * @since         CakePHP(tm) v 1.2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('Model', 'Model');
 App::uses('AppModel', 'Model');
 App::uses('Sqlite', 'Model/Datasource/Database');
@@ -263,6 +264,17 @@ class SqliteTest extends CakeTestCase {
 		$result = $this->Dbo->buildColumn($data);
 		$expected = '"huge" bigint(20) NOT NULL';
 		$this->assertEquals($expected, $result);
+
+		$data = array(
+			'name' => 'id',
+			'type' => 'biginteger',
+			'length' => 20,
+			'null' => false,
+			'key' => 'primary',
+		);
+		$result = $this->Dbo->buildColumn($data);
+		$expected = '"id" bigint(20) NOT NULL PRIMARY KEY';
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -471,6 +483,31 @@ class SqliteTest extends CakeTestCase {
 
 		$this->assertTrue($this->Dbo->rollback());
 		$this->assertNotEmpty($model->read(null, 1));
+	}
+
+/**
+ * Test the limit function.
+ *
+ * @return void
+ */
+	public function testLimit() {
+		$db = $this->Dbo;
+
+		$result = $db->limit('0');
+		$this->assertNull($result);
+
+		$result = $db->limit('10');
+		$this->assertEquals(' LIMIT 10', $result);
+
+		$result = $db->limit('FARTS', 'BOOGERS');
+		$this->assertEquals(' LIMIT 0 OFFSET 0', $result);
+
+		$result = $db->limit(20, 10);
+		$this->assertEquals(' LIMIT 20 OFFSET 10', $result);
+
+		$result = $db->limit(10, 300000000000000000000000000000);
+		$scientificNotation = sprintf('%.1E', 300000000000000000000000000000);
+		$this->assertNotContains($scientificNotation, $result);
 	}
 
 }

@@ -11,7 +11,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('JsBaseEngineHelper', 'View/Helper');
@@ -205,10 +205,10 @@ class MootoolsEngineHelper extends JsBaseEngineHelper {
 		switch ($name) {
 			case 'hide':
 				$effect = 'setStyle("display", "none")';
-			break;
+				break;
 			case 'show':
 				$effect = 'setStyle("display", "")';
-			break;
+				break;
 			case 'fadeIn':
 			case 'fadeOut':
 			case 'slideIn':
@@ -219,7 +219,7 @@ class MootoolsEngineHelper extends JsBaseEngineHelper {
 					$effect .= "set(\"$effectName\", {duration:$speed}).";
 				}
 				$effect .= "$effectName(\"$direction\")";
-			break;
+				break;
 		}
 		return $this->selection . '.' . $effect . ';';
 	}

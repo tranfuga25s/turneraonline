@@ -15,8 +15,9 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('CakeTime', 'Utility');
 
 /**
@@ -39,8 +40,10 @@ class CakeTimeTest extends CakeTestCase {
  * @return void
  */
 	public function setUp() {
+		parent::setUp();
 		$this->Time = new CakeTime();
 		$this->_systemTimezoneIdentifier = date_default_timezone_get();
+		Configure::write('Config.language', 'eng');
 	}
 
 /**
@@ -49,6 +52,7 @@ class CakeTimeTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
+		parent::tearDown();
 		unset($this->Time);
 		$this->_restoreSystemTimezone();
 	}
@@ -223,6 +227,20 @@ class CakeTimeTest extends CakeTestCase {
 		);
 		$expected = '1 year';
 		$this->assertEquals($expected, $result);
+
+		$result = $this->Time->timeAgoInWords(
+			strtotime('+58 minutes'),
+			array('accuracy' => 'hour')
+		);
+		$expected = 'in about an hour';
+		$this->assertEquals($expected, $result);
+
+		$result = $this->Time->timeAgoInWords(
+			strtotime('+23 hours'),
+			array('accuracy' => 'day')
+		);
+		$expected = 'in about a day';
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -310,6 +328,18 @@ class CakeTimeTest extends CakeTestCase {
 			array('end' => '2 years')
 		);
 		$this->assertEquals('1 year, 1 month, 5 days ago', $result);
+
+		$result = $this->Time->timeAgoInWords(
+			strtotime('-58 minutes'),
+			array('accuracy' => 'hour')
+		);
+		$this->assertEquals('about an hour ago', $result);
+
+		$result = $this->Time->timeAgoInWords(
+			strtotime('-23 hours'),
+			array('accuracy' => 'day')
+		);
+		$this->assertEquals('about a day ago', $result);
 	}
 
 /**
@@ -552,6 +582,9 @@ class CakeTimeTest extends CakeTestCase {
 		$this->assertEquals('13-01-2012', $result);
 
 		$result = $this->Time->format('nonsense', '%d-%m-%Y', 'invalid', 'UTC');
+		$this->assertEquals('invalid', $result);
+
+		$result = $this->Time->format('0000-00-00', '%d-%m-%Y', 'invalid');
 		$this->assertEquals('invalid', $result);
 	}
 

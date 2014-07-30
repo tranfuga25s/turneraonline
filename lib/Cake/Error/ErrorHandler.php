@@ -17,7 +17,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Error
  * @since         CakePHP(tm) v 0.10.5.1732
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Debugger', 'Utility');
@@ -32,7 +32,7 @@ App::uses('Router', 'Routing');
  *
  * ### Uncaught exceptions
  *
- * When debug < 1 a CakeException will render 404 or  500 errors. If an uncaught exception is thrown
+ * When debug < 1 a CakeException will render 404 or 500 errors. If an uncaught exception is thrown
  * and it is a type that ErrorHandler does not know about it will be treated as a 500 error.
  *
  * ### Implementing application specific exception handling
@@ -198,14 +198,13 @@ class ErrorHandler {
 				'path' => Debugger::trimPath($file)
 			);
 			return Debugger::getInstance()->outputError($data);
-		} else {
-			$message = $error . ' (' . $code . '): ' . $description . ' in [' . $file . ', line ' . $line . ']';
-			if (!empty($errorConfig['trace'])) {
-				$trace = Debugger::trace(array('start' => 1, 'format' => 'log'));
-				$message .= "\nTrace:\n" . $trace . "\n";
-			}
-			return CakeLog::write($log, $message);
 		}
+		$message = $error . ' (' . $code . '): ' . $description . ' in [' . $file . ', line ' . $line . ']';
+		if (!empty($errorConfig['trace'])) {
+			$trace = Debugger::trace(array('start' => 1, 'format' => 'log'));
+			$message .= "\nTrace:\n" . $trace . "\n";
+		}
+		return CakeLog::write($log, $message);
 	}
 
 /**
@@ -254,28 +253,28 @@ class ErrorHandler {
 			case E_USER_ERROR:
 				$error = 'Fatal Error';
 				$log = LOG_ERR;
-			break;
+				break;
 			case E_WARNING:
 			case E_USER_WARNING:
 			case E_COMPILE_WARNING:
 			case E_RECOVERABLE_ERROR:
 				$error = 'Warning';
 				$log = LOG_WARNING;
-			break;
+				break;
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$error = 'Notice';
 				$log = LOG_NOTICE;
-			break;
+				break;
 			case E_STRICT:
 				$error = 'Strict';
 				$log = LOG_NOTICE;
-			break;
+				break;
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				$error = 'Deprecated';
 				$log = LOG_NOTICE;
-			break;
+				break;
 		}
 		return array($error, $log);
 	}

@@ -17,7 +17,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -43,7 +43,7 @@ class CakeNumber {
 		),
 		'GBP' => array(
 			'wholeSymbol' => '&#163;', 'wholePosition' => 'before', 'fractionSymbol' => 'p', 'fractionPosition' => 'after',
-			'zero' => 0, 'places' => 2, 'thousands' => ',', 'decimals' => '.', 'negative' => '()','escape' => false
+			'zero' => 0, 'places' => 2, 'thousands' => ',', 'decimals' => '.', 'negative' => '()', 'escape' => false
 		),
 		'EUR' => array(
 			'wholeSymbol' => '&#8364;', 'wholePosition' => 'before', 'fractionSymbol' => false, 'fractionPosition' => 'after',
@@ -58,7 +58,7 @@ class CakeNumber {
  */
 	protected static $_currencyDefaults = array(
 		'wholeSymbol' => '', 'wholePosition' => 'before', 'fractionSymbol' => '', 'fractionPosition' => 'after',
-		'zero' => '0', 'places' => 2, 'thousands' => ',', 'decimals' => '.','negative' => '()', 'escape' => true,
+		'zero' => '0', 'places' => 2, 'thousands' => ',', 'decimals' => '.', 'negative' => '()', 'escape' => true,
 	);
 
 /**
@@ -84,7 +84,7 @@ class CakeNumber {
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/number.html#NumberHelper::precision
  */
 	public static function precision($value, $precision = 3) {
-		return sprintf("%01.{$precision}F", $value);
+		return sprintf("%01.{$precision}f", $value);
 	}
 
 /**
@@ -99,13 +99,13 @@ class CakeNumber {
 			case $size < 1024:
 				return __dn('cake', '%d Byte', '%d Bytes', $size, $size);
 			case round($size / 1024) < 1024:
-				return __d('cake', '%d KB', self::precision($size / 1024, 0));
+				return __d('cake', '%s KB', self::precision($size / 1024, 0));
 			case round($size / 1024 / 1024, 2) < 1024:
-				return __d('cake', '%.2f MB', self::precision($size / 1024 / 1024, 2));
+				return __d('cake', '%s MB', self::precision($size / 1024 / 1024, 2));
 			case round($size / 1024 / 1024 / 1024, 2) < 1024:
-				return __d('cake', '%.2f GB', self::precision($size / 1024 / 1024 / 1024, 2));
+				return __d('cake', '%s GB', self::precision($size / 1024 / 1024 / 1024, 2));
 			default:
-				return __d('cake', '%.2f TB', self::precision($size / 1024 / 1024 / 1024 / 1024, 2));
+				return __d('cake', '%s TB', self::precision($size / 1024 / 1024 / 1024 / 1024, 2));
 		}
 	}
 
@@ -317,7 +317,7 @@ class CakeNumber {
 		$symbolKey = 'whole';
 		$value = (float)$value;
 		if (!$value) {
-			if ($options['zero'] !== 0 ) {
+			if ($options['zero'] !== 0) {
 				return $options['zero'];
 			}
 		} elseif ($value < 1 && $value > -1) {
@@ -371,7 +371,7 @@ class CakeNumber {
 /**
  * Getter/setter for default currency
  *
- * @param string $currency Default currency string  used by currency() if $currency argument is not provided
+ * @param string $currency Default currency string used by currency() if $currency argument is not provided
  * @return string Currency
  */
 	public static function defaultCurrency($currency = null) {

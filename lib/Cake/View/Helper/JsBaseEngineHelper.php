@@ -11,7 +11,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppHelper', 'View/Helper');
@@ -67,7 +67,7 @@ abstract class JsBaseEngineHelper extends AppHelper {
 	}
 
 /**
- * Redirects to a URL. Creates a window.location modification snippet
+ * Redirects to an URL. Creates a window.location modification snippet
  * that can be used to trigger 'redirects' from Javascript.
  *
  * @param string|array $url URL
@@ -147,25 +147,24 @@ abstract class JsBaseEngineHelper extends AppHelper {
 		switch (true) {
 			case (is_array($val) || is_object($val)):
 				$val = $this->object($val);
-			break;
+				break;
 			case ($val === null):
 				$val = 'null';
-			break;
+				break;
 			case (is_bool($val)):
 				$val = ($val === true) ? 'true' : 'false';
-			break;
+				break;
 			case (is_int($val)):
 				$val = $val;
-			break;
+				break;
 			case (is_float($val)):
 				$val = sprintf("%.11f", $val);
-			break;
+				break;
 			default:
 				$val = $this->escape($val);
 				if ($quoteString) {
 					$val = '"' . $val . '"';
 				}
-			break;
 		}
 		return $val;
 	}

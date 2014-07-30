@@ -15,7 +15,7 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('View', 'View');
@@ -587,12 +587,29 @@ class CakeNumberTest extends CakeTestCase {
  */
 	public function testReadableSizeLocalized() {
 		$restore = setlocale(LC_NUMERIC, 0);
-		setlocale(LC_NUMERIC, 'de_DE');
+
+		$this->skipIf(setlocale(LC_NUMERIC, 'de_DE') === false, "The German locale isn't available.");
+
 		$result = $this->Number->toReadableSize(1321205);
-		$this->assertRegExp('/1[,.]26 MB/', $result);
+		$this->assertEquals('1,26 MB', $result);
 
 		$result = $this->Number->toReadableSize(1024 * 1024 * 1024 * 512);
-		$this->assertRegExp('/512[,.]00 GB/', $result);
+		$this->assertEquals('512,00 GB', $result);
+		setlocale(LC_NUMERIC, $restore);
+	}
+
+/**
+ * test precision() with locales
+ *
+ * @return void
+ */
+	public function testPrecisionLocalized() {
+		$restore = setlocale(LC_NUMERIC, 0);
+
+		$this->skipIf(setlocale(LC_NUMERIC, 'de_DE') === false, "The German locale isn't available.");
+
+		$result = $this->Number->precision(1.234);
+		$this->assertEquals('1,234', $result);
 		setlocale(LC_NUMERIC, $restore);
 	}
 

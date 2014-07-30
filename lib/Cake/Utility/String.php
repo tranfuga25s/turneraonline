@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 1.2.0.5551
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -191,9 +191,9 @@ class String {
  * - clean: A boolean or array with instructions for String::cleanInsert
  *
  * @param string $str A string containing variable placeholders
- * @param string $data A key => val array where each key stands for a placeholder variable name
+ * @param array $data A key => val array where each key stands for a placeholder variable name
  *     to be replaced with val
- * @param string $options An array of options, see description above
+ * @param array $options An array of options, see description above
  * @return string
  */
 	public static function insert($str, $data, $options = array()) {
@@ -256,7 +256,7 @@ class String {
  * by String::insert().
  *
  * @param string $str
- * @param string $options
+ * @param array $options
  * @return string
  * @see String::insert()
  */
@@ -524,7 +524,7 @@ class String {
 						}
 					}
 
-					$truncate .= mb_substr($tag[3], 0 , $left + $entitiesLength);
+					$truncate .= mb_substr($tag[3], 0, $left + $entitiesLength);
 					break;
 				} else {
 					$truncate .= $tag[3];

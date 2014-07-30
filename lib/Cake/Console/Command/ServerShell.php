@@ -14,7 +14,7 @@
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @since         CakePHP(tm) v 2.3.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppShell', 'Console/Command');
@@ -129,8 +129,8 @@ class ServerShell extends AppShell {
 		$command = sprintf("php -S %s:%d -t %s %s",
 			$this->_host,
 			$this->_port,
-			$this->_documentRoot,
-			WWW_ROOT . '/index.php'
+			escapeshellarg($this->_documentRoot),
+			escapeshellarg($this->_documentRoot . '/index.php')
 		);
 
 		$port = ($this->_port == self::DEFAULT_PORT) ? '' : ':' . $this->_port;

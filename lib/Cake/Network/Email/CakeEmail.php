@@ -15,12 +15,13 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Network.Email
  * @since         CakePHP(tm) v 2.0.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Validation', 'Utility');
 App::uses('Multibyte', 'I18n');
 App::uses('AbstractTransport', 'Network/Email');
+App::uses('File', 'Utility');
 App::uses('String', 'Utility');
 App::uses('View', 'View');
 App::import('I18n', 'Multibyte');
@@ -319,8 +320,8 @@ class CakeEmail {
 
 /**
  * Constructor
- * @param array|string $config Array of configs, or string to load configs from email.php
  *
+ * @param array|string $config Array of configs, or string to load configs from email.php
  */
 	public function __construct($config = null) {
 		$this->_appCharset = Configure::read('App.encoding');
@@ -1025,6 +1026,16 @@ class CakeEmail {
 /**
  * Configuration to use when send email
  *
+ * ### Usage
+ *
+ * Load configuration from `app/Config/email.php`:
+ *
+ * `$email->config('default');`
+ *
+ * Merge an array of configuration into the instance:
+ *
+ * `$email->config(array('to' => 'bill@example.com'));`
+ *
  * @param string|array $config String with configuration name (from email.php), array with config or null to return current config
  * @return string|array|CakeEmail
  */
@@ -1059,8 +1070,6 @@ class CakeEmail {
 			$content = implode("\n", $content) . "\n";
 		}
 
-		$this->_textMessage = $this->_htmlMessage = '';
-		$this->_createBoundary();
 		$this->_message = $this->_render($this->_wrap($content));
 
 		$contents = $this->transportClass()->send($this);
@@ -1127,7 +1136,7 @@ class CakeEmail {
 			}
 			$config = $configs->{$config};
 		}
-		$this->_config += $config;
+		$this->_config = array_merge($this->_config, $config);
 		if (!empty($config['charset'])) {
 			$this->charset = $config['charset'];
 		}
@@ -1165,7 +1174,7 @@ class CakeEmail {
 	}
 
 /**
- * Reset all EmailComponent internal variables to be able to send out a new email.
+ * Reset all CakeEmail internal variables to be able to send out a new email.
  *
  * @return CakeEmail $this
  */
@@ -1247,16 +1256,21 @@ class CakeEmail {
 		$message = str_replace(array("\r\n", "\r"), "\n", $message);
 		$lines = explode("\n", $message);
 		$formatted = array();
+		$cut = ($wrapLength == CakeEmail::LINE_LENGTH_MUST);
 
 		foreach ($lines as $line) {
 			if (empty($line)) {
 				$formatted[] = '';
 				continue;
 			}
-			if (!preg_match('/\<[a-z]/i', $line)) {
+			if (strlen($line) < $wrapLength) {
+				$formatted[] = $line;
+				continue;
+			}
+			if (!preg_match('/<[a-z]+.*>/i', $line)) {
 				$formatted = array_merge(
 					$formatted,
-					explode("\n", wordwrap($line, $wrapLength, "\n"))
+					explode("\n", wordwrap($line, $wrapLength, "\n", $cut))
 				);
 				continue;
 			}
@@ -1275,7 +1289,10 @@ class CakeEmail {
 							$tmpLineLength += $tagLength;
 						} else {
 							if ($tmpLineLength > 0) {
-								$formatted[] = trim($tmpLine);
+								$formatted = array_merge(
+									$formatted,
+									explode("\n", wordwrap(trim($tmpLine), $wrapLength, "\n", $cut))
+								);
 								$tmpLine = '';
 								$tmpLineLength = 0;
 							}
@@ -1380,15 +1397,12 @@ class CakeEmail {
 /**
  * Read the file contents and return a base64 version of the file contents.
  *
- * @param string $file The file to read.
+ * @param string $path The absolute path to the file to read.
  * @return string File contents in base64 encoding
  */
-	protected function _readFile($file) {
-		$handle = fopen($file, 'rb');
-		$data = fread($handle, filesize($file));
-		$data = chunk_split(base64_encode($data));
-		fclose($handle);
-		return $data;
+	protected function _readFile($path) {
+		$File = new File($path);
+		return chunk_split(base64_encode($File->read()));
 	}
 
 /**
@@ -1428,9 +1442,12 @@ class CakeEmail {
  * @return array Email body ready to be sent
  */
 	protected function _render($content) {
+		$this->_textMessage = $this->_htmlMessage = '';
+
 		$content = implode("\n", $content);
 		$rendered = $this->_renderTemplates($content);
 
+		$this->_createBoundary();
 		$msg = array();
 
 		$contentIds = array_filter((array)Hash::extract($this->_attachments, '{s}.contentId'));
@@ -1556,6 +1573,11 @@ class CakeEmail {
 		if ($this->_theme) {
 			$View->theme = $this->_theme;
 		}
+		// Convert null to false, as View needs false to disable
+		// the layout.
+		if ($layout === null) {
+			$layout = false;
+		}
 
 		foreach ($types as $type) {
 			$View->set('content', $content);
@@ -1565,6 +1587,12 @@ class CakeEmail {
 			$render = $View->render($template, $layout);
 			$render = str_replace(array("\r\n", "\r"), "\n", $render);
 			$rendered[$type] = $this->_encodeString($render, $this->charset);
+		}
+
+		foreach ($rendered as $type => $content) {
+			$rendered[$type] = $this->_wrap($content);
+			$rendered[$type] = implode("\n", $rendered[$type]);
+			$rendered[$type] = rtrim($rendered[$type], "\n");
 		}
 		return $rendered;
 	}
@@ -1594,9 +1622,8 @@ class CakeEmail {
 		$charset = strtoupper($this->charset);
 		if (array_key_exists($charset, $this->_contentTypeCharset)) {
 			return strtoupper($this->_contentTypeCharset[$charset]);
-		} else {
-			return strtoupper($this->charset);
 		}
+		return strtoupper($this->charset);
 	}
 
 }

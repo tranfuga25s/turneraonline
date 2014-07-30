@@ -11,11 +11,12 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Core
  * @since         CakePHP(tm) v 1.0.0.2363
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Hash', 'Utility');
 App::uses('ConfigReaderInterface', 'Configure');
+
 /**
  * Compatibility with 2.1, which expects Configure to load Set.
  */
@@ -77,8 +78,8 @@ class Configure {
 			if (!include APP . 'Config' . DS . 'core.php') {
 				trigger_error(__d('cake_dev', "Can't find application core file. Please create %score.php, and make sure it is readable by PHP.", APP . 'Config' . DS), E_USER_ERROR);
 			}
-			App::$bootstrapping = false;
 			App::init();
+			App::$bootstrapping = false;
 			App::build();
 
 			$exception = array(

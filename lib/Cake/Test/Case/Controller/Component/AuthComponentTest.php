@@ -15,7 +15,7 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.Controller.Component
  * @since         CakePHP(tm) v 1.2.0.5347
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Controller', 'Controller');
@@ -26,7 +26,6 @@ App::uses('FormAuthenticate', 'Controller/Component/Auth');
 /**
  * TestAuthComponent class
  *
- * @package       Cake.Test.Case.Controller.Component
  * @package       Cake.Test.Case.Controller.Component
  */
 class TestAuthComponent extends AuthComponent {
@@ -57,21 +56,13 @@ class TestAuthComponent extends AuthComponent {
  * AuthUser class
  *
  * @package       Cake.Test.Case.Controller.Component
- * @package       Cake.Test.Case.Controller.Component
  */
 class AuthUser extends CakeTestModel {
 
 /**
- * name property
- *
- * @var string 'AuthUser'
- */
-	public $name = 'AuthUser';
-
-/**
  * useDbConfig property
  *
- * @var string 'test'
+ * @var string
  */
 	public $useDbConfig = 'test';
 
@@ -81,16 +72,8 @@ class AuthUser extends CakeTestModel {
  * AuthTestController class
  *
  * @package       Cake.Test.Case.Controller.Component
- * @package       Cake.Test.Case.Controller.Component
  */
 class AuthTestController extends Controller {
-
-/**
- * name property
- *
- * @var string 'AuthTest'
- */
-	public $name = 'AuthTest';
 
 /**
  * uses property
@@ -207,13 +190,6 @@ class AuthTestController extends Controller {
 class AjaxAuthController extends Controller {
 
 /**
- * name property
- *
- * @var string 'AjaxAuth'
- */
-	public $name = 'AjaxAuth';
-
-/**
  * components property
  *
  * @var array
@@ -275,14 +251,13 @@ class AjaxAuthController extends Controller {
  * AuthComponentTest class
  *
  * @package       Cake.Test.Case.Controller.Component
- * @package       Cake.Test.Case.Controller.Component
  */
 class AuthComponentTest extends CakeTestCase {
 
 /**
  * name property
  *
- * @var string 'Auth'
+ * @var string
  */
 	public $name = 'Auth';
 
@@ -1013,7 +988,7 @@ class AuthComponentTest extends CakeTestCase {
 		App::build(array(
 			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS)
 		));
-		$_SERVER['HTTP_X_REQUESTED_WITH'] = "XMLHttpRequest";
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 
 		App::uses('Dispatcher', 'Routing');
 
@@ -1261,6 +1236,23 @@ class AuthComponentTest extends CakeTestCase {
 	}
 
 /**
+ * test redirectUrl with duplicate base.
+ *
+ * @return void
+ */
+	public function testRedirectSessionReadDuplicateBase() {
+		$this->Auth->request->webroot = '/waves/';
+		$this->Auth->request->base = '/waves';
+
+		Router::setRequestInfo($this->Auth->request);
+
+		$this->Auth->Session->write('Auth.redirect', '/waves/add');
+
+		$result = $this->Auth->redirectUrl();
+		$this->assertEquals('/waves/add', $result);
+	}
+
+/**
  * test that redirect does not return loginAction if that is what's stored in Auth.redirect.
  * instead loginRedirect should be used.
  *
@@ -1274,6 +1266,41 @@ class AuthComponentTest extends CakeTestCase {
 		$result = $this->Auth->redirectUrl();
 		$this->assertEquals('/users/home', $result);
 		$this->assertFalse($this->Auth->Session->check('Auth.redirect'));
+	}
+
+/**
+ * test that the returned URL doesn't contain the base URL.
+ *
+ * @see https://cakephp.lighthouseapp.com/projects/42648/tickets/3922-authcomponentredirecturl-prepends-appbaseurl
+ *
+ * @return void This test method doesn't return anything.
+ */
+	public function testRedirectUrlWithBaseSet() {
+		$App = Configure::read('App');
+
+		Configure::write('App', array(
+			'dir' => APP_DIR,
+			'webroot' => WEBROOT_DIR,
+			'base' => false,
+			'baseUrl' => '/cake/index.php'
+		));
+
+		$url = '/users/login';
+		$this->Auth->request = $this->Controller->request = new CakeRequest($url);
+		$this->Auth->request->addParams(Router::parse($url));
+		$this->Auth->request->url = Router::normalize($url);
+
+		Router::setRequestInfo($this->Auth->request);
+
+		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
+
+		$result = $this->Auth->redirectUrl();
+		$this->assertEquals('/users/home', $result);
+		$this->assertFalse($this->Auth->Session->check('Auth.redirect'));
+
+		Configure::write('App', $App);
+		Router::reload();
 	}
 
 /**

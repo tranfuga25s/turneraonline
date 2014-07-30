@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('HelperCollection', 'View');
@@ -547,10 +547,12 @@ class View extends Object {
  * @return boolean Success of rendering the cached file.
  */
 	public function renderCache($filename, $timeStart) {
+		$response = $this->response;
 		ob_start();
 		include ($filename);
 
-		if (Configure::read('debug') > 0 && $this->layout !== 'xml') {
+		$type = $response->mapType($response->type());
+		if (Configure::read('debug') > 0 && $type === 'html') {
 			echo "<!-- Cached Render Time: " . round(microtime(true) - $timeStart, 4) . "s -->";
 		}
 		$out = ob_get_clean();
@@ -562,12 +564,8 @@ class View extends Object {
 				//@codingStandardsIgnoreEnd
 				unset($out);
 				return false;
-			} else {
-				if ($this->layout === 'xml') {
-					header('Content-type: text/xml');
-				}
-				return substr($out, strlen($match[0]));
 			}
+			return substr($out, strlen($match[0]));
 		}
 	}
 
@@ -585,7 +583,7 @@ class View extends Object {
  *
  * @param string $var The view var you want the contents of.
  * @return mixed The content of the named var if its set, otherwise null.
- * @deprecated Will be removed in 3.0  Use View::get() instead.
+ * @deprecated Will be removed in 3.0. Use View::get() instead.
  */
 	public function getVar($var) {
 		return $this->get($var);
@@ -623,7 +621,7 @@ class View extends Object {
  * @see ViewBlock::start()
  */
 	public function start($name) {
-		return $this->Blocks->start($name);
+		$this->Blocks->start($name);
 	}
 
 /**
@@ -634,7 +632,7 @@ class View extends Object {
  * @see ViewBlock::startIfEmpty()
  */
 	public function startIfEmpty($name) {
-		return $this->Blocks->startIfEmpty($name);
+		$this->Blocks->startIfEmpty($name);
 	}
 
 /**
@@ -648,7 +646,7 @@ class View extends Object {
  * @see ViewBlock::concat()
  */
 	public function append($name, $value = null) {
-		return $this->Blocks->concat($name, $value);
+		$this->Blocks->concat($name, $value);
 	}
 
 /**
@@ -662,7 +660,7 @@ class View extends Object {
  * @see ViewBlock::concat()
  */
 	public function prepend($name, $value = null) {
-		return $this->Blocks->concat($name, $value, ViewBlock::PREPEND);
+		$this->Blocks->concat($name, $value, ViewBlock::PREPEND);
 	}
 
 /**
@@ -676,7 +674,7 @@ class View extends Object {
  * @see ViewBlock::set()
  */
 	public function assign($name, $value) {
-		return $this->Blocks->set($name, $value);
+		$this->Blocks->set($name, $value);
 	}
 
 /**
@@ -699,7 +697,7 @@ class View extends Object {
  * @see ViewBlock::end()
  */
 	public function end() {
-		return $this->Blocks->end();
+		$this->Blocks->end();
 	}
 
 /**
@@ -974,7 +972,7 @@ class View extends Object {
 	protected function _getViewFileName($name = null) {
 		$subDir = null;
 
-		if (!is_null($this->subDir)) {
+		if ($this->subDir !== null) {
 			$subDir = $this->subDir . DS;
 		}
 
@@ -1056,7 +1054,7 @@ class View extends Object {
 		}
 		$subDir = null;
 
-		if (!is_null($this->layoutPath)) {
+		if ($this->layoutPath !== null) {
 			$subDir = $this->layoutPath . DS;
 		}
 		list($plugin, $name) = $this->pluginSplit($name);

@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v .0.10.0.1233
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('String', 'Utility');
@@ -99,7 +99,7 @@ class Security {
  *
  * @param string $string String to hash
  * @param string $type Method to use (sha1/sha256/md5/blowfish)
- * @param mixed $salt If true, automatically appends the application's salt
+ * @param mixed $salt If true, automatically prepends the application's salt
  *     value to $string (Security.salt). If you are using blowfish the salt
  *     must be false or a previously generated salt.
  * @return string Hash
@@ -168,11 +168,19 @@ class Security {
 	}
 
 /**
- * Encrypts/Decrypts a text using the given key.
+ * Runs $text through a XOR cipher.
+ *
+ * *Note* This is not a cryptographically strong method and should not be used
+ * for sensitive data. Additionally this method does *not* work in environments
+ * where suhosin is enabled.
+ *
+ * Instead you should use Security::rijndael() when you need strong
+ * encryption.
  *
  * @param string $text Encrypted string to decrypt, normal string to encrypt
  * @param string $key Key to use
  * @return string Encrypted/Decrypted string
+ * @deprecated This method will be removed in 3.x
  */
 	public static function cipher($text, $key) {
 		if (empty($key)) {

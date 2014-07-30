@@ -17,8 +17,9 @@
  * @link          http://cakephp.org CakePHP Project
  * @package       Cake.Model.Behavior
  * @since         CakePHP v 1.2.0.4487
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('ModelBehavior', 'Model');
 
 /**
@@ -104,7 +105,7 @@ class TreeBehavior extends ModelBehavior {
 /**
  * Runs before a find() operation
  *
- * @param Model $Model	Model using the behavior
+ * @param Model $Model Model using the behavior
  * @param array $query Query parameters as set by cake
  * @return array
  */
@@ -306,7 +307,7 @@ class TreeBehavior extends ModelBehavior {
 
 		extract($this->settings[$Model->alias]);
 
-		if (!is_null($overrideRecursive)) {
+		if ($overrideRecursive !== null) {
 			$recursive = $overrideRecursive;
 		}
 		if (!$order) {
@@ -352,7 +353,7 @@ class TreeBehavior extends ModelBehavior {
 	public function generateTreeList(Model $Model, $conditions = null, $keyPath = null, $valuePath = null, $spacer = '_', $recursive = null) {
 		$overrideRecursive = $recursive;
 		extract($this->settings[$Model->alias]);
-		if (!is_null($overrideRecursive)) {
+		if ($overrideRecursive !== null) {
 			$recursive = $overrideRecursive;
 		}
 
@@ -414,7 +415,7 @@ class TreeBehavior extends ModelBehavior {
 			$id = $Model->id;
 		}
 		extract($this->settings[$Model->alias]);
-		if (!is_null($overrideRecursive)) {
+		if ($overrideRecursive !== null) {
 			$recursive = $overrideRecursive;
 		}
 		$parentId = $Model->find('first', array('conditions' => array($Model->primaryKey => $id), 'fields' => array($parent), 'recursive' => -1));
@@ -447,7 +448,7 @@ class TreeBehavior extends ModelBehavior {
 			$id = $Model->id;
 		}
 		extract($this->settings[$Model->alias]);
-		if (!is_null($overrideRecursive)) {
+		if ($overrideRecursive !== null) {
 			$recursive = $overrideRecursive;
 		}
 		$result = $Model->find('first', array('conditions' => array($Model->escapeField() => $id), 'fields' => array($left, $right), 'recursive' => $recursive));
@@ -761,17 +762,16 @@ class TreeBehavior extends ModelBehavior {
 				array($Model->escapeField() => $id)
 			);
 			return $Model->delete($id);
-		} else {
-			$edge = $this->_getMax($Model, $scope, $right, $recursive);
-			if ($node[$right] == $edge) {
-				$edge = $edge - 2;
-			}
-			$Model->id = $id;
-			return $Model->save(
-				array($left => $edge + 1, $right => $edge + 2, $parent => null),
-				array('callbacks' => false, 'validate' => false)
-			);
 		}
+		$edge = $this->_getMax($Model, $scope, $right, $recursive);
+		if ($node[$right] == $edge) {
+			$edge = $edge - 2;
+		}
+		$Model->id = $id;
+		return $Model->save(
+			array($left => $edge + 1, $right => $edge + 2, $parent => null),
+			array('callbacks' => false, 'validate' => false)
+		);
 	}
 
 /**
@@ -817,7 +817,7 @@ class TreeBehavior extends ModelBehavior {
 		))));
 
 		foreach ($Model->find('all', array('conditions' => $scope, 'recursive' => 0)) as $instance) {
-			if (is_null($instance[$Model->alias][$left]) || is_null($instance[$Model->alias][$right])) {
+			if ($instance[$Model->alias][$left] === null || $instance[$Model->alias][$right] === null) {
 				$errors[] = array('node', $instance[$Model->alias][$Model->primaryKey],
 					'has invalid left or right values');
 			} elseif ($instance[$Model->alias][$left] == $instance[$Model->alias][$right]) {

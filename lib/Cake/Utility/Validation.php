@@ -1,8 +1,6 @@
 <?php
 /**
- * Validation Class. Used for validation of model data
- *
- * PHP Version 5.x
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -13,24 +11,25 @@
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.Utility
  * @since         CakePHP(tm) v 1.2.0.3830
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('Multibyte', 'I18n');
 App::uses('File', 'Utility');
 App::uses('CakeNumber', 'Utility');
+
 // Load multibyte if the extension is missing.
 if (!function_exists('mb_strlen')) {
 	class_exists('Multibyte');
 }
 
 /**
+ * Validation Class. Used for validation of model data
+ *
  * Offers different validation methods.
  *
  * @package       Cake.Utility
- * @since         CakePHP v 1.2.0.3830
  */
 class Validation {
 
@@ -40,7 +39,7 @@ class Validation {
  * @var array
  */
 	protected static $_pattern = array(
-		'hostname' => '(?:[-_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})'
+		'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})'
 	);
 
 /**
@@ -150,7 +149,7 @@ class Validation {
 			return false;
 		}
 
-		if (!is_null($regex)) {
+		if ($regex !== null) {
 			if (self::_check($check, $regex)) {
 				return self::luhn($check, $deep);
 			}
@@ -256,7 +255,6 @@ class Validation {
 				break;
 			default:
 				self::$errors[] = __d('cake_dev', 'You must define the $operator parameter for Validation::comparison()');
-				break;
 		}
 		return false;
 	}
@@ -297,7 +295,7 @@ class Validation {
  * @return boolean Success
  */
 	public static function date($check, $format = 'ymd', $regex = null) {
-		if (!is_null($regex)) {
+		if ($regex !== null) {
 			return self::_check($check, $regex);
 		}
 
@@ -388,7 +386,7 @@ class Validation {
  * @return boolean Success
  */
 	public static function decimal($check, $places = null, $regex = null) {
-		if (is_null($regex)) {
+		if ($regex === null) {
 			$lnum = '[0-9]+';
 			$dnum = "[0-9]*[\.]{$lnum}";
 			$sign = '[+-]?';
@@ -428,7 +426,7 @@ class Validation {
 			extract(self::_defaults($check));
 		}
 
-		if (is_null($regex)) {
+		if ($regex === null) {
 			$regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@' . self::$_pattern['hostname'] . '$/i';
 		}
 		$return = self::_check($check, $regex);
@@ -528,7 +526,7 @@ class Validation {
  * @return boolean Success
  */
 	public static function money($check, $symbolPosition = 'left') {
-		$money = '(?!0,?\d)(?:\d{1,3}(?:([, .])\d{3})?(?:\1\d{3})*|(?:\d+))((?!\1)[,.]\d{2})?';
+		$money = '(?!0,?\d)(?:\d{1,3}(?:([, .])\d{3})?(?:\1\d{3})*|(?:\d+))((?!\1)[,.]\d{1,2})?';
 		if ($symbolPosition === 'right') {
 			$regex = '/^' . $money . '(?<!\x{00a2})\p{Sc}?$/u';
 		} else {
@@ -610,7 +608,7 @@ class Validation {
 			extract(self::_defaults($check));
 		}
 
-		if (is_null($regex)) {
+		if ($regex === null) {
 			switch ($country) {
 				case 'us':
 				case 'all':
@@ -640,7 +638,7 @@ class Validation {
 			extract(self::_defaults($check));
 		}
 
-		if (is_null($regex)) {
+		if ($regex === null) {
 			switch ($country) {
 				case 'uk':
 					$regex = '/\\A\\b[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}\\b\\z/i';
@@ -701,7 +699,7 @@ class Validation {
 			extract(self::_defaults($check));
 		}
 
-		if (is_null($regex)) {
+		if ($regex === null) {
 			switch ($country) {
 				case 'dk':
 					$regex = '/\\A\\b[0-9]{6}-[0-9]{4}\\b\\z/i';
@@ -818,9 +816,8 @@ class Validation {
 	protected static function _check($check, $regex) {
 		if (is_string($regex) && preg_match($regex, $check)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 /**

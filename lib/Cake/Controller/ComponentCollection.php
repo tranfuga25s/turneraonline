@@ -14,7 +14,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Controller
  * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('ObjectCollection', 'Utility');
@@ -52,6 +52,16 @@ class ComponentCollection extends ObjectCollection implements CakeEventListener 
 		foreach ($components as $name => $properties) {
 			$Controller->{$name} = $this->load($properties['class'], $properties['settings']);
 		}
+	}
+
+/**
+ * Set the controller associated with the collection.
+ *
+ * @param Controller $Controller Controller to set
+ * @return void
+ */
+	public function setController(Controller $Controller) {
+		$this->_Controller = $Controller;
 	}
 
 /**

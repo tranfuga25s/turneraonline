@@ -15,7 +15,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Model.Datasource.Database
  * @since         CakePHP(tm) v 0.9.1.114
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('DboSource', 'Model/Datasource');
@@ -110,11 +110,13 @@ class Postgres extends DboSource {
 	public function connect() {
 		$config = $this->config;
 		$this->connected = false;
+
+		$flags = array(
+			PDO::ATTR_PERSISTENT => $config['persistent'],
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+		);
+
 		try {
-			$flags = array(
-				PDO::ATTR_PERSISTENT => $config['persistent'],
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-			);
 			$this->_connection = new PDO(
 				"pgsql:host={$config['host']};port={$config['port']};dbname={$config['database']}",
 				$config['login'],
@@ -300,9 +302,8 @@ class Postgres extends DboSource {
 		}
 		if (isset($this->_sequenceMap[$table][$field])) {
 			return $this->_sequenceMap[$table][$field];
-		} else {
-			return "{$table}_{$field}_seq";
 		}
+		return "{$table}_{$field}_seq";
 	}
 
 /**
@@ -329,7 +330,7 @@ class Postgres extends DboSource {
  * @param string|Model $table A string or model class representing the table to be truncated
  * @param boolean $reset true for resetting the sequence, false to leave it as is.
  *    and if 1, sequences are not modified
- * @return boolean	SQL TRUNCATE TABLE statement, false if not applicable.
+ * @return boolean SQL TRUNCATE TABLE statement, false if not applicable.
  */
 	public function truncate($table, $reset = false) {
 		$table = $this->fullTableName($table, false, false);
@@ -516,13 +517,13 @@ class Postgres extends DboSource {
 								$col['name'] = $field;
 								$colList[] = 'ADD COLUMN ' . $this->buildColumn($col);
 							}
-						break;
+							break;
 						case 'drop':
 							foreach ($column as $field => $col) {
 								$col['name'] = $field;
 								$colList[] = 'DROP COLUMN ' . $this->name($field);
 							}
-						break;
+							break;
 						case 'change':
 							foreach ($column as $field => $col) {
 								if (!isset($col['name'])) {
@@ -552,7 +553,7 @@ class Postgres extends DboSource {
 								}
 
 							}
-						break;
+							break;
 					}
 				}
 				if (isset($indexes['drop']['PRIMARY'])) {
@@ -628,16 +629,10 @@ class Postgres extends DboSource {
  */
 	public function limit($limit, $offset = null) {
 		if ($limit) {
-			$rt = '';
-			if (!strpos(strtolower($limit), 'limit') || strpos(strtolower($limit), 'limit') === 0) {
-				$rt = ' LIMIT';
-			}
-
-			$rt .= ' ' . $limit;
+			$rt = sprintf(' LIMIT %u', $limit);
 			if ($offset) {
-				$rt .= ' OFFSET ' . $offset;
+				$rt .= sprintf(' OFFSET %u', $offset);
 			}
-
 			return $rt;
 		}
 		return null;
@@ -753,22 +748,20 @@ class Postgres extends DboSource {
 
 				switch ($type) {
 					case 'bool':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : $this->boolean($row[$index]);
-					break;
+						$resultRow[$table][$column] = $row[$index] === null ? null : $this->boolean($row[$index]);
+						break;
 					case 'binary':
 					case 'bytea':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : stream_get_contents($row[$index]);
-					break;
+						$resultRow[$table][$column] = $row[$index] === null ? null : stream_get_contents($row[$index]);
+						break;
 					default:
 						$resultRow[$table][$column] = $row[$index];
-					break;
 				}
 			}
 			return $resultRow;
-		} else {
-			$this->_result->closeCursor();
-			return false;
 		}
+		$this->_result->closeCursor();
+		return false;
 	}
 
 /**
@@ -794,7 +787,6 @@ class Postgres extends DboSource {
 				break;
 			default:
 				$result = (bool)$data;
-			break;
 		}
 
 		if ($quote) {

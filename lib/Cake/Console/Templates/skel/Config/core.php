@@ -17,7 +17,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       app.Config
  * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 /**
@@ -95,7 +95,7 @@
  *
  * And uncomment the App.baseUrl below. But keep in mind
  * that plugin assets such as images, CSS and Javascript files
- * will not work without url rewriting!
+ * will not work without URL rewriting!
  * To work around this issue you should either symlink or copy
  * the plugin assets into you app's webroot directory. This is
  * recommended even when you are using mod_rewrite. Handling static
@@ -255,7 +255,8 @@
  * 		'path' => CACHE, //[optional] use system tmp directory - remember to use absolute path
  * 		'prefix' => 'cake_', //[optional]  prefix every cache file with this string
  * 		'lock' => false, //[optional]  use file locking
- * 		'serialize' => true, [optional]
+ * 		'serialize' => true, //[optional]
+ * 		'mask' => 0664, //[optional]
  *	));
  *
  * APC (http://pecl.php.net/package/APC)

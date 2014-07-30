@@ -15,8 +15,9 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Network.Http
  * @since         CakePHP(tm) v 1.2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('CakeSocket', 'Network');
 App::uses('Router', 'Routing');
 App::uses('Hash', 'Utility');
@@ -132,7 +133,7 @@ class HttpSocket extends CakeSocket {
 /**
  * Build an HTTP Socket using the specified configuration.
  *
- * You can use a url string to set the url and use default configurations for
+ * You can use an URL string to set the URL and use default configurations for
  * all other options:
  *
  * `$http = new HttpSocket('http://cakephp.org/');`
@@ -148,7 +149,7 @@ class HttpSocket extends CakeSocket {
  *
  * See HttpSocket::$config for options that can be used.
  *
- * @param string|array $config Configuration information, either a string url or an array of options.
+ * @param string|array $config Configuration information, either a string URL or an array of options.
  */
 	public function __construct($config = array()) {
 		if (is_string($config)) {
@@ -462,7 +463,7 @@ class HttpSocket extends CakeSocket {
 /**
  * Issues a POST request to the specified URI, query, and request.
  *
- * `post()` can be used to post simple data arrays to a url:
+ * `post()` can be used to post simple data arrays to an URL:
  *
  * {{{
  * $response = $http->post('http://example.com', array(
@@ -508,14 +509,14 @@ class HttpSocket extends CakeSocket {
 	}
 
 /**
- * Normalizes urls into a $uriTemplate. If no template is provided
- * a default one will be used. Will generate the url using the
+ * Normalizes URLs into a $uriTemplate. If no template is provided
+ * a default one will be used. Will generate the URL using the
  * current config information.
  *
  * ### Usage:
  *
  * After configuring part of the request parameters, you can use url() to generate
- * urls.
+ * URLs.
  *
  * {{{
  * $http = new HttpSocket('http://www.cakephp.org');
@@ -530,12 +531,12 @@ class HttpSocket extends CakeSocket {
  *
  * Would return `/search?q=socket`.
  *
- * @param string|array Either a string or array of url options to create a url with.
- * @param string $uriTemplate A template string to use for url formatting.
- * @return mixed Either false on failure or a string containing the composed url.
+ * @param string|array Either a string or array of URL options to create an URL with.
+ * @param string $uriTemplate A template string to use for URL formatting.
+ * @return mixed Either false on failure or a string containing the composed URL.
  */
 	public function url($url = null, $uriTemplate = null) {
-		if (is_null($url)) {
+		if ($url === null) {
 			$url = '/';
 		}
 		if (is_string($url)) {

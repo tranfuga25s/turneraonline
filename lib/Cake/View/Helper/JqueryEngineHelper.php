@@ -21,7 +21,7 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 1.3
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('AppHelper', 'View/Helper');
@@ -235,7 +235,7 @@ class JqueryEngineHelper extends JsBaseEngineHelper {
 			case 'slideDown':
 			case 'slideUp':
 				$effect = ".$name($speed);";
-			break;
+				break;
 		}
 		return $this->selection . $effect;
 	}

@@ -15,8 +15,9 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.I18n
  * @since         CakePHP(tm) v 1.2.0.5432
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('I18n', 'I18n');
 
 /**
@@ -193,7 +194,7 @@ class I18nTest extends CakeTestCase {
 /**
  * Assertions for rules zero.
  *
- * @return
+ * @return void
  */
 	public function assertRulesZero() {
 		$singular = $this->__singular();
@@ -1851,6 +1852,16 @@ class I18nTest extends CakeTestCase {
 		$result = I18n::translate('Plural Rule 1', null, null, 6, null, 'rule_1_po');
 		$expected = 'Plural Rule 1 (translated)';
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test that the '' domain causes exceptions.
+ *
+ * @expectedException CakeException
+ * @return void
+ */
+	public function testTranslateEmptyDomain() {
+		I18n::translate('Plural Rule 1', null, '');
 	}
 
 /**

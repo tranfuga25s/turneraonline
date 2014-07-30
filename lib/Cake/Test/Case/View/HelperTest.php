@@ -15,7 +15,7 @@
  * @link          http://book.cakephp.org/2.0/en/development/testing.html CakePHP(tm) Tests
  * @package       Cake.Test.Case.View
  * @since         CakePHP(tm) v 1.2.0.4206
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('View', 'View');
@@ -309,7 +309,7 @@ class HelperTest extends CakeTestCase {
 /**
  * test setEntity with setting a scope.
  *
- * @return
+ * @return void
  */
 	public function testSetEntityScoped() {
 		$this->Helper->setEntity('HelperTestPost', true);
@@ -605,6 +605,10 @@ class HelperTest extends CakeTestCase {
 
 		Configure::write('Asset.timestamp', true);
 		Configure::write('debug', 0);
+
+		$result = $this->Helper->assetTimestamp('/%3Cb%3E/cake.generic.css');
+		$this->assertEquals('/%3Cb%3E/cake.generic.css', $result);
+
 		$result = $this->Helper->assetTimestamp(CSS_URL . 'cake.generic.css');
 		$this->assertEquals(CSS_URL . 'cake.generic.css', $result);
 
@@ -670,7 +674,8 @@ class HelperTest extends CakeTestCase {
 			'here' => '/cake_dev/index.php/tasks',
 		));
 		$result = $this->Helper->assetUrl('img/cake.icon.png', array('fullBase' => true));
-		$this->assertEquals('http://localhost/cake_dev/app/webroot/img/cake.icon.png', $result);
+		$expected = FULL_BASE_URL . '/cake_dev/app/webroot/img/cake.icon.png';
+		$this->assertEquals($expected, $result);
 	}
 
 /**

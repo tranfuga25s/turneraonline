@@ -9,7 +9,7 @@
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 App::uses('View', 'View');
@@ -94,9 +94,9 @@ class XmlView extends View {
 	}
 
 /**
- * Serialize view vars
+ * Serialize view vars.
  *
- * @param array $serialize The viewVars that need to be serialized
+ * @param array $serialize The viewVars that need to be serialized.
  * @return string The serialized data
  */
 	protected function _serialize($serialize) {
