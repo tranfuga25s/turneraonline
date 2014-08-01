@@ -37,7 +37,6 @@ before_script:
   - sh -c "mysql < ./app/Config/Schema/schema.sql"
   - composer install --dev
   - mkdir -p build/logs
-  - ls -l1 vendor/phpunit/phpunit
 
 script:
   - ./app/Console/cake test app AllTests --stderr --coverage-clover build/logs/clover.xml --include-path vendor/phpunit/phpunit
