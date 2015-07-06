@@ -1,23 +1,24 @@
-# Sistema de turnos online
+# CakePHP Application Skeleton
 
-[![Build Status](https://travis-ci.org/tranfuga25s/turneraonline.png?branch=master)](https://travis-ci.org/tranfuga25s/turneraonline)[![Coverage Status](https://coveralls.io/repos/tranfuga25s/turneraonline/badge.png)](https://coveralls.io/r/tranfuga25s/turneraonline)
+[![Build Status](https://api.travis-ci.org/cakephp/app.png)](https://travis-ci.org/cakephp/app)
+[![License](https://poser.pugx.org/cakephp/app/license.svg)](https://packagist.org/packages/cakephp/app)
 
-Este sistema le permite administrar una web en donde los pacientes de un medico o dentista puede obtener los turnos registrandose gratuitamente.
+A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.0.
 
-Además puede:
-+ Ver los horarios de atención del médico.
-+ Verificar los turnos futuros y pasados que tuvo con el médico.
-+ Recibir notificaciónes de turnos proximos por email.
+## Installation
 
-El sistema soporta.
-+ Multiples médicos.
-+ Multiples secretarias ( asociadas a un médico )
-+ Multiples consultorios por clinica.
-+ Multiples clínicas.
+1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
+2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
 
-## Soporte
-+ Basado en el framework web [Cakephp 2.3](http://cakephp.org/).
-+ Utiliza el sistema de estilos [Bootstrap](http://twitter.github.io/bootstrap/index.html).
+If Composer is installed globally, run
+```bash
+composer create-project --prefer-dist cakephp/app [app_name]
+```
 
-## Licencia
-El sistema está basado en una licencia MIT y liberado bajo licencia GPL v3.
+You should now be able to visit the path to where you installed the app and see
+the setup traffic lights.
+
+## Configuration
+
+Read and edit `config/app.php` and setup the 'Datasources' and any other
+configuration relevant for your application.

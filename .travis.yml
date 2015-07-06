@@ -1,48 +1,18 @@
 language: php
 
+sudo: false
+
 php:
-  - 5.3
   - 5.4
   - 5.5
+  - 5.6
 
 before_script:
-  - sh -c "mysql -e 'CREATE DATABASE turnera;'"
-  - mkdir app/tmp
-  - mkdir app/tmp/cache
-  - mkdir app/tmp/cache/models
-  - mkdir app/tmp/cache/persistent
-  - mkdir app/tmp/cache/views
-  - mkdir app/tmp/tests
-  - mkdir app/tmp/logs
-  - chmod -R 777 app/tmp
-  - echo "<?php
-    class DATABASE_CONFIG {
-    public \$default = array(
-      'datasource' => 'Database/Mysql',
-      'database' => 'turnera',
-      'host' => '0.0.0.0',
-      'login' => 'travis',
-      'prefix' => '',
-      'persistent' => false,
-    );
-    public \$test = array(
-      'datasource' => 'Database/Mysql',
-      'database' => 'turnera',
-      'host' => '0.0.0.0',
-      'login' => 'travis',
-      'persistent' => false,
-      'prefix' => 'test_'
-    );
-    }" > ./app/Config/database.php
-  - sh -c "mysql < ./app/Config/Schema/schema.sql"
-  - composer install --dev
-  - mkdir -p build/logs
+  - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
+  - phpenv rehash
 
 script:
-  - ./app/Console/cake test app AllTests --stderr --coverage-clover build/logs/clover.xml --include-path vendor/phpunit/phpunit
-
-after_script:
-  - php vendor/bin/coveralls -v
+  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config ./webroot"
 
 notifications:
   email: false
