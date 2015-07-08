@@ -9,8 +9,7 @@ php:
 
 before_script:
   - composer install
-  - cp config/app.travis.php config/app.php
-  - mysql -e 'create database myapp_test;'
+  - mysql -e 'create database turnera_test;'
   - sh -c "./bin/cake Migrations migrate"
 
 script:
