@@ -47,17 +47,17 @@ class UsuariosFixture extends TestFixture
     public $records = [
         [
             'id_usuario' => 1,
-            'email' => 'Lorem ipsum dolor sit amet',
-            'nombre' => 'Lorem ipsum dolor sit amet',
-            'apellido' => 'Lorem ipsum dolor sit amet',
-            'telefono' => 'Lorem ipsum dolor sit amet',
-            'celular' => 'Lorem ipsum dolor sit amet',
+            'email' => 'administrador@test.com',
+            'nombre' => 'Administrador',
+            'apellido' => 'Administrador',
+            'telefono' => '0342154293436',
+            'celular' => '0342154293436',
             'obra_social_id' => 1,
-            'notificaciones' => 1,
-            'contra' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+            'notificaciones' => 0,
+            'contra' => '',
             'grupo_id' => 1,
-            'facebook_id' => 1,
-            'sexo' => 'Lorem ipsum dolor sit amet'
+            'facebook_id' => 0,
+            'sexo' => 'M'
         ],
     ];
 }

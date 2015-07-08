@@ -21,15 +21,7 @@ class ConsultoriosTableTest extends TestCase
         'app.clinicas',
         'app.medicos',
         'app.usuarios',
-        'app.obra_socials',
-        'app.grupos',
-        'app.facebooks',
-        'app.baker_repositorios',
         'app.secretarias',
-        'app.especialidads',
-        'app.disponibilidad',
-        'app.excepciones',
-        'app.turnos'
     ];
 
     /**

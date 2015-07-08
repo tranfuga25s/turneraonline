@@ -21,11 +21,7 @@ class SecretariasTableTest extends TestCase
         'app.usuarios',
         'app.clinicas',
         'app.consultorios',
-        'app.medicos',
-        'app.especialidads',
-        'app.disponibilidad',
-        'app.excepciones',
-        'app.turnos'
+        'app.medicos'
     ];
 
     /**

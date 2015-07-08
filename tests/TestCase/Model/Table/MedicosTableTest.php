@@ -19,13 +19,9 @@ class MedicosTableTest extends TestCase
     public $fixtures = [
         'app.medicos',
         'app.usuarios',
-        'app.especialidads',
         'app.clinicas',
         'app.consultorios',
-        'app.secretarias',
-        'app.disponibilidad',
-        'app.excepciones',
-        'app.turnos'
+        'app.secretarias'
     ];
 
     /**

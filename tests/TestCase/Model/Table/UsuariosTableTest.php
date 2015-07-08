@@ -18,18 +18,10 @@ class UsuariosTableTest extends TestCase
      */
     public $fixtures = [
         'app.usuarios',
-        'app.obra_socials',
-        'app.grupos',
-        'app.facebooks',
-        'app.baker_repositorios',
         'app.medicos',
-        'app.especialidads',
         'app.clinicas',
         'app.consultorios',
-        'app.secretarias',
-        'app.disponibilidad',
-        'app.excepciones',
-        'app.turnos'
+        'app.secretarias'
     ];
 
     /**

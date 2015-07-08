@@ -6,7 +6,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\ClinicasTable Test Case
+ * Test case para operaciones bulk de tabla de clinicas
+ * 
+ * @property App\Model\Table\ClinicasTable $Clinicas
  */
 class ClinicasTableTest extends TestCase
 {
@@ -43,7 +45,6 @@ class ClinicasTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Clinicas);
-
         parent::tearDown();
     }
 
@@ -54,6 +55,7 @@ class ClinicasTableTest extends TestCase
      */
     public function testInitialize()
     {
+        
         $this->markTestIncomplete('Not implemented yet.');
     }
 
