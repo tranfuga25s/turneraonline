@@ -8,12 +8,12 @@ php:
   - 5.6
 
 before_script:
-  - composer install
+  - composer install --require-dev
   - mysql -e 'create database turnera_test;'
   - sh -c "./bin/cake Migrations migrate"
 
-script:
-  - phpunit
+after_script:
+  - php vendor/bin/coveralls
 
 notifications:
   email: true
